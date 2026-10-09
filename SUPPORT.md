@@ -22,13 +22,33 @@ Pack usmc-2026.10 covers the situations in the first table, with enlisted retire
 | Guard and Reserve retirement (gray area, age 60 pay) | Your unit Career Planner and Reserve Affairs |
 | Another service | Nothing here applies yet; a pack per service is on the roadmap |
 
-## Next step
-If your path is covered, [return to Muster Out](https://musterout.warfarecommand.com/#setup) to check the requirements and set up your board. If it is not covered, contact the office listed above.
+## Set up your board
+If your path is covered, send this one message in any Claude chat: the Claude app on a phone, claude.ai, or the desktop app. Claude Pro costs $20 a month. You need Pro or higher; the Free plan cannot store board data.
 
-Set up in a regular Claude chat by sending: `Set up Muster Out for me. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/SETUP.md and follow it.` Claude checks the files and walks you through your board. On a phone, use claude.ai in the browser if the app cannot open the board.
+```
+Set up Muster Out for me. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/SETUP.md and follow it.
+```
 
-The laptop setup is an alternative: download and verify the zip from the welcome page, open it in the Claude desktop app's Code tab, and type `set me up`.
+Claude checks the release files, asks you to tap Publish for your private board, and interviews you. Setup takes about 5 minutes. If the phone app cannot open the board, use claude.ai in your phone browser. The [welcome page](https://musterout.warfarecommand.com/#setup) has a Copy button for the message.
 
-To install a new release, send: "Update Muster Out. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/UPDATE.md and follow it." It asks you to confirm and keeps your board and data.
+Laptop route: download and verify the zip from the welcome page, open the folder in the Claude desktop app's Code tab, and type `set me up`.
 
-For notices, send: "Run the Muster Out weekly check. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/WEEKLY.md and follow it." Your board shows both messages under Talk to Claude.
+## Keep it current
+Your board shows the weekly and update messages under Talk to Claude, each with a Copy button.
+
+Weekly message:
+
+```
+Run the Muster Out weekly check. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/WEEKLY.md and follow it.
+```
+
+Update message:
+
+```
+Update Muster Out. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/UPDATE.md and follow it.
+```
+
+- **Weekly check.** During setup, Claude offers a Monday check if the chat supports recurring tasks. Confirm your timezone and time. If scheduling is unavailable or you skip it, send the weekly message any week. The check files possible MARADMIN matches for your path and the lines of effort on your board. It also checks for new versions.
+- **Updates.** When a weekly check finds a newer version and records the notice, the board shows the update message with a Copy button. Paste it into any Claude chat; the board keeps its address and your data.
+
+If your path is not covered, call the office listed above.
