@@ -27,6 +27,8 @@ If your path is covered, [return to Muster Out](https://musterout.warfarecommand
 
 Set up in a regular Claude chat by sending: `Set up Muster Out for me. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/SETUP.md and follow it.` Claude checks the files and walks you through your board. On a phone, use claude.ai in the browser if the app cannot open the board.
 
-The laptop folder is an alternative: download and verify the zip from the welcome page, open it in the Claude desktop app's Code tab, and type `set me up`.
+The laptop setup is an alternative: download and verify the zip from the welcome page, open it in the Claude desktop app's Code tab, and type `set me up`.
 
-To install a new release, tell Claude "update Muster Out" in a regular chat, or use `/update` in the laptop folder. It asks you to confirm and keeps your board and data.
+To install a new release, send: "Update Muster Out. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/UPDATE.md and follow it." It asks you to confirm and keeps your board and data.
+
+For notices, send: "Run the Muster Out weekly check. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/WEEKLY.md and follow it." Your board shows both messages under Talk to Claude.

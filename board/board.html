@@ -95,6 +95,10 @@ p{margin:0}
 .banner{margin-top:10px;font:500 12px/1.4 var(--mono);color:var(--ink-2);background:var(--panel);border:1px solid var(--line);padding:8px 10px;border-radius:4px}
 .banner[data-kind="warn"]{border-color:var(--amber);color:var(--amber-ink)}
 #releaseBanner{overflow-wrap:anywhere}
+.claude-message{margin-top:12px}
+.claude-message p{overflow-wrap:anywhere;font-size:13.5px}
+.claude-message .btn{margin-top:6px}
+#talkToClaude{margin-top:14px}
 
 /* hero */
 .hero{display:grid;grid-template-columns:auto 1fr;gap:6px 22px;align-items:end;padding:18px 0 16px}
@@ -343,6 +347,12 @@ footer{margin-top:28px;font:500 12px/1.5 var(--mono);color:var(--ink-3);border-t
   <div class="loes" id="loeStrip"></div>
   <nav class="tabs" role="tablist" id="tabs"></nav>
   <main id="view"></main>
+  <section class="panel" id="talkToClaude" aria-labelledby="talkHeading">
+    <div class="phead"><h2 id="talkHeading">Talk to Claude</h2></div>
+    <p class="muted">Send either message in your Claude chat.</p>
+    <div class="claude-message"><h3>Update</h3><p id="updateMessage"></p><button class="btn" data-act="claude-copy" data-message="update" aria-label="Copy update message">Copy</button></div>
+    <div class="claude-message"><h3>Weekly check</h3><p id="weeklyMessage"></p><button class="btn" data-act="claude-copy" data-message="weekly" aria-label="Copy weekly message">Copy</button></div>
+  </section>
   <footer id="foot"></footer>
 </div>
 
@@ -352,6 +362,8 @@ footer{margin-top:28px;font:500 12px/1.5 var(--mono);color:var(--ink-3);border-t
 "use strict";
 var SEED = JSON.parse(document.getElementById("seed").textContent);
 var DAY = 86400000;
+var UPDATE_MESSAGE = "Update Muster Out. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/UPDATE.md and follow it.";
+var WEEKLY_MESSAGE = "Run the Muster Out weekly check. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/WEEKLY.md and follow it.";
 var MON = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 var MONL = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 var DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -520,7 +532,7 @@ var queues = {};
 function enqueue(path, fn){ var prev = queues[path] || Promise.resolve(); var next = prev.then(fn, fn); queues[path] = next.catch(function(){}); return next; }
 /* MUSTEROUT_R3A: meta/reset is a write fence. While it exists canEdit() is false for every write path. GEN counts fences
    (reset appearing, meta/seeded being deleted); a write queued or retried under an older GEN is dropped before it reaches the store. */
-var GEN = 0, RESET_TOAST = "Reset in progress. Wait for /intake to finish.";
+var GEN = 0, RESET_TOAST = "Reset in progress. Finish it in Claude.";
 var WRITE_ACTS = ["toggle", "due-save", "item-del", "item-add", "whatif-save", "ledger-save", "blk-add", "blk-del", "cond-add", "cond-del", "link-add", "link-del", "inbox-dismiss", "contact-edit", "contact-save", "profile", "setup-open", "setup-save", "status", "notes", "blk-start", "blk-len", "blk-status", "cond-status"];
 function canEdit(){ return !!DB && !S.readOnly && !S.reset; }
 function editGuard(){ if (canEdit()) return true; toast(DB && S.reset ? RESET_TOAST : "This view is read only."); return false; }
@@ -564,7 +576,14 @@ function copyText(txt, btn){
   var done = function(){ if (btn) { var o = btn.textContent; btn.textContent = "Copied"; setTimeout(function(){ btn.textContent = o; }, 1200); } };
   try { navigator.clipboard.writeText(txt).then(done, function(){ selectFallback(txt); }); } catch(e) { selectFallback(txt); }
 }
-function selectFallback(txt){ toast(txt); }
+function selectFallback(txt){
+  var old = el("copyFallback"); if (old) old.remove();
+  var box = document.createElement("div"); box.id = "copyFallback"; box.className = "banner";
+  var label = document.createElement("label"); label.textContent = "Copy is unavailable. Select this message and copy it.";
+  var field = document.createElement("textarea"); field.readOnly = true; field.value = txt; field.style.width = "100%"; field.rows = 5;
+  label.appendChild(field); box.appendChild(label); el("talkToClaude").appendChild(box);
+  field.focus(); field.select();
+}
 
 /* ---------- chips ---------- */
 function dueChip(it, c){
@@ -637,7 +656,7 @@ function renderRelease(){
   banner.textContent = "";
   if (!banner.hidden) {
     var note = Array.isArray(release.notes) && typeof release.notes[0] === "string" ? release.notes[0] : "";
-    banner.textContent = "Version " + release.latest + " is ready. Tell Claude: update Muster Out." + (note ? " " + note : "");
+    banner.innerHTML = '<p>Version ' + esc(release.latest) + ' is ready.</p><p class="claude-message">' + esc(UPDATE_MESSAGE) + '</p><button class="btn" data-act="claude-copy" data-message="update" aria-label="Copy update message">Copy</button>' + (note ? '<p>' + esc(note) + '</p>' : "");
   }
 }
 function renderTop(){
@@ -714,7 +733,7 @@ function renderBrief(){
   var nodes = pathNodes();
   h += '<section class="panel"><div class="phead"><h2>Critical path</h2></div><div class="path">' + nodes.map(function(n){
     var it = S.items[n[0]]; if (!it) return ""; var st = it.status === "done" ? "done" : (lateOf(it) ? "late" : (it.status === "waiting" ? "waiting" : "open"));
-    var d = it.kind === "window" ? (winOf(it) || {}).to : dueOf(it);
+    var d = endOf(it);
     return '<div class="node" data-s="' + st + '"><span class="dot"></span><span class="nl">' + esc(n[1]) + '</span><span class="nd">' + (it.status === "done" && it.doneOn ? "DONE " + mil(parseD(it.doneOn)) : (it.kind === "window" ? "NLT " : "") + mil(d)) + "</span></div>"; }).join("") + "</div></section>";
   h += "</div><div class=\"stack\">";
   h += '<section class="panel"><div class="phead"><h2>Flags</h2></div><div class="alerts">' + alertsList().map(function(a){ return '<div class="alert" data-k="' + a.k + '"><div><p class="label">' + esc(a.h) + "</p><p>" + esc(a.p) + "</p></div></div>"; }).join("") + "</div></section>";
@@ -733,16 +752,29 @@ function whatIfPanel(){
 }
 function wiShift(){ return UI.whatIf ? (UI.whatIf > 0 ? "+" : "") + UI.whatIf + " days" : "current plan"; }
 function whatIfBody(){
-  var base = ctx(0), c = ctx(UI.whatIf), vf = S.items["va-file"];
-  var bw = vf ? winOf(vf, base) : null, cw = vf ? winOf(vf, c) : null, rows = [
-    ["Resignation request due", addMonths(base.eas, -6), addMonths(c.eas, -6)],
-    ["BDD window opens" + (bw ? "" : ": pending IPAC and VA confirmation"), bw ? bw.from : null, cw ? cw.from : null],
-    ["Capstone NLT", prevBiz(addDays(base.eas, -120)), prevBiz(addDays(c.eas, -120))],
-    ["BDD window closes" + (bw ? "" : ": pending IPAC and VA confirmation"), bw ? bw.to : null, cw ? cw.to : null],
-    ["Earliest SkillBridge start: pending installation coordinator and approving command confirmation", null, null],
-    ["DAP request closes", addDays(base.eas, -60), addDays(c.eas, -60)],
-    ["Reserve commission package at HQMC by", addMonths(base.eas, -4), addMonths(c.eas, -4)]
+  var base = ctx(0), c = ctx(UI.whatIf), flags = flagsFor(S.profile || {}), rows = [];
+  var specs = [
+    ["sep-diary", "Resignation request due"],
+    ["ret-request-o", "Retirement request due"],
+    ["ret-request-e", "Retirement or FMCR request due"],
+    ["va-file", "BDD window opens", "from"],
+    ["sep-capstone", "Capstone NLT"],
+    ["va-file", "BDD window closes", "to"],
+    ["sb-start", "SkillBridge start"],
+    ["dap-request-o", "DAP request closes"],
+    ["dap-request-e", "DAP request closes"],
+    ["dap-receipt", "Reserve commission package at HQMC by"],
+    ["dap-commission", "Reserve commission approved"]
   ];
+  specs.forEach(function(spec){
+    var it = S.items[spec[0]];
+    var seedItem = SEED_ALL.items.find(function(item){ return item.id === spec[0]; });
+    if (!it || !fits(seedItem || it, flags) || !fits(it, flags)) return;
+    var date = function(context){ return spec[2] ? resolve(it.window && it.window[spec[2]], context) : endOf(it, context); };
+    var label = spec[1] + (it.basis === "target" && !spec[2] && it.kind !== "window" ? " (planning target)" : "");
+    if (date(base) == null) label += ": pending confirmation";
+    rows.push([label, date(base), date(c)]);
+  });
   var h = '<div class="wi"><span class="label">Deadline</span><span class="label" style="text-align:right">Now</span><span class="label" style="text-align:right">Test</span>' + rows.map(function(r){ return "<span>" + esc(r[0]) + '</span><span class="d">' + mil(r[1]) + '</span><span class="d' + (UI.whatIf ? " chg" : "") + '">' + mil(r[2]) + "</span>"; }).join("") + "</div>";
   if (UI.whatIf && canEdit()) h += '<div class="ctl" style="margin-top:12px"><button class="btn" data-act="whatif-reset">Reset</button><button class="btn pri" data-act="whatif-save">Make ' + esc(mil(c.eas)) + ' the plan</button></div><p class="dim" style="font-size:12.5px;margin-top:6px">Saving moves every EAS rule. SkillBridge dates stay put; change them in Edit profile.</p>';
   return h;
@@ -1044,6 +1076,8 @@ var pending = false;
 function typing(){ var a = document.activeElement; return a && (a.tagName === "TEXTAREA" || (a.tagName === "INPUT" && /text|number|url|date/.test(a.type))) && (el("view").contains(a) || el("banner").contains(a)); }
 function render(){
   renderRelease();
+  el("updateMessage").textContent = UPDATE_MESSAGE;
+  el("weeklyMessage").textContent = WEEKLY_MESSAGE;
   if (typing()) { pending = true; return; }
   pending = false;
   var active = document.activeElement, focus = null;
@@ -1091,6 +1125,7 @@ document.addEventListener("keydown", function(ev){
 });
 document.addEventListener("click", function(ev){
   var b = ev.target.closest("[data-act]"); if (!b) return; var a = b.getAttribute("data-act"), id = b.getAttribute("data-id");
+  if (a === "claude-copy") { copyText(b.getAttribute("data-message") === "weekly" ? WEEKLY_MESSAGE : UPDATE_MESSAGE, b); return; }
   if (DB && WRITE_ACTS.indexOf(a) >= 0 && !editGuard()) return;
   if (a === "tab") { UI.tab = b.getAttribute("data-tab"); try { localStorage.setItem("ssb.tab", UI.tab); } catch(e) {} if (history.replaceState) history.replaceState(null, "", "#" + UI.tab); render(); var tt = el("tabs").getBoundingClientRect().top + window.scrollY; if (window.scrollY > tt) window.scrollTo(0, tt); return; }
   if (a === "goloe") { UI.tab = "lines"; render(); var t = el("loe-" + id); if (t) t.scrollIntoView({ block: "start" }); return; }
@@ -1274,7 +1309,7 @@ function subscribe(){
   DB.collection("inbox").onSnapshot(function(snap){ S.inbox = toList(snap); render(); }, errd);
 }
 /* ---------- Muster Out: profile, setup, seeding ---------- */
-var VERSION = "0.1.2";
+var VERSION = "0.1.3";
 var GRADES = [["o5","O-5 and above","officer","cat3"],["o14","O-1 to O-4","officer","cat2"],["cwo45","CWO4 to CWO5","officer","cat3"],["wo13","WO to CWO3","officer","cat2"],["e89","E-8 to E-9","enlisted","cat3"],["e67","E-6 to E-7","enlisted","cat2"],["e15","E-1 to E-5","enlisted","cat1"]];
 var CAP = { cat1: 120, cat2: 90, cat3: 90 };
 function gradeRow(g){ return GRADES.find(function(x){ return x[0] === g; }) || GRADES[0]; }
@@ -1327,8 +1362,8 @@ function watchLine(){
     if (w.window && w.window.from && w.window.to) line += " Window " + mil(dayOf(w.window.from)) + " to " + mil(dayOf(w.window.to)) + ".";
     if (w.matches && w.matches.length != null) line += " " + w.matches.length + " matched your plan" + (w.confidence === "titles" ? " by title." : ".");
   } else if (w && (w.checked_from || w.run_at)) {
-    line = "Watch: checked " + fmtDay(w.checked_from) + " to " + fmtDay(w.checked_to) + ". Coverage not stated; run /watch again for a full check.";
-  } else line = "Not checked yet. Run /watch in Claude Code on a Monday, or set up a weekly scheduled task from the docs.";
+    line = "Watch: checked " + fmtDay(w.checked_from) + " to " + fmtDay(w.checked_to) + ". Coverage not stated. Send Claude: " + WEEKLY_MESSAGE;
+  } else line = "Not checked yet. Send Claude: " + WEEKLY_MESSAGE;
   if (e && e.at && (!w || !w.checkedAt || Date.parse(e.at) > Date.parse(w.checkedAt))) line += " Last check failed " + mil(dayOf(e.at)) + ": " + (e.reason || "no reason given") + "." + (w ? " Showing the last good check." : "");
   return line;
 }
@@ -1352,7 +1387,7 @@ var SEED_ID = Math.random().toString(36).slice(2, 12), PACK = SEED_ALL.pack || n
 var RENEW_MS = Number(window.MUSTEROUT_TEST_RENEW_MS) > 0 ? Number(window.MUSTEROUT_TEST_RENEW_MS) : 30000;
 var LOCK_LINE = "This browser cannot take the setup lock. Open the board in a current browser or the Claude app.";
 var RESET_LINE = "Reset in progress. Finish it in Claude.";
-var MISMATCH_LINE = "Your path or dates changed since the plan was seeded. Run /intake reset to rebuild the plan, or Edit profile to keep this one.";
+var MISMATCH_LINE = "Your path or dates changed since the plan was seeded. Ask Claude to rebuild the plan, or Edit profile to keep this one.";
 function keyOf(p, st){ p = p || {}; st = st || {}; return [p.path, p.grade, p.reserve, p.sb, st.eas, st.sbStart, st.sbEnd].map(function(v){ return v == null ? "null" : String(v); }).join("|"); }
 function liveKey(){ return keyOf(S.profile, S.settings); }
 function keyMismatch(){ return !!(DB && !S.reset && S.seeded && S.seeded.profileKey && S.seeded.profileKey !== liveKey()); }
@@ -1431,7 +1466,7 @@ function seedFailText(e){
   var code = e && e.code;
   if (code === "busy") return "Another window is setting this board up. This page checks again in a minute.";
   if (code === "nolock") return LOCK_LINE;
-  if (code === "mixed") return "Your profile changed while the board was being set up. Run /intake reset in the Muster Out folder to rebuild the plan.";
+  if (code === "mixed") return "Your profile changed while the board was being set up. Ask Claude to rebuild the plan.";
   if (code === "incomplete") return "Setup stopped before every record was saved (" + e.detail + "). Reload the page; it resumes where it stopped.";
   return "Setup stopped: " + (code || "error") + ". Reload the page; it resumes where it stopped.";
 }
@@ -1464,14 +1499,14 @@ function setBanner(b){
   var want = !S.reset && (UI.setup || UI.setupBusy || (DB && canEdit() && S.dbEmpty && !UI.setupHidden && loadedAll() && !S.seeding && !UI.seedError));
   if (want) { if (!el("setupForm")) el("banner").innerHTML = setupForm(UI.setup === "edit" ? "edit" : "new"); return; }
   if (DB && canEdit() && S.dbEmpty && UI.setupHidden && !S.reset) b = '<div class="banner" data-kind="warn">Starting plan, nothing saved yet. <button class="btn" data-act="setup-open">Set up my board</button></div>';
-  if (S.profile && S.profile.demo) b += '<div class="banner" data-kind="warn">Demo data. Run /intake reset in the Muster Out folder to start over with your own answers.</div>';
+  if (S.profile && S.profile.demo) b += '<div class="banner" data-kind="warn">Demo data. Ask Claude to start over with your own answers.</div>';
   el("banner").innerHTML = b;
 }
 function setupForm(mode){
   var p = S.profile || {}, st = S.settings, isNew = mode === "new", L = isNew && !S.ledgerLive ? {} : S.ledger;
   var opt = function(list, cur){ return list.map(function(x){ return '<option value="' + x[0] + '"' + (x[0] === cur ? " selected" : "") + '>' + esc(x[1]) + '</option>'; }).join(""); };
   var h = '<section class="panel" id="setupForm" aria-label="Set up your board"><div class="phead"><h2>' + (isNew ? "Set up your board" : "Edit profile") + '</h2><span class="label">' + (isNew ? "Three answers build the plan" : "Items do not change here") + '</span></div>';
-  h += '<p class="muted" style="font-size:13.5px">' + (isNew ? "Your path, your date, and your grade build the plan. Everything else is optional; leave a field blank when you do not know it, and the board leaves it blank too." : "Changing the path, Reserve, or SkillBridge after setup does not add or remove items. Saving keeps the current plan. To start over with your own answers, run /intake reset in the Muster Out folder.") + '</p>';
+  h += '<p class="muted" style="font-size:13.5px">' + (isNew ? "Your path, your date, and your grade build the plan. Everything else is optional; leave a field blank when you do not know it, and the board leaves it blank too." : "Changing the path, Reserve, or SkillBridge after setup does not add or remove items. Saving keeps the current plan. Ask Claude to start over with your own answers.") + '</p>';
   h += '<div class="form">' +
     '<label class="field"><span class="label">Path</span><select id="su-path">' + opt([["","Choose one"],["resign","Resigning a regular commission"],["retire","Retiring"],["eas","Separating at EAS"],["other","Something else: medical, involuntary, Guard or Reserve, another service"]], p.path || "") + '</select></label>' +
     '<label class="field"><span class="label">EAS or retirement date</span><input id="su-date" type="date" value="' + esc(st.placeholder ? "" : (st.eas || "")) + '"></label>' +
@@ -1488,7 +1523,7 @@ function setupForm(mode){
     '<label class="field"><span class="label">Family note (optional)</span><input id="su-family" type="text" value="' + esc(p.family || "") + '" placeholder="Married, two children"></label>' +
     '<label class="field"><span class="label">Leave balance on your last LES (optional)</span><input id="su-balance" type="number" step="0.5" value="' + esc(L.balance == null ? "" : L.balance) + '"></label>' +
     '<label class="field"><span class="label">LES date (optional)</span><input id="su-asof" type="date" value="' + esc(L.asOf && L.asOf !== "SETUP" ? L.asOf : "") + '"></label></div>';
-  h += '<label class="field" style="margin-top:10px;flex-direction:row;align-items:center"><input type="checkbox" id="su-demo"' + (p.demo ? " checked" : "") + '><span>Demo data. Unchecking it keeps every record; run /intake reset to start over with your own answers.</span></label>';
+  h += '<label class="field" style="margin-top:10px;flex-direction:row;align-items:center"><input type="checkbox" id="su-demo"' + (p.demo ? " checked" : "") + '><span>Demo data. Unchecking it keeps every record; ask Claude to start over with your own answers.</span></label>';
   h += '<div class="ctl" style="margin-top:12px"><button class="btn pri" data-act="setup-save" data-mode="' + mode + '">' + (isNew ? "Set up my board" : "Save") + '</button>' +
     (isNew ? '<button class="btn" data-act="setup-demo">Fill with demo data</button><button class="btn" data-act="setup-skip">Skip for now</button>' : '<button class="btn" data-act="setup-cancel">Cancel</button>') + '<span id="su-prog" class="dim" role="status"></span></div></section>';
   return h;
@@ -1508,7 +1543,7 @@ function readSetup(mode){
   var v = function(id){ var e = el(id); return e ? String(e.value).trim() : ""; };
   var isDate = function(x){ return /^\d{4}-\d{2}-\d{2}$/.test(x) && iso(parseD(x)) === x; };
   var path = v("su-path"), grade = v("su-grade"), date = v("su-date");
-  if (path === "other") return setupStop("This board does not cover that path, and it would look complete while being wrong for you. Open SUPPORT.md in the Muster Out folder for who to call.", "su-path");
+  if (path === "other") return setupStop("This board does not cover that path, and it would look complete while being wrong for you. Read the support page for who to call: https://musterout.warfarecommand.com/support/.", "su-path");
   if (!path) return setupStop("Choose your path first.", "su-path");
   if (!isDate(date)) return setupStop("Enter your EAS or retirement date first.", "su-date");
   if (!grade) return setupStop("Choose your grade group first.", "su-grade");

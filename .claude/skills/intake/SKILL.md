@@ -39,14 +39,14 @@ Publish `board/board.html` with the Artifact tool: title "Muster Out", icon "cal
 
 The moment the tool returns a URL, write `my/pending.json`. That URL is the only board URL from now on.
 ```json
-{"url": "https://claude.ai/artifact/EXAMPLE", "pack": "usmc-2026.10", "version": "0.1.2", "created": "2026-10-09T15:00:00Z", "stage": "published"}
+{"url": "https://claude.ai/artifact/EXAMPLE", "pack": "usmc-2026.10", "version": "0.1.3", "created": "2026-10-09T15:00:00Z", "stage": "published"}
 ```
 `pack` and `version` come from `config.json`. `created` is now in ISO 8601 UTC.
 
 Write exactly these three documents with ArtifactData `batch` on that URL. The keys below are the document paths. Values are JSON booleans, numbers, and nulls, never the words "yes" or "no".
 ```json
 {
-  "meta/profile": {"name": "Capt A.B. Smith, USMC", "grade": "o14", "path": "resign", "reserve": true, "sb": false, "years": 9, "home": null, "base": null, "family": null, "demo": false, "dateBasis": "planned", "version": "0.1.2", "updated": "2026-10-09T15:00:00Z"},
+  "meta/profile": {"name": "Capt A.B. Smith, USMC", "grade": "o14", "path": "resign", "reserve": true, "sb": false, "years": 9, "home": null, "base": null, "family": null, "demo": false, "dateBasis": "planned", "version": "0.1.3", "updated": "2026-10-09T15:00:00Z"},
   "meta/settings": {"eas": "2027-09-01", "sbStart": null, "sbEnd": null, "planSet": "2026-10-09"},
   "meta/ledger": {"balance": null, "asOf": null, "accrualPerMonth": 2.5, "note": null}
 }
@@ -69,7 +69,7 @@ If the page shows "Setting up your board" for more than two minutes, ask them to
 
 When all three checks pass, set `stage` in `my/pending.json` to `"seeded"`. Then write `my/board.json` and delete `my/pending.json`. The pointer holds exactly four fields and no profile:
 ```json
-{"url": "https://claude.ai/artifact/EXAMPLE", "pack": "usmc-2026.10", "version": "0.1.2", "created": "2026-10-09T15:00:00Z"}
+{"url": "https://claude.ai/artifact/EXAMPLE", "pack": "usmc-2026.10", "version": "0.1.3", "created": "2026-10-09T15:00:00Z"}
 ```
 
 ## 7. The count, then hand off
@@ -92,7 +92,7 @@ Hand off: the three ways back are `/intake` (profile), `/board` (anything on the
 ## 8. Update
 Read `my/board.json` for the URL. Ask what changed. Read `meta/profile`, `meta/settings`, and `meta/ledger` with ArtifactData, change only the fields that changed, and write them back pinned with `if_version`. A new leave balance goes to `meta/ledger` (`balance`, `asOf`). When an approval arrives, set `dateBasis` to `"approved"`; the date is now a confirmed event. Keep the URL; never publish a new page for an update.
 
-A change to path, grade, Reserve, SkillBridge, the EAS, or the SkillBridge dates changes the profile key, and the page then says: "Your path or dates changed since the plan was seeded. Run /intake reset to rebuild the plan, or Edit profile to keep this one." Tell the person before you write, and offer the two choices:
+A change to path, grade, Reserve, SkillBridge, the EAS, or the SkillBridge dates changes the profile key, and the page then says: "Your path or dates changed since the plan was seeded. Ask Claude to rebuild the plan, or Edit profile to keep this one." Tell the person before you write, and offer the two choices:
 - Keep this plan. If the path, Reserve, or SkillBridge changed, list the items the change adds or retires (by `when` tag in `board/seed.json`) and offer to add or retire them one by one with cites. Then update `meta/seeded.profileKey` to the new live key, pinned. For a date change alone, this is the usual choice: dates counted from the EAS recompute, and fixed dates and dates hung on a done item stay.
 - Rebuild the plan: step 9.
 
