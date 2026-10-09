@@ -1,6 +1,6 @@
 # Privacy
 
-Anthropic hosts your board inside your own Claude account. The maintainers of this project have no account on it, and this build sends them nothing from it. Chat setup sends nothing to the project. Two optional submissions can reach the project's database: the anonymous setup count, which exists only on the laptop route, and the lesson result. Each one goes only if you say yes.
+Anthropic hosts your board inside your own Claude account. The maintainers of this project have no account on it, and this build sends them nothing from it. Chat setup sends nothing to the project. The anonymous setup count, which exists only on the laptop route, and the lesson result reach the project's database only if you say yes. You can also request correction alerts by email on the website.
 
 ## Where your data is
 | Place | What is there | Who controls it |
@@ -22,11 +22,20 @@ Chat setup, updates, and the weekly check download public files from the release
 An update runs only after you confirm it. In chat, Claude checks each release file against the manifest's SHA-256 values; on the laptop route, it checks the zip from the docs site and keeps your `my/` files. Both replace the page at your existing board address. An unfinished update keeps a marker so the next run can resume.
 
 ## What this project collects
-Apart from the welcome page's counter, the project receives nothing unless you say yes to one of these two.
+Apart from the welcome page's counter and the optional email signup below, the project receives nothing unless you say yes to one of these two.
 - **The count, laptop route only.** Chat setup never sends it; the chat workspace cannot reach the endpoint. In the laptop setup, Claude asks once. On yes it sends exactly five fields: `service`, `path` (resign, retire, eas), `grade` (the grade group), `version` (the product version), and `id`, a random install id so a repeated setup is not counted twice. The install id is kept in `my/receipt.json` in the Muster Out folder and does not link to your name or account. Your choice is saved in that file before anything is sent, so a retry or a reset reuses the same id and you are not asked again. The endpoint also records the time it received the count and a salted hash of the internet address it came from, used for rate limiting. It keeps no name, date, unit, or board data. Say skip and nothing is sent.
 - **The lesson result.** The lesson works without sending anything. If you choose to send, the project receives exactly these fields: a random study token, an optional nickname, your quiz score and your eight answers, your one sentence reflection, your yes or no on going deeper, the number of sections you completed, and the lesson version. The reflection goes as you typed it, with the spaces at the start and end removed, up to 600 characters; the server keeps the first 600 characters and drops the rest. With each result, the server stores the time it arrived and a salted hash of your internet address, used for rate limiting. Nothing in the lesson asks for your name, email, or a date, and the page asks you to keep names, dates, and medical details out of the reflection.
 
 Both submissions land in one database, which the maintainer reads only in aggregate. The welcome page carries Cloudflare Web Analytics, a cookieless page counter that records no personal data. The lesson carries no analytics script at all.
+
+## Correction alerts by email
+Correction alerts are optional. Sign up only on the website and confirm your address through the email we send. The list is used only for correction alerts and release notes.
+
+The project's Supabase database stores your email address, pending or confirmed status, signup and confirmation timestamps, the last email send timestamp, and a salted hash of your internet address for rate limiting. It also stores hashes of confirmation and unsubscribe tokens. Separate rate counters use salted hashes of IP and email addresses to prevent repeated requests; they hold no readable email address and remain after an unsubscribe. Raw tokens and raw internet addresses are not stored in these tables.
+
+Resend sends the emails and receives your address and the email content to deliver them. The project's database is the only subscriber list; addresses are not copied into a Resend contact list. We never share or sell your address for anyone else's use.
+
+Every email includes a one-click unsubscribe that deletes your address from the project's database. The unsubscribe link in the email body does the same. The project cannot delete copies already delivered to your inbox or delivery records held by Resend.
 
 ## How to delete
 - **The board.** Delete the page from claude.ai. On the laptop route, delete the Muster Out folder too.

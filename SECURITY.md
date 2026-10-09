@@ -50,5 +50,12 @@ The weekly feed comes from a scheduled job in a separate repository. It fetches 
 ## Submission endpoint
 The optional count and the optional lesson results go to one edge function (`supabase/functions/ingest/index.ts`, address in `config.json` as `ingest_url` and `ping_url`). It validates the shape, caps sizes, rate limits by a salted hash of the address, and writes with a server side key that never reaches a browser. The tables are closed to every other role. It serves no reads. A `delete` with a study token removes that token's lesson rows, a `delete` with an install id removes that id's count, and a delete removes nothing else. `PRIVACY.md` gives both commands.
 
+## Correction alerts
+Website signups go to the separate `alerts` edge function. The service role alone can access `alert_signups`; the table has row level security and no client policies. It stores email addresses, consent status, timestamps, salted IP hashes, and token hashes. The existing service-only rate table holds separate salted IP and email hash counters for subscribe requests and confirmation sends. Deletion does not reset either rate limit.
+
+The function accepts signups from the website origin only, checks a honeypot and the email format, and limits subscribe requests to three per hashed IP per hour and confirmation emails to one per address per ten minutes. Confirmation and unsubscribe tokens contain 32 random bytes; only their SHA-256 hashes are stored. A used confirmation link cannot confirm again. GET and one-click POST unsubscribe delete the matching row. The last eight unsubscribe token hashes are retained so links from recent emails remain valid.
+
+Resend receives addresses only for delivery, with a sending-only key. It holds no synced contact list. The owner sends correction alerts by hand to confirmed addresses; the send script defaults to a count-only dry run. See `PRIVACY.md` for the stored fields and how to delete a signup.
+
 ## Reporting
 [Report a security problem by email](mailto:security@warfarecommand.com). Include the version from `config.json`, what you saw, and how to repeat it. Do not put your board data or anything personal in the report. During the pilot one maintainer reads these reports, and the expected response window is a week.
