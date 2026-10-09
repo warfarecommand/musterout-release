@@ -1,0 +1,13 @@
+{
+  "product": "Muster Out",
+  "version": "0.1.2",
+  "pack": "usmc-2026.10",
+  "release_url": "https://musterout.warfarecommand.com/release.json",
+  "watch_feed": "https://watch.warfarecommand.com/feed/latest.json",
+  "watch_page": "https://watch.warfarecommand.com/",
+  "ping_url": "https://vfozrzohrdrbohjqkghk.supabase.co/functions/v1/ingest",
+  "docs": "https://musterout.warfarecommand.com",
+  "repo": "https://github.com/warfarecommand/musterout",
+  "ingest_url": "https://vfozrzohrdrbohjqkghk.supabase.co/functions/v1/ingest",
+  "publisher": "Warfare Command"
+}

@@ -1,0 +1,54 @@
+{
+  "checked_from": "2026-10-03",
+  "checked_to": "2026-10-09",
+  "generated_at": "2026-10-09T16:10:52.106746+00:00",
+  "source": "MARADMIN",
+  "coverage": "MARADMIN messages posted on marines.mil between checked_from and checked_to",
+  "schema_version": 1,
+  "checked_count": 14,
+  "unclassified_count": 0,
+  "classification_mode": "keyword-baseline",
+  "capture_replay": false,
+  "collection_source": "maradmin-rss",
+  "truncated": false,
+  "notices": [
+    {
+      "number": "475/26",
+      "title": "SOLICITATION FOR PARTICIPATION IN MARINE CORPS RECRUITING COMMAND COMMUNITY OUTREACH AND PARTNERSHIP EVENTS",
+      "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4619266/solicitation-for-participation-in-marine-corps-recruiting-command-community-out/",
+      "posted": "2026-10-06",
+      "description": "R 051500Z OCT 26MARADMIN 475/26MSGID/GENADMIN/CG MCRC QUANTICO VA//SUBJ/SOLICITATION FOR",
+      "body_available": false,
+      "relevant": true,
+      "lines": [
+        "va"
+      ],
+      "paths": [
+        "all"
+      ],
+      "action": "informational",
+      "summary": "Title indicates no clear separation topic. Read the official message before acting.",
+      "deadline": null,
+      "confidence": "low"
+    },
+    {
+      "number": "473/26",
+      "title": "FISCAL YEAR 2027 ACTIVE RESERVE OFFICER ACCESSION AND CAREER DESIGNATION PLAN",
+      "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4618001/fiscal-year-2027-active-reserve-officer-accession-and-career-designation-plan/",
+      "posted": "2026-10-05",
+      "description": "R 021430Z OCT 26MARADMIN 473/26MSGID/GENADMIN/CMC WASHINGTON DC MRA RA//SUBJ/FISCAL YEAR 2027 ACTIVE",
+      "body_available": false,
+      "relevant": true,
+      "lines": [
+        "reserve"
+      ],
+      "paths": [
+        "all"
+      ],
+      "action": "informational",
+      "summary": "Title indicates a possible connection to leaving active duty. Read the official message before acting.",
+      "deadline": null,
+      "confidence": "low"
+    }
+  ]
+}

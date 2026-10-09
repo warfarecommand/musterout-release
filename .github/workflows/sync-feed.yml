@@ -1,0 +1,91 @@
+name: Sync public MARADMIN feed
+
+on:
+  schedule:
+    - cron: '0 14 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: musterout-release-feed
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Download and validate public feed
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -q --fail --silent --show-error --max-time 60 --proto '=https' https://watch.warfarecommand.com/feed/latest.json -o "$RUNNER_TEMP/musterout-feed.json"
+          python3 - <<'PYFEED'
+          import datetime, json, os, pathlib, re, tempfile
+          def validate_feed(feed):
+              if not isinstance(feed, dict):
+                  raise ValueError("feed must be a JSON object")
+              required = {"generated_at", "checked_from", "checked_to", "coverage", "checked_count", "truncated", "notices"}
+              if not required <= feed.keys():
+                  raise ValueError("missing expected feed keys")
+              stamp = datetime.datetime.fromisoformat(feed["generated_at"].replace("Z", "+00:00"))
+              if stamp.tzinfo is None:
+                  raise ValueError("generated_at must have a timezone")
+              for key in ("checked_from", "checked_to"):
+                  if not re.fullmatch(r"[0-9]{4}-[0-9]{2}-[0-9]{2}", feed[key]):
+                      raise ValueError("invalid feed date")
+                  datetime.date.fromisoformat(feed[key])
+              if feed["checked_from"] > feed["checked_to"]:
+                  raise ValueError("reversed feed window")
+              if not isinstance(feed["coverage"], str) or not feed["coverage"].strip():
+                  raise ValueError("coverage must be a nonempty string")
+              if type(feed["checked_count"]) is not int or feed["checked_count"] < 0:
+                  raise ValueError("checked_count must be a nonnegative integer")
+              if type(feed["truncated"]) is not bool or not isinstance(feed["notices"], list):
+                  raise ValueError("invalid feed flags or notices")
+              if "body_available" in feed and type(feed["body_available"]) is not bool:
+                  raise ValueError("invalid body_available")
+              for notice in feed["notices"]:
+                  if not isinstance(notice, dict):
+                      raise ValueError("notice must be an object")
+                  for key in ("number", "title", "url", "posted"):
+                      if not isinstance(notice.get(key), str) or not notice[key]:
+                          raise ValueError("missing notice text field")
+                  datetime.date.fromisoformat(notice["posted"])
+                  for key in ("lines", "paths"):
+                      if not isinstance(notice.get(key), list) or not all(isinstance(v, str) for v in notice[key]):
+                          raise ValueError("invalid notice classification")
+                  if type(notice.get("body_available")) is not bool:
+                      raise ValueError("invalid notice body_available")
+              return feed
+          download = pathlib.Path(os.environ["RUNNER_TEMP"]) / "musterout-feed.json"
+          payload = download.read_bytes()
+          validate_feed(json.loads(payload))
+          target = pathlib.Path("feed/latest.json")
+          if target.read_bytes() != payload:
+              def atomic_write(path, data):
+                  fd, name = tempfile.mkstemp(dir=path.parent, prefix=".feed-sync-")
+                  try:
+                      with os.fdopen(fd, "wb") as handle:
+                          handle.write(data)
+                      os.replace(name, path)
+                  finally:
+                      if os.path.exists(name):
+                          os.unlink(name)
+              atomic_write(target, payload)
+          PYFEED
+      - name: Commit changed feed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add feed/latest.json
+          if ! git diff --cached --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git commit -m 'Sync public MARADMIN feed'
+            git push
+          fi
