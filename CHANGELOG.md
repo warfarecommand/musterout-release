@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.1.6 (2026-10-09)
+
+- Confirmation and welcome emails list your email choices in plain English.
+- The email template sources ship with the backend code, so the public release shows exactly what subscribers receive.
+
 ## 0.1.5 (2026-10-09)
 
 - Leave projections now count from the date of your leave balance, count overlapping leave once, apply the 30 September carryover limit, and stop at your last active day.

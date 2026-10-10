@@ -1,0 +1,18 @@
+WARFARE COMMAND
+
+Muster Out correction - {{{VERSION}}}
+
+{{{WHAT_CHANGED}}} {{{WHO_IS_AFFECTED}}}
+
+{{{WHAT_TO_DO}}}
+
+Paste into Claude to update:
+
+Update Muster Out. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/UPDATE.md and follow it.
+
+You subscribed to Muster Out correction alerts. Unsubscribe from everything: {{{ALERT_UNSUBSCRIBE_URL}}}
+Email preferences: {{{PREFS_URL}}}
+
+Warfare Command is unofficial and not affiliated with the Department of Defense or the Marine Corps. Nothing here is legal, financial, or medical advice.
+
+https://warfarecommand.com

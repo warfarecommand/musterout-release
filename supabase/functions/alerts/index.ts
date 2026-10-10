@@ -17,7 +17,9 @@ export function streamDefaults(source: unknown) {
   return { corrections: source === "musterout" || source === "register", monthly: true, weekly: false, lessons: source === "ai101" };
 }
 export function streamNames(row: Pick<Row, "corrections" | "monthly" | "weekly" | "lessons">): string {
-  return [row.corrections ? "Muster Out corrections" : "", row.monthly ? "Warfare Command Monthly" : "", row.weekly ? "Weekly MARADMIN roundup" : "", row.lessons ? "New lessons" : ""].filter(Boolean).join(", ") || "No email streams";
+  const names = [row.corrections ? "Muster Out corrections" : "", row.monthly ? "Warfare Command Monthly" : "", row.weekly ? "Weekly MARADMIN roundup" : "", row.lessons ? "New lessons" : ""].filter(Boolean);
+  // Plain English list: "A", "A and B", "A, B, and C".
+  return names.length > 2 ? names.slice(0, -1).join(", ") + ", and " + names[names.length - 1] : names.join(" and ") || "No email streams";
 }
 const platformConfirmHash = (raw: string) => hash(PLATFORM_SCOPE + ":" + raw);
 const CORS = { "Access-Control-Allow-Origin": SITE, "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "content-type", "Vary": "Origin" };

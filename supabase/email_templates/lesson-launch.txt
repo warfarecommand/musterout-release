@@ -1,0 +1,14 @@
+WARFARE COMMAND
+
+{{{LESSON_TITLE}}}
+
+{{{LESSON_PROMISE}}}
+
+Open the lesson: {{{LESSON_URL}}}
+
+You chose New lessons. Unsubscribe from everything: {{{ALERT_UNSUBSCRIBE_URL}}}
+Email preferences: {{{PREFS_URL}}}
+
+Warfare Command is unofficial and not affiliated with the Department of Defense or the Marine Corps. Nothing here is legal, financial, or medical advice.
+
+https://warfarecommand.com

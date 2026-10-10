@@ -1,0 +1,14 @@
+WARFARE COMMAND
+
+MARADMIN roundup - {{{WEEK_OF}}}
+
+MARADMINs only. Titles were checked; applicability is unverified. Read the official messages before acting.
+
+{{{ITEMS_TEXT}}}
+
+You chose the Weekly MARADMIN roundup. Unsubscribe from everything: {{{ALERT_UNSUBSCRIBE_URL}}}
+Email preferences: {{{PREFS_URL}}}
+
+Warfare Command is unofficial and not affiliated with the Department of Defense or the Marine Corps. Nothing here is legal, financial, or medical advice.
+
+https://warfarecommand.com

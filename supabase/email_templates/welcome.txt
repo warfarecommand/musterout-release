@@ -1,0 +1,16 @@
+WARFARE COMMAND
+
+Your address is confirmed
+
+Selected streams: {{{SUBSCRIBED_STREAMS}}}.
+
+Change these choices in Email preferences, or add the weekly roundup below.
+
+Add the weekly MARADMIN roundup: {{{WEEKLY_ON_URL}}}
+
+You confirmed your email choices. Unsubscribe from everything: {{{ALERT_UNSUBSCRIBE_URL}}}
+Email preferences: {{{PREFS_URL}}}
+
+Warfare Command is unofficial and not affiliated with the Department of Defense or the Marine Corps. Nothing here is legal, financial, or medical advice.
+
+https://warfarecommand.com

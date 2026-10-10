@@ -1,4 +1,4 @@
-import { createHandler, ENDPOINT, hash, SITE, ORIGINS, token } from "./index.ts";
+import { createHandler, ENDPOINT, hash, SITE, ORIGINS, token, streamNames } from "./index.ts";
 import { readMessage, sendAlert } from "./send_alert.ts";
 
 const assert = (ok: unknown, message = "Assertion failed") => { if (!ok) throw new Error(message); };
@@ -656,4 +656,11 @@ Deno.test("caps use UTC ISO weeks and calendar months, including a week spanning
 Deno.test("an ambiguous HTTP server failure retains the campaign cap for later campaigns",async()=>{
  const f=fixture();f.tables.alert_signups.push(row("one",{lessons:true}));f.mailStatus(503);let failed=false;try{await sendAlert(monthly(),true,{...f.deps,print:()=>{}});}catch{failed=true;}assert(failed);equal(f.tables.email_delivery_receipts[0].state,"unknown");
  const reports:string[]=[];await sendAlert(monthly("different-reviewed-campaign"),false,{...f.deps,print:r=>reports.push(r)});equal(JSON.parse(reports[0]).reasons.weekly_cap,1);equal(f.mail().length,1);
+});
+
+Deno.test("stream names read as a plain English list", () => {
+  equal(streamNames({ corrections: true, monthly: false, weekly: false, lessons: false }), "Muster Out corrections");
+  equal(streamNames({ corrections: true, monthly: true, weekly: false, lessons: false }), "Muster Out corrections and Warfare Command Monthly");
+  equal(streamNames({ corrections: true, monthly: true, weekly: true, lessons: false }), "Muster Out corrections, Warfare Command Monthly, and Weekly MARADMIN roundup");
+  equal(streamNames({ corrections: false, monthly: false, weekly: false, lessons: false }), "No email streams");
 });
