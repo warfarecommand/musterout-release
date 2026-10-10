@@ -1,17 +1,47 @@
-# Email scopes
+# Manual email campaigns
 
-The default sender audience is Muster Out correction alerts and release notes. Use `--platform` for Warfare Command updates: new tools, new lessons, Muster Out corrections, and release notes. That audience includes only rows with a confirmed platform consent receipt. Signup origin alone does not expand consent.
+Reader: The owner or an authorized operator. Use this procedure to prepare and send a correction alert, the Monthly, or a lesson launch. Every manual send requires the owner's OK for the reviewed JSON file and its dry report. An operator cannot approve their own send.
 
-New platform confirmation tokens bind their hash to the stated scope. Confirmation consumes the pending token and retains `consent:platform-updates:v1` in the existing `confirm_hash` field. Old pending links still confirm the narrower scope and clear that field. Existing confirmed rows are never upgraded by another signup request. A subscriber can unsubscribe and sign up again to confirm a different scope. No migration is required for this distinction.
+[DEPLOY_ALERTS.md](../../DEPLOY_ALERTS.md) is the canonical deployment, verification, and receipt recovery runbook. This file is the canonical manual sender procedure. The stream rules and owner approval requirement come from the [campaign policy](../../../_cook/email_library/CAMPAIGN.md).
 
-Platform receipt filtering applies during the count, ID snapshot, recipient read, and unsubscribe-link reservation. Use the default audience only for the common correction and release-note scope.
+## Prepare the reviewed file
 
-The board update callout appears only with `--musterout-update`. Use it when the message concerns a Muster Out update. Tool and lesson announcements use `--platform` without that flag.
+The file `reviewed-message.json` contains exactly three keys: `template`, `campaign`, and `variables`. `variables` is an object containing exactly the keys in this table, with nonempty strings as values. The sender rejects text files, retired aliases, extra keys, arbitrary HTML, and template placeholders.
 
-Run the owner-controlled sender without `--send` to print only the eligible confirmed count:
+| Template | Audience | Required variables |
+| --- | --- | --- |
+| `correction-alert` | Corrections enabled after confirmation | `WHAT_CHANGED`, `WHO_IS_AFFECTED`, `WHAT_TO_DO`, `VERSION` |
+| `monthly` | Monthly enabled after confirmation | `SHIPPED`, `NEXT`, `AI_MOVE`, `QUESTION` |
+| `lesson-launch` | Lessons enabled after confirmation | `LESSON_TITLE`, `LESSON_PROMISE`, `LESSON_URL` |
+
+Choose a campaign identifier with 1 to 100 characters matching `[A-Za-z0-9_-]`. Freeze the identifier and reviewed copy before approval. Receipts use `template:campaign`. Every retry uses the same file and identifier. Changing an identifier can evade duplicate protection after a cap window; it is not a recovery procedure. Changing copy under an existing identifier is refused.
+
+Use plain reviewed copy within the sender's limits. Footer and preference URLs are generated per subscriber. The owner must verify that `LESSON_URL` is the actual published HTTPS lesson at `https://warfarecommand.com`. Do not send a sample URL. The Monthly is planned for the first Tuesday; skip an issue with nothing worth saying. The owner judges the editorial value and timing.
+
+Monthly, weekly, and lesson sends share a limit of one per salted address per UTC ISO week and four per UTC calendar month. Corrections are exempt. A Monday roundup can consume the allowance before Tuesday's Monthly. Reserved, accepted, and uncertain campaign receipts consume the allowance. Confirmation and welcome receipts are separate transactional messages.
+
+## Dry report, approval, send
+
+Run from the repository root with credentials already supplied through private process tooling: `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, and either existing `IP_HASH_SALT` or `INGEST_SALT`. Do not rotate the salt, print credentials, or put them in the message file or an `.env` file.
+
+Run a dry report first:
 
 ```sh
-deno run --allow-env --allow-net --allow-read supabase/functions/alerts/send_alert.ts message.txt --platform
+deno run --allow-env=SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY,RESEND_API_KEY,IP_HASH_SALT,INGEST_SALT --allow-net=vfozrzohrdrbohjqkghk.supabase.co,api.resend.com --allow-read=reviewed-message.json supabase/functions/alerts/send_alert.ts reviewed-message.json
 ```
 
-The message file contains a subject line, a blank line, and one line per paragraph. Add `--send` only to send an approved message. The branded header, individual unsubscribe links, and one-click unsubscribe headers are retained for both scopes.
+The dry report prints `dry`, `recipients`, `eligible`, `accepted`, `skipped`, and `reasons`. It reads subscribers and calls the delivery gate in dry mode. It creates no receipts or links and sends no mail. Review the audience and every skipped reason. Keep the report with the frozen file and obtain the owner's OK for that file and campaign before sending. If the reviewed file changes, repeat the dry report and obtain a new OK.
+
+After the owner's OK, use the same command with `--send`:
+
+```sh
+deno run --allow-env=SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY,RESEND_API_KEY,IP_HASH_SALT,INGEST_SALT --allow-net=vfozrzohrdrbohjqkghk.supabase.co,api.resend.com --allow-read=reviewed-message.json supabase/functions/alerts/send_alert.ts reviewed-message.json --send
+```
+
+Run one manual sender at a time. It rechecks confirmed stream choices, reserves delivery receipts, and sends batches of at most 100 with one address per message. Fresh unsubscribe and preference links are saved as hashes before the batch goes to Resend. Deletion after the final consent check can leave one email already in flight.
+
+## Review receipts and recover
+
+Review `email_delivery_receipts` and Resend request history after every send, including a command that exits with an error. `accepted` means provider acceptance; it does not prove inbox delivery. `duplicate`, `weekly_cap`, and `monthly_cap` are expected skips. `blocked` means an existing `reserved`, `failed`, or `unknown` attempt requires investigation. The sender does not retry it automatically.
+
+For each blocked receipt, match the frozen campaign, salted recipient hash, content hash, attempt time, and provider request history. Keep the evidence in the supervisor's private operations record. If acceptance is proven, reconcile the receipt to `accepted` and do not resend. If delivery remains uncertain, retain `unknown` and stop recovery for that recipient. If rejection or nonacceptance is proven, the supervisor can remove only that reconciled receipt after recording the evidence. Recheck consent and dry counts, obtain the owner's OK for the recovery, and rerun the frozen file and identifier. Shared caps still apply. Never clear a campaign's receipts or change its identifier merely to force a retry. These steps also cover a batch that was accepted before its response was lost.

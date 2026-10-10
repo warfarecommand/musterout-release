@@ -1,0 +1,175 @@
+SOURCE: https://www.va.gov/family-and-caregiver-benefits/health-and-disability/champva/ | RETRIEVED: 2026-10-09
+EXTRACTION: HTML main content; line breaks separate page text nodes. Paragraph references use page headings.
+
+Family and caregiver benefits
+Health and disability benefits
+CHAMPVA benefits
+Apply now
+Submit other health insurance
+File a CHAMPVA claim
+Program of Comprehensive Assistance for Family Caregivers
+Apply now
+El Programa de Asistencia Integral para Cuidadores de Familia
+Solicite ahora (en inglés)
+Benefits for spina bifida linked to Agent Orange
+Benefits for children of women Vietnam Veterans
+In this section
+CHAMPVA benefits
+If you’re the spouse, dependent, or survivor of a Veteran who meets certain service-connected disability requirements, you may qualify for healthcare benefits through the Civilian Health and Medical Program of the Department of Veterans Affairs (CHAMPVA). Find out if you qualify for CHAMPVA and how to apply on this page.
+Already enrolled in CHAMPVA?
+Learn more about getting care and finding providers
+Eligibility for CHAMPVA
+You may be eligible for CHAMPVA if you meet these requirements.
+At least 1 of these must be true:
+You’re the spouse or dependent child of a Veteran who’s been rated permanently and totally disabled from a service-connected disability,
+or
+You’re the surviving spouse or dependent child of a Veteran who died from a service-connected disability,
+or
+You’re the surviving spouse or dependent child of a Veteran who was at the time of their death rated permanently and totally disabled from a service-connected disability
+And you must also not be eligible for TRICARE:
+TRICARE is the Defense Department’s healthcare program for service members and their families. If you’re eligible for or enrolled in TRICARE, you can’t get CHAMPVA benefits.
+Check if you’re eligible for TRICARE on the TRICARE website
+Note:
+In certain cases, you may be eligible for CHAMPVA if you’re the surviving spouse or dependent child of a service member who died in the line of duty, not due to misconduct. A “permanent and total disability” is a disability that we’ve rated as 100% disabling and that’s not expected to improve.
+Eligibility for specific groups
+Newborn dependent children
+We can’t pay medical claims for a qualifying newborn child until they’re enrolled in CHAMPVA. Apply for CHAMPVA for your child as soon as possible after their birth.
+Before you can apply for CHAMPVA for your child, you’ll need to take these 2 steps:
+First, get a Social Security number for your child at a Social Security Administration office
+Then, add your child as a dependent of the Veteran sponsor by contacting your nearest VA regional office
+Find a Social Security office near you
+Find a VA regional office near you
+Surviving spouses who remarry
+If you remarry on or after your 55th birthday
+, you can keep your CHAMPVA benefits after you remarry.
+If you remarry before age 55
+, your CHAMPVA benefits will end on the date of your remarriage.
+If you remarry before age 55, but your remarriage ends
+, you may qualify for CHAMPVA again. The first date that you qualify again is the first day of the month after your remarriage ends.
+Spouses who are both Veterans
+If you and your spouse are both Veterans, you may each qualify for both VA healthcare and CHAMPVA. If you enroll in both programs, you can choose to use either VA healthcare or CHAMPVA each time you need care.
+Find out if you’re eligible for VA healthcare
+Dependent children age 18 or older
+If you’re enrolled in high school, college, or another educational institution
+, you can keep CHAMPVA benefits between ages 18 and 23. Your benefits will end when you’re no longer enrolled in school or when you turn 23, whichever comes first. If you get married before age 23, your benefits will end on the date of your marriage.
+If you’re permanently unable to support yourself due to a disability that happened before age 18
+, you can keep CHAMPVA benefits after age 18. (We sometimes use the term “helpless child” to describe this situation.) Your benefits will end if you get married or become able to support yourself.
+If you’re not enrolled in school or permanently disabled
+, your CHAMPVA benefits will end when you turn 18.
+Stepchildren who leave the Veteran’s household
+If you’re the stepchild of a Veteran and you leave the Veteran’s household because of a divorce or remarriage, you no longer qualify for CHAMPVA.
+People who are age 65 or older or who qualify for Medicare at any age
+If you’re eligible for Medicare, you must have Medicare Part A and Part B in order to get or keep CHAMPVA benefits. A Medicare Advantage plan (also called Part C) also meets this requirement.
+Learn more about Medicare and CHAMPVA
+Primary family caregivers of Veterans with disabilities
+You may qualify for CHAMPVA through the Program of Comprehensive Assistance for Family Caregivers if you meet both of these requirements:
+You’re the primary family caregiver for a Veteran with disabilities,
+and
+You don’t have other health insurance
+To find out if you qualify for CHAMPVA, you’ll need to apply for the Program of Comprehensive Assistance for Family Caregivers. If we determine that you qualify for CHAMPVA, we’ll enroll you automatically. You don’t need to do anything else to get CHAMPVA benefits.
+Find out if you qualify for caregiver assistance and how to apply
+Benefits you can get through CHAMPVA
+CHAMPVA is a cost-sharing program. When you enroll in CHAMPVA, we share the cost of certain healthcare services and supplies with you.
+Learn more about care through the CHAMPVA program
+The CHAMPVA Guidebook has more information on the types of services CHAMPVA covers.
+How to apply for benefits
+You can apply online, by mail, or by fax. Make sure to submit the required supporting documents with your application.
+Find out what supporting documents you need
+Option 1: Online
+You can apply online now.
+Option 2: By mail
+You’ll need to fill out an Application for CHAMPVA Benefits (VA Form 10-10d).
+Get VA Form 10-10d to download
+Mail your completed application and supporting documents to this address:
+VHA Office of Community Care
+CHAMPVA Eligibility
+PO Box 137
+Spring City, PA 19475
+Option 3: By fax
+You’ll need to fill out an Application for CHAMPVA Benefits (VA Form 10-10d).
+Get VA Form 10-10d to download
+Fax your completed application and supporting documents to
+.
+Supporting documents for your application
+To find the documents you need to submit, select each description that applies to you.
+If you have other health insurance (including Medicare)
+You’ll need to submit these documents:
+A copy of the front and back of your health insurance card or Medicare card,
+or
+Proof of Medicare ineligibility (if you’re age 65 or older and haven’t enrolled in Medicare)
+Note:
+If you have Medicare Part D for prescription coverage, you’ll also need to submit a copy of the front and back of your Medicare Part D card.
+How to submit your supporting documents
+You can submit your documents in either of these 2 ways:
+If you apply online for CHAMPVA benefits
+,
+you can submit your documents as part of the online application.
+If you apply by mail
+,
+you can download a PDF of VA Form 10-7959c. Then send your completed, signed form and copies of your cards, along with your application, to the address listed on the PDF.
+Get VA Form 10-7959c to download
+If you’re age 65 or older and you don’t qualify for Medicare
+You’ll need to submit a document called a “notice of disallowance” from the Social Security Administration. This document confirms that you don’t qualify for Medicare benefits under anyone’s Social Security number.
+If you’re the spouse or surviving spouse of a Veteran
+To help us process your application faster, submit a copy of 1 of these optional supporting documents:
+Marriage certificate,
+or
+Certificate of civil union,
+or
+Common-law marriage affidavit
+If you’re a surviving spouse who remarried before age 55 and your remarriage has ended
+, submit a copy of one of these optional supporting documents:
+Divorce decree,
+or
+Annulment decree,
+or
+Death certificate
+If you’re a dependent child or applying for a dependent child
+To help us process your application faster, submit a copy of the child’s birth certificate. You may need to submit additional supporting documents in certain cases.
+If the child is adopted
+, you’ll need to submit a copy of the adoption papers.
+If the child is the Veteran sponsor’s stepchild
+, you’ll need to submit proof of the marriage between the Veteran sponsor and the child’s other parent.
+If the child is between ages 18 to 23 and enrolled in school
+, you’ll need to submit a school certification letter as proof of enrollment. And you’ll need to recertify once a year.
+Learn how to submit a school certification letter
+If the child became permanently unable to support themselves before age 18
+, you can submit a disability rating letter for the child (sometimes called a “helpless child” rating) to help us process your application faster. Contact your nearest VA regional office and ask how to get this rating letter.
+Find a VA regional office near you
+After you apply
+If you need to add or update your information
+You can do that after you apply for CHAMPVA benefits. This can be information we requested. Or any updates to your personal information, health insurance, or school status.
+Find out what you can do after you apply
+If we approve your application
+We’ll mail you a welcome letter and a CHAMPVA ID card. You can read about the healthcare services you can get in the CHAMPVA Guidebook online. You can also request a physical copy of the guidebook by calling
+(TTY: 711). We’re here Monday through Friday, 8:00 a.m. to 7:30 p.m. ET.
+Or you can download our CHAMPVA mobile app to access the guidebook from your phone.
+Get the CHAMPVA mobile app
+How to update your other health insurance information after enrollment
+If you’ve already received the CHAMPVA benefits enrollment packet, you can update your other health insurance information.
+You’ll need to submit these 2 supporting documents:
+A completed CHAMPVA-Other Health Insurance Certification (VA Form 10-7959c)
+A copy of the front and back of your health insurance card or Medicare card
+Note:
+If you have Medicare Part D for prescription coverage, you’ll also need to submit a copy of the front and back of your Medicare Part D card.
+How to submit your supporting documents
+You can submit your documents in either of these 2 ways:
+Online:
+You can fill out VA Form 10-7959c and upload copies of your cards online.
+By mail:
+You can download a PDF of VA Form 10-7959c. Then send your completed, signed form and copies of your cards to the address listed on the PDF.
+Get VA Form 10-7959c to download
+How to file your CHAMPVA claim
+If you’re already enrolled in CHAMPVA, you may need to file a claim for benefits if your provider doesn’t file it for you.
+Learn more about filing a CHAMPVA claim
+How to contact us if you have more questions
+Call us at
+(TTY: 711). We’re here Monday through Friday, 8:00 a.m. to 7:30 p.m. ET.
+You can send any written communication to this address:
+CHAMPVA
+PO Box 500
+Spring City, PA 19475
+You can also contact us online through Ask VA.
+Contact us online through Ask VA
+Last updated:
+August 7, 2026

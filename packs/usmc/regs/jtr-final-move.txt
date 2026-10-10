@@ -1,0 +1,291 @@
+SOURCE: https://media.defense.gov/2022/Jan/04/2002917147/-1/-1/0/JTR.PDF | RETRIEVED: 2026-10-09
+EDITION: Cover letter OCTOBER 1, 2026; current PDF linked by https://www.travel.dod.mil/Policy-Regulations/Joint-Travel-Regulations/
+EXTRACTION: Public official PDF retrieved through Firecrawl (HTTP 200, 571 pages). Complete paragraphs 052012 and 052013; Markdown emphasis removed and long dashes changed to short hyphens. Direct GET returned 403.
+
+052012. HHG Transportation Due to Separation from the Service or Relief from Active Duty
+
+A. HHG Transportation and NTS-General
+
+1.  A Service member on active duty who is separated from the Service or relieved from 
+active duty under par. 051002, is authorized HHG transportation, limited to the authorized PCS weight 
+allowance, to the HOR or PLEAD, whichever the Service member selects.
+
+a.  HHG transportation is authorized from the last or any previous PDS, a designated 
+place, or an authorized storage location.  The Service member may transport the HHG between any 
+locations other than those authorized.  Any excess costs are the Service member’s financial responsibility.
+
+b.  If the Service member transports his or her HHG between locations other than those 
+authorized, the Transportation Officer or Finance Office computes the excess costs based on either the 
+cost that the Government would have incurred for transporting the Service member’s maximum PCS 
+HHG weight allowance in one lot from the last PDS or the cost of transporting the HHG from its actual 
+location, whichever would result in a lower cost to the Government.
+
+5C-52
+
+---
+
+2.  A Service member who is authorized HHG transportation under par. 051002 is authorized 
+NTS.  The authority begins on the date the order is issued and terminates on the end of the 180th day from 
+the active-duty termination date.
+
+3.  SIT of the HHG transported from NTS under par. 051002 is authorized only when 
+necessary due to conditions beyond the Service member’s control that arise after HHG transportation 
+from NTS and the SIT is authorized or approved according to Service regulations.  Any HHG not placed 
+in NTS may be placed in SIT under section 0518-A in connection with transportation under par. 051002.
+
+B. HHG Transportation and NTS-Other Circumstances
+
+1.  Table 5-51 specifies circumstances affecting the allowance for separation from the Service 
+and release from active duty and the associated allowances.
+
+Table 5-51.  Separation or Relief from Active Duty under Certain Circumstances
+
+| If... 1 | If... a Service member is separated or relieved from active duty to continue on active duty in a Uniformed Service, | Then... HHG transportation or NTS is authorized only if the Service member is transferred on a PCS order in connection with his or her continuance or re-entry into a Service. |
+| --- | --- | --- |
+| 2 | a Service member is separated or relieved from active duty because his or her enlistment or term of service expires and, on the following day, re-enters the Service at the location where he or she was separated or relieved with no change of PDS, | neither HHG transportation nor NTS is authorized. |
+| 3 | a Service member serving in the CONUS has no dependents and is separated from the Service under other than honorable conditions, | neither HHG transportation nor NTS is authorized. |
+| 4 | an RC member is ordered to: a. Initial active duty for training for 6 or fewer months, b. Active duty, including active duty for training, for less than 20 weeks, c. Active duty for training for 20 or more weeks when the active duty is performed at more than one location, but less than 20 weeks at any location, | HHG transportation, including SIT for 30 or fewer days, is authorized upon relief from such duty. The weight allowance authorized is the TDY HHG weight allowance, not the PCS weight allowance. HHG transportation is authorized from the last duty location or place where the HHG was last transported at Government expense to the HOR or PLEAD or active duty for training location. NTS is not authorized. |
+| 5 | a Service member is separated to pursue an undergraduate degree through the ROTC scholarship program, | HHG transportation to that college, the HOR, or PLEAD, as the Service member chooses, is authorized. Transportation is authorized from the last or any previous PDS, a designated place, or an authorized storage location. If the Service member chooses HHG transportation between other places, he or she is financially responsible for all costs in excess of those that would have been incurred had the HHG been transported between authorized locations. Storage is authorized in section 0518. |
+
+$$
+\mathbf{I f...}
+$$
+
+5C-53
+
+---
+
+| If... 6 | If... a Service member is separating from the Service or is being released from active duty and: a. is authorized HHG transportation, b. is required by appropriate authority to vacate Government quarters, Government-controlled quarters, or privatized housing before actual separation or release from active duty, | Then... a short-distance move of HHG up to the Service member’s authorized PCS weight limit is authorized from the vacated quarters or privatized housing to a local temporary residence in the vacated quarters or privatized housing vicinity. |
+| --- | --- | --- |
+| 7 | a Service member actually separates or is released from active duty after moving from vacated quarters or privatized housing to a local, temporary residence, under the circumstances in item 6 of this table, | HHG transportation within the time limits and within the Service member’s weight allowance is authorized from the local temporary residence to the Service member’s HOR or PLEAD, whichever the Service member selects. |
+
+2.  A Service member awaiting the results of physical disability proceedings is authorized 
+HHG transportation to the home or specific location where he or she is awaiting those results.  If 
+separated or relieved from active duty, the Service member is authorized HHG transportation to an 
+authorized point.  The cost of HHG transportation is limited to the cost of transporting the HHG from the 
+Service member’s PDS when he or she received the order to proceed in an awaiting-orders status to the 
+point authorized due to separation or relief from active duty, less any amount previously paid for HHG 
+transportation to the point where he or she awaited the results.  To be authorized HHG transportation, the 
+Service member must:
+
+board.
+
+a.  be found unfit to perform the duties of his or her pay grade by a physical evaluation
+
+b.  not be authorized an HOS move under par. 051003.
+
+c.  have been ordered home or to a specific location to await the results of the disability 
+proceedings for the Government’s convenience.
+
+d.  sign a written release agreeing not to contest the initial physical evaluation board
+
+results.
+
+C.  Time Limit.  Authority for HHG transportation is limited to 180 days.  Such authority ends on 
+the 181st day following separation from the Service or relief from active duty, unless a written request for 
+HHG transportation is submitted to a Transportation Officer or designated representative before the end 
+of the 180th day.
+
+1.  When an HHG transportation application is made within 180 days, HHG must be turned 
+over for transportation as soon as practicable after the submission.  The Transportation Officer or 
+designated representative determines the reasonableness on a case-by-case basis.
+
+2.  A time-limit extension for HHG transportation does not extend the Government’s 
+obligation for storage costs for a period greater than what was authorized or approved under par. 051002
+for NTS or section 0518 for SIT.  Following NTS expiration, the HHG must be transported as soon as 
+possible to the final destination.
+
+3.  In hardship cases, a time-limit extension may be authorized or approved for a specific
+
+5C-54 period of time through the Secretarial Process.
+
+D.  Service Member Recalled to Active Duty after Separation from the Service or Relief from 
+Active Duty.  A Service member who is recalled to active duty after being separated from the Service or 
+relieved from active duty, and who was previously authorized HHG transportation and NTS, may be 
+authorized either HHG transportation or NTS under the recall order.
+
+1.  If the Service member has his or her HHG in NTS when recalled to active duty, then the 
+HHG is authorized to remain in NTS if the Service member is otherwise authorized NTS.  The 
+authorization is valid from the active-duty recall date until the date he or she is again separated from the 
+Service or relieved from active duty.
+
+a.  If the Service member is ordered on a TDY due to a recall, then continued storage may 
+be authorized only if he or she qualifies for special storage under Chapter 2.
+
+b.  If the Service member is ordered on a PCS due to the recall, then continued NTS 
+under the PCS order may be authorized.
+
+2.  If the Service member had HHG in NTS when recalled to active duty, and he or she is 
+again separated from the Service or relieved from active duty under honorable conditions, then the 
+Service member is authorized NTS under par. 051002 and HHG transportation to the HOR or PLEAD, 
+whichever location the Service member selects.  The HHG must be turned over to a carrier for 
+transportation within 180 days after the date the Service member is separated or released from active duty 
+following a recall.
+
+052013. HHG Transportation in Connection with Retirement, Placement on the TDRL, Discharge with Severance or Separation Pay, or Involuntary Release from Active Duty with Readjustment or Separation Pay
+
+A. HHG Transportation and Storage-General
+
+1.  A Service member on active duty is authorized HHG transportation from the last or any 
+previous PDS; from a designated place in the CONUS, from a designated place in a non-foreign location 
+OCONUS, or from anywhere the Service member selects, subject to par. 051306; from storage; or any 
+combination of these locations to the Service member’s HOS when the Service member is:
+
+a.  Retired for physical disability or placed on the TDRL, regardless of length of service.
+
+b.  Retired with pay for any other reason, including transfer to the Fleet Reserve or Fleet 
+Marine Corps Reserve. The retirement must occur immediately following 8 years or more of continuous 
+active duty with no single break in service of 91 or more days.
+
+c.  Separated with severance or separation pay immediately following 8 years or more of
+continuous active duty with no single break in service of 91 or more days.
+
+d.  Involuntarily released from active duty with readjustment or separation pay 
+immediately following 8 years or more of continuous active duty with no single break in service of 91 or 
+more days.
+
+2.  HHG transportation is authorized to a place other than the Service member’s HOS, or for a split shipment that sends part of the HHG to the HOS and part to some other place, provided the Service 
+member bears all costs in excess of transportation of his or her maximum PCS HHG weight allowance in 
+one lot to the HOS, HOR, or PLEAD, whichever provides the greatest cost savings to the Government.
+
+3.  Transportation to the Service member’s HOR or PLEAD under par. 052012, but not to a 
+HOS, is authorized when a Service member:
+
+a.  Is retired without pay.
+
+b.  Has less than 8 years of continuous active duty immediately preceding retirement for 
+any reason other than physical disability.
+
+c.  Has less than 8 years of continuous active duty immediately preceding discharge with 
+severance or separation pay, or is involuntarily released to inactive duty with readjustment or separation 
+pay.
+
+Table 5-52.  HHG Storage (Retirement, TDRL, Discharge with Severance or Separation Pay, or 
+Involuntary Release from Active Duty with Readjustment or Separation Pay)
+
+| Allowance |  | Authorization | Limitation |
+| --- | --- | --- | --- |
+| 1 | HHG to NTS | Service member or dependent is authorized HHG transportation under either par. 051003 or Table 5-33. | The authority begins on the date the order is issued and ends 1 year from the active-duty termination date, unless otherwise indicated in this paragraph. A Service member undergoing hospitalization or medical treatment on the date of active-duty termination, or for any period of time during the 1-year period following such date is authorized NTS in Table 5-33. |
+| 2 | HHG from NTS to SIT* | Service member or dependent is authorized HHG transportation under either par. 051003 or Table 5-33. | Only when necessary due to conditions beyond the Service member's control that arise after transportation from NTS, and the SIT is authorized or approved according to Service regulations. |
+
+*Any portion of a Service member’s HHG not placed in NTS may be placed in SIT as part of the HHG 
+transportation under the authorization.
+
+B.  Time Limits.  HHG must be turned over for transportation within 3 years following active 
+duty termination, except as in Table 5-33.  A Service member is eligible for the 3 year time limitation if 
+the active duty termination effective date is on or after June 24, 2022.  The 3 year time limitation does not 
+apply retroactively to a HHG shipment authorized for a Service member with an effective active duty 
+termination date before the effective date.  Any further extensions must be granted on an annual basis.
+
+Table 5-53.  Extensions of HHG Shipping Time Limits
+
+| If a Service member... |  | Then HHG transportation... |
+| --- | --- | --- |
+| 1 | authorized HHG transportation to an HOS, is confined in or undergoing treatment at a hospital on the active-duty termination date, | and NTS are authorized, but authorization ends 1 year after either the date of discharge from the hospital or the termination of the medical treatment, whichever is later. This 1-year period may be extended through the Secretarial Process. |
+
+5C-56
+
+---
+
+| If a Service member... 2 | If a Service member... authorized HHG transportation to a HOS, is confined in or undergoing treatment at a hospital for any period of time during the 1-year period following active-duty termination, | Then HHG transportation... and NTS are authorized until 1 year after the active-duty termination date plus a period equal to the Service member's hospitalization or treatment period. The time period for HHG transportation may be extended through the Secretarial Process. The NTS time period cannot be extended. Any NTS in excess of this total time is the Service member's responsibility. |
+| --- | --- | --- |
+| 3 | authorized HHG transportation under par. 051003-A and par. 051003-B is undergoing education or training to qualify for transition into civilian employment on the active-duty termination date, | is authorized until 1 year after completing the education or training, or 2 years after the active duty termination date, whichever is earlier. This time period may be extended through the Secretarial Process. There is no authority to extend NTS beyond the 1 year active-duty termination. |
+| 4 | begins education or training to qualify for transition into civilian employment during the 1-year period following the active-duty service termination date, or during a longer period authorized due to hospitalization or medical treatment, | is authorized until 1 year after completing the education or training, or 2 years after the active duty termination date, whichever is earlier. This time period may be extended through the Secretarial Process. There is no authority to extend NTS beyond the 1 year active-duty termination. |
+
+C. Other Deserving Cases
+
+1. Time-limit extensions may be authorized or approved through the Secretarial Process
+
+when:
+
+a.  An unexpected event beyond the Service member’s control occurs that prevents him 
+or her from moving to the HOS within the specified time limit.
+
+b.  The extension is in the Service’s best interest or to the Service member’s benefit, and 
+it is not more costly or adverse to the Service.  This includes cases where the 1-year time limit has already 
+been extended due to hospitalization, medical treatment, education, or training.
+
+2.  Time-limit extensions may be authorized or approved only for the specific period of time 
+the Service member anticipates is needed to complete the move.  If, at the expiration of this extension 
+period, additional time is required, the Service member may request an additional extension through the 
+Secretarial Process, explaining the reasons for the extension.  An additional authorized period for a 
+specific time may then be authorized or approved through the Secretarial Process.  Time-limit extensions 
+are not authorized for any reason for more than 6 years from the date of separation, release from active 
+duty, or retirement.  Also see par. 051003-I for restrictions on time-limit extensions.
+
+3.  Delays in HHG transportation under this subparagraph must be due to the Service 
+member’s separation from the Service.
+
+4.  Extensions for HHG transportation do not change the Government’s obligation for storage 
+costs for longer than a 1-year period from the active duty termination date, except when a longer period is 
+authorized for hospitalization or medical treatment.
+
+5C-57
+
+---
+
+D.  Service Member Required to Vacate Government or Government-Controlled Quarters or 
+Privatized Housing before Selecting a Home.  When a proper authority requires a Service member to 
+vacate Government or Government-controlled quarters, or privatized housing, before choosing an HOS, 
+the Service member is authorized HHG transportation for a short-distance move from the vacated quarters 
+or housing to a local temporary residence in the vacated housing vicinity.  The Service member’s PCS 
+weight allowance applies for this short-distance move.  HHG transportation is authorized within the 
+specified time limits and for the Service member’s PCS weight allowance from the local, temporary 
+residence to the HOS.
+
+E.  Recall to Active Duty.  When a Service member is eligible to select a home under par. 
+051003, and is recalled to active duty, certain HHG transportation allowances are authorized.  Table 5-54
+identifies the situations and allowances when such a recall occurs.
+
+Table 5-54.  Recall to Active Duty
+
+| If a Service member is recalled to active duty... 1 | If a Service member is recalled to active duty... before selecting a home and has HHG in NTS under Table 5-52, | Then... NTS may continue from the date the Service member is recalled to active duty until he or she reverts to a retired status, provided he or she is otherwise authorized NTS storage. |
+| --- | --- | --- |
+| 2 | before selecting a home and ordered on a TDY due to the recall, | continued NTS storage may be provided only if the Service member qualifies for special storage under par. 032903 and section 0205. |
+| 3 | before selecting a home and ordered on a PCS due to the recall, | NTS may continue if authorized on the PCS order. |
+| 4 | before selecting a home and had his or her HHG in NTS at the time of recall, | when the Service member reverts to a retired status under honorable conditions, NTS and HHG transportation to an HOS are authorized. The HHG must be turned over to a carrier for transportation within 1 year after the date the Service member is released from active duty following the recall and reversion to the retired status. |
+| 5 | after selecting and traveling to an HOS, | HHG transportation is authorized to the previous HOS or PLEAD, whichever the Service member chooses for travel allowances, upon termination of active duty under honorable conditions. |
+
+F.  Service Member on the TDRL Who Is Discharged or Retired.  When a Service member on the 
+TDRL is discharged with severance pay or retired for any reason, including transfer to the Fleet Reserve 
+or Fleet Marine Corps Reserve, HHG transportation is not authorized.  However, the Service member 
+may be eligible for HHG transportation to the HOS, storage, or having his or her time-limit extensions 
+granted due to hospitalization, medical treatment, education, training, or other deserving cases in this 
+section.
+
+G.  Service Member Ordered Home to Await Disability Retirement.  A Service member is 
+authorized HHG transportation when a physical evaluation board finds that he or she is unfit to perform 
+the duties of his or her pay grade and the Service member is ordered home or to a specific location for the 
+Government’s convenience to await another order in connection with disability retirement.  HHG 
+transportation is authorized to the home or a specific location.  HHG transported under this paragraph 
+may be re-transported when a retirement or other order is finally issued.  However, the maximum HHG
+
+5C-58 authorization is for the distance from the Service member’s PDS at the time he or she received the order 
+to proceed in an awaiting-orders status, to the point where the Service member is authorized due to 
+retirement or release from active duty, less any amount previously paid for transportation of the HHG to 
+the waiting point.
+
+H.  Service Member Dies after Retirement or Release from Active Duty.  If a Service member 
+authorized HHG transportation to an HOS under par. 051003-A and par. 051003-B dies after retirement 
+or release from active duty, then certain HHG transportation allowances are authorized.  Table 5-55
+specifies the conditions and allowances associated with this event.  The time limits in par. 051003-I apply 
+to HHG transportation under this paragraph.
+
+Table 5-55.  HHG Transportation when a Service Member
+
+Dies after Retirement or Release from Active Duty
+
+| If a Service member dies... 1 | If a Service member dies... after choosing an HOS in par. 051003 but before transporting HHG, | Then... the HHG may be transported, at a dependent’s request, to the Service member’s HOS, other dependent-selected place, or partially to each location. The dependent is financially responsible for all costs in excess of the transportation cost in one lot to the Service member’s chosen HOS. If there are no surviving dependents, then the HHG may be transported to the home of the person legally authorized to receive them. That person is financially responsible for all costs in excess of the transportation of the Service member’s maximum PCS HHG weight allowance to the Service member’s chosen HOS. |
+| --- | --- | --- |
+| 2 | after choosing an HOS and traveling to that HOS but before HHG transportation, | the HHG may be transported, at a dependent’s request, to the Service member’s HOS, other dependent-selected place, or partially to each location. The dependent is financially responsible for all costs in excess of the transportation cost in one lot to the Service member’s chosen HOS. If there are no surviving dependents, then the HHG may be transported to the home of the person legally authorized to receive them. That person is financially responsible for all costs in excess of the transportation of the Service member’s maximum PCS HHG weight allowance to the Service member’s chosen HOS. |
+| 3 | after choosing a home but has not traveled to the HOS, has not executed any travel allowance associated with the HOS, or transported his or her HHG, | the HHG may be transported at Government expense, at a dependent’s request, to the Service member’s HOS or the dependent-selected home that would have been authorized under par. 051003-B or partially to each location. The dependent is financially responsible for all costs in excess of the transportation of the Service member’s maximum PCS HHG weight allowance in one lot to the dependent-selected home. If there are no surviving dependents, then the HHG may be transported to the home of the person legally authorized to receive them. |
+
+5C-59
+
+---
+
+| If a Service member dies... |  | Then... |
+| --- | --- | --- |
+| 4 | choosing an HOS under par. 051003, | the HHG may be transported at Government expense, at a dependent’s request, to the Service member’s HOS or the dependent-selected home that would have been authorized under par. 051003-B or partially to each location. The dependent is financially responsible for all cost in excess of the transportation of the Service member’s maximum PCS HHG weight allowance in one lot to the dependent-selected home. If there are no surviving dependents, then the HHG may be transported to the home of the person legally authorized to receive them. |
+
+

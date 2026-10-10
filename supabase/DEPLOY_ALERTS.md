@@ -1,136 +1,92 @@
-# Deploy correction alerts
+# Deploy and operate email functions
 
-Supervisor only. This build has not applied SQL, deployed the function or site, or sent email. Run from the repository root. Do not write an `.env` file or print credentials.
+Reader: The supervisor or an authorized operator. Apply the reviewed schema, deploy the three functions, and verify behavior before inviting users. Every manual send, including a recovery, needs the owner's OK. This runbook and [alerts/README.md](functions/alerts/README.md) are the canonical operator instructions for corrections, the Monthly, and lesson launches.
 
-The founder-authored migration is `supabase/migrations/20261009210000_alert_signups.sql`. Leave it unchanged. The function also uses the existing service-only `ingest_rate` table from `supabase/schema.sql`; it must already exist. `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are supplied by the edge runtime.
+## Prerequisites and SQL
 
-The only new secret the owner sets is `RESEND_API_KEY`. Use a Resend key with sending access only and restrict it to the verified `warfarecommand.com` domain. The sender is `Muster Out <updates@warfarecommand.com>`. Confirm that this sender is permitted before opening signups. Do not create or sync a Resend contact list.
+Run from the repository root. Use private credential tooling to provide process secrets. Do not read or write `.env` files or print credentials. The edge runtime supplies `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`. Keep the existing `IP_HASH_SALT` or `INGEST_SALT` without rotation. Keep `RESEND_API_KEY` restricted to sending on the verified `warfarecommand.com` domain. Set a private `DIGEST_OPS_KEY` for detailed digest dry reports; when unset, dry requests return only `{"ok":true}`.
 
-The alerts function uses existing `IP_HASH_SALT`, with existing `INGEST_SALT` as a fallback because ingest reads that name. The supervisor must verify that one is present. Alerts fail closed if neither exists; there is no public default salt.
+Match the live schema to `supabase/schema.sql` and these founder-authored migrations before applying missing schema:
 
-Load the existing management access token into the process environment as `SUPABASE_ACCESS_TOKEN` through the supervisor's credential tooling. Have the owner supply `RESEND_API_KEY` in the process environment through the same secure method. The following commands do not read or write any `.env` file.
+- `supabase/migrations/20261009210000_alert_signups.sql`
+- `supabase/migrations/20261009230000_platform_telemetry.sql`
+- `supabase/migrations/20261010010000_email_streams.sql`
 
-## 1. Check prerequisites and set the one new secret
+Do not overwrite an incompatible table or reset existing preferences. Verify all four stream columns, the source-default trigger, `email_delivery_receipts`, and the service-only `email_delivery_gate` RPC. Preserve the legacy consent backfill. Application tables must have RLS with no public data policies or client grants.
 
-This lists secret names only internally and checks the existing rate table. It does not print values. The POST sets `RESEND_API_KEY` through the [management secrets endpoint](https://supabase.com/docs/reference/api/v1-create-secrets).
+Apply the reviewed W1 SQL before deploying ingest:
 
-```sh
-python3 - <<'PY'
-import json, os, urllib.request
-base = 'https://api.supabase.com/v1/projects/vfozrzohrdrbohjqkghk'
-headers = {'Authorization': 'Bearer ' + os.environ['SUPABASE_ACCESS_TOKEN'], 'Content-Type': 'application/json'}
-def call(path, method='GET', body=None):
-    payload = None if body is None else json.dumps(body).encode()
-    request = urllib.request.Request(base + path, data=payload, headers=headers, method=method)
-    with urllib.request.urlopen(request, timeout=60) as response:
-        return json.load(response)
-names = {entry['name'] for entry in call('/secrets')}
-assert names & {'IP_HASH_SALT', 'INGEST_SALT'}, 'Existing IP salt is missing; stop'
-call('/database/query', 'POST', {'query': 'select ip_hash, minute, n from public.ingest_rate limit 0;', 'read_only': True})
-key = os.environ['RESEND_API_KEY']
-assert key, 'RESEND_API_KEY is empty'
-call('/secrets', 'POST', [{'name': 'RESEND_API_KEY', 'value': key}])
-print('Prerequisites checked; Resend secret set')
-PY
-```
+1. `_cook/audit/fixes/A-02.sql` adds the atomic `ingest_rate_hit` RPC. Verify the existing `(ip_hash, minute)` primary key, pinned search path, invoker security, and EXECUTE for service_role only.
+2. `_cook/audit/fixes/A-09.sql` locks the retired lesson table and drops it and `lesson_summary` only when empty. A notice means data was preserved for the supervisor's decision.
+3. Apply only the function section of `_cook/audit/fixes/A-16.sql`, through `commit`, first. Review `select * from public.cleanup_retained_data(true);` before applying the schedule section. Dry mode returns six table counts and deletes nothing.
 
-## 2. Apply the founder's migration through the SQL endpoint
+Pending signups expire seven days after `last_sent_at`. When no send timestamp exists, cleanup uses `created_at`. Confirmation links older than seven days cannot confirm or send a welcome. Confirmed preference and unsubscribe links have no time expiry; the existing recent-hash limit still applies.
 
-This sends the exact local migration to the [management SQL endpoint](https://supabase.com/docs/reference/api/v1-run-a-query). The verification prints only schema properties. Stop if an existing table has a different shape; this migration's `if not exists` does not repair an incompatible table.
+Cleanup removes ordinary ingest minute counters after two days. Alerts rate slots have a fixed 2000 timestamp, so they are retained until two days after the expiry minute stored in `n`. This preserves the ten-minute throttle and the rolling address limits of three confirmations per day and five per week, including after signup deletion. Cleanup removes setup intents, install registrations, and suggestions after 24 months, and email delivery receipts after 13 months. Campaign duplicate and welcome suppression receipts are bounded by that retention window.
+
+## Templates, deployment, and verification
+
+In Resend's domain settings, verify open and click tracking are disabled. Compare the six approved templates, variables, sender, subject, and reply-to with the reviewed email library. Publish only `confirm-subscription`, `welcome`, `correction-alert`, `monthly`, `weekly-roundup`, and `lesson-launch`. Do not sync contacts or send the retired aliases. Template publication does not send mail.
+
+Deploy with JWT verification disabled:
 
 ```sh
-python3 - <<'PY'
-import json, os, pathlib, urllib.request
-url = 'https://api.supabase.com/v1/projects/vfozrzohrdrbohjqkghk/database/query'
-headers = {'Authorization': 'Bearer ' + os.environ['SUPABASE_ACCESS_TOKEN'], 'Content-Type': 'application/json'}
-def sql(query, read_only):
-    request = urllib.request.Request(url, data=json.dumps({'query': query, 'read_only': read_only}).encode(), headers=headers, method='POST')
-    with urllib.request.urlopen(request, timeout=60) as response:
-        return json.load(response)
-sql(pathlib.Path('supabase/migrations/20261009210000_alert_signups.sql').read_text(), False)
-columns = sql("select column_name, data_type from information_schema.columns where table_schema = 'public' and table_name = 'alert_signups' order by ordinal_position;", True)
-expected = ['id', 'email', 'status', 'confirm_hash', 'unsubscribe_hashes', 'ip_hash', 'created_at', 'confirmed_at', 'last_sent_at']
-assert [row['column_name'] for row in columns] == expected, 'Unexpected alert_signups schema'
-assert next(row['data_type'] for row in columns if row['column_name'] == 'unsubscribe_hashes') == 'ARRAY'
-rls = sql("select relrowsecurity from pg_class where oid = 'public.alert_signups'::regclass;", True)
-assert rls[0]['relrowsecurity'] is True
-policies = sql("select count(*)::int as n from pg_policies where schemaname = 'public' and tablename = 'alert_signups';", True)
-assert policies[0]['n'] == 0
-print('Migration applied; expected columns, RLS, and no policies verified')
-PY
+supabase functions deploy alerts --project-ref vfozrzohrdrbohjqkghk --no-verify-jwt
+supabase functions deploy digest --project-ref vfozrzohrdrbohjqkghk --no-verify-jwt
+supabase functions deploy ingest --project-ref vfozrzohrdrbohjqkghk --no-verify-jwt
 ```
 
-## 3. Deploy alerts through the multipart endpoint
+Read back ACTIVE status and `verify_jwt=false` for each function. Verify website preflights for `https://warfarecommand.com`, `https://www.warfarecommand.com`, and `https://musterout.warfarecommand.com`. Publish the reviewed static pages through the supervisor's site procedure and verify `/alerts/confirmed/`, `/alerts/expired/`, `/alerts/unsubscribed/`, and `/alerts/preferences/`.
 
-The [management deploy endpoint](https://supabase.com/docs/reference/api/v1-deploy-a-function) takes a `file` part and JSON `metadata`. Upload only `index.ts`; `send_alert.ts` runs locally and tests are not deployed. The metadata below sets `verify_jwt` to false. The readback must show the same value and an active function.
+Public digest dry requests must return exactly `{"ok":true}` with no counts. Supply `x-ops-key` from private process tooling to obtain a detailed dry report. The header must match `DIGEST_OPS_KEY` exactly. An incorrect key or unset secret returns the same public result. Do not print or record the header value. Dry mode must create no receipts, token hashes, or mail.
+
+Use an explicitly owner-authorized test address for live mail verification. Check source-specific confirmation choices, HTML and text content, one welcome, four preferences, weekly-add, body unsubscribe, and provider POST unsubscribe. Repeated signup within ten minutes sends nothing; confirmed signup sends no new confirmation. Verify the daily and weekly confirmation caps with isolated supervisor test data rather than unsolicited inbox traffic. Old confirmation links redirect to `/alerts/expired/` without a welcome. Preference and unsubscribe links remain usable after seven days.
+
+Confirmation fallback is allowed only for an explicit 4xx template rejection naming a missing or unpublished template or invalid variables. Server, quota, and network failures record an `unknown` receipt and send no second email. Review those receipts against provider history before any recovery. [Resend's error reference](https://resend.com/docs/api-reference/errors) describes the HTTP and error-type conventions.
+
+After verification, apply the retention schedule section last and read back the named `musterout-retention-cleanup` job at `17 3 * * *` (03:17 UTC daily). Inspect its first run and returned deletion counts. Preserve the existing `musterout-weekly-digest` job at `0 15 * * 1` (Mondays 15:00 UTC), two hours after Watch. Its pg_net request uses Content-Type and `{}` without an ops header or authorization requirement. Inspect cron and pg_net outcomes plus receipt states; keep failures visible.
+
+## Manual correction, Monthly, or lesson launch
+
+Follow the [manual sender procedure](functions/alerts/README.md). Prepare `reviewed-message.json` with exactly `template`, `campaign`, and `variables`. The accepted templates and variable keys are:
+
+| Template | Required variables |
+| --- | --- |
+| `correction-alert` | `WHAT_CHANGED`, `WHO_IS_AFFECTED`, `WHAT_TO_DO`, `VERSION` |
+| `monthly` | `SHIPPED`, `NEXT`, `AI_MOVE`, `QUESTION` |
+| `lesson-launch` | `LESSON_TITLE`, `LESSON_PROMISE`, `LESSON_URL` |
+
+Use reviewed nonempty copy and an owner-verified HTTPS lesson URL on warfarecommand.com. Skip an empty Monthly; its planned cadence is the first Tuesday. Monthly, weekly, and lessons share one send per UTC ISO week and four per UTC calendar month per address. Corrections are exempt. The sender filters each audience by its confirmed stream preference.
+
+Supply `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`, and either existing salt in the private process environment. Freeze the campaign identifier and copy. Run the dry report:
 
 ```sh
-python3 - <<'PY'
-import json, os, pathlib, urllib.request, uuid
-base = 'https://api.supabase.com/v1/projects/vfozrzohrdrbohjqkghk'
-boundary = 'alerts-' + uuid.uuid4().hex
-metadata = json.dumps({'entrypoint_path': 'index.ts', 'name': 'alerts', 'verify_jwt': False}).encode()
-source = pathlib.Path('supabase/functions/alerts/index.ts').read_bytes()
-body = (
-    ('--' + boundary + '\r\nContent-Disposition: form-data; name="metadata"\r\nContent-Type: application/json\r\n\r\n').encode()
-    + metadata
-    + ('\r\n--' + boundary + '\r\nContent-Disposition: form-data; name="file"; filename="index.ts"\r\nContent-Type: application/typescript\r\n\r\n').encode()
-    + source + ('\r\n--' + boundary + '--\r\n').encode()
-)
-auth = {'Authorization': 'Bearer ' + os.environ['SUPABASE_ACCESS_TOKEN']}
-request = urllib.request.Request(base + '/functions/deploy?slug=alerts', data=body, headers={**auth, 'Content-Type': 'multipart/form-data; boundary=' + boundary}, method='POST')
-with urllib.request.urlopen(request, timeout=120) as response:
-    result = json.load(response)
-assert result['slug'] == 'alerts' and result['verify_jwt'] is False
-with urllib.request.urlopen(urllib.request.Request(base + '/functions/alerts', headers=auth), timeout=60) as response:
-    live = json.load(response)
-assert live['verify_jwt'] is False and live['status'] == 'ACTIVE'
-print('Alerts deployed; active with verify_jwt false')
-PY
+deno run --allow-env=SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY,RESEND_API_KEY,IP_HASH_SALT,INGEST_SALT --allow-net=vfozrzohrdrbohjqkghk.supabase.co,api.resend.com --allow-read=reviewed-message.json supabase/functions/alerts/send_alert.ts reviewed-message.json
 ```
 
-## 4. Publish the site and verify with an address the owner controls
-
-Run `cd docs && python3 _build_pages.py`, then `bash _deploy.sh` using the supervisor's existing site deployment credentials. The allowlist includes the confirmed, unsubscribed, and expired pages.
-
-On the live website, request alerts with an address the owner controls. Verify that the form displays the inbox message, the confirmation email has both text and HTML plus both unsubscribe headers, the confirmation link opens `/alerts/confirmed/`, and using it again opens `/alerts/expired/`. Repeating a signup within ten minutes must send no second email. A confirmed signup must give the same form response and send no confirmation email.
-
-Use the body unsubscribe link and verify the address row is deleted. Repeat the link and verify `/alerts/unsubscribed/` again. Also verify the email provider's one-click unsubscribe, which sends POST to the same token URL with `List-Unsubscribe=One-Click`. This endpoint needs no website Origin header for deletion. Complete this check with a separate owner-controlled signup if the first row has already been deleted.
-
-Before deployment, local mocked tests can run without any runtime secrets or network permission:
+Review `recipients`, `eligible`, `skipped`, and `reasons`; the dry run creates no receipts or links and sends no mail. Obtain the owner's OK for the exact reviewed file and dry report. Every manual send requires this OK. Then run:
 
 ```sh
-deno test supabase/functions/alerts/index_test.ts
+deno run --allow-env=SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY,RESEND_API_KEY,IP_HASH_SALT,INGEST_SALT --allow-net=vfozrzohrdrbohjqkghk.supabase.co,api.resend.com --allow-read=reviewed-message.json supabase/functions/alerts/send_alert.ts reviewed-message.json --send
 ```
 
-## 5. Send an alert by hand
+Review provider history and receipts even if the command fails. This service-only query summarizes receipt states without readable addresses or links:
 
-Use credential tooling to provide the existing `SUPABASE_SERVICE_ROLE_KEY` and sending-only `RESEND_API_KEY` in the local process environment, and set `SUPABASE_URL` to `https://vfozrzohrdrbohjqkghk.supabase.co`. Keep credentials out of the message file.
-
-The local message file's first line is the subject. Add a blank line and a short body. Write each paragraph on one line, with blank lines between paragraphs. Use plain words, short hyphens, no emoji, and no exclamation points. Example file contents:
-
-```text
-Muster Out correction note
-
-Read the correction described in the release notes before using the affected task.
+```sql
+select campaign, state, count(*) as receipts
+from public.email_delivery_receipts
+group by campaign, state
+order by campaign, state;
 ```
 
-This example is a format example; the owner supplies the actual correction and the page to read before sending.
+`accepted` records provider acceptance. Inbox delivery requires separate evidence. A `blocked` result requires receipt investigation before a retry. Recovery requires matching campaign, salted recipient hash, content hash, attempt time, and provider history. Record the evidence privately. Reconcile proven acceptance to `accepted` and do not resend. Retain `unknown` if acceptance remains uncertain. For proven nonacceptance, the supervisor may remove only the reconciled receipt after recording evidence, recheck consent and dry counts, obtain the owner's OK for recovery, and rerun the same frozen file and identifier. Shared caps still apply. Never clear campaign receipts or change the identifier merely to force a retry.
 
-The default dry run performs one count-only HEAD request, prints only the confirmed count, and does no database writes or email sends:
+## Local checks
+
+All HTTP in the suites is mocked. Run each from its function directory:
 
 ```sh
-deno run --allow-env=SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY,RESEND_API_KEY --allow-net=vfozrzohrdrbohjqkghk.supabase.co,api.resend.com --allow-read=message.txt supabase/functions/alerts/send_alert.ts message.txt
+node --experimental-strip-types /Users/joelsartain/dev/musterout/_cook/audit/deno_shim_run.mjs "$PWD/index_test.ts"
 ```
 
-Only the explicit send command writes token hashes and sends mail:
-
-```sh
-deno run --allow-env=SUPABASE_URL,SUPABASE_SERVICE_ROLE_KEY,RESEND_API_KEY --allow-net=vfozrzohrdrbohjqkghk.supabase.co,api.resend.com --allow-read=message.txt supabase/functions/alerts/send_alert.ts message.txt --send
-```
-
-Run one sender at a time. It reads confirmed IDs in pages of 500, rechecks consent, and sends batches of at most 100, with one recipient per message. It generates a fresh 32-byte unsubscribe token for each message, appends only its SHA-256 hash, and keeps the last eight hashes. A recent link remains valid until eight newer tokens replace its hash. Raw tokens exist only in the running process and the delivered email. There is no raw-token file or permanent contact sync.
-
-Hashes are saved before Resend receives the batch, so unsubscribe links work even when delivery succeeds but the response is lost. `last_sent_at` is updated after accepted batch delivery. The script stops on a failed or uncertain batch and does not automatically retry. Review Resend delivery records before another run; a new run has fresh tokens and may duplicate mail already accepted. Deletion between the final consent check and Resend accepting a batch can allow one email already in flight.
-
-The confirmation path reserves `last_sent_at` before sending, so failed attempts also wait ten minutes before another confirmation attempt. Rate receipts live in `ingest_rate`, under `alerts:ip:` and `alerts:email:` prefixes. They use a fixed `minute` anchor of `2000-01-01T00:00:00Z`; `n` is the next eligible Unix minute. Conditional writes protect each of three IP slots and the single email slot across workers. Rounding up can extend either wait by less than a minute. No cleanup process is required for correctness. These receipts do not contain a readable address and remain after signup deletion.
+Run alerts, digest, and ingest after every change. SQL application, live delivery, deployed secrets, tracking settings, and cron execution require supervisor verification.

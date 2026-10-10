@@ -11,6 +11,11 @@ from urllib.parse import urlparse
 PACK = Path(__file__).resolve().parent
 DEFAULT_SEED = PACK.parent.parent / 'board' / 'seed.json'
 REG_FILES = {
+    'MCO 1700.31A': 'regs/mco-1700.31a.txt',
+    'VA dental care eligibility': 'regs/va-dental-care.txt',
+    'VA CHAMPVA benefits': 'regs/va-champva.txt',
+    'VA intent to file guidance': 'regs/va-intent-to-file.txt',
+    'Joint Travel Regulations (1 Oct 2026)': 'regs/jtr-final-move.txt',
     'MCO 1900.16 CH-3 (MARCORSEPMAN)': 'regs/mco-1900.16-ch3.txt',
     'MCO 1050.3J': 'regs/mco-1050.3j.txt',
     'NAVMC 1700.2B': 'regs/navmc-1700.2b.txt',
@@ -20,6 +25,9 @@ REG_FILES = {
     'MARADMIN 280/24': 'regs/maradmin-280-24.txt',
     'MARADMIN 326/23': 'regs/maradmin-326-23.txt',
 }
+DATED_SNAPSHOTS = {'regs/mco-1700.31a.txt', 'regs/va-dental-care.txt',
+                   'regs/va-champva.txt', 'regs/va-intent-to-file.txt',
+                   'regs/jtr-final-move.txt'}
 SUPPLEMENTAL_SOURCES = {
     ('HQMC MMSR-2 enlisted retirement guidance', 'Traditional Retirement'): (
         'regs/mmsr-2-enlisted-retirements.txt',
@@ -97,7 +105,7 @@ def is_web(url):
 
 def seed_pairs(seed):
     pairs = {}
-    for item in seed['items']:
+    for item in seed['items'] + seed.get('claim', {}).get('benefits', {}).get('rows', []):
         for cite in item.get('cite', []):
             key = (cite['ref'], cite['para'])
             variants = pairs.setdefault(key, [])
@@ -214,11 +222,16 @@ def main():
             'advance-notification-of-forthcoming-changes-to-mco-10503j-regulations-for-leave/')
         for path in sorted((PACK / 'regs').glob('*.txt')):
             first = path.read_text().split('\n', 1)[0]
+            # New snapshots name both provenance fields on the first line.
+            source_header = first.split(' | RETRIEVED: ', 1)[0]
             relative = str(path.relative_to(PACK))
+            if relative in DATED_SNAPSHOTS and not re.search(
+                    r' \| RETRIEVED: \d{4}-\d{2}-\d{2}$', first):
+                errors.append(f'Missing retrieval date in source header: {path.name}')
             expected_url = source_urls.get(relative)
-            if expected_url and first != 'SOURCE: ' + expected_url:
+            if expected_url and source_header != 'SOURCE: ' + expected_url:
                 errors.append(f'SOURCE header differs from seed: {path.name}')
-            if not expected_url or first != 'SOURCE: ' + expected_url:
+            if not expected_url or source_header != 'SOURCE: ' + expected_url:
                 errors.append(f'Missing official SOURCE header: {path.name}')
         if errors:
             for error in errors:

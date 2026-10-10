@@ -6,13 +6,8 @@ present for the record to be included on a person's board. An empty list means a
 Flags the setup produces: resign | retire | eas, officer | enlisted, reserve | noreserve,
 sb | nosb, cat1 | cat2 | cat3, and notretire (any path but retire).
 
-Date rules the page understands:
-  {"date": "YYYY-MM-DD"}            fixed date ("SETUP" means the day the board was set up)
-  {"eas": -180}                      EAS plus N days
-  {"easMonths": -6}                  EAS plus N calendar months
-  {"sb": "start" | "end"}            SkillBridge start or end from settings
-  {"item": "<id>", "days": N}        another item's done date (or due date) plus N days
-  add "biz": "prev" to move a weekend date back to Friday
+Date rules follow the board resolver documented in CLAUDE.md. SETUP means the
+day the board was installed. The optional biz="prev" moves weekends to Friday.
 
 Run: python3 build_seed.py  (writes seed.json, verifies every quote against the local regulation
 texts when they are present, and checks every path combination). --no-verify skips the quote check.
@@ -48,6 +43,15 @@ UTRIRET = "https://www.tricare.mil/LifeEvents/Retiring"
 UCHCBP = "https://www.tricare.mil/Plans/SpecialPrograms/CHCBP"
 UMOU = "https://www.skillbridge.mil/static/docs/2026_DoW_SkillBridge_MOU_BLANK.pdf"
 USKB = "https://skillbridge.mil/"
+UTRPA = "https://www.okinawa.usmc-mccs.org/modules/media/?do=inline&id=66b20c97-887b-462b-a8a7-97dcd431a6e3&v=1"
+UCHAMPVA = "https://www.va.gov/family-and-caregiver-benefits/health-and-disability/champva/"
+UITF = "https://www.va.gov/resources/your-intent-to-file-a-va-claim/"
+UJTR = "https://media.defense.gov/2022/Jan/04/2002917147/-1/-1/0/JTR.PDF"
+TRPA = "MCO 1700.31A"
+VDENT = "VA dental care eligibility"
+VCHAMPVA = "VA CHAMPVA benefits"
+VITF = "VA intent to file guidance"
+JTR = "Joint Travel Regulations (1 Oct 2026)"
 
 MCO = "MCO 1900.16 CH-3 (MARCORSEPMAN)"
 LVO = "MCO 1050.3J"
@@ -61,7 +65,7 @@ MMSR = "HQMC MMSR-2 enlisted retirement guidance"
 def c(ref, para, quote, url=None):
     return {"ref": ref, "para": para, "quote": quote, "url": url}
 
-# quotes that come from the local regulation texts (verified below)
+# The builder verifies these quotes against the copied regulation texts.
 Q175_2 = "requests for retirement or resignation will be submitted not more than 18 months and not less than six months prior to the requested retirement or resignation date."
 Q175_3 = "The Director, Manpower Management, may approve a resignation/retirement request for a date other than the date requested based on the needs of the service"
 Q5003_1 = "(Date) I request to resign my commission in the Marine Corps Regular component effective (date) and (do) (do not) desire a Reserve commission. I have been counseled per paragraph 5003 of MCO 1900.16."
@@ -79,9 +83,6 @@ Q252 = "All retirements, except those by reason of physical disability and Reser
 Q1406_1 = "A completed election form (DD Form 2656) must be faxed with included Privacy Act form and mailed to DFAS at least 30 days prior to retirement or transfer to FMCR"
 Q1406_5 = "Elections other than full coverage require spousal concurrence and must be notarized."
 Q1406_6 = "If no election is made prior to the effective date of the retirement, DFAS (by law) will automatically deduct full SBP coverage at the full gross salary rate."
-Q1101_B1 = "This requirement shall be provided when the Marine is within 12 months of EAS or within 24 months of retirement, but no later than 90 days prior to separation/retirement, regardless of whether or not a request for reenlistment has been submitted."
-Q1101_C1 = "all separating or retiring Service members shall attend transition training within 12 months of separation or within 24 months of retirement, but no later than 90 days prior to separation/retirement"
-Q1101_C1B = "It is strongly recommended that Marines attend transition training at least 180 days before separation."
 Q1011_2 = "A Marine should schedule a SHPE medical evaluation not less than six months before the effective date of separation to allow time for necessary medical treatment or disability processing."
 Q1010_2E = "Do not approve leave in excess of the number of days which the Marine can accrue before the end of current contract (ECC). Leave taken beyond that which can be earned is excess leave and results in nonentitlement to pay and allowances."
 Q5004_1B = "Officers without adverse information in any Department of the Navy systems of record are then placed on the non-adverse scroll and routed from HQMC, RA Division via the DC M&RA to the SecDef. The non-adverse transitional scrolling process may require a longer lead time than the minimum length of time required by the resignation process (four months per paragraph 5003 of this Manual)."
@@ -118,7 +119,7 @@ QNAVMC_3C2 = "Complete Developing Your Business Ethics (LLISELF301) MarineNet co
 QNAVMC_7A4 = "Obtain a program acceptance letter that provides program details to include location, associated cost, length of... training, employment outcome, and POC for the SkillBridge partner."
 QNAVMC_11 = "Marines shall return to parent commands if SkillBridge program requirements are less than 20 hours per week or eight hours per day and not be on administrative leave status."
 
-# quotes from web pages read on 08 Oct 2026 (not verifiable locally)
+# These web quotes preserve the 08 Oct 2026 source snapshot.
 QTRI_90 = "You must enroll in a TRICARE plan within 90 days after your retirement."
 QTRI_REENROLL = "If you want to keep TRICARE Prime or TRICARE Select with no break in coverage, you must reenroll within 90 days after your retirement date."
 QTRI_FEDVIP = "You and your family members may qualify to purchase dental coverage through the Federal Employees Dental and Vision Insurance Program."
@@ -165,49 +166,47 @@ item('sep-tell', 'sep', 'Tell your CO your plan and your date', 'Your reporting 
      cite=[],
      verify='CO: how do you want this routed, and who is my point of contact in the unit?',
      basis='target')
-item('sep-ic', 'sep', 'Individualized Initial Counseling (IC)', 'The Hawaii checklist requires IC by 365 days before EAS, while the manual places its pre-separation interview within 12 months of EAS or 24 months of retirement and no later than 90 days before separation or retirement.',
-     how=['Confirm which instructions apply with the installation TRP office and UTC. Complete ROOB and the other IC prework before your actual IC appointment. Complete IC before the separate pre-separation counseling brief.'],
-     owner='TAP counselor',
-     due={'eas': -365},
-     cite=[c('USMC TRP checklist', 'Step One', 'Complete the Individualized Initial Counseling (IC) no later than 365 days prior to EAS date.', 'https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program'),
-           c('MCO 1900.16 CH-3 (MARCORSEPMAN)', '1101.1.b(1)', 'This requirement shall be provided when the Marine is within 12 months of EAS or within 24 months of retirement, but no later than 90 days prior to separation/retirement, regardless of whether or not a request for reenlistment has been submitted.', 'https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf'),
-           c('USMC TRP checklist', 'Step One', 'IC pre-work requirements include: ... Completion of the virtual Reserve Obligations and Opportunities Brief (ROOB)', 'https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program')],
-     verify='Installation TRP office and UTC: confirm applicability, IC prework and the actual IC appointment before pre-separation counseling.',
-     basis='target')
-item('sep-presep', 'sep', 'Pre-separation counseling brief', 'The Hawaii checklist requires the brief by 365 days before EAS after IC, while the manual places its pre-separation interview no later than 90 days before separation or retirement.',
-     owner='TAP counselor',
-     due={'eas': -365},
-     critical=True,
-     cite=[c('USMC TRP checklist', 'Step Two', 'Attend the Pre-Separation Counseling Brief no later than 365 days prior to your EAS date. ... You must complete your IC before attending the Pre-Separation Counseling Brief.', 'https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program'),
-           c('MCO 1900.16 CH-3 (MARCORSEPMAN)', '1101.1.b(1)', 'This requirement shall be provided when the Marine is within 12 months of EAS or within 24 months of retirement, but no later than 90 days prior to separation/retirement, regardless of whether or not a request for reenlistment has been submitted.', 'https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf')],
-     verify='Installation TRP office and UTC: confirm the applicable deadline and schedule the brief after IC and before TRS registration.',
-     basis='target')
-item('sep-trs', 'sep', 'Transition Readiness Seminar', 'The Hawaii checklist requires TRS by 180 days before EAS, while the manual recommends 180 days and prints a 90-day outer limit; NAVMC SkillBridge eligibility requires completed TRS 180 days before separation.',
-     how=['Complete IC and the pre-separation counseling brief before TRS registration. Have the installation TRP office set the applicable date. On a SkillBridge plan, finish TRS before S-PTAD and meet the NAVMC 180-day prerequisite.', 'The date is pending confirmation by the installation TRP office, UTC and SkillBridge coordinator. Give Claude the date the office confirms and ask Claude to record it on this item. Keep the item open until the action is complete.'],
+item('sep-ic', 'sep', 'Individualized Initial Counseling (IC)', 'Complete this mandatory TRP gate no later than 365 days before EAS under MCO 1700.31A. Count calendar days from the confirmed end of active service on va-service-end. Keep the Retired List action date separate. Retiree IC may begin as soon as possible during the 24-month period preceding anticipated retirement. Other Marines may complete IC 18 months before separation or release from active duty.',
+     how=['Have IPAC and the TRP office confirm the EAS used by the order and record it on va-service-end. The rule date stays separate from the appointment.', 'Record the actual appointment as a fixed date on sep-ic-appt and actual completion as doneOn on this gate.', "Complete IC, pre-separation counseling, TRS workshops, Capstone and Commander's Verification in that order. For SkillBridge, complete all transition requirements before participation under NAVMC 1700.2B, enclosure (2), paragraph 7."], owner='TAP counselor',
+     due={'item': 'va-service-end', 'days': -365}, critical=True,
+     cite=[c(TRPA, 'Encl (2), Ch 5 para 3.a', 'Individualized Initial Counseling (IC). Must be completed not later than 365 days prior to EAS date.', UTRPA), c(TRPA, 'Encl (2), Ch 8 para 2', 'IC must be completed, in-person, prior to the Pre-separation Counseling Brief.', UTRPA), c(TRPA, 'Encl (2), Ch 8 para 4.a-b', 'For EAS dates due to retirement, this may begin as soon as possible during the 24-month period preceding an anticipated retirement date but no later than 365 days prior to EAS date. ... For EAS dates other than retirement, Marines may complete the IC 18 months before separation or release from AD but no later than 365 days prior to EAS date.', UTRPA)],
+     verify='Installation TRP office, UTC and IPAC: confirm EAS, sequencing, completion and any short-notice instructions. SkillBridge coordinator and CO: confirm completion before participation.', basis='rule')
+item('sep-ic-appt', 'sep', 'Individualized Initial Counseling (IC): confirmed appointment', 'Record the actual office-confirmed appointment. Keep the separate rule deadline.',
+     how=['Give Claude the confirmed appointment date and ask Claude to record a fixed date here. Keep this event undated until confirmation.'],
+     owner='TAP counselor', due=None, kind='milestone', presence=True,
+     cite=[c(TRPA, 'Encl (2), Ch 5 para 3.a', 'Individualized Initial Counseling (IC). Must be completed not later than 365 days prior to EAS date.', UTRPA)],
+     verify='Installation TRP office and UTC; CO for commander verification: confirm the appointment and completion record.', basis='rule')
+item('sep-presep', 'sep', 'Pre-separation counseling brief', 'Complete this mandatory TRP gate no later than 365 days before EAS under MCO 1700.31A. Count calendar days from the confirmed end of active service on va-service-end. Keep the Retired List action date separate.',
+     how=['Have IPAC and the TRP office confirm the EAS used by the order and record it on va-service-end. The rule date stays separate from the appointment.', 'Record the actual appointment as a fixed date on sep-presep-appt and actual completion as doneOn on this gate.', "Complete IC, pre-separation counseling, TRS workshops, Capstone and Commander's Verification in that order. For SkillBridge, complete all transition requirements before participation under NAVMC 1700.2B, enclosure (2), paragraph 7."], owner='TAP counselor',
+     due={'item': 'va-service-end', 'days': -365}, critical=True,
+     cite=[c(TRPA, 'Encl (2), Ch 5 para 3.b', 'Pre-separation Counseling Brief. Must be completed not later than 365 days prior to EAS date.', UTRPA), c(TRPA, 'Encl (2), Ch 9 para 2', 'The Pre-separation Counseling Brief must be attended after IC completion and prior to attendance to TRS.', UTRPA)],
+     verify='Installation TRP office, UTC and IPAC: confirm EAS, sequencing, completion and any short-notice instructions. SkillBridge coordinator and CO: confirm completion before participation.', basis='rule')
+item('sep-presep-appt', 'sep', 'Pre-separation counseling brief: confirmed appointment', 'Record the actual office-confirmed appointment. Keep the separate rule deadline.',
+     how=['Give Claude the confirmed appointment date and ask Claude to record a fixed date here. Keep this event undated until confirmation.'],
+     owner='TAP counselor', due=None, kind='milestone', presence=True,
+     cite=[c(TRPA, 'Encl (2), Ch 5 para 3.b', 'Pre-separation Counseling Brief. Must be completed not later than 365 days prior to EAS date.', UTRPA)],
+     verify='Installation TRP office and UTC; CO for commander verification: confirm the appointment and completion record.', basis='rule')
+item('sep-trs', 'sep', 'Transition Readiness Seminar workshops', 'Complete this mandatory TRP gate no later than 180 days before EAS under MCO 1700.31A. Count calendar days from the confirmed end of active service on va-service-end. Keep the Retired List action date separate.',
+     how=['Have IPAC and the TRP office confirm the EAS used by the order and record it on va-service-end. The rule date stays separate from the appointment.', 'Record the actual appointment as a fixed date on sep-trs-appt and actual completion as doneOn on this gate.', "Complete IC, pre-separation counseling, TRS workshops, Capstone and Commander's Verification in that order. For SkillBridge, complete all transition requirements before participation under NAVMC 1700.2B, enclosure (2), paragraph 7."], owner='You',
+     due={'item': 'va-service-end', 'days': -180}, critical=True,
+     cite=[c(TRPA, 'Encl (2), Ch 5 para 3.c', 'Transition Readiness Seminar (TRS) Workshops. Must be completed not later than 180 days prior to EAS date.', UTRPA), c(TRPA, 'Encl (2), Ch 10 para 3', 'TRS workshops must be attended after completion of the Pre-separation Counseling Brief.', UTRPA)],
+     verify='Installation TRP office, UTC and IPAC: confirm EAS, sequencing, completion and any short-notice instructions. SkillBridge coordinator and CO: confirm completion before participation.', basis='rule')
+item('sep-trs-appt', 'sep', 'Transition Readiness Seminar workshops: confirmed appointment', 'Record the actual office-confirmed appointment. Keep the separate rule deadline.',
+     how=['Give Claude the confirmed appointment date and ask Claude to record a fixed date here. Keep this event undated until confirmation.'],
+     owner='You', due=None, kind='milestone', presence=True,
+     cite=[c(TRPA, 'Encl (2), Ch 5 para 3.c', 'Transition Readiness Seminar (TRS) Workshops. Must be completed not later than 180 days prior to EAS date.', UTRPA)],
+     verify='Installation TRP office and UTC; CO for commander verification: confirm the appointment and completion record.', basis='rule')
+item('sep-roob', 'sep', 'Complete ROOB before IC', 'Complete ROOB as IC prework and confirm the certificate requirement with the installation TRP office.',
      owner='You',
-     due=None,
-     critical=True,
-     presence=True,
-     cite=[c('USMC TRP checklist', 'Step Three', 'Attend the Transition Readiness Seminar (TRS) courses no later than 180 days prior to your EAS date. ... You must complete the Individual Initial Counseling (IC) and attend the Pre-Separation Counseling Brief to register for the TRS courses.', 'https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program'),
-           c('MCO 1900.16 CH-3 (MARCORSEPMAN)', '1101.1.c(1)', 'all separating or retiring Service members shall attend transition training within 12 months of separation or within 24 months of retirement, but no later than 90 days prior to separation/retirement', 'https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf'),
-           c('MCO 1900.16 CH-3 (MARCORSEPMAN)', '1101.1.c(1)', 'It is strongly recommended that Marines attend transition training at least 180 days before separation.', 'https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf'),
-           c('NAVMC 1700.2B', 'Encl (2) para 3.c', 'Have attended and completed requirements of the Transition Readiness Seminar 180 days prior to separation.', 'https://www.marines.mil/Portals/1/Publications/NAVMC%201700.2B%20%28SECURED%29.pdf'),
-           c('NAVMC 1700.2B', 'Encl (2) para 7', 'Commanders are responsible for ensuring all Marines participating in S-PTAD have completed all pre-separation and transition requirements in accordance with reference (a).', 'https://www.marines.mil/Portals/1/Publications/NAVMC%201700.2B%20%28SECURED%29.pdf')],
-     verify='Installation TRP office, UTC and SkillBridge coordinator: confirm the applicable TRS deadline and completion before S-PTAD.',
-     basis='target')
-item('sep-roob', 'sep', 'Reserve Opportunities and Obligations Brief (ROOB)', 'Complete ROOB as IC prework and confirm the certificate requirement with the installation TRP office.',
-     owner='You',
-     due={'item': 'sep-ic', 'days': -7},
-     cite=[c('USMC TRP checklist', 'Step One', 'Completion of the virtual Reserve Obligations and Opportunities Brief (ROOB)', 'https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program'),
-           c('USMC TRP checklist', 'Step One', 'IC pre-work requirements include:', 'https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program')],
+     due={'item': 'sep-ic-appt', 'days': -7},
+     cite=[c(TRPA, 'Encl (2), Appendix A, IC Standard Pre-Work Instructions', 'Complete Reserve Obligations & Opportunities Brief (ROOB) - Required Complete ROOB via MarineNet', UTRPA), c(TRPA, 'Encl (2), Ch 8 para 6', 'Eligible Marines must complete all mandatory and standard pre-work, in accordance with chapter 15 of this Order, in preparation for the IC.', UTRPA)],
      verify='Installation TRP office and UTC: confirm ROOB completion and the certificate before the actual IC appointment. The 7-day lead is a planning target.',
      when=['notretire'],
      basis='target')
 item('sep-roob-ret', 'sep', 'ROOB before retirement IC', 'Complete ROOB as IC prework and confirm the certificate requirement with the installation TRP office.',
      owner='You',
-     due={'item': 'sep-ic', 'days': -7},
-     cite=[c('USMC TRP checklist', 'Step One', 'Completion of the virtual Reserve Obligations and Opportunities Brief (ROOB)', 'https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program'),
-           c('USMC TRP checklist', 'Step One', 'IC pre-work requirements include:', 'https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program')],
+     due={'item': 'sep-ic-appt', 'days': -7},
+     cite=[c(TRPA, 'Encl (2), Appendix A, IC Standard Pre-Work Instructions', 'Complete Reserve Obligations & Opportunities Brief (ROOB) - Required Complete ROOB via MarineNet', UTRPA), c(TRPA, 'Encl (2), Ch 8 para 6', 'Eligible Marines must complete all mandatory and standard pre-work, in accordance with chapter 15 of this Order, in preparation for the IC.', UTRPA)],
      verify='Installation TRP office and UTC: confirm ROOB completion and the certificate before the actual IC appointment. The 7-day lead is a planning target.',
      when=['retire'],
      basis='target')
@@ -219,27 +218,26 @@ item('sep-dd2648', 'sep', 'Check the DD 2648 pre-separation checklist: separatio
      cite=[c('MARADMIN 454/26', '5.e', 'Retiring Marines (including medical retirement) and Marines currently serving in the RC are ineligible for DAP.', 'https://www.marines.mil/News/Messages/Messages-Display/Article/4611823/')],
      verify='Installation TRP counselor, IPAC and Career Counselor: confirm correction procedure, actual separation status and the DAP eligibility record.',
      basis='target')
-item('sep-capstone', 'sep', 'TRP Capstone', 'The Hawaii checklist requires this step by 120 days before EAS. For SkillBridge, complete it before S-PTAD. Have the installation TRP office confirm applicability and schedule the earlier required event.',
-     how=["Complete TRS before Capstone and Capstone before Commander's Verification. Confirm both appointments before S-PTAD.", 'The date is pending confirmation by the installation TRP office, UTC and SkillBridge coordinator. Give Claude the date the office confirms and ask Claude to record it on this item. Keep the item open until the action is complete.'],
-     owner='TAP counselor',
-     due=None,
-     critical=True,
-     presence=True,
-     cite=[c('USMC TRP checklist', 'Step Four', 'Conduct Capstone Review no later than 120 days prior to your EAS date.', 'https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program'),
-           c('NAVMC 1700.2B', 'Encl (2) para 7', 'Commanders are responsible for ensuring all Marines participating in S-PTAD have completed all pre-separation and transition requirements in accordance with reference (a).', 'https://www.marines.mil/Portals/1/Publications/NAVMC%201700.2B%20%28SECURED%29.pdf'),
-           c('USMC TRP checklist', 'Step Four', 'You must attend all the TRS courses before you can complete the Capstone Review.', 'https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program')],
-     verify='Installation TRP office, UTC, CO and SkillBridge coordinator: set the actual appointment, confirm the checklist deadline and complete this gate before S-PTAD.',
-     basis='target')
-item('sep-cv', 'sep', "Commander's Verification on the DD 2648", 'The Hawaii checklist requires this step by 90 days before EAS. For SkillBridge, complete it before S-PTAD. Have the installation TRP office confirm applicability and schedule the earlier required event.',
-     how=["Complete TRS before Capstone and Capstone before Commander's Verification. Confirm both appointments before S-PTAD.", 'The date is pending confirmation by the installation TRP office, CO and SkillBridge coordinator. Give Claude the date the office confirms and ask Claude to record it on this item. Keep the item open until the action is complete.'],
-     owner='CO',
-     due=None,
-     presence=True,
-     cite=[c('USMC TRP checklist', 'Step Five', "Complete Commander's Verification no later than 90 days prior to your EAS date.", 'https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program'),
-           c('NAVMC 1700.2B', 'Encl (2) para 7', 'Commanders are responsible for ensuring all Marines participating in S-PTAD have completed all pre-separation and transition requirements in accordance with reference (a).', 'https://www.marines.mil/Portals/1/Publications/NAVMC%201700.2B%20%28SECURED%29.pdf'),
-           c('USMC TRP checklist', 'Step Five', "You must complete the Capstone Review before the Commander's Verification.", 'https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program')],
-     verify='Installation TRP office, UTC, CO and SkillBridge coordinator: set the actual appointment, confirm the checklist deadline and complete this gate before S-PTAD.',
-     basis='target')
+item('sep-capstone', 'sep', 'TRP Capstone', 'Complete this mandatory TRP gate no later than 120 days before EAS under MCO 1700.31A. Count calendar days from the confirmed end of active service on va-service-end. Keep the Retired List action date separate.',
+     how=['Have IPAC and the TRP office confirm the EAS used by the order and record it on va-service-end. The rule date stays separate from the appointment.', 'Record the actual appointment as a fixed date on sep-capstone-appt and actual completion as doneOn on this gate.', "Complete IC, pre-separation counseling, TRS workshops, Capstone and Commander's Verification in that order. For SkillBridge, complete all transition requirements before participation under NAVMC 1700.2B, enclosure (2), paragraph 7."], owner='TAP counselor',
+     due={'item': 'va-service-end', 'days': -120}, critical=True,
+     cite=[c(TRPA, 'Encl (2), Ch 5 para 3.d', 'Capstone Review. Must be completed not later than 120 days prior to EAS date.', UTRPA), c(TRPA, 'Encl (2), Ch 12 para 1.c', 'Capstone Review must be completed after completion of TRS workshops and prior to Commander’s Verification.', UTRPA)],
+     verify='Installation TRP office, UTC and IPAC: confirm EAS, sequencing, completion and any short-notice instructions. SkillBridge coordinator and CO: confirm completion before participation.', basis='rule')
+item('sep-capstone-appt', 'sep', 'TRP Capstone: confirmed appointment', 'Record the actual office-confirmed appointment. Keep the separate rule deadline.',
+     how=['Give Claude the confirmed appointment date and ask Claude to record a fixed date here. Keep this event undated until confirmation.'],
+     owner='TAP counselor', due=None, kind='milestone', presence=True,
+     cite=[c(TRPA, 'Encl (2), Ch 5 para 3.d', 'Capstone Review. Must be completed not later than 120 days prior to EAS date.', UTRPA)],
+     verify='Installation TRP office and UTC; CO for commander verification: confirm the appointment and completion record.', basis='rule')
+item('sep-cv', 'sep', "Commander's Verification on the DD 2648", 'Complete this mandatory TRP gate no later than 90 days before EAS under MCO 1700.31A. Count calendar days from the confirmed end of active service on va-service-end. Keep the Retired List action date separate.',
+     how=['Have IPAC and the TRP office confirm the EAS used by the order and record it on va-service-end. The rule date stays separate from the appointment.', 'Record the actual appointment as a fixed date on sep-cv-appt and actual completion as doneOn on this gate.', "Complete IC, pre-separation counseling, TRS workshops, Capstone and Commander's Verification in that order. For SkillBridge, complete all transition requirements before participation under NAVMC 1700.2B, enclosure (2), paragraph 7."], owner='CO',
+     due={'item': 'va-service-end', 'days': -90}, critical=True,
+     cite=[c(TRPA, 'Encl (2), Ch 5 para 3.e', 'Commander’s Verification. Must be completed not later than 90 days prior to EAS date.', UTRPA)],
+     verify='Installation TRP office, UTC and IPAC: confirm EAS, sequencing, completion and any short-notice instructions. SkillBridge coordinator and CO: confirm completion before participation.', basis='rule')
+item('sep-cv-appt', 'sep', "Commander's Verification on the DD 2648: confirmed appointment", 'Record the actual office-confirmed appointment. Keep the separate rule deadline.',
+     how=['Give Claude the confirmed appointment date and ask Claude to record a fixed date here. Keep this event undated until confirmation.'],
+     owner='CO', due=None, kind='milestone', presence=True,
+     cite=[c(TRPA, 'Encl (2), Ch 5 para 3.e', 'Commander’s Verification. Must be completed not later than 90 days prior to EAS date.', UTRPA)],
+     verify='Installation TRP office and UTC; CO for commander verification: confirm the appointment and completion record.', basis='rule')
 item('sep-ptad', 'sep', 'Transition PTAD: up to 20 days for house and job hunting', 'An approved retirement date qualifies you. CONUS commands can approve up to 20 days, in increments if the approving authority allows, and PTAD runs before any leave.',
      how=['Ask IPAC for the PTAD request route (DTS orders at no cost to the government).', 'Put the dates on the board before you plan leave around them.'],
      owner='You',
@@ -386,7 +384,7 @@ item('sep-modify', 'sep', 'Confirm the resignation change deadline', 'The manual
      when=['resign'],
      basis='target')
 
-# ---------------- 1b. SEPARATION: retiring ----------------
+# ---------------- 1b: SEPARATION: retiring ----------------
 # Existing category flags also select enlisted grade groups: cat1=e15,
 # cat2=e67, cat3=e89. The grade group never establishes retirement eligibility.
 item('ret-eligibility-e', 'sep', 'IPAC: verify active service and the retirement action',
@@ -586,7 +584,7 @@ item('ret-ceremony', 'sep', 'Retirement ceremony: date, venue, guests, flag, cer
      when=['retire'],
      basis='target')
 
-# ---------------- 1c. SEPARATION: EAS ----------------
+# ---------------- 1c: SEPARATION: EAS ----------------
 item('eas-orders', 'sep', 'Separation orders and the final checkout schedule from IPAC', 'No request is needed to separate at EAS. Orders and the checkout schedule come from IPAC; confirm nothing is pending that extends you.',
      how=['Tell the career planner you are not reenlisting, in writing if asked.', 'Confirm your EAS in MOL matches the board.'],
      owner='IPAC',
@@ -869,6 +867,16 @@ item('va-sha', 'va', 'SHA return cutoff if using it instead of a SHPE', 'If the 
      cite=[c('VA Benefits and Services Participant Guide v6.1', 'Module 3', 'If you complete your SHA exam and return it to DOD at least 30 days before separation, it will serve as your DOD discharge exam, and you will not need to complete a SHPE.', 'https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf')],
      verify='Military medical clinic and VA: confirm completed SHA results returned to DoD by the required date and whether SHPE is still needed.',
      basis='rule')
+item('va-intent', 'va', 'VA intent to file: confirmed receipt date', 'BDD is the preferred route; intent to file protects the potential effective date when BDD is missed.',
+     how=['If BDD is missed, ask VA or your accredited VSO about an intent to file. Keep the VA receipt or automatic online intent confirmation.', 'Give Claude the actual date VA records and ask Claude to record that fixed date here. Do not substitute EAS, setup day or a planned submission date.', 'At the same time, have VA or your VSO confirm the calendar anniversary and ask Claude to set that fixed rule deadline on va-itf-complete. Keep this event undated until the actual intent is recorded. Mark it not applicable if no intent is needed.'],
+     due=None, kind='milestone',
+     cite=[c(VITF, "What's an intent to file?", 'An intent to file sets a potential start date (or effective date) for your benefits.', UITF), c(VITF, 'How long do I have to file my claim after I notify VA of my intent?', 'After you notify us of your intent to file, you have 1 year to complete and file your claim.', UITF), c(VAG, 'Module 3', 'Submit your BDD claims between 180 and 90 days before the very last day of service on active duty.', 'https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf')],
+     verify='VA benefits office or accredited VSO: confirm whether an intent is needed, the actual VA intent date and the potential effective date.', basis='rule')
+item('va-itf-complete', 'va', 'Complete the VA claim within 1 year of intent to file', 'Complete and file your claim within 1 year of the actual VA intent date on va-intent. This boundary is separate from the existing separation effective-date item.',
+     how=['After recording va-intent, give Claude the exact calendar-year deadline confirmed by VA or your VSO and ask Claude to set a fixed rule date here. Keep it undated until the actual intent date is known.', 'Use a calendar year, including leap years. The board cannot add calendar years to another item automatically; do not use a 365-day approximation.', 'Confirm VA received the completed claim before this deadline and retain the receipt. VA decides the effective date and entitlement. Mark this item not applicable if no intent is needed.'],
+     due=None, critical=True,
+     cite=[c(VITF, 'How long do I have to file my claim after I notify VA of my intent?', 'After you notify us of your intent to file, you have 1 year to complete and file your claim.', UITF)],
+     verify='VA benefits office or accredited VSO: confirm the exact 1-year filing deadline from the actual intent date and receipt of the completed claim.', basis='rule')
 item('va-decision', 'va', 'VA rating decision', 'BDD aims for a decision at or soon after separation.',
      owner='VA',
      due={'eas': 30},
@@ -1162,6 +1170,27 @@ item('fam-teb', 'fam', 'GI Bill transfer: confirm the obligation is served', 'A 
      cite=[c('VA Benefits and Services Participant Guide v6.1', 'Module 4, p. 94', 'You must complete your entire service obligation or your transfer will be disqualified. If this occurs, and your beneficiary already used benefits, you will incur debt in the full amount of funds spent on their behalf.', 'https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf')],
      verify='Education office: confirm the transfer obligation end date.',
      basis='target')
+item('fam-hhg-counsel', 'fam', 'Final household goods move: DMO/TMO counseling', 'Arrange your final household goods (HHG) move with the installation Distribution Management Office (DMO) or Transportation Management Office (TMO). The appointment target is 90 days before your board separation or retirement date.',
+     how=['Contact DMO/TMO for counseling and bring your separation, retirement or FMCR orders, destination and requested move dates.', 'Record the actual appointment as a fixed date on fam-hhg-appt. The 90-day target is a pack planning choice.', 'Have DMO/TMO confirm shipment eligibility, weight allowance, authorized destination, excess costs, storage and the applicable expiration on fam-hhg-entitlement.'],
+     due={'eas': -90}, basis='target',
+     cite=[c(JTR, '052012.A.1', 'A Service member on active duty who is separated from the Service or relieved from active duty under par. 051002, is authorized HHG transportation, limited to the authorized PCS weight allowance, to the HOR or PLEAD, whichever the Service member selects.', UJTR), c(JTR, '052013.A.1.b', 'Retired with pay for any other reason, including transfer to the Fleet Reserve or Fleet Marine Corps Reserve. The retirement must occur immediately following 8 years or more of continuous active duty with no single break in service of 91 or more days.', UJTR)],
+     verify='Installation DMO/TMO: confirm the counseling appointment and your orders-based final move entitlement.')
+item('fam-hhg-appt', 'fam', 'Final HHG move: confirmed DMO/TMO appointment', 'Record the actual counseling appointment separately from the planning target and shipment expiration.',
+     how=['Give Claude the appointment date DMO/TMO confirms and ask Claude to record a fixed date here. Keep it undated until confirmation.'],
+     due=None, kind='milestone', presence=True,
+     cite=[c(JTR, '052012.C.1', 'The Transportation Officer or designated representative determines the reasonableness on a case-by-case basis.', UJTR)],
+     verify='Installation DMO/TMO: confirm the actual appointment.', basis='rule')
+item('fam-hhg-entitlement', 'fam', 'Final HHG shipment entitlement and expiration: confirm with DMO/TMO', 'Your shipment entitlement and time limit require DMO/TMO confirmation against your orders and active-duty termination date. For ordinary separation under JTR 052012, the authorized destination is home of record (HOR) or place last entered active duty (PLEAD), within 180-day authority and a timely written-request provision. For qualifying retirement or FMCR under JTR 052013, home of selection (HOS) authority requires turnover within 3 years for termination dates on or after 24 JUN 2022, subject to exceptions. DMO/TMO must confirm the separate storage expiration.',
+     how=['Ask DMO/TMO which JTR paragraph applies to your orders, including any special separation-pay category. Confirm the authorized destination, PCS weight limit, excess costs and storage expiration.', 'Under 052012.C, authority ends on the 181st day following separation or relief unless the written HHG request reaches the transportation officer before the end of the 180th day. Timely applications require turnover as soon as practicable; DMO/TMO determines reasonableness.', 'JTR paragraph 052013 (B) sets a 3-year turnover limit with exceptions and extensions. Table 5-52 ends non-temporary storage 1 year from active-duty termination unless its exceptions apply. DMO/TMO must confirm any storage costs after expiration.', 'Have DMO/TMO give you the exact shipment or application deadline and storage limit in writing. Give Claude those dates and ask Claude to set the fixed shipment rule date here and record the storage date in notes. Keep this date unknown until office confirmation. After shipment, record the actual date and retain the receipts DMO/TMO requires.'],
+     due=None, critical=True,
+     cite=[c(JTR, '052012.A.1', 'A Service member on active duty who is separated from the Service or relieved from active duty under par. 051002, is authorized HHG transportation, limited to the authorized PCS weight allowance, to the HOR or PLEAD, whichever the Service member selects.', UJTR), c(JTR, '052012.C', 'Authority for HHG transportation is limited to 180 days. Such authority ends on the 181st day following separation from the Service or relief from active duty, unless a written request for HHG transportation is submitted to a Transportation Officer or designated representative before the end of the 180th day.', UJTR), c(JTR, '052013.A.1', 'A Service member on active duty is authorized HHG transportation ... to the Service member’s HOS when the Service member is: ... Retired with pay for any other reason, including transfer to the Fleet Reserve or Fleet Marine Corps Reserve. The retirement must occur immediately following 8 years or more of continuous active duty with no single break in service of 91 or more days.', UJTR), c(JTR, '052013.B', 'HHG must be turned over for transportation within 3 years following active duty termination, except as in Table 5-33. A Service member is eligible for the 3 year time limitation if the active duty termination effective date is on or after June 24, 2022.', UJTR), c(JTR, '052013, Table 5-52, item 1', 'The authority begins on the date the order is issued and ends 1 year from the active-duty termination date, unless otherwise indicated in this paragraph.', UJTR)],
+     verify='Installation DMO/TMO: confirm the applicable JTR category, shipment entitlement, destination, weight, exact time limit, storage expiration and any extension approval.', basis='rule')
+item('fam-va-dental-iv', 'fam', 'Confirm VA dental: Class IV', 'A qualifying 100 percent service-connected rating or individual unemployability paid at the 100 percent rate may qualify you for any needed dental care. Permanence is not required. A temporary 100 percent rating does not qualify for Class IV.',
+     how=['Ask the eligibility office to review your VA decision and confirm the applicable benefit before relying on it.'],
+     due=None, cite=[c(VDENT, 'Class IV: rating and unemployability statements', 'I have 1 or more service-connected disabilities rated 100% disabling ... Class IV ... Any needed dental care ... If you’re being paid at the 100% disabling rate based on a temporary rating (for a reason such as a long stay in the hospital or rehab care), that doesn’t qualify you for this benefit. ... I’m unemployable (unable to work), and I get disability compensation at the 100% disabling rate due to service-connected conditions ... Class IV ... Any needed dental care', UDENT)], verify='VA dental clinic eligibility office: confirm Class IV eligibility and the temporary-rating exclusion.', basis='target')
+item('fam-champva', 'fam', 'Confirm CHAMPVA for qualifying family members', 'A spouse or dependent child of a veteran rated permanent and total for a service-connected disability may qualify. Anyone eligible for TRICARE cannot get CHAMPVA; retiree families eligible for TRICARE are excluded. Ask the VA CHAMPVA eligibility office about survivor categories when the veteran has died.',
+     how=['Ask the eligibility office to review your VA decision and confirm the applicable benefit before relying on it.'],
+     due=None, cite=[c(VCHAMPVA, 'Eligibility for CHAMPVA', 'You’re the spouse or dependent child of a Veteran who’s been rated permanently and totally disabled from a service-connected disability, ... If you’re eligible for or enrolled in TRICARE, you can’t get CHAMPVA benefits.', UCHAMPVA)], verify='VA CHAMPVA eligibility office and DEERS/TRICARE benefits office: confirm family eligibility and the TRICARE exclusion.', basis='target')
 item('fam-will', 'fam', 'Will and POA at base legal', 'Free while on active duty.',
      owner='You and spouse',
      due={'eas': -120},
@@ -1210,6 +1239,22 @@ item('cmd-checkout', 'cmd', 'Unit checkout sheet: gear, library, armory, IT acco
      cite=[],
      verify='IPAC: the unit checkout sheet.',
      basis='target')
+
+# TRP counts from confirmed EAS, which is separate from retirement action dates.
+for rec in items:
+    if rec['id'] in ('sep-ic', 'sep-presep', 'sep-trs', 'sep-capstone', 'sep-cv'):
+        rec['cite'].append(c('NAVMC 1700.2B', 'Encl (2) para 7', 'Commanders are responsible for ensuring all Marines participating in S-PTAD have completed all pre-separation and transition requirements in accordance with reference (a).', UNAVMC))
+    if rec['id'] == 'va-service-end':
+        rec['how'].append('IPAC, the installation TRP office and UTC must also confirm this is the EAS used to count the MCO 1700.31A transition deadlines. Record the confirmed date here before relying on those dates.')
+        rec['cite'].append(c(TRPA, 'Encl (2), Ch 5 para 3.a', 'Individualized Initial Counseling (IC). Must be completed not later than 365 days prior to EAS date.', UTRPA))
+        rec['verify'] += ' Installation TRP office and UTC: confirm EAS for TRP deadlines.'
+
+# Current TRP order enforces SkillBridge procedures through reference (p).
+for rec in items:
+    if rec['id'] in ('sb-coord', 'sb-packet', 'sb-approval', 'sb-sequence', 'sb-run', 'sb-start'):
+        rec['how'].append("Complete IC, pre-separation counseling, TRS workshops, Capstone and Commander's Verification before SkillBridge participation. Meet the MCO 1700.31A EAS deadlines as well. Confirm completion with the TRP office, UTC, SkillBridge coordinator and CO.")
+        rec['cite'].extend([c(TRPA, 'Encl (2), Ch 3 para 16', 'Enforce Marine Corps SkillBridge Program requirements and procedures as outlined in reference (p).', UTRPA), c('NAVMC 1700.2B', 'Encl (2) para 7', 'Commanders are responsible for ensuring all Marines participating in S-PTAD have completed all pre-separation and transition requirements in accordance with reference (a).', UNAVMC)])
+        rec['verify'] += ' Installation TRP office and UTC: verify completion before SkillBridge participation.'
 
 contacts = [
     {"id": "c-co", "name": "", "role": "Commanding Officer (reporting senior)", "org": "Your unit", "phone": "", "email": "", "loe": "sep", "note": "Counseling, endorsements, billet cover.", "when": []},
@@ -1260,12 +1305,12 @@ claim = {
         {"what": "Retired pay and VA pay", "detail": "At 50 percent or higher, CRDP pays retired pay in full on top of VA pay (10 USC 1414)."},
         {"what": "Health care", "detail": "50 percent or higher is VA Priority Group 1: free care with no copays, service connected or not."},
         {"what": "VA home loan", "detail": "Funding fee waived on a purchase or refinance."},
-        {"what": "State property tax", "detail": "Many states exempt part of the assessed value at 60 percent or higher. Check your state."},
         {"what": "Education and training (VR&E)", "detail": "At 20 percent or higher with an employment handicap finding, VA pays for a degree or training plus a monthly allowance. The old 12 year limit does not apply to discharges on or after 1 January 2013. Check eligibility on va.gov."},
         {"what": "Federal jobs", "detail": "30 percent or higher: 10 point preference in the top category and a noncompetitive hiring authority."},
         {"what": "Smaller benefits", "detail": "VALife whole life insurance up to $40,000 with no medical underwriting. Commissary and exchange access."},
         {"what": "Protections", "detail": "Ratings can go up as conditions age, and you file for increases. A rating held 20 years cannot drop below that level. Cuts require proven improvement."},
-        {"what": "Needs 100 percent permanent and total", "detail": "CHAMPVA for your family, Chapter 35 education for your children, full VA dental, Space-A travel and the larger state tax breaks."},
+        {"id": 'benefit-va-dental-iv', "what": 'VA dental: Class IV', "detail": 'A qualifying 100 percent service-connected rating or individual unemployability paid at the 100 percent rate may qualify you for any needed dental care. Permanence is not required. A temporary 100 percent rating does not qualify for Class IV.', "cite": [c(VDENT, 'Class IV: rating and unemployability statements', 'I have 1 or more service-connected disabilities rated 100% disabling ... Class IV ... Any needed dental care ... If you’re being paid at the 100% disabling rate based on a temporary rating (for a reason such as a long stay in the hospital or rehab care), that doesn’t qualify you for this benefit. ... I’m unemployable (unable to work), and I get disability compensation at the 100% disabling rate due to service-connected conditions ... Class IV ... Any needed dental care', UDENT)], "verify": 'VA dental clinic eligibility office: confirm Class IV eligibility and the temporary-rating exclusion.'},
+        {"id": 'benefit-champva', "what": 'CHAMPVA for qualifying family members', "detail": 'A spouse or dependent child of a veteran rated permanent and total for a service-connected disability may qualify. Anyone eligible for TRICARE cannot get CHAMPVA; retiree families eligible for TRICARE are excluded. Ask the VA CHAMPVA eligibility office about survivor categories when the veteran has died.', "cite": [c(VCHAMPVA, 'Eligibility for CHAMPVA', 'You’re the spouse or dependent child of a Veteran who’s been rated permanently and totally disabled from a service-connected disability, ... If you’re eligible for or enrolled in TRICARE, you can’t get CHAMPVA benefits.', UCHAMPVA)], "verify": 'VA CHAMPVA eligibility office and DEERS/TRICARE benefits office: confirm family eligibility and the TRICARE exclusion.'},
         {"what": "Reserve drill pay", "detail": "Each year you waive VA pay for drill days or the reverse, whichever pays more."}],
         "note": "VA decides the rating from the evidence and the exams. Nothing on this board predicts it."},
 }
@@ -1341,7 +1386,7 @@ for p in PERSONAL:
     if p in privacy_blob: errs.append(f"personal string in seed: {p!r}")
 
 # ---------------- quote verification against the local regulation texts ----------------
-LOCAL = {MCO: "mco-1900.16-ch3.txt", LVO: "mco-1050.3j.txt", "MARADMIN 175/24": "maradmin-175-24.txt",
+LOCAL = {TRPA: "mco-1700.31a.txt", VDENT: "va-dental-care.txt", VCHAMPVA: "va-champva.txt", VITF: "va-intent-to-file.txt", JTR: "jtr-final-move.txt", MCO: "mco-1900.16-ch3.txt", LVO: "mco-1050.3j.txt", "MARADMIN 175/24": "maradmin-175-24.txt",
          "MARADMIN 326/23": "maradmin-326-23.txt", MMSR: "mmsr-2-enlisted-retirements.txt",
          "MARADMIN 454/26": "maradmin-454-26.txt", "MARADMIN 045/25": "maradmin-045-25.txt",
          "MARADMIN 280/24": "maradmin-280-24.txt", "NAVMC 1700.2B": "navmc-1700.2b.txt"}
@@ -1351,8 +1396,8 @@ def norm(s):
 if "--no-verify" not in sys.argv and REGS.exists():
     texts = {k: norm(open(REGS / v, encoding="utf-8", errors="ignore").read()) for k, v in LOCAL.items() if (REGS / v).exists()}
     seen = set()
-    for i in items:
-        for ct in i["cite"]:
+    for i in items + claim["benefits"]["rows"]:
+        for ct in i.get("cite", []):
             if ct["ref"] in texts and (ct["ref"], ct["quote"]) not in seen:
                 seen.add((ct["ref"], ct["quote"]))
                 for part in ct["quote"].split("..."):

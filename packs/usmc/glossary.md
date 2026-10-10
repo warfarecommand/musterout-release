@@ -4,11 +4,11 @@ One entry per line. Citations identify support in the copied regulations and sup
 
 - EAS: End of active service is the date a Marine's active service ends (MARADMIN 045/25, 3.a.2).
 - ECC: End of current contract is the end date used to limit how much leave a Marine can earn before separation (MCO 1900.16 CH-3, 1010.2.e).
-- TRP: The Transition Readiness Program supplies transition requirements that Marines must complete for SkillBridge (NAVMC 1700.2B, 3.c).
+- TRP: The Transition Readiness Program sets mandatory transition gates (MCO 1700.31A, enclosure (2), chapter 5, paragraph 3.a-e). Confirm with: installation TRP office and UTC.
 - TAP: The Transition Assistance Program prepares service members for civilian life. The VA course is part of its curriculum (VA guide v6.1, introduction, lines 511-514).
-- IC: Individualized Initial Counseling is the first checklist step, due by 365 days before EAS. It precedes the separate pre-separation counseling brief (Hawaii TRP checklist, Steps One and Two; confirm applicability with the installation TRP office).
-- Capstone: You and a TRP Advisor review Career Readiness Standards and transition plans after TRS. The Hawaii checklist sets this review by 120 days before EAS (Hawaii TRP checklist, Step Four; confirm applicability with the installation TRP office).
-- DD 2648: DD Form 2648 is the pre-separation counseling checklist identified for Regular component Marines in the manual (MCO 1900.16 CH-3, 1101.1.a).
+- IC: Individualized Initial Counseling must be completed no later than 365 days before EAS and before pre-separation counseling. Retiree IC may begin during the 24-month period preceding anticipated retirement (MCO 1700.31A, enclosure (2), chapter 8, paragraphs 2 and 4.a). Confirm with: installation TRP office and UTC.
+- Capstone: The TRP review follows TRS workshops, precedes Commander's Verification and must be complete no later than 120 days before EAS (MCO 1700.31A, enclosure (2), chapter 12, paragraph 1.b-c). Confirm with: installation TRP office and UTC.
+- DD 2648: The official TRP record documents IC, pre-separation counseling, TRS workshops and Capstone; it becomes a non-editable PDF once signed by the commander or designee (MCO 1700.31A, enclosure (2), chapters 8.10, 9.6, 10.6 and 12.1.g/2.f). Confirm with: TRP office and UTC.
 - DD-214: DD Form 214 records release or discharge from active duty (MCO 1900.16 CH-3, Appendix B).
 - IPAC: The Installation Personnel Administration Center handles personnel records and separation administration (NAVMC 1700.2B, enclosure (2), 9.b(8); MARADMIN 045/25, 5.b).
 - MCTFS: The Marine Corps Total Force System is the personnel system that records separation actions and planned separation codes (MARADMIN 045/25, 4.a).
@@ -86,3 +86,8 @@ One entry per line. Citations identify support in the copied regulations and sup
 - TFRS: The Total Force Retention System provides available Reserve incentive and service obligation information (MARADMIN 454/26, 4.c).
 - MOU: A memorandum of understanding is the agreement a DoD SkillBridge internship partner must have (NAVMC 1700.2B, 11).
 - MPLP: The Military Parental Leave Program provides parental leave subject to the limits and separation restrictions described in the leave message (MARADMIN 625/24, 4 and 5.d).
+
+- Intent to file: VA notification that sets a potential effective date; the completed claim must be filed within 1 year of that actual intent date (VA intent to file guidance, "What's an intent to file?" and "How long do I have to file my claim after I notify VA of my intent?"). Confirm with: VA benefits office or accredited VSO.
+- Class IV dental: Any needed VA dental care for a qualifying 100 percent service-connected rating or individual unemployability at the 100 percent rate. Permanence is not required; temporary ratings are excluded (VA dental care eligibility, Class IV statements). Confirm with: VA dental clinic eligibility office.
+- CHAMPVA: VA family health benefits for qualifying dependents or survivors; anyone eligible for TRICARE is excluded (VA CHAMPVA benefits, Eligibility for CHAMPVA). Confirm with: VA CHAMPVA eligibility office and DEERS/TRICARE benefits office.
+- Final HHG move: Household goods shipment after separation, retirement or FMCR. Entitlement, destination and time limit depend on the orders and applicable JTR category; storage has a separate limit (JTR, 1 OCT 2026, 052012.A/C and 052013.A/B, Table 5-52). Confirm with: installation DMO/TMO.

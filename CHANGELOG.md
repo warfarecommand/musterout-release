@@ -1,5 +1,15 @@
 # Release notes
 
+## 0.1.5 (2026-10-09)
+
+- Leave projections now count from the date of your leave balance, count overlapping leave once, apply the 30 September carryover limit, and stop at your last active day.
+- Transition deadlines follow MCO 1700.31A (2 Mar 2026): initial counseling and pre-separation counseling 365 days before EAS, TRS 180, Capstone 120, and Commander's Verification 90.
+- Updating your board now corrects items the pack changed and adds new items. Your dates, notes, and status stay as they are; anything you edited goes to review.
+- New items cover the final household goods move and the VA intent to file. The benefits table now states VA dental Class IV and CHAMPVA eligibility correctly.
+- A board that is not set up yet shows only the next step. Leave you asked to cancel stays charged until MOL shows it canceled.
+- Everyone uses the same setup message in any Claude chat, including Claude Code. The zip download is retired; developers can clone the public release repository.
+- Feed sync rejects unsafe links, oversized text, and incomplete feeds before replacing the last good feed. The weekly check reports a failed feed instead of an empty week.
+
 ## 0.1.4 (2026-10-09)
 
 - Enlisted retirement covers FMCR transfer at 20 to 29 years of active service and direct retirement at 30 or more. New items cover eligibility, grade limits, obligations, CO counseling and Appendix J, waivers, HQMC receipt, PCS cancellation, status changes and the 45-day modification deadline.

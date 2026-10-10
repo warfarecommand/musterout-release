@@ -1,6 +1,6 @@
 # Security
 
-Muster Out installs from a public, release-only repository, [github.com/warfarecommand/musterout-release](https://github.com/warfarecommand/musterout-release). In a chat, before Claude publishes or replaces your board, it checks every release file against the SHA-256 values in that repository's manifest and stops on any mismatch. The instructions Claude follows are not a permission boundary; Claude's permission prompts are. Read each prompt before you approve an action. No setup step asks you to turn those prompts off. [Report a security problem by email](mailto:security@warfarecommand.com).
+Muster Out installs from a public, release-only repository, [github.com/warfarecommand/musterout-release](https://github.com/warfarecommand/musterout-release). In any Claude chat, including Claude Code and the desktop Code tab, before Claude publishes or replaces your board, it checks every release file against the SHA-256 values in that repository's manifest and stops on any mismatch. The instructions Claude follows are not a permission boundary; Claude's permission prompts are. Read each prompt before you approve an action. No setup step asks you to turn those prompts off. [Report a security problem by email](mailto:security@warfarecommand.com).
 
 ## The release repository
 Development happens in a separate private repository. Each release is published to the public release repository, which holds the release files only. In a chat, Claude follows `SETUP.md`, `UPDATE.md`, and `WEEKLY.md` from it. `release.json`, the manifest, lists every release file with its SHA-256 value.
@@ -10,7 +10,7 @@ One file changes between releases: `feed/latest.json`, the weekly MARADMIN feed.
 ## The check before Claude publishes your board
 Chat setup and updates follow these steps:
 - **Fetch.** Claude reads `release.json` with a plain GET that sends no identifiers, into a fresh temporary workspace, and rejects a manifest with unsafe paths or missing fields.
-- **Verify.** Claude downloads every file the manifest lists and compares each file's SHA-256 with the manifest value. A missing file, a failed download, or a mismatch stops the run before anything is published or written to your board. The instructions forbid running downloaded code.
+- **Verify.** Claude downloads every file the manifest lists and compares each file's SHA-256 with the manifest value. A missing file, a failed download, or a mismatch stops the run before anything is published or written to your board. Claude's instructions require it to stop before executing any downloaded code.
 - **Publish.** After you tap Publish, Claude publishes the verified board page unchanged. An update waits for your yes, then republishes the page at the same address with your data intact.
 
 A matching hash is not a signature. It proves the files are the ones the manifest lists. Personal facts stay in your chat and on your board, and the instructions forbid writing them to the temporary workspace. No instruction asks you to install software or give Claude your credentials.
@@ -24,19 +24,13 @@ Update Muster Out. Read https://raw.githubusercontent.com/warfarecommand/mustero
 ## What Claude is asked to do
 The setup, update, and weekly instructions cover these actions:
 - Publish `board/board.html` to your Claude account once during setup, and read and write its database. An update replaces the page at the same address.
-- Read the verified release files and the regulation pack. On the laptop route, write `my/board.json`, `my/pending.json`, `my/receipt.json`, and `my/update.json`, which hold the board address, the setup stage, your count choice, and update progress, and no personal facts.
-- Fetch the weekly MARADMIN feed: the copy in the release repository in chat, or the feed named in `config.json` on the laptop route. Fetch public .mil and .gov pages you ask about.
+- Read the verified release files and the regulation pack. For a developer folder install, `my/board.json` holds the board address; `my/pending.json` holds setup progress; `my/receipt.json` records count consent; `my/update.json` tracks the confirmed update. Keep personal facts on the board and in your own chat.
+- Fetch the weekly MARADMIN feed: the copy in the release repository in chat, or the feed named in `config.json` on the laptop route. Fetch public military and government pages you ask about.
 - Offer an optional anonymous registration link after the board is ready. The browser sends the registration; Claude sends no telemetry from the sandbox. On the laptop route, send the older optional count only if you say yes.
 - Offer a recurring Monday check if the chat supports it. Confirm your timezone and time and obtain any schedule approval before creating the task. If recurring tasks are unavailable, give you the weekly message to send yourself.
 
-## Laptop route: check the zip before you unzip it
-On the laptop route, a release is a zip on the docs site, and each version gets its own file name at this address:
-
-```
-https://musterout.warfarecommand.com/dl/musterout-<version>.zip
-```
-
-The download page prints the SHA-256 of each zip. Check it before you unzip: `shasum -a 256 musterout-<version>.zip` on a Mac, `Get-FileHash musterout-<version>.zip` in PowerShell on Windows. If the two differ, do not use the file, and report it. An update on this route keeps your `my/` files in place.
+## Developer folder installs
+Developers can clone [the public release repository](https://github.com/warfarecommand/musterout-release). Folder updates use the same raw release base and per-file SHA-256 checks as chat updates. Claude fetches each changed file and verifies its bytes before writing it, keeps `my/`, and republishes at the same board address after confirmation. Claude Code and desktop Code tab users can paste the same setup message from the welcome page.
 
 ## Pack review status
 The pack keeps a local source copy for every citation, and a script, `packs/usmc/check_citations.py`, checks each quote against those copies. The copies are snapshots; open the official source for current wording. An independent model review checked every cited item against its source on 09 OCT 2026. Its corrections are in this release and were rechecked by a second review. No office has approved the pack; confirm what applies to you with IPAC, your TAP counselor, your VSO, and your command.
@@ -48,11 +42,11 @@ The assistant is instructed to treat regulations, MARADMINs, feed summaries, rel
 The weekly feed comes from a scheduled job in a separate repository. It fetches only the official MARADMIN feed and message pages. It classifies messages with an Anthropic API key, a Claude subscription token, or a keyword baseline; the model call has no tools and must return validated JSON. A separate step publishes the public feed and page. The job's GitHub write permission covers only its own repository. The weekly check validates each feed before it uses it: the file must parse, be no more than 8 days old, and state its window, its message count, and whether it was truncated or read titles only. A feed that fails a check leaves the last good check and your inbox unchanged; the board records only that the check failed and when.
 
 ## Submission endpoint
-The welcome page's setup intent count, optional install registration, older optional laptop count, and optional lesson results go to the ingest edge function (`supabase/functions/ingest/index.ts`, address in `config.json` as `ingest_url` and `ping_url`). Browser requests accept only `https://warfarecommand.com` and `https://musterout.warfarecommand.com`; requests without an Origin header remain available for the documented laptop and deletion commands. The function validates inputs, caps sizes, rate limits to 20 requests per salted IP hash per minute, and writes with a service role key that never reaches a browser. Its tables have row level security, no client policies, and no client grants. It serves no reads.
+The welcome page's setup intent count, optional install registration, and older optional laptop count go to the ingest edge function (`supabase/functions/ingest/index.ts`, address in `config.json` as `ingest_url` and `ping_url`). Browser requests accept only `https://warfarecommand.com` and `https://musterout.warfarecommand.com`; requests without an Origin header remain available for the documented laptop and deletion commands. The function validates inputs, caps sizes, rate limits to 20 requests per salted IP hash per minute, and writes with a service role key that never reaches a browser. Its tables have row level security, no client policies, and no client grants. It serves no reads.
 
 Setup intent stores only the fixed product value, version, receipt time, and salted IP hash. Install registration adds a validated separation path, grade group, setup channel, and random 16 to 32 character hex install id. A unique key counts an install id once; duplicate requests do not change its row. Extra fields are never stored. No name, date, board URL, or free text is accepted into either record. Opening the registration link is optional. The page remembers successful ids in local storage; if storage is blocked, the server still deduplicates them.
 
-A `delete` with a study token removes that token's lesson rows. A `delete` with an install id removes that id's older laptop count and install registration. It removes nothing else, including rate counters. `PRIVACY.md` gives the commands. Setup intent carries no deletion id and cannot be matched to one person.
+A `delete` with an install id removes that id's older laptop count and install registration. It removes nothing else, including rate counters. `PRIVACY.md` gives the commands. Setup intent carries no deletion id and cannot be matched to one person.
 
 ## Correction alerts
 Website signups go to the separate `alerts` edge function. The service role alone can access `alert_signups`; the table has row level security and no client policies. It stores email addresses, consent status, timestamps, optional signup source, salted IP hashes, and token hashes. The existing service-only rate table holds separate salted IP and email hash counters for subscribe requests and confirmation sends. Deletion does not reset either rate limit.

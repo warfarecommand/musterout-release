@@ -3,9 +3,17 @@ const assert = (ok: unknown, message = "Assertion failed") => { if (!ok) throw n
 const equal = (a: unknown, b: unknown) => assert(JSON.stringify(a) === JSON.stringify(b), `${JSON.stringify(a)} differs from ${JSON.stringify(b)}`);
 
 function fixture() {
-  const tables: Record<string, Record<string, unknown>[]> = { ingest_rate: [], setup_intents: [], install_registrations: [], setup_pings: [], lesson_responses: [] };
+  const tables: Record<string, Record<string, unknown>[]> = { ingest_rate: [], setup_intents: [], install_registrations: [], setup_pings: [] };
   let fail = "";
-  const db = { from: (table: string) => {
+  const db = { rpc: async (name: string, args: { p_ip_hash: string; p_minute: string }) => {
+    equal(name, "ingest_rate_hit");
+    if (fail === "ingest_rate") return { data: null, error: { message: "private detail" } };
+    let row = tables.ingest_rate.find(r => r.ip_hash === args.p_ip_hash && r.minute === args.p_minute);
+    if (!row) { row = { ip_hash: args.p_ip_hash, minute: args.p_minute, n: 0 }; tables.ingest_rate.push(row); }
+    row.n = Number(row.n) + 1;
+    return { data: row.n, error: null };
+  }, from: (table: string) => {
+    assert(table !== "ingest_rate", "Rate hits must use the atomic RPC");
     const filters: [string, unknown][] = [];
     let operation = "select", value: Record<string, unknown> = {}, options: { ignoreDuplicates?: boolean } = {};
     const query = {
@@ -35,8 +43,8 @@ function fixture() {
 }
 const install = { kind: "install", product: "musterout", version: "0.1.4", path: "eas", grade: "e67", channel: "chat", install_id: "0123456789abcdef0123456789abcdef" };
 
-Deno.test("intent accepts both origins and stores only anonymous allowed fields", async () => {
-  for (const origin of ["https://warfarecommand.com", "https://musterout.warfarecommand.com"]) {
+Deno.test("intent accepts all supported origins and stores only anonymous allowed fields", async () => {
+  for (const origin of ["https://warfarecommand.com", "https://www.warfarecommand.com", "https://musterout.warfarecommand.com"]) {
     const f = fixture();
     const preflight = await f.handler(new Request("https://endpoint.invalid/ingest", { method: "OPTIONS", headers: { origin } }));
     equal(preflight.headers.get("access-control-allow-origin"), origin);
@@ -81,15 +89,37 @@ Deno.test("install deduplicates the id without replacing fields and deletion rem
   assert(f.tables.ingest_rate.length > 0);
 });
 
-Deno.test("legacy ping, lesson and receipt deletion still work without a browser origin", async () => {
+Deno.test("legacy ping and receipt deletion still work without a browser origin", async () => {
   const f = fixture();
   const ping = await f.handler(new Request("https://endpoint.invalid/ingest?kind=ping&service=usmc&path=unsure&grade=unsure&version=0.1.3&id=legacy-uuid-1234"));
   equal(ping.status, 200);
   equal(f.tables.setup_pings.length, 1);
-  equal((await f.send({ kind: "lesson", token: "study-token-123", score: 4, reflection: "Test reflection", version: "1" })).status, 200);
-  equal((await f.send({ kind: "delete", token: "study-token-123", id: "legacy-uuid-1234" })).status, 200);
-  equal(f.tables.lesson_responses.length, 0);
+  equal((await f.send({ kind: "delete", id: "legacy-uuid-1234" })).status, 200);
   equal(f.tables.setup_pings.length, 0);
+});
+
+Deno.test("unknown kinds return 400 without telemetry writes", async () => {
+  const f = fixture();
+  equal((await f.send({ kind: "unknown" })).status, 400);
+  equal(f.tables.setup_intents.length + f.tables.install_registrations.length + f.tables.setup_pings.length, 0);
+});
+
+Deno.test("30 concurrent rate hits admit exactly 20 writes", async () => {
+  const f = fixture();
+  const responses = await Promise.all(Array.from({ length: 30 }, () => f.send({ kind: "intent", product: "musterout", version: "0.1.4" })));
+  equal(responses.filter(r => r.status === 200).length, 20);
+  equal(responses.filter(r => r.status === 429).length, 10);
+  equal(f.tables.setup_intents.length, 20);
+  equal(f.tables.ingest_rate[0].n, 30);
+});
+
+Deno.test("oversized Content-Length is rejected before reading or database calls; chunked bodies remain capped", async () => {
+  const f = fixture();
+  const req = new Request("https://endpoint.invalid/ingest", { method: "POST", headers: { "content-length": "20001" }, body: "{}" });
+  req.text = async () => { throw new Error("Body must not be read"); };
+  equal((await f.handler(req)).status, 413);
+  equal(f.tables.ingest_rate.length, 0);
+  equal((await f.handler(new Request("https://endpoint.invalid/ingest", { method: "POST", body: " ".repeat(20001) }))).status, 413);
 });
 
 Deno.test("new kinds share the minute rate limit and failures are visible", async () => {
