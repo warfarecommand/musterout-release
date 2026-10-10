@@ -2,7 +2,7 @@
 
 Version: `usmc-2026.10`
 
-This Muster Out pack collects 8 public Marine Corps regulation texts and 3 supplemental public source texts, a seed citation index, a separation glossary, and 10-question FAQs for resignation, retirement, and ordinary EAS. It contains no individual plan or unit contact roster. The copied texts are a fixed source snapshot, not a certification of current policy or personal eligibility.
+This Muster Out pack collects 9 public Marine Corps regulation texts and 4 supplemental public source texts, a seed citation index, a separation glossary, and 10-question FAQs for resignation, retirement, and ordinary EAS. It contains no individual plan or unit contact roster. The copied texts are a fixed source snapshot, not a certification of current policy or personal eligibility.
 
 ## Documents
 
@@ -14,10 +14,12 @@ This Muster Out pack collects 8 public Marine Corps regulation texts and 3 suppl
 - [MARADMIN 454/26](regs/maradmin-454-26.txt) - [official source](https://www.marines.mil/News/Messages/Messages-Display/Article/4611823/)
 - [MARADMIN 280/24](regs/maradmin-280-24.txt) - [official source](https://www.marines.mil/News/Messages/Messages-Display/Article/3809908/)
 - [MARADMIN 625/24](regs/maradmin-625-24.txt) - [official source](https://www.marines.mil/News/Messages/Messages-Display/Article/4015114/advance-notification-of-forthcoming-changes-to-mco-10503j-regulations-for-leave/)
+- [MARADMIN 326/23](regs/maradmin-326-23.txt) - [official source](https://www.marines.mil/News/Messages/Messages-Display/Article/3441944/enlisted-active-duty-service-limits/)
 
 - [2026 DoW SkillBridge MOU](regs/dow-skillbridge-mou.txt) - [official source](https://www.skillbridge.mil/static/docs/2026_DoW_SkillBridge_MOU_BLANK.pdf)
 - [VA Benefits and Services Participant Guide v6.1](regs/va-benefits-participant-guide.txt) - [official source](https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf), version 6.1 confirmed in the downloaded guide
 - [MCCS Transition Readiness Program, Steps to Success](regs/mccs-trp-checklist.txt) - [official source](https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program)
+- [HQMC MMSR-2 enlisted retirement guidance](regs/mmsr-2-enlisted-retirements.txt) - [official source](https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/)
 
 ## Reading the pack
 
@@ -25,7 +27,11 @@ Use the FAQ for your path, then confirm your dates and eligibility with the offi
 
 Regulation bodies preserve the supplied extraction, including page headers, page breaks, and apparent revision artifacts. The HTML source was stripped of tags and reduced to the message body. Personal names, individual mailboxes, example personal phone numbers, and named units were replaced with bracketed removal labels to meet the pack's privacy rule. Printed office lines and office mailboxes may remain. Long dashes were changed to short hyphens. These copies are sanitized reading copies; use the official sources for the full originals.
 
-MARADMIN 175/24 directs an 18-to-six-month retirement/resignation window while the manual still prints 14-to-four-month diary limits. MARADMIN 280/24 and 625/24 describe rank category limits and combined absences, while the later NAVMC 1700.2B prints different approval wording and a 180-day boundary. These conflicts require office review. The manual gives a 120-day VGLI no-health-proof period, while the copied VA guide gives 240 days. VA Insurance must confirm the governing deadline and individual eligibility.
+Enlisted retirement is covered: FMCR transfer with 20 to 29 years of active service and direct retirement with 30 or more. The reporting unit submits to MMSR-2 through unit diary after eligibility review and CO counseling. The board uses shared transition, SBP and benefits items. Each item names the deciding office for individual eligibility, dates and waivers.
+
+MARADMIN 175/24 directs an 18-to-6-month retirement/resignation window while the manual still prints 14-to-4-month diary limits. For enlisted retirement and FMCR requests, the copied MMSR-2 guidance expressly applies 18 to 6 months. The 9-month board target is inside both windows. IPAC and MMSR-2 must confirm processing and any earlier deadline.
+
+MARADMIN 326/23 prints age 58 while the manual and MMSR page print 55. Overseas tour wording also differs and requires MMSR-2 review. MARADMIN 280/24 and 625/24 describe rank category limits and combined absences, while the later NAVMC 1700.2B prints different approval wording and a 180-day boundary. These conflicts require office review. The manual gives a 120-day VGLI no-health-proof period, while the copied VA guide gives 240 days. VA Insurance must confirm the governing deadline and individual eligibility.
 
 ## Citation format and checker
 
@@ -48,5 +54,7 @@ The default seed is the repository's `board/seed.json`; use `--seed /path/to/see
 Report the pack version, reference, paragraph, quote, copied filename and line range, and the official source with the text you believe is correct. Include whether the problem is missing text, a wrong paragraph, a revision conflict, or a bad URL. Do not include personal records or contact details. Submit the report through the project's issue process and request a reviewer role and correction; no maintainer address or issue URL was supplied for this pack.
 
 ## Supplemental source retrieval
+
+MARADMIN 326/23 and the MMSR-2 active duty retirement page were retrieved from their official marines.mil URLs through Exa on 09 OCT 2026 after direct browser retrieval returned 403. The full retrieved text was read before citation. The saved copies preserve the retrieved body, remove personal contacts and replace long dashes with short hyphens. Their SOURCE headers identify the URLs. They supply enlisted service limits and current FMCR request-window guidance; they do not certify an individual record.
 
 The SkillBridge MOU and VA participant guide were retrieved on October 8, 2026, and extracted using `pdftotext -layout`. Their SOURCE headers identify the exact downloaded URLs. Long dashes were changed to short hyphens. The TRP checklist steps were verified on October 9, 2026 against the MCCS Marine Corps Base Hawaii Transition Readiness Program page (`regs/mccs-trp-checklist.txt`, Steps to Success, captured from the live page in a browser because the site refuses non browser requests). The `_sources/` directory retains PDF and HTML source captures with a JSON retrieval log.

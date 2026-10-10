@@ -54,6 +54,9 @@ LVO = "MCO 1050.3J"
 VAG = "VA Benefits and Services Participant Guide v6.1"
 
 UTRP = "https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program"
+U326 = "https://www.marines.mil/News/Messages/Messages-Display/Article/3441944/enlisted-active-duty-service-limits/"
+UMMSR = "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/"
+MMSR = "HQMC MMSR-2 enlisted retirement guidance"
 
 def c(ref, para, quote, url=None):
     return {"ref": ref, "para": para, "quote": quote, "url": url}
@@ -384,6 +387,82 @@ item('sep-modify', 'sep', 'Confirm the resignation change deadline', 'The manual
      basis='target')
 
 # ---------------- 1b. SEPARATION: retiring ----------------
+# Existing category flags also select enlisted grade groups: cat1=e15,
+# cat2=e67, cat3=e89. The grade group never establishes retirement eligibility.
+item('ret-eligibility-e', 'sep', 'IPAC: verify active service and the retirement action',
+     'FMCR transfer requires at least 20 years of active duty. Direct retirement requires at least 30. Service obligations must be met and you must be on a valid enlistment or extension. Your grade group and years entered on the board do not establish eligibility.',
+     how=['Ask IPAC to review your Armed Forces Active Duty Base Date (AFADBD), prior active service, lost time and obligations. MMSR verifies creditable service before approval.',
+          'Confirm FMCR transfer for 20 to 29 years or direct transfer to the Retired List at 30 or more years. Keep the profile date on the requested or approved action date; record the last active-duty day separately for BDD.',
+          'MARADMIN 326/23 applies to the active component and expressly excludes the Marine Corps Reserve. MARADMIN 326/23 sets the enlisted age limit at 58; the manual and MMSR page still print 55. Ask IPAC and MMSR-2 to confirm the applicable age rule before selecting your date. If you are a Reserve Marine retiring on active service, have IPAC and MMSR-2 identify your governing service-limit and age guidance; these MARADMIN limits do not establish it.'],
+     owner='You', due={'date': 'SETUP'}, critical=True,
+     cite=[c(MCO, '1401.3.b', 'To be eligible for FMCR/retirement, service obligations must be met and the Marine must have 20 or more years of active duty. Enlisted retirement requires at least 30 years of active duty.', UMCO),
+           c(MCO, '1401.2', 'The CMC (MMSR) shall verify creditable service toward retirement and the retired pay multiplier (RPM) prior to approval of transfer to the retired list/FMCR.', UMCO),
+           c(MCO, '7004.11', 'A Marine must be serving on a valid contract of enlistment or extension to be eligible to retire or transfer to the FMCR.', UMCO),
+           c(MCO, '7001.3', 'Enlisted Marines must transfer to the FMCR or retired list not later than the last day of the month in which they reach age 55.', UMCO),
+           c('MARADMIN 326/23', '4', 'This MARADMIN is not applicable to the Marine Corps Reserve.', U326),
+           c('MARADMIN 326/23', '3.c', 'Effective 1 July 2023, the maximum age limit for enlisted Marines\u2019 service is hereby 58 years old.', U326),
+           c(MMSR, 'Traditional Retirement', '20-29 years of active service; transfer to the FMCR on the last day of the month. ... 30 or more years of active service; transfer to the Retired List the first day of the month', UMMSR)],
+     verify='IPAC and MMSR-2: verify creditable active service, obligations, contract, age rule and FMCR versus Retired List eligibility.',
+     when=['retire', 'enlisted'], basis='target')
+
+for suffix, category, title, explanation, quote in [
+    ('e15', 'cat1', 'E-1 to E-5: confirm whether retirement is available',
+     'The published Cpl and Sgt limits are 8 and 12 years of active Marine Corps service. They do not establish 20 years of creditable active military service. Ask IPAC to review any prior service or approved exception before relying on this retirement plan.',
+     'Cpl: 8 years active Marine Corps service Sgt: 12 years active Marine Corps service'),
+    ('e67', 'cat2', 'E-6 to E-7: check your service limit',
+     'MARADMIN 326/23 lists SSgt at 20 years and GySgt at 22 years of active military service. Confirm your grade, service limit, obligations and any approval for continued service with IPAC and the career planner.',
+     'SSgt: 20 years active military service GySgt: 22 years active military service'),
+    ('e89', 'cat3', 'E-8 to E-9: check your service limit',
+     'MARADMIN 326/23 lists 1stSgt/MSgt at 27 years and SgtMaj/MGySgt at 30 years of active military service. Confirm your grade and any approved continuation. E-8 alone does not authorize service to 30 years.',
+     '1stSgt/MSgt: 27 years active military service SgtMaj/MGySgt: 30 years active military service'),
+]:
+    item('ret-limits-' + suffix, 'sep', title, 'MARADMIN 326/23 applies to the active component and expressly excludes the Marine Corps Reserve. ' + explanation + ' If you are a Reserve Marine retiring on active service, have IPAC and MMSR-2 identify your governing service-limit and age guidance; these MARADMIN limits do not establish it.',
+         how=['These limits do not guarantee continued service. Ask the career planner and IPAC to confirm your record with MMEA for retention and MMSR-2 for retirement processing. Do not assume a waiver.'],
+         owner='You', due={'date': 'SETUP'}, critical=True,
+         cite=[c('MARADMIN 326/23', '4', 'This MARADMIN is not applicable to the Marine Corps Reserve.', U326),
+               c('MARADMIN 326/23', '3.b.1', quote, U326),
+               c('MARADMIN 326/23', '2.c', 'These below service limits do not guarantee continued service; rather eligibility for continued service remains based on Marine Corps warfighting requirements, individual performance, and personal conduct.', U326),
+               c(MCO, '7004.1', 'An enlisted Marine of the Regular Marine Corps or Marine Corps Reserve who completes 20 or more years of active duty service in the Armed Forces may request transfer to the FMCR.', UMCO)],
+         verify='IPAC, unit career planner, MMEA and MMSR-2: confirm actual grade, service limit, creditable active service and any approved exception before relying on retirement eligibility.',
+         when=['retire', 'enlisted', category], basis='target')
+
+item('ret-obligations-e', 'sep', 'Review tours, deployments, grade and education obligations',
+     'Review eligibility before the unit submits your request. GySgt and above normally require 2 years in grade for FMCR transfer. Tour, deployment and education obligations can affect the date. The grade group cannot distinguish SSgt from GySgt.',
+     how=['Ask IPAC and the career planner to review your date of rank and service in grade. A minimum time-in-grade waiver requires DC M&RA approval.',
+          'The manual requires requests at least 4 months before deployment and before the unit lock date; carrier deployment requests require at least 9 months. Ask the command and MMSR-2 to confirm applicability and enter any earlier deadline.',
+          'Review obligations from PCS orders and courses. The manual bars FMCR transfer before overseas tour completion unless subject to ECFC; the MMSR page allows favorable consideration. Obtain the applicable tour rule and any waiver requirement from MMSR-2.',
+          'For attendance under official orders in a military or civilian course lasting 20 weeks or more, 7004.7 requires 24 months of active duty after completion or termination before FMCR transfer. A successfully completed military or civilian course shorter than 20 weeks requires 12 months after completion. Ask MMSR-2 to confirm what applies to your record.'],
+     owner='You', due={'item': 'ret-request-e', 'days': -14}, critical=True,
+     cite=[c(MCO, '7004.5.a', 'Marines in the grade of gunnery sergeant or above must serve two years in their current grade before transfer to the FMCR. Waiver of this requirement may only be approved by the DC, M&RA.', UMCO),
+           c(MCO, '7004.4', 'Submit requests for transfer to the FMCR at least four months before the deployment date and before the unit\u2019s official lock on date. When assigned to, or in direct support of, a carrier (CV) deployment, submit requests at least nine months before deployment.', UMCO),
+           c(MCO, '7004.2.a', 'Marines serving on an overseas tour will not be approved for transfer to the FMCR before completion of their tour as prescribed in reference (bq) MCO 1300.8, Marine Corps Personnel Assignment Policy, unless subject to ECFC.', UMCO),
+           c(MMSR, 'OCONUS', 'Marines serving on an overseas tour may be given favorable consideration to be approved for transfer to the FMCR before completion of their tour as prescribed in MCO 1300.8, unless subject to ECFC.', UMMSR),
+           c(MCO, '7004.7', 'Marines who have attended a military or civilian course lasting 20 weeks or more will not be approved for transfer to the FMCR before the completion of 24 months of active duty following completion of the course, or after they were terminated from the course, if attendance was in compliance with official orders. Marines who have successfully completed a military or civilian course less than 20 weeks in length will not be approved for transfer to the FMCR before the completion of 12 months active duty following completion of the course.', UMCO)],
+     verify='IPAC, career planner, CO and MMSR-2: confirm tour, deployment, education and grade obligations, any earlier submission deadline and required waiver; DC M&RA decides minimum time-in-grade waivers.',
+     when=['retire', 'enlisted'], basis='target')
+
+item('ret-counsel-e', 'sep', 'CO counseling and Appendix J before submission',
+     'You and the CO sign the retirement preapplication checklist before the request is submitted. The CO counsels you on recall and mobilization. The board targets 7 days before submission; the required sequence is counseling before submission.',
+     how=['Review Appendix J with the CO, including assignments, promotion eligibility, leave and retirement consequences. Sign it and have the CO sign. The command files it in your service record and retains it until retirement.',
+          'Appendix J explains that physical disability retirement requires you to be on active duty when the Secretary of the Navy approves PEB proceedings. If disability processing applies, contact your PEBLO and MMSR-2 before proceeding.'],
+     owner='CO', due={'item': 'ret-request-e', 'days': -7}, critical=True, presence=True,
+     cite=[c(MCO, '7005.1', 'The Marine requesting action is required to sign a copy of Appendix J from this Manual.', UMCO),
+           c(MCO, '7005.4.a(3)', 'Sign the pre-application checklist to certify that the Marine has been advised of the ramifications of retirement/transfer to the FMCR before the request is submitted.', UMCO),
+           c(MCO, '7005.4.b', 'Counsel the Marine concerning his or her potential for recall to active duty and/or mobilization.', UMCO),
+           c(MCO, 'Appendix J, introduction', 'Upon completion, file a copy of this checklist in the Marine\u2019s service record and forward the request via unit diary or other appropriate means to CMC (MMSR). For administrative purposes, the Marine\u2019s parent command will retain the checklist until the actual retirement date.', UMCO),
+           c(MCO, '7005.3', 'in order to qualify for physical disability retirement benefits outlined in 10 U.S.C. Chapter 61, a Marine must be on active duty at the time the Secretary of the Navy approves any proceedings of a Physical Evaluation Board (PEB).', UMCO)],
+     verify='CO, IPAC and MMSR-2: confirm counseling, both Appendix J signatures and service-record filing before submission; PEBLO confirms any disability processing.',
+     when=['retire', 'enlisted'], basis='target')
+
+item('ret-waiver-e', 'sep', 'Confirm any waiver package before submission',
+     'A request needing a waiver goes to MMSR-2 through the chain of command by separate correspondence. A diary entry does not request an eligibility waiver. A request outside the current 6-to-18-month window requires an AA Form, justification and CO endorsement.',
+     how=['Ask IPAC and MMSR-2 whether your request needs a waiver. Confirm its form, justification, endorsements and deciding authority before submission. Mark this item not applicable if no waiver is needed.',
+          'For a request outside the window, the MMSR page requires O-5 or O-6 CO endorsement. Eligibility and grade waivers have separate approval requirements; a submission does not establish approval.'],
+     owner='You', due={'item': 'ret-request-e', 'days': -7},
+     cite=[c(MCO, '7004.8.a', 'A Marine requesting waiver of any criteria must submit a written request via the chain of command with justification and endorsements to CMC (MMSR-2). Requests for waivers via unit diary will be disapproved.', UMCO),
+           c(MMSR, 'Outside of 6-18 month window', 'Waiver request must be submitted with an AA Form with justification and Commanding Officer Endorsement (O5 or O6) to CMC (MMSR-2E).', UMMSR)],
+     verify='IPAC and MMSR-2: determine whether a waiver applies and confirm the package, submission date and deciding authority.',
+     when=['retire', 'enlisted'], basis='target')
 item('ret-request-o', 'sep', 'Submit the retirement request by unit diary', "The MARADMIN window is 6 to 18 months before the date you request; the order's own window is 4 to 14 months. The board sets a planning target of 9 months out, inside both. The target does not decide when approval comes; HQMC does. Do not make big personal commitments on the strength of a submitted request.",
      how=['Sign Appendix J for the service record.', 'IPAC submits by unit diary with your requested date.', "A request outside the window, or one needing a waiver, goes to MMSR-2 by separate correspondence with the chain's endorsements.", 'Supply desired leave and PTAD dates, duration and planned detachment date with the separation request. Ask IPAC and MMSR-2 to check the target against the message window, the manual window and 120 days plus desired leave/PTAD. Resolve any conflict before submission.'],
      owner='You',
@@ -398,13 +477,18 @@ item('ret-request-o', 'sep', 'Submit the retirement request by unit diary', "The
      verify='IPAC and MMSR-2: confirm routing, submission date, the governing window and 120 days plus desired leave/PTAD before the requested action date.',
      when=['retire', 'officer'],
      basis='target')
-item('ret-request-e', 'sep', 'Submit the enlisted retirement or FMCR request', 'The message prints a 6-to-18-month retirement window, while manual 7005.1 prints 4 to 14 months for retirement or FMCR and rejects diary requests outside it. The 9-month target does not settle the governing window or FMCR applicability. IPAC and MMSR-2 must confirm the approved action and date.',
-     how=['Ask IPAC and the career planner for the enlisted retirement request route and the forms it needs.', 'Supply desired leave and PTAD dates, duration and planned detachment date with the separation request. Ask IPAC and MMSR-2 to check the target against the message window, the manual window and 120 days plus desired leave/PTAD. Resolve any conflict before submission.', 'Sign Appendix J and confirm Retired List versus FMCR transfer with IPAC.'],
-     owner='You',
+item('ret-request-e', 'sep', 'Unit diary: submit the enlisted retirement or FMCR request', 'The current MMSR-2 guidance applies the 6-to-18-month window to retirement and FMCR requests. Manual 7005.1 still prints 4 to 14 months. The board targets 9 months, inside both. Submission does not approve your date; do not make major personal commitments based on submission alone.',
+     how=['After eligibility review and CO counseling, give the reporting unit your signed Appendix J and requested action date. The reporting unit submits by MCTFS unit diary to MMSR-2; IPAC confirms local processing.', 'Supply desired leave and PTAD dates, duration and planned detachment date with the request. Ask IPAC and MMSR-2 to check 120 days plus desired leave/PTAD and any earlier deployment deadline. Move the target earlier if needed, within the current window.', 'A request outside the current window goes by separate correspondence with justification and endorsements to MMSR-2. Confirm the AA Form and endorsements on the waiver item.'],
+     owner='Reporting unit / IPAC',
      due={'easMonths': -9, 'biz': 'prev'},
+     window={'from': {'easMonths': -18}, 'to': {'easMonths': -6}},
+     kind='window',
      critical=True,
      presence=True,
      cite=[c('MARADMIN 175/24', '2', 'requests for retirement or resignation will be submitted not more than 18 months and not less than six months prior to the requested retirement or resignation date.', 'https://www.marines.mil/News/Messages/Messages-Display/Article/3739611/'),
+           c(MMSR, 'Traditional Retirement', 'Reporting units must submit requests for retirement/transfer to the FMCR via the unit diary system per (MARADMIN 175/24) MCTFS PRIUM (100210) after having fully determined the Marine\u2019s eligibility based upon the criteria. Timeline. Submit requests for retirement/transfer to the FMCR not more than 18 months and not less than six months before the requested date.', UMMSR),
+           c(MCO, '7005.1', 'Reporting units must submit requests for retirement/transfer to the FMCR via the unit diary system per reference (cn) MCTFS PRIUM (Online).', UMCO),
+           c(MCO, '7005.2', 'Marines requesting retirement/transfer to the FMCR are cautioned not to make significant personal commitments (such as buying or selling a house or business) based upon mere submission of a request.', UMCO),
            c('MCO 1900.16 CH-3 (MARCORSEPMAN)', '1010.2.d', 'If leave is desired in conjunction with a request for separation, the appropriate separation request should be submitted at least 120 days plus the amount of desired leave (to include PTAD) before the effective date of separation. When the request is submitted via unit diary, enter the planned detachment date (PDD) as part of the unit diary request for separation.', 'https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf'),
            c('MCO 1900.16 CH-3 (MARCORSEPMAN)', '1010.2.e', 'Marines anticipating terminal leave in conjunction with separation must inform the CMC (MMSR) of the date and duration of the desired leave upon submission of the request.', 'https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf'),
            c('MCO 1900.16 CH-3 (MARCORSEPMAN)', '7005.1', 'Submit requests for retirement/transfer to the FMCR not more than 14 months and not less than four months before the requested date. Requests submitted outside this time frame are not accepted in MCTFS and must be submitted, with justification and endorsements, by separate correspondence or message to CMC (MMSR-2)', 'https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf'),
@@ -413,6 +497,39 @@ item('ret-request-e', 'sep', 'Submit the enlisted retirement or FMCR request', '
      verify='IPAC and MMSR-2: confirm routing, submission date, the governing window and 120 days plus desired leave/PTAD before the requested action date.',
      when=['retire', 'enlisted'],
      basis='target')
+item('ret-receipt-e', 'sep', 'Confirm diary acceptance and HQMC receipt separately',
+     'A request flag is not HQMC receipt or approval. The reporting unit confirms acceptance through EDFR and TRF. MMSR-2 acknowledges receipt with a pending flag. The board targets a check 7 days after submission; no source promises receipt within 7 days.',
+     how=['Ask IPAC for the EDFR acceptance and requested date. A request RER flag of 5 or 6 records submission; a pending A or B flag records MMSR-2 acknowledgment.', 'Record actual submission and HQMC acknowledgment separately in the notes. Keep the approval item waiting until the approved flag posts.'],
+     owner='IPAC', due={'item': 'ret-request-e', 'days': 7},
+     cite=[c(MCO, '7006.1', 'Acceptance of the unit diary request will be indicated on the reporting unit\u2019s electronic diary feedback report (EDFR) and the Transaction Research File (TRF). A \u201crequest\u201d \u201c5\u201d or \u201c6\u201d ... (RER) flag will post in MCTFS indicating a request submission.', UMCO),
+           c(MCO, '7006.2', 'A \u201crequest\u201d RER flag does not indicate receipt at Headquarters Marine Corps (HQMC). CMC (MMSR-2) acknowledges receipt of the request by entering a \u201cpending\u201d \u201cA\u201d or \u201cB\u201d RER flag in the unit diary system.', UMCO)],
+     verify='IPAC and MMSR-2: confirm diary acceptance, requested date and separate HQMC acknowledgment; neither is retirement approval.',
+     when=['retire', 'enlisted'], basis='target')
+item('ret-pcs-e', 'sep', 'PCS cancellation: submit within 10 working days of receipt',
+     'If your FMCR request involves canceling PCS orders, send it to MMSR-2 with MMEA or RAM as an information addressee within 10 working days after receipt. MMEA is not the retirement request destination. MMSR-2 must confirm the requested FMCR date against the PCS criteria.',
+     how=['On receipt of orders, contact IPAC and the assignments monitor. Have them count 10 working days using the applicable office calendar. Give Claude the confirmed deadline and ask Claude to record it on this item. Keep it open until submitted.', 'Confirm the date rules in 7004.3 with MMSR-2 before requesting PCS cancellation. Mark this item not applicable if no PCS cancellation is involved.'],
+     owner='You', due=None, critical=True,
+     cite=[c(MCO, '7004.3.c', 'Requests involving cancellation of PCS orders and transfer to the FMCR must be forwarded to CMC (MMSR-2), with CMC (MMEA or RAM) as an information addressee. Submit the request no later than 10 working days after receipt of orders.', UMCO)],
+     verify='IPAC, assignments monitor and MMSR-2: confirm receipt, the 10-working-day deadline and FMCR date; include MMEA or RAM for information.',
+     when=['retire', 'enlisted'], basis='rule')
+item('ret-report-e', 'sep', 'Tell the command about changes after submission',
+     'After submission, the command must immediately notify MMSR-2 about medical disqualification, reassignment, promotion or selection, disciplinary action, lost time or death. The requirement continues after approval. The setup date is a planning reminder to review this duty.',
+     how=['Tell IPAC and the command promptly if your status changes. They notify MMSR-2, and MMPR-2 for promotion or selection. If you are referred to IDES, contact your PEBLO; the command requests MMSR-2 disposition instructions. Do not assume the approved release can proceed.'],
+     owner='CO / IPAC', due={'date': 'SETUP'},
+     cite=[c(MCO, '7005.6', 'Once the request for retirement/transfer to the FMCR has been submitted, immediately notify CMC (MMSR-2) if the Marine is: ... Found not physically qualified ... Deceased; ... Reassigned; ... Promoted or selected for promotion (also notify MMPR-2); ... Processed for disciplinary action; or ... Subject of lost time (include number of days and reason).', UMCO),
+           c(MCO, '7005.6.a', 'If the Marine is referred to the Integrated Disability Evaluation System, notify CMC (MMSR-2) with pertinent details and request disposition instructions.', UMCO),
+           c(MCO, '7007.3', 'Once the CMC approval authority is received, immediately notify CMC (MMSR-2) by message when any of the conditions outlined in paragraph 7005.6 occur.', UMCO)],
+     verify='CO, IPAC and MMSR-2: confirm required notifications and release instructions; MMPR-2 handles promotion notice and PEBLO handles disability processing.',
+     when=['retire', 'enlisted'], basis='target')
+item('ret-modify-e', 'sep', 'If changing the request, submit by 45 days before the action',
+     'A request to modify or cancel enlisted retirement or FMCR transfer requires justification and endorsements by separate correspondence to MMSR-2 no later than 45 days before the effective date. Unit diary cannot submit it. MMSR-2 must confirm whether your reason meets the approval criteria.',
+     how=['If you need a change, contact IPAC and MMSR-2 early and submit by the rule deadline. If no change is needed, mark this item not applicable. The board date counts from your action date; have IPAC confirm it against the effective date in your paperwork.', 'Cancellation requires an unconditional agreement to serve at least 2 years from approval and not request FMCR transfer during that period except for hardship or approaching service limits. It does not authorize service beyond ECFC limits.', 'After transfer to the FMCR or Retired List, a change request goes to BCNR. Before transfer, MMSR-2 confirms the route and approving authority.'],
+     owner='You', due={'eas': -45}, critical=True,
+     cite=[c(MCO, '7005.8.a', 'Submit requests to modify or cancel a retirement/transfer to the FMCR with justification and endorsements via separate correspondence to CMC ... not later than 45 days before the effective date. Requests can not be submitted by unit diary.', UMCO),
+           c(MCO, '7005.8.e', 'Cancellation requests are unconditional and must include a statement from the Marine agreeing to extend the enlistment for an appropriate service obligation of no less than 2 years from the date the request for cancellation is approved. The Marine must also agree to not submit a request for transfer to the FMCR during that period, except for reasons of hardship or approaching service limits. A Marine will not be authorized service beyond ECFC service limits to meet a cancellation obligation.', UMCO),
+           c(MCO, '7019.3', 'Requests to change previously approved FMCR/retirement requests after the member has been transferred to the FMCR or retired list must be submitted to the Board for Correction of Naval Records (BCNR).', UMCO)],
+     verify='IPAC and MMSR-2: confirm applicability, effective date, the 45-day deadline, endorsements and cancellation obligation; BCNR handles changes after transfer.',
+     when=['retire', 'enlisted'], basis='rule')
 item('ret-pcs', 'sep', 'PCS orders and the retirement request', 'A retirement request involving PCS cancellation must be submitted no later than 10 working days after receipt of orders to MMSR-2, with MMOA as an information addressee. The deadline is unresolved until receipt and the office working-day calendar are confirmed.',
      how=['Record the PCS orders receipt date. Have the monitor and IPAC count 10 working days using the office-confirmed calendar. Enter that deadline; weekend adjustment alone cannot count working days.', 'The date is pending confirmation by the assignments monitor, IPAC and MMSR-2. Give Claude the date the office confirms and ask Claude to record it on this item. Keep the item open until the action is complete.'],
      owner='You',
@@ -421,21 +538,25 @@ item('ret-pcs', 'sep', 'PCS orders and the retirement request', 'A retirement re
      verify='Officer assignments monitor, IPAC, MMSR-2 and MMOA: confirm orders receipt, the 10-working-day deadline, submission route and information addressee.',
      when=['retire', 'officer'],
      basis='rule')
-item('ret-approval', 'sep', 'Retirement approved and the date populated in MCTFS', 'Approval gives VA the known separation date a BDD claim needs and lets IPAC cut orders.',
-     how=['IPAC sees approval through the EDFR.', 'Check your MOL Basic Individual Record for the date.'],
+item('ret-approval', 'sep', 'Retirement or FMCR approved and the date populated in MCTFS', 'Confirm the approved action and date before relying on release authority. For enlisted Marines, MMSR-2 posts approval on EDFR with an approved RER flag of 7 or 8. A request or pending flag is not approval.',
+     how=['Ask IPAC for approval and the approved date. Confirm the last active-duty day separately for BDD.', 'For enlisted requests, DC M&RA is the final Retired List approval authority; the Director, Manpower Management, has delegated FMCR approval authority. MMSR-2 processes and posts the decision. Do not use a staffing estimate as an approval deadline.'],
      owner='MMSR-2',
      due=None,
      critical=True,
-     cite=[],
-     verify='IPAC: has approval posted, and does the date match the request?',
+     cite=[c(MCO, '7001.4', 'Final approval authority of requests for transfer to the retired list rests with the DC M&RA. The DC M&RA has delegated approval authority for requests to transfer to the FMCR to the Director, Manpower Management.', UMCO),
+           c(MCO, '7006.3', 'CMC (MMSR-2) posts approvals in MCTFS which reflect on the unit\u2019s EDFR with an \u201capproved\u201d RER flag. Written authority for release or issuance of orders is not provided. The \u201capproved\u201d \u201c7\u201d or \u201c8\u201d RER flag is the authority to release.', UMCO)],
+     verify='IPAC and MMSR-2: confirm approval, action and date; for enlisted requests, DC M&RA decides Retired List approval and the Director, Manpower Management, decides FMCR approval.',
      status='waiting',
      when=['retire'],
      basis='target')
-item('ret-orders', 'sep', 'Retirement orders issued', 'The unit issues orders once approval posts.',
+item('ret-orders', 'sep', 'Retirement or FMCR orders issued', 'The responsible unit issues orders after approval. For enlisted Marines, use Figure 7-1 for FMCR or Figure 7-2 for the Retired List. Release must match the MMSR-2 approved date.',
+     how=['Ask IPAC to confirm the approved date and applicable orders format. Complete the shared transition, STR, SBP and benefits items; this item does not replace those gates.'],
      owner='IPAC',
      due=None,
-     cite=[],
-     verify='IPAC: when do retirement orders cut at your unit?',
+     cite=[c(MCO, '7006.3', 'The responsible order writing unit will issue orders and provide any required documents.', UMCO),
+           c(MCO, '7007.4.a', 'Issue orders per the format contained in Figure 7-1 or 7-2.', UMCO),
+           c(MCO, '7007.2', 'Release from active duty will not be made on a date other than as directed by the CMC (MMSR-2), unless a modification to the approved date is granted by the CMC (MMSR-2).', UMCO)],
+     verify='IPAC, order writing unit and MMSR-2: confirm approval, applicable orders format and release date.',
      when=['retire'],
      basis='target')
 item('ret-sbp', 'sep', 'Survivor Benefit Plan: counseling and the DD 2656 to DFAS 30 days before retirement', "DFAS must have the completed DD 2656 at least 30 days before your date; the board targets 45 to leave slack. Any election short of full coverage needs your spouse's notarized concurrence. No election means full coverage is deducted automatically.",
@@ -742,9 +863,9 @@ item('va-add', 'va', 'Confirm late additions with VA before BDD closes', 'The co
      cite=[c('VA Benefits and Services Participant Guide v6.1', 'Module 3', 'Submit your BDD claims between 180 and 90 days before the very last day of service on active duty. For BDD purposes, this separation date is not when you start Transitional or Terminal Leave or Permissive Temporary Duty for seeking a home.', 'https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf')],
      verify='VA benefits office or accredited VSO: confirm the procedure and actual deadline for adding conditions to your existing claim.',
      basis='target')
-item('va-sha', 'va', 'SHA results back to DoD 30 days before your date', 'Complete the SHA and return it to DoD at least 30 days before separation to satisfy the discharge examination requirement. Confirm completion, return and clinic acceptance.',
+item('va-sha', 'va', 'SHA return cutoff if using it instead of a SHPE', 'If the SHA is used instead of a separate SHPE, return completed results to DoD at least 30 days before your confirmed last active-duty day. The military medical clinic and VA must confirm applicability, return and acceptance. The cutoff stays pending until the office confirms your service-end date.',
      owner='Medical',
-     due={'eas': -30},
+     due={'item': 'va-service-end', 'days': -30},
      cite=[c('VA Benefits and Services Participant Guide v6.1', 'Module 3', 'If you complete your SHA exam and return it to DOD at least 30 days before separation, it will serve as your DOD discharge exam, and you will not need to complete a SHPE.', 'https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf')],
      verify='Military medical clinic and VA: confirm completed SHA results returned to DoD by the required date and whether SHPE is still needed.',
      basis='rule')
@@ -1212,12 +1333,16 @@ def _leak_words():
 
 blob = json.dumps(seed, ensure_ascii=False)
 if any(d in blob for d in DASHES): errs.append("em or en dash in seed text")
+# The verbatim 7005.4.b quote uses generic pronouns, not a personal fact.
+# Exempt only that exact quote; its official source is verified below.
+privacy_blob = blob.replace('Counsel the Marine concerning his or her potential for recall to active duty and/or mobilization.', '')
 PERSONAL = _leak_words()
 for p in PERSONAL:
-    if p in blob: errs.append(f"personal string in seed: {p!r}")
+    if p in privacy_blob: errs.append(f"personal string in seed: {p!r}")
 
 # ---------------- quote verification against the local regulation texts ----------------
 LOCAL = {MCO: "mco-1900.16-ch3.txt", LVO: "mco-1050.3j.txt", "MARADMIN 175/24": "maradmin-175-24.txt",
+         "MARADMIN 326/23": "maradmin-326-23.txt", MMSR: "mmsr-2-enlisted-retirements.txt",
          "MARADMIN 454/26": "maradmin-454-26.txt", "MARADMIN 045/25": "maradmin-045-25.txt",
          "MARADMIN 280/24": "maradmin-280-24.txt", "NAVMC 1700.2B": "navmc-1700.2b.txt"}
 def norm(s):

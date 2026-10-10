@@ -18,8 +18,18 @@ REG_FILES = {
     'MARADMIN 045/25': 'regs/maradmin-045-25.txt',
     'MARADMIN 454/26': 'regs/maradmin-454-26.txt',
     'MARADMIN 280/24': 'regs/maradmin-280-24.txt',
+    'MARADMIN 326/23': 'regs/maradmin-326-23.txt',
 }
 SUPPLEMENTAL_SOURCES = {
+    ('HQMC MMSR-2 enlisted retirement guidance', 'Traditional Retirement'): (
+        'regs/mmsr-2-enlisted-retirements.txt',
+        'https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/'),
+    ('HQMC MMSR-2 enlisted retirement guidance', 'Outside of 6-18 month window'): (
+        'regs/mmsr-2-enlisted-retirements.txt',
+        'https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/'),
+    ('HQMC MMSR-2 enlisted retirement guidance', 'OCONUS'): (
+        'regs/mmsr-2-enlisted-retirements.txt',
+        'https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/'),
     ('USMC TRP checklist', 'Step One'): (
         'regs/mccs-trp-checklist.txt',
         'https://hawaii.usmc-mccs.org/marine-family-support/transition-readiness-program'),

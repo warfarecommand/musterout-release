@@ -20,9 +20,11 @@ Check in this order and take the first that fits.
 ## 1. Screen first
 Ask: "Which of these is you: resigning a regular commission, retiring, separating at EAS, or something else (medical separation, involuntary separation, Guard or Reserve, another service)?" Something else means stop here: open `SUPPORT.md`, give the "who to call" line for their case, and do not build a board. Say plainly that the board would look complete and would be wrong for them.
 
+Covered enlisted retirement means at least 20 years of creditable active service: FMCR transfer at 20 to 29 years or direct retirement at 30 or more. Ask whether they mean active service retirement or nonregular Reserve retirement if unclear. IPAC and MMSR-2 confirm eligibility and dates. E-6 and above can reach 20 under the published service limits; an E-1 to E-5 grade group requires a record review of prior active service or an approved exception. A grade group alone does not establish eligibility. The board includes the review item for each enlisted grade group and reuses transition, SBP and benefits items.
+
 ## 2. The three answers that build the plan (no skip)
 1. **Path**: `resign` (officer resigning a regular commission), `retire` (20 or more years, officer or enlisted), or `eas` (separating at the end of a contract). Ask what they intend, not what they qualify for; an officer with 20 years who means to resign is `resign`.
-2. **Date**: the date they are planning to, in `YYYY-MM-DD`. If it is not approved yet, record it as a planning date (`dateBasis: "planned"`); if orders or an approval exist, `dateBasis: "approved"`. If they do not say, `dateBasis` is `null`. Officer retirements are effective on the first of a month (MCO 1900.16 para 252). Enlisted retirement and separation dates follow the paperwork; take the date they have and tell them to confirm it with IPAC. Tell them the page shows the basis next to the date, for example "EAS 1 MAY 2027, planned".
+2. **Date**: the date they are planning to, in `YYYY-MM-DD`. If it is not approved yet, record it as a planning date (`dateBasis: "planned"`); if orders or an approval exist, `dateBasis: "approved"`. If they do not say, `dateBasis` is `null`. Ordinary officer and enlisted Retired List actions are effective on the 1st of a month. Enlisted FMCR transfer is on the last day of a month, with FMCR status starting on the next day (MCO 1900.16, 7007.1). Take the action date they have and tell them to confirm it and the separate last active-duty day with IPAC and MMSR-2. Never infer the action from the grade group. Explain that the page labels the date as planned or approved.
 3. **Grade group**: `o5` (O-5 and above), `o14` (O-1 to O-4), `cwo45`, `wo13`, `e89`, `e67`, `e15`.
 If any of the three is unknown, offer two choices: a demo board (marked as demo on the page, replaced later by step 9) or pause and come back. Never guess.
 
@@ -39,14 +41,14 @@ Publish `board/board.html` with the Artifact tool: title "Muster Out", icon "cal
 
 The moment the tool returns a URL, write `my/pending.json`. That URL is the only board URL from now on.
 ```json
-{"url": "https://claude.ai/artifact/EXAMPLE", "pack": "usmc-2026.10", "version": "0.1.3", "created": "2026-10-09T15:00:00Z", "stage": "published"}
+{"url": "https://claude.ai/artifact/EXAMPLE", "pack": "usmc-2026.10", "version": "0.1.4", "created": "2026-10-09T15:00:00Z", "stage": "published"}
 ```
 `pack` and `version` come from `config.json`. `created` is now in ISO 8601 UTC.
 
 Write exactly these three documents with ArtifactData `batch` on that URL. The keys below are the document paths. Values are JSON booleans, numbers, and nulls, never the words "yes" or "no".
 ```json
 {
-  "meta/profile": {"name": "Capt A.B. Smith, USMC", "grade": "o14", "path": "resign", "reserve": true, "sb": false, "years": 9, "home": null, "base": null, "family": null, "demo": false, "dateBasis": "planned", "version": "0.1.3", "updated": "2026-10-09T15:00:00Z"},
+  "meta/profile": {"name": "Capt A.B. Smith, USMC", "grade": "o14", "path": "resign", "reserve": true, "sb": false, "years": 9, "home": null, "base": null, "family": null, "demo": false, "dateBasis": "planned", "version": "0.1.4", "updated": "2026-10-09T15:00:00Z"},
   "meta/settings": {"eas": "2027-09-01", "sbStart": null, "sbEnd": null, "planSet": "2026-10-09"},
   "meta/ledger": {"balance": null, "asOf": null, "accrualPerMonth": 2.5, "note": null}
 }
@@ -69,7 +71,7 @@ If the page shows "Setting up your board" for more than two minutes, ask them to
 
 When all three checks pass, set `stage` in `my/pending.json` to `"seeded"`. Then write `my/board.json` and delete `my/pending.json`. The pointer holds exactly four fields and no profile:
 ```json
-{"url": "https://claude.ai/artifact/EXAMPLE", "pack": "usmc-2026.10", "version": "0.1.3", "created": "2026-10-09T15:00:00Z"}
+{"url": "https://claude.ai/artifact/EXAMPLE", "pack": "usmc-2026.10", "version": "0.1.4", "created": "2026-10-09T15:00:00Z"}
 ```
 
 ## 7. The count, then hand off

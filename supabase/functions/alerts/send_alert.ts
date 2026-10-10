@@ -1,5 +1,5 @@
 // Owner-run mail only. Reader: a confirmed subscriber. Effect: learn a correction.
-import { database, ENDPOINT, escapeHtml, FROM, hash, RECENT_HASHES, type Env, type Row, token, unsubscribeHeaders } from "./index.ts";
+import { database, ENDPOINT, FROM, hash, RECENT_HASHES, PLATFORM_CONSENT, PLATFORM_SCOPE, MUSTEROUT_SCOPE, renderEmail, type Env, type Row, token, unsubscribeHeaders } from "./index.ts";
 
 export function readMessage(source: string): { subject: string; paragraphs: string[] } {
   const lines = source.replace(/\r\n/g, "\n").trim().split("\n");
@@ -10,17 +10,19 @@ export function readMessage(source: string): { subject: string; paragraphs: stri
   return { subject, paragraphs };
 }
 
-export async function sendAlert(source: string, send: boolean, deps: { env: Env; fetch: typeof fetch; now?: () => number; print: (line: string) => void }): Promise<void> {
+export async function sendAlert(source: string, send: boolean, deps: { env: Env; fetch: typeof fetch; now?: () => number; print: (line: string) => void; audience?: "corrections" | "platform"; musterOutUpdate?: boolean }): Promise<void> {
   const { subject, paragraphs } = readMessage(source);
   const db = database(deps.env, deps.fetch);
-  if (!send) { deps.print(String(await db.count())); return; }
+  const platformOnly = deps.audience === "platform";
+  const consentFilter = platformOnly ? { confirm_hash: `eq.${PLATFORM_CONSENT}` } : {};
+  if (!send) { deps.print(String(await db.count(consentFilter))); return; }
   const key = deps.env("RESEND_API_KEY");
   if (!key) throw new Error("RESEND_API_KEY is not configured");
   // Take a paginated snapshot of IDs only. Recheck consent before each send.
   const ids: string[] = [];
   let after = "";
   while (true) {
-    const rows = await db.rows<{ id: string }>("alert_signups", "GET", { select: "id", status: "eq.confirmed", order: "id.asc", limit: "500", ...(after ? { id: `gt.${after}` } : {}) });
+    const rows = await db.rows<{ id: string }>("alert_signups", "GET", { select: "id", status: "eq.confirmed", ...consentFilter, order: "id.asc", limit: "500", ...(after ? { id: `gt.${after}` } : {}) });
     if (!rows.length) break;
     ids.push(...rows.map((row) => row.id));
     after = rows[rows.length - 1].id;
@@ -34,16 +36,17 @@ export async function sendAlert(source: string, send: boolean, deps: { env: Env;
       let reserved: Row | undefined;
       const raw = token(), digest = await hash(raw);
       for (let retry = 0; retry < 3; retry++) {
-        const row = (await db.rows("alert_signups", "GET", { id: `eq.${id}`, status: "eq.confirmed", select: "id,email,status,unsubscribe_hashes,last_sent_at" }))[0];
+        const row = (await db.rows("alert_signups", "GET", { id: `eq.${id}`, status: "eq.confirmed", ...consentFilter, select: "id,email,status,confirm_hash,unsubscribe_hashes,last_sent_at" }))[0];
         if (!row) break;
         const hashes = [...row.unsubscribe_hashes, digest].slice(-RECENT_HASHES);
-        reserved = (await db.rows("alert_signups", "PATCH", { id: `eq.${id}`, status: "eq.confirmed", unsubscribe_hashes: `eq.{${row.unsubscribe_hashes.join(",")}}` }, { unsubscribe_hashes: hashes }))[0];
+        reserved = (await db.rows("alert_signups", "PATCH", { id: `eq.${id}`, status: "eq.confirmed", ...consentFilter, unsubscribe_hashes: `eq.{${row.unsubscribe_hashes.join(",")}}` }, { unsubscribe_hashes: hashes }))[0];
         if (reserved) break;
         if (retry === 2) throw new Error("Concurrent update prevented a send; stop and review before retrying");
       }
       if (!reserved) continue;
       const unsubscribeUrl = `${ENDPOINT}?unsubscribe=${raw}`;
-      messages.push({ from: FROM, to: [reserved.email], subject, text: [...paragraphs, `Unsubscribe and delete your address: ${unsubscribeUrl}`].join("\n\n"), html: paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join("") + `<p><a href="${unsubscribeUrl}">Unsubscribe and delete your address</a></p>`, headers: unsubscribeHeaders(unsubscribeUrl) });
+      const mail = renderEmail({ preheader: paragraphs[0] ?? subject, eyebrow: deps.musterOutUpdate ? "Muster Out update" : platformOnly ? "Warfare Command updates" : "Muster Out correction alerts", heading: subject, paragraphs, callout: deps.musterOutUpdate ? { label: "To update your board, paste this into any Claude chat", body: "Update Muster Out. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/UPDATE.md and follow it." } : undefined, reason: reserved.confirm_hash === PLATFORM_CONSENT ? `You received this because you confirmed ${PLATFORM_SCOPE}.` : `You received this because you confirmed Muster Out ${MUSTEROUT_SCOPE}.`, unsubscribeUrl });
+      messages.push({ from: FROM, to: [reserved.email], subject, text: mail.text, html: mail.html, headers: unsubscribeHeaders(unsubscribeUrl) });
       receipts.push({ id, digest });
     }
     if (!messages.length) continue;
@@ -56,20 +59,21 @@ export async function sendAlert(source: string, send: boolean, deps: { env: Env;
     sentCount += messages.length;
     deps.print(`Accepted: ${sentCount}`);
     const last_sent_at = new Date(deps.now?.() ?? Date.now()).toISOString();
-    for (const receipt of receipts) await db.rows("alert_signups", "PATCH", { id: `eq.${receipt.id}`, status: "eq.confirmed", unsubscribe_hashes: `cs.{${receipt.digest}}` }, { last_sent_at });
+    for (const receipt of receipts) await db.rows("alert_signups", "PATCH", { id: `eq.${receipt.id}`, status: "eq.confirmed", ...consentFilter, unsubscribe_hashes: `cs.{${receipt.digest}}` }, { last_sent_at });
   }
   deps.print(`Accepted total: ${sentCount}`);
 }
 
 if (import.meta.main) {
   const args = Deno.args;
-  const files = args.filter((arg) => arg !== "--send");
-  if (files.length !== 1 || args.some((arg) => arg.startsWith("--") && arg !== "--send") || args.filter((arg) => arg === "--send").length > 1) {
-    console.error("Usage: deno run --allow-env --allow-net --allow-read send_alert.ts message.txt [--send]");
+  const flags = ["--send", "--platform", "--musterout-update"];
+  const files = args.filter((arg) => !flags.includes(arg));
+  if (files.length !== 1 || args.some((arg) => arg.startsWith("--") && !flags.includes(arg)) || flags.some((flag) => args.filter((arg) => arg === flag).length > 1)) {
+    console.error("Usage: deno run --allow-env --allow-net --allow-read send_alert.ts message.txt [--platform] [--musterout-update] [--send]");
     Deno.exit(1);
   }
   try {
-    await sendAlert(await Deno.readTextFile(files[0]), args.includes("--send"), { env: (name) => Deno.env.get(name), fetch, print: console.log });
+    await sendAlert(await Deno.readTextFile(files[0]), args.includes("--send"), { env: (name) => Deno.env.get(name), fetch, print: console.log, audience: args.includes("--platform") ? "platform" : "corrections", musterOutUpdate: args.includes("--musterout-update") });
   } catch (error) {
     // Suppress network exception text because it can contain private URLs.
     console.error(error instanceof Error && !/https?:|@/.test(error.message) ? error.message : "Send stopped; review delivery before retrying");

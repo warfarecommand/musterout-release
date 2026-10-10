@@ -299,19 +299,27 @@
         "verified": true
       },
       {
-        "quote": "Submit requests for retirement/transfer to the FMCR not more than 14 months and not less than four months before the requested date. Requests submitted outside this time frame are not accepted in MCTFS and must be submitted, with justification and endorsements, by separate correspondence or message to CMC (MMSR-2)",
-        "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
-        "file": "regs/mco-1900.16-ch3.txt",
-        "line_start": 21109,
-        "line_end": 21113,
-        "verified": true
-      },
-      {
         "quote": "The Marine requesting action is required to sign a copy of Appendix J from this Manual.",
         "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
         "file": "regs/mco-1900.16-ch3.txt",
         "line_start": 21103,
         "line_end": 21105,
+        "verified": true
+      },
+      {
+        "quote": "Reporting units must submit requests for retirement/transfer to the FMCR via the unit diary system per reference (cn) MCTFS PRIUM (Online).",
+        "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+        "file": "regs/mco-1900.16-ch3.txt",
+        "line_start": 21102,
+        "line_end": 21103,
+        "verified": true
+      },
+      {
+        "quote": "Submit requests for retirement/transfer to the FMCR not more than 14 months and not less than four months before the requested date. Requests submitted outside this time frame are not accepted in MCTFS and must be submitted, with justification and endorsements, by separate correspondence or message to CMC (MMSR-2)",
+        "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+        "file": "regs/mco-1900.16-ch3.txt",
+        "line_start": 21109,
+        "line_end": 21113,
         "verified": true
       }
     ]
@@ -504,6 +512,255 @@
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "1401.3.b",
+    "quote": "To be eligible for FMCR/retirement, service obligations must be met and the Marine must have 20 or more years of active duty. Enlisted retirement requires at least 30 years of active duty.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 5464,
+    "line_end": 5466,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "1401.2",
+    "quote": "The CMC (MMSR) shall verify creditable service toward retirement and the retired pay multiplier (RPM) prior to approval of transfer to the retired list/FMCR.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 5403,
+    "line_end": 5405,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7004.11",
+    "quote": "A Marine must be serving on a valid contract of enlistment or extension to be eligible to retire or transfer to the FMCR.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21075,
+    "line_end": 21076,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7001.3",
+    "quote": "Enlisted Marines must transfer to the FMCR or retired list not later than the last day of the month in which they reach age 55.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 20850,
+    "line_end": 20851,
+    "verified": true
+  },
+  {
+    "ref": "MARADMIN 326/23",
+    "para": "3.c",
+    "quote": "Effective 1 July 2023, the maximum age limit for enlisted Marines’ service is hereby 58 years old.",
+    "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/3441944/enlisted-active-duty-service-limits/",
+    "file": "regs/maradmin-326-23.txt",
+    "line_start": 12,
+    "line_end": 12,
+    "verified": true
+  },
+  {
+    "ref": "HQMC MMSR-2 enlisted retirement guidance",
+    "para": "Traditional Retirement",
+    "quote": "20-29 years of active service; transfer to the FMCR on the last day of the month. ... 30 or more years of active service; transfer to the Retired List the first day of the month",
+    "url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/",
+    "file": "regs/mmsr-2-enlisted-retirements.txt",
+    "line_start": 46,
+    "line_end": 47,
+    "verified": true,
+    "source_url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/",
+    "quotes": [
+      {
+        "quote": "20-29 years of active service; transfer to the FMCR on the last day of the month. ... 30 or more years of active service; transfer to the Retired List the first day of the month",
+        "url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/",
+        "file": "regs/mmsr-2-enlisted-retirements.txt",
+        "line_start": 46,
+        "line_end": 47,
+        "verified": true,
+        "source_url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/"
+      },
+      {
+        "quote": "Reporting units must submit requests for retirement/transfer to the FMCR via the unit diary system per (MARADMIN 175/24) MCTFS PRIUM (100210) after having fully determined the Marine’s eligibility based upon the criteria. Timeline. Submit requests for retirement/transfer to the FMCR not more than 18 months and not less than six months before the requested date.",
+        "url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/",
+        "file": "regs/mmsr-2-enlisted-retirements.txt",
+        "line_start": 43,
+        "line_end": 43,
+        "verified": true,
+        "source_url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/"
+      }
+    ]
+  },
+  {
+    "ref": "MARADMIN 326/23",
+    "para": "3.b.1",
+    "quote": "Cpl: 8 years active Marine Corps service Sgt: 12 years active Marine Corps service",
+    "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/3441944/enlisted-active-duty-service-limits/",
+    "file": "regs/maradmin-326-23.txt",
+    "line_start": 10,
+    "line_end": 10,
+    "verified": true,
+    "quotes": [
+      {
+        "quote": "Cpl: 8 years active Marine Corps service Sgt: 12 years active Marine Corps service",
+        "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/3441944/enlisted-active-duty-service-limits/",
+        "file": "regs/maradmin-326-23.txt",
+        "line_start": 10,
+        "line_end": 10,
+        "verified": true
+      },
+      {
+        "quote": "SSgt: 20 years active military service GySgt: 22 years active military service",
+        "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/3441944/enlisted-active-duty-service-limits/",
+        "file": "regs/maradmin-326-23.txt",
+        "line_start": 10,
+        "line_end": 10,
+        "verified": true
+      },
+      {
+        "quote": "1stSgt/MSgt: 27 years active military service SgtMaj/MGySgt: 30 years active military service",
+        "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/3441944/enlisted-active-duty-service-limits/",
+        "file": "regs/maradmin-326-23.txt",
+        "line_start": 10,
+        "line_end": 10,
+        "verified": true
+      }
+    ]
+  },
+  {
+    "ref": "MARADMIN 326/23",
+    "para": "2.c",
+    "quote": "These below service limits do not guarantee continued service; rather eligibility for continued service remains based on Marine Corps warfighting requirements, individual performance, and personal conduct.",
+    "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/3441944/enlisted-active-duty-service-limits/",
+    "file": "regs/maradmin-326-23.txt",
+    "line_start": 6,
+    "line_end": 6,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7004.1",
+    "quote": "An enlisted Marine of the Regular Marine Corps or Marine Corps Reserve who completes 20 or more years of active duty service in the Armed Forces may request transfer to the FMCR.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 20931,
+    "line_end": 20933,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7004.5.a",
+    "quote": "Marines in the grade of gunnery sergeant or above must serve two years in their current grade before transfer to the FMCR. Waiver of this requirement may only be approved by the DC, M&RA.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21004,
+    "line_end": 21007,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7004.4",
+    "quote": "Submit requests for transfer to the FMCR at least four months before the deployment date and before the unit’s official lock on date. When assigned to, or in direct support of, a carrier (CV) deployment, submit requests at least nine months before deployment.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 20996,
+    "line_end": 20999,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7004.2.a",
+    "quote": "Marines serving on an overseas tour will not be approved for transfer to the FMCR before completion of their tour as prescribed in reference (bq) MCO 1300.8, Marine Corps Personnel Assignment Policy, unless subject to ECFC.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 20940,
+    "line_end": 20942,
+    "verified": true
+  },
+  {
+    "ref": "HQMC MMSR-2 enlisted retirement guidance",
+    "para": "OCONUS",
+    "quote": "Marines serving on an overseas tour may be given favorable consideration to be approved for transfer to the FMCR before completion of their tour as prescribed in MCO 1300.8, unless subject to ECFC.",
+    "url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/",
+    "file": "regs/mmsr-2-enlisted-retirements.txt",
+    "line_start": 55,
+    "line_end": 55,
+    "verified": true,
+    "source_url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/"
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7004.7",
+    "quote": "Marines who have attended a military or civilian course lasting 20 weeks or more will not be approved for transfer to the FMCR before the completion of 24 months of active duty following completion of the course, or after they were terminated from the course, if attendance was in compliance with official orders. Marines who have successfully completed a military or civilian course less than 20 weeks in length will not be approved for transfer to the FMCR before the completion of 12 months active duty following completion of the course.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21023,
+    "line_end": 21030,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7005.4.a(3)",
+    "quote": "Sign the pre-application checklist to certify that the Marine has been advised of the ramifications of retirement/transfer to the FMCR before the request is submitted.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21154,
+    "line_end": 21156,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7005.4.b",
+    "quote": "Counsel the Marine concerning his or her potential for recall to active duty and/or mobilization.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21158,
+    "line_end": 21159,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "Appendix J, introduction",
+    "quote": "Upon completion, file a copy of this checklist in the Marine’s service record and forward the request via unit diary or other appropriate means to CMC (MMSR). For administrative purposes, the Marine’s parent command will retain the checklist until the actual retirement date.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 30430,
+    "line_end": 30434,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7005.3",
+    "quote": "in order to qualify for physical disability retirement benefits outlined in 10 U.S.C. Chapter 61, a Marine must be on active duty at the time the Secretary of the Navy approves any proceedings of a Physical Evaluation Board (PEB).",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21128,
+    "line_end": 21131,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7004.8.a",
+    "quote": "A Marine requesting waiver of any criteria must submit a written request via the chain of command with justification and endorsements to CMC (MMSR-2). Requests for waivers via unit diary will be disapproved.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21035,
+    "line_end": 21037,
+    "verified": true
+  },
+  {
+    "ref": "HQMC MMSR-2 enlisted retirement guidance",
+    "para": "Outside of 6-18 month window",
+    "quote": "Waiver request must be submitted with an AA Form with justification and Commanding Officer Endorsement (O5 or O6) to CMC (MMSR-2E).",
+    "url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/",
+    "file": "regs/mmsr-2-enlisted-retirements.txt",
+    "line_start": 68,
+    "line_end": 68,
+    "verified": true,
+    "source_url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/"
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
     "para": "2004.1",
     "quote": "Submit requests for voluntary retirement, not requiring waivers, via the unit diary system in MCTFS per reference (cn) MCTFS PRIUM (Online). The officer requesting retirement is required to sign a copy of Appendix J from this Manual for inclusion in the electronic service record. Requests for retirement will be submitted not more than 14 months and not less than four months prior to the requested retirement date.",
     "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
@@ -524,12 +781,170 @@
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7005.2",
+    "quote": "Marines requesting retirement/transfer to the FMCR are cautioned not to make significant personal commitments (such as buying or selling a house or business) based upon mere submission of a request.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21117,
+    "line_end": 21119,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7006.1",
+    "quote": "Acceptance of the unit diary request will be indicated on the reporting unit’s electronic diary feedback report (EDFR) and the Transaction Research File (TRF). A “request” “5” or “6” ... (RER) flag will post in MCTFS indicating a request submission.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21289,
+    "line_end": 21293,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7006.2",
+    "quote": "A “request” RER flag does not indicate receipt at Headquarters Marine Corps (HQMC). CMC (MMSR-2) acknowledges receipt of the request by entering a “pending” “A” or “B” RER flag in the unit diary system.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21298,
+    "line_end": 21300,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7004.3.c",
+    "quote": "Requests involving cancellation of PCS orders and transfer to the FMCR must be forwarded to CMC (MMSR-2), with CMC (MMEA or RAM) as an information addressee. Submit the request no later than 10 working days after receipt of orders.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 20969,
+    "line_end": 20972,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7005.6",
+    "quote": "Once the request for retirement/transfer to the FMCR has been submitted, immediately notify CMC (MMSR-2) if the Marine is: ... Found not physically qualified ... Deceased; ... Reassigned; ... Promoted or selected for promotion (also notify MMPR-2); ... Processed for disciplinary action; or ... Subject of lost time (include number of days and reason).",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21190,
+    "line_end": 21216,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7005.6.a",
+    "quote": "If the Marine is referred to the Integrated Disability Evaluation System, notify CMC (MMSR-2) with pertinent details and request disposition instructions.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21198,
+    "line_end": 21200,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7007.3",
+    "quote": "Once the CMC approval authority is received, immediately notify CMC (MMSR-2) by message when any of the conditions outlined in paragraph 7005.6 occur.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21364,
+    "line_end": 21366,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7005.8.a",
+    "quote": "Submit requests to modify or cancel a retirement/transfer to the FMCR with justification and endorsements via separate correspondence to CMC ... not later than 45 days before the effective date. Requests can not be submitted by unit diary.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21222,
+    "line_end": 21225,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7005.8.e",
+    "quote": "Cancellation requests are unconditional and must include a statement from the Marine agreeing to extend the enlistment for an appropriate service obligation of no less than 2 years from the date the request for cancellation is approved. The Marine must also agree to not submit a request for transfer to the FMCR during that period, except for reasons of hardship or approaching service limits. A Marine will not be authorized service beyond ECFC service limits to meet a cancellation obligation.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21254,
+    "line_end": 21260,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7019.3",
+    "quote": "Requests to change previously approved FMCR/retirement requests after the member has been transferred to the FMCR or retired list must be submitted to the Board for Correction of Naval Records (BCNR).",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21837,
+    "line_end": 21839,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
     "para": "2003.1.d(1)(c)",
     "quote": "Retirement requests involving cancellation of PCS orders must be forwarded to the CMC (MMSR-2) with the CMC (MMOA) as an information addressee. Submit the request no later than 10 working days after receipt of orders.",
     "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 6764,
     "line_end": 6767,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7001.4",
+    "quote": "Final approval authority of requests for transfer to the retired list rests with the DC M&RA. The DC M&RA has delegated approval authority for requests to transfer to the FMCR to the Director, Manpower Management.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 20853,
+    "line_end": 20855,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7006.3",
+    "quote": "CMC (MMSR-2) posts approvals in MCTFS which reflect on the unit’s EDFR with an “approved” RER flag. Written authority for release or issuance of orders is not provided. The “approved” “7” or “8” RER flag is the authority to release.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21306,
+    "line_end": 21309,
+    "verified": true,
+    "quotes": [
+      {
+        "quote": "CMC (MMSR-2) posts approvals in MCTFS which reflect on the unit’s EDFR with an “approved” RER flag. Written authority for release or issuance of orders is not provided. The “approved” “7” or “8” RER flag is the authority to release.",
+        "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+        "file": "regs/mco-1900.16-ch3.txt",
+        "line_start": 21306,
+        "line_end": 21309,
+        "verified": true
+      },
+      {
+        "quote": "The responsible order writing unit will issue orders and provide any required documents.",
+        "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+        "file": "regs/mco-1900.16-ch3.txt",
+        "line_start": 21311,
+        "line_end": 21313,
+        "verified": true
+      }
+    ]
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7007.4.a",
+    "quote": "Issue orders per the format contained in Figure 7-1 or 7-2.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21370,
+    "line_end": 21370,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "7007.2",
+    "quote": "Release from active duty will not be made on a date other than as directed by the CMC (MMSR-2), unless a modification to the approved date is granted by the CMC (MMSR-2).",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 21357,
+    "line_end": 21359,
     "verified": true
   },
   {
@@ -1151,5 +1566,15 @@
     "line_end": 4621,
     "verified": true,
     "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+  },
+  {
+    "ref": "MARADMIN 326/23",
+    "para": "4",
+    "quote": "This MARADMIN is not applicable to the Marine Corps Reserve.",
+    "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/3441944/enlisted-active-duty-service-limits/",
+    "file": "regs/maradmin-326-23.txt",
+    "line_start": 24,
+    "line_end": 24,
+    "verified": true
   }
 ]

@@ -93,6 +93,8 @@ p{margin:0}
 .stamp{font:600 12px/1 var(--mono);letter-spacing:.08em;border:1.5px solid var(--red);color:var(--red-ink);padding:7px 9px;border-radius:3px;white-space:nowrap;text-align:right}
 .stamp small{display:block;font:500 12px/1 var(--mono);color:var(--ink-3);letter-spacing:.1em;margin-bottom:4px}
 .banner{margin-top:10px;font:500 12px/1.4 var(--mono);color:var(--ink-2);background:var(--panel);border:1px solid var(--line);padding:8px 10px;border-radius:4px}
+.register-banner a{display:block;min-height:44px;padding:10px 12px;color:var(--ink);text-decoration:underline;text-underline-offset:3px;overflow-wrap:break-word}
+.register-banner{padding:0;border-left:2px solid var(--red)}
 .banner[data-kind="warn"]{border-color:var(--amber);color:var(--amber-ink)}
 #releaseBanner{overflow-wrap:anywhere}
 .claude-message{margin-top:12px}
@@ -340,6 +342,7 @@ footer{margin-top:28px;font:500 12px/1.5 var(--mono);color:var(--ink-3);border-t
     </div>
     <div class="stamp" id="stamp"><small>EAS</small>05 APR 2027</div>
   </header>
+  <div class="banner register-banner" id="registrationBanner" hidden></div>
   <div class="banner" id="releaseBanner" role="status" hidden></div>
   <div id="banner"></div>
   <section class="hero" id="hero" aria-label="Countdown"></section>
@@ -381,7 +384,7 @@ SEED = seedFor(DEFAULT_FLAGS);
 var S = {
   settings: clone(SEED.settings), ledger: clone(SEED.ledger), loes: clone(SEED.loes),
   items: {}, contacts: clone(SEED.contacts), blocks: clone(SEED.blocks || []), conditions: [], claim: clone(SEED.claim || {}), links: [], inbox: [], profile: clone(SEED.profile || {}), watch: null, watchError: null, reset: null, seeded: null, seeding: null, dbState: "init", dbIds: { items: {}, loes: {}, contacts: {}, claim: {} },
-  live: false, dbEmpty: false, canWrite: null, readOnly: true, release: null
+  live: false, dbEmpty: false, canWrite: null, readOnly: true, release: null, install: null, installLoaded: false
 };
 SEED.items.forEach(function(i){ S.items[i.id] = clone(i); });
 var UI = { tab: "brief", open: {}, cite: {}, filter: "all", range: "eas", whatIf: 0, sel: null, askBusy: false, copen: {}, calc: {} };
@@ -649,6 +652,66 @@ function newerVersion(latest, current){
     if (a[i] !== b[i]) return a[i] > b[i];
   }
   return false;
+}
+function randomInstallId(){
+  return Array.from(crypto.getRandomValues(new Uint8Array(16))).map(function(b){ return b.toString(16).padStart(2, "0"); }).join("");
+}
+var REGISTRATION_HOLDER = "register-" + randomInstallId();
+function registrationReady(){
+  var p = S.profile || {};
+  return canEdit() && S.seeded && S.installLoaded && ["resign", "retire", "eas"].indexOf(p.path) >= 0 && GRADES.some(function(g){ return g[0] === p.grade; });
+}
+function registrationIdOk(value){ return typeof value === "string" && /^[a-f0-9]{16,32}$/.test(value); }
+// The current browser db contract has leases, not ArtifactData's if_version.
+// A lease and fresh merge/readback preserve other install fields. Exact version pinning remains a supervisor gate.
+function changeRegistration(change){
+  var gen = GEN;
+  if (!registrationReady()) return Promise.reject({ code: "fenced" });
+  var ref = DB.doc("meta/install");
+  if (typeof ref.acquire !== "function") return Promise.reject({ code: "nolock" });
+  var fields;
+  function guard(){ if (gen !== GEN || !registrationReady()) throw { code: "fenced" }; }
+  return ref.acquire({ holder: REGISTRATION_HOLDER, ttlMs: 5000 }).then(function(lease){
+    guard(); if (!lease || !lease.acquired) throw { code: "busy" };
+    return Promise.all([ref.get(), DB.doc("meta/setup").get()]);
+  }).then(function(reads){
+    guard(); var snap = reads[0], current = snap.exists ? clone(snap.data() || {}) : {};
+    fields = change(current, reads[1].exists ? reads[1].data() : {});
+    if (!Object.keys(fields).length) return;
+    return snap.exists ? ref.update(fields) : ref.set(fields);
+  }).then(function(){ guard(); return ref.get(); }).then(function(snap){
+    guard(); var current = snap.exists ? clone(snap.data() || {}) : null;
+    if (!current || !Object.keys(fields).every(function(key){ return current[key] === fields[key]; })) throw { code: "readback" };
+    S.install = current; renderRegistration(); return current;
+  });
+}
+function prepareRegistration(){
+  if (UI.registrationBusy || UI.registrationFailed || !registrationReady()) return;
+  UI.registrationBusy = true;
+  changeRegistration(function(current, setup){
+    var fields = {};
+    if (!registrationIdOk(current.install_id)) fields.install_id = randomInstallId();
+    if (["chat", "laptop"].indexOf(current.channel) < 0) fields.channel = setup.channel === "chat" ? "chat" : "laptop";
+    return fields;
+  }).catch(function(){ UI.registrationFailed = true; }).finally(function(){ UI.registrationBusy = false; renderRegistration(); });
+}
+function renderRegistration(){
+  var banner = el("registrationBanner"), install = S.install || {};
+  banner.hidden = true; banner.textContent = "";
+  if (!registrationReady() || install.registered === true) return;
+  if (!registrationIdOk(install.install_id) || ["chat", "laptop"].indexOf(install.channel) < 0) { prepareRegistration(); return; }
+  var link = document.createElement("a"), query = new URLSearchParams({ v: VERSION, path: S.profile.path, grade: S.profile.grade, ch: install.channel, id: install.install_id });
+  link.href = "https://musterout.warfarecommand.com/register/?" + query.toString();
+  link.target = "_blank"; link.rel = "noopener noreferrer"; link.setAttribute("data-act", "register-board");
+  link.textContent = "Register your board and get correction alerts";
+  banner.appendChild(link); banner.hidden = false;
+}
+function registerBoardTapped(){
+  if (UI.registrationBusy || !registrationReady()) return;
+  UI.registrationBusy = true;
+  changeRegistration(function(current){ return current.registered === true ? {} : { registered: true }; })
+    .catch(function(){ toast("The registration link opened. Tap it again later to save that tap and hide this banner."); })
+    .finally(function(){ UI.registrationBusy = false; renderRegistration(); });
 }
 function renderRelease(){
   var banner = el("releaseBanner"), release = S.release;
@@ -1076,6 +1139,7 @@ var pending = false;
 function typing(){ var a = document.activeElement; return a && (a.tagName === "TEXTAREA" || (a.tagName === "INPUT" && /text|number|url|date/.test(a.type))) && (el("view").contains(a) || el("banner").contains(a)); }
 function render(){
   renderRelease();
+  renderRegistration();
   el("updateMessage").textContent = UPDATE_MESSAGE;
   el("weeklyMessage").textContent = WEEKLY_MESSAGE;
   if (typing()) { pending = true; return; }
@@ -1125,6 +1189,7 @@ document.addEventListener("keydown", function(ev){
 });
 document.addEventListener("click", function(ev){
   var b = ev.target.closest("[data-act]"); if (!b) return; var a = b.getAttribute("data-act"), id = b.getAttribute("data-id");
+  if (a === "register-board") { registerBoardTapped(); return; }
   if (a === "claude-copy") { copyText(b.getAttribute("data-message") === "weekly" ? WEEKLY_MESSAGE : UPDATE_MESSAGE, b); return; }
   if (DB && WRITE_ACTS.indexOf(a) >= 0 && !editGuard()) return;
   if (a === "tab") { UI.tab = b.getAttribute("data-tab"); try { localStorage.setItem("ssb.tab", UI.tab); } catch(e) {} if (history.replaceState) history.replaceState(null, "", "#" + UI.tab); render(); var tt = el("tabs").getBoundingClientRect().top + window.scrollY; if (window.scrollY > tt) window.scrollTo(0, tt); return; }
@@ -1289,6 +1354,7 @@ function subscribe(){
   DB.doc("meta/profile").onSnapshot(function(d){ mark("profile", d); S.profile = d.exists ? clone(d.data()) : {}; render(); maybeAutoSeed(); }, errd);
   DB.doc("meta/watch").onSnapshot(function(d){ S.watch = d.exists ? clone(d.data()) : null; render(); }, errd);
   DB.doc("meta/watch_error").onSnapshot(function(d){ S.watchError = d.exists ? clone(d.data()) : null; render(); }, errd);
+  DB.doc("meta/install").onSnapshot(function(d){ if (!definitive(d)) return; S.installLoaded = true; S.install = d.exists ? clone(d.data() || {}) : null; renderRegistration(); }, errd);
   DB.doc("meta/release").onSnapshot(function(d){ S.release = d.exists ? clone(d.data()) : null; render(); }, errd);
   DB.doc("meta/reset").onSnapshot(function(d){ mark("reset", d); var was = !!S.reset; S.reset = d.exists ? clone(d.data() || {}) : null;
     if (S.reset && !was) fenceUp();
@@ -1309,7 +1375,7 @@ function subscribe(){
   DB.collection("inbox").onSnapshot(function(snap){ S.inbox = toList(snap); render(); }, errd);
 }
 /* ---------- Muster Out: profile, setup, seeding ---------- */
-var VERSION = "0.1.3";
+var VERSION = "0.1.4";
 var GRADES = [["o5","O-5 and above","officer","cat3"],["o14","O-1 to O-4","officer","cat2"],["cwo45","CWO4 to CWO5","officer","cat3"],["wo13","WO to CWO3","officer","cat2"],["e89","E-8 to E-9","enlisted","cat3"],["e67","E-6 to E-7","enlisted","cat2"],["e15","E-1 to E-5","enlisted","cat1"]];
 var CAP = { cat1: 120, cat2: 90, cat3: 90 };
 function gradeRow(g){ return GRADES.find(function(x){ return x[0] === g; }) || GRADES[0]; }

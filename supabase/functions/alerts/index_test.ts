@@ -1,4 +1,4 @@
-import { createHandler, ENDPOINT, hash, SITE, token } from "./index.ts";
+import { createHandler, ENDPOINT, hash, SITE, ORIGINS, token } from "./index.ts";
 import { readMessage, sendAlert } from "./send_alert.ts";
 
 const assert = (ok: unknown, message = "Assertion failed") => { if (!ok) throw new Error(message); };
@@ -7,7 +7,7 @@ type Stored = Record<string, unknown>;
 
 // All HTTP is mocked, including PostgREST filters, conflict handling, and CAS.
 function fixture() {
-  const tables: Record<string, Stored[]> = { alert_signups: [], ingest_rate: [] };
+  const tables: Record<string, Stored[]> = { alert_signups: [], ingest_rate: [], suggestions: [] };
   const calls: { url: URL; method: string; body: unknown; headers: Headers }[] = [];
   const values: Record<string, string> = { SUPABASE_URL: "https://database.invalid", SUPABASE_SERVICE_ROLE_KEY: "test-service-key", RESEND_API_KEY: "test-send-key", IP_HASH_SALT: "test-salt" };
   let now = Date.parse("2026-10-09T21:00:00Z"), seq = 0, mailStatus = 200, failDb = false;
@@ -38,9 +38,9 @@ function fixture() {
     assert(rows, "Unknown table");
     if (method === "POST") {
       const entry = body as Stored;
-      const duplicate = rows.some((r) => table === "alert_signups" ? r.email === entry.email : r.ip_hash === entry.ip_hash && r.minute === entry.minute);
+      const duplicate = rows.some((r) => table === "alert_signups" ? r.email === entry.email : table === "ingest_rate" ? r.ip_hash === entry.ip_hash && r.minute === entry.minute : false);
       if (duplicate) { assert(headers.get("prefer")?.includes("ignore-duplicates")); return reply([]); }
-      const row = table === "alert_signups" ? { id: String(++seq).padStart(8, "0"), created_at: new Date(now).toISOString(), confirmed_at: null, last_sent_at: null, confirm_hash: null, unsubscribe_hashes: [], ...entry } : { ...entry };
+      const row = table === "alert_signups" ? { id: String(++seq).padStart(8, "0"), created_at: new Date(now).toISOString(), confirmed_at: null, last_sent_at: null, confirm_hash: null, unsubscribe_hashes: [], ...entry } : { id: String(++seq), ...entry };
       rows.push(row);
       return reply([row]);
     }
@@ -71,7 +71,7 @@ Deno.test("honeypot acknowledges without HTTP or stored data", async () => {
   equal(f.tables.alert_signups, []);
 });
 
-Deno.test("subscribe requires the exact website origin and safe JSON", async () => {
+Deno.test("subscribe requires an allowed origin and safe JSON", async () => {
   const f = fixture();
   equal((await f.subscribe("marine@example.com", "", "192.0.2.1", "https://other.invalid")).status, 403);
   equal((await f.handler(new Request(ENDPOINT, { method: "POST", body: "null", headers: { origin: SITE } }))).status, 400);
@@ -305,4 +305,167 @@ Deno.test("sender requires a subject and body and rejects forbidden prose", () =
     assert(failed);
   }
   equal(readMessage("Subject\n\nFirst paragraph.\n\nSecond paragraph.\n"), { subject: "Subject", paragraphs: ["First paragraph.", "Second paragraph."] });
+});
+
+const request = (body: unknown, origin = SITE) => new Request(ENDPOINT, { method: "POST", headers: { origin, "x-forwarded-for": "192.0.2.10", "content-type": "application/json" }, body: JSON.stringify(body) });
+
+Deno.test("both origins receive matching CORS and subscribe stores only a valid optional source", async () => {
+  for (const origin of ORIGINS) {
+    const f = fixture();
+    const preflight = await f.handler(new Request(ENDPOINT, { method: "OPTIONS", headers: { origin } }));
+    equal(preflight.status, 204);
+    equal(preflight.headers.get("access-control-allow-origin"), origin);
+    equal(preflight.headers.get("vary"), "Origin");
+    const response = await f.handler(request({ kind: "subscribe", email: "marine@example.com", website: "", source: "register" }, origin));
+    equal(response.status, 200);
+    equal(response.headers.get("access-control-allow-origin"), origin);
+    equal(f.tables.alert_signups[0].source, "register");
+  }
+  for (const source of ["hub", "musterout", "register", "ai101"]) {
+    const f = fixture();
+    equal((await f.handler(request({ kind: "subscribe", email: "marine@example.com", source }))).status, 200);
+    equal(f.tables.alert_signups[0].source, source);
+  }
+  for (const source of ["private", null, {}, 2]) {
+    const f = fixture();
+    equal((await f.handler(request({ kind: "subscribe", email: "marine@example.com", source }))).status, 400);
+    equal(f.calls.length, 0);
+  }
+  const f = fixture();
+  equal((await f.handler(new Request(ENDPOINT, { method: "OPTIONS", headers: { origin: "https://warfarecommand.com.evil.invalid" } }))).status, 403);
+});
+
+Deno.test("suggest stores trimmed text and optional email and escapes the branded notice", async () => {
+  for (const origin of ORIGINS) {
+    const f = fixture();
+    const idea = '<script>alert("idea")</script> & another idea';
+    const response = await f.handler(request({ kind: "suggest", idea: "  " + idea + "  ", email: " Reply@Example.COM ", website: "", name: "Never store extra fields" }, origin));
+    equal(response.status, 200);
+    equal(await response.json(), { ok: true });
+    const row = f.tables.suggestions[0];
+    equal(row.idea, idea);
+    equal(row.email, "reply@example.com");
+    equal(row.ip_hash, (await hash("test-salt192.0.2.10")).slice(0, 24));
+    assert(!("name" in row));
+    const message = f.mail()[0].body as { to: string[]; html: string; text: string };
+    equal(message.to, ["feedback@warfarecommand.com"]);
+    assert(message.html.includes("Warfare Command") && message.html.includes("MUSTER OUT"));
+    assert(message.html.includes("&lt;script&gt;alert(&quot;idea&quot;)&lt;/script&gt; &amp; another idea"));
+    assert(!message.html.includes(idea) && message.text.includes(idea));
+    assert(!message.html.includes("Unsubscribe") && !message.text.includes("undefined"));
+    equal(f.tables.alert_signups.length, 0);
+  }
+  const f = fixture();
+  equal((await f.handler(request({ kind: "suggest", idea: "A calendar for appointments" }))).status, 200);
+  equal(f.tables.suggestions[0].email, null);
+});
+
+Deno.test("suggest boundaries, malformed email, honeypot and disallowed origin", async () => {
+  for (const body of [
+    { idea: "x".repeat(9) }, { idea: "x".repeat(1001) }, { idea: null },
+    { idea: "A useful idea", email: "not an address" }, { idea: "A useful idea", email: null },
+    { idea: "A useful idea", email: {} },
+  ]) {
+    const f = fixture();
+    const response = await f.handler(request({ kind: "suggest", ...body }));
+    equal(response.status, 400);
+    equal(await response.json(), { ok: false, error: "bad_input" });
+    equal(f.calls.length, 0);
+  }
+  for (const length of [10, 1000]) {
+    const f = fixture();
+    equal((await f.handler(request({ kind: "suggest", idea: "x".repeat(length), email: "" }))).status, 200);
+  }
+  const f = fixture();
+  equal((await f.handler(request({ kind: "suggest", idea: "bad", website: "bot" }))).status, 200);
+  equal(f.calls.length, 0);
+  equal((await f.handler(request({ kind: "suggest", idea: "A useful tool idea" }, "https://evil.invalid"))).status, 403);
+  equal(f.calls.length, 0);
+});
+
+Deno.test("suggest reserves three durable slots per IP across concurrent handlers", async () => {
+  const f = fixture();
+  const responses = await Promise.all(Array.from({ length: 8 }, () => createHandler(f.deps)(request({ kind: "suggest", idea: "A useful tool idea" }))));
+  equal(responses.filter(r => r.status === 200).length, 3);
+  equal(responses.filter(r => r.status === 429).length, 5);
+  equal(f.tables.suggestions.length, 3);
+  equal(f.mail().length, 3);
+  // Suggestions do not consume the subscribe allowance.
+  equal((await f.handler(request({ kind: "subscribe", email: "marine@example.com" }))).status, 200);
+  f.advance(3600000);
+  equal((await f.handler(request({ kind: "suggest", idea: "A useful tool idea" }))).status, 200);
+});
+
+Deno.test("suggest configuration, database and delivery failures remain visible", async () => {
+  const f = fixture();
+  delete f.values.RESEND_API_KEY;
+  equal((await f.handler(request({ kind: "suggest", idea: "A useful tool idea" }))).status, 503);
+  equal(f.calls.length, 0);
+  const g = fixture();
+  g.failDb();
+  equal((await g.handler(request({ kind: "suggest", idea: "A useful tool idea" }))).status, 503);
+  equal(g.mail().length, 0);
+  const h = fixture();
+  h.mailStatus(500);
+  equal((await h.handler(request({ kind: "suggest", idea: "A useful tool idea" }))).status, 502);
+  equal(h.tables.suggestions.length, 1);
+});
+
+Deno.test("platform consent requires the scoped confirmation and never upgrades existing subscribers by source", async () => {
+  const { PLATFORM_CONSENT, PLATFORM_SCOPE, MUSTEROUT_SCOPE } = await import("./index.ts");
+  for (const source of ["hub", "ai101", "musterout", "register", undefined]) {
+    const f = fixture();
+    await f.handler(request({ kind: "subscribe", email: "marine@example.com", source }));
+    const mail = f.mail()[0].body as { text: string; html: string; subject: string };
+    const platform = source === "hub" || source === "ai101";
+    assert(mail.text.includes(platform ? PLATFORM_SCOPE : MUSTEROUT_SCOPE));
+    assert(mail.html.includes("Warfare Command"));
+    equal(mail.subject, platform ? "Confirm Warfare Command updates" : "Confirm Muster Out correction alerts");
+    const raw = f.links().confirm;
+    assert(!JSON.stringify(f.tables).includes(raw));
+    equal((await f.handler(new Request(`${ENDPOINT}?confirm=${raw}`))).headers.get("location"), `${SITE}/alerts/confirmed/`);
+    equal(f.tables.alert_signups[0].confirm_hash, platform ? PLATFORM_CONSENT : null);
+    const before = JSON.stringify(f.tables.alert_signups);
+    await f.handler(request({ kind: "subscribe", email: "marine@example.com", source: platform ? "musterout" : "hub" }));
+    equal(JSON.stringify(f.tables.alert_signups), before);
+    equal((await f.handler(new Request(`${ENDPOINT}?confirm=${raw}`))).headers.get("location"), `${SITE}/alerts/expired/`);
+  }
+  // A legacy hub link proves the older correction scope, even after the new code ships.
+  const f = fixture(), raw = token();
+  f.tables.alert_signups.push({ id: "old-hub", email: "old@example.com", source: "hub", status: "pending", confirm_hash: await hash(raw), unsubscribe_hashes: [] });
+  await f.handler(new Request(`${ENDPOINT}?confirm=${raw}`));
+  equal(f.tables.alert_signups[0].confirm_hash, null);
+});
+
+Deno.test("platform sender filters consent in dry runs and sends; board update callout is explicit", async () => {
+  const { PLATFORM_CONSENT, PLATFORM_SCOPE } = await import("./index.ts");
+  const f = fixture();
+  for (const [id, scope, source] of [["a", null, "hub"], ["b", null, "musterout"], ["c", PLATFORM_CONSENT, "ai101"], ["d", PLATFORM_CONSENT, "hub"]]) {
+    f.tables.alert_signups.push({ id, email: `${id}@example.com`, source, status: "confirmed", confirm_hash: scope, unsubscribe_hashes: [], last_sent_at: null });
+  }
+  f.tables.alert_signups.push({ id: "e", email: "e@example.com", source: "ai101", status: "pending", confirm_hash: PLATFORM_CONSENT, unsubscribe_hashes: [] });
+  const printed: string[] = [];
+  const deps = { ...f.deps, print: (line: string) => printed.push(line), audience: "platform" as const };
+  await sendAlert("New lesson\n\nA new lesson is available.\n", false, deps);
+  equal(printed, ["2"]);
+  equal(f.mail().length, 0);
+  assert(f.calls.every(c => c.method === "HEAD"));
+  await sendAlert("New lesson\n\nA new lesson is available.\n", true, deps);
+  const mails = f.mail()[0].body as { to: string[]; text: string }[];
+  equal(mails.map(m => m.to[0]), ["c@example.com", "d@example.com"]);
+  assert(mails.every(m => m.text.includes(PLATFORM_SCOPE) && !m.text.includes("Update Muster Out.")));
+  equal(f.tables.alert_signups.find(r => r.id === "a")?.last_sent_at, null);
+  await sendAlert("Muster Out release\n\nA corrected release is available.\n", true, { ...f.deps, print: () => {}, musterOutUpdate: true });
+  const update = f.mail().at(-1)?.body as { to: string[]; text: string }[];
+  equal(update.length, 4);
+  assert(update.every(m => m.text.includes("Update Muster Out.")));
+  assert(update.find(m => m.to[0] === "a@example.com")?.text.includes("Muster Out correction alerts and release notes"));
+});
+
+Deno.test("the uncontracted www origin is rejected before writes or mail", async () => {
+  const f = fixture();
+  equal(ORIGINS, [SITE, "https://warfarecommand.com"]);
+  equal((await f.handler(request({ kind: "subscribe", email: "marine@example.com", source: "hub" }, "https://www.warfarecommand.com"))).status, 403);
+  equal((await f.handler(new Request(ENDPOINT, { method: "OPTIONS", headers: { origin: "https://www.warfarecommand.com" } }))).status, 403);
+  equal(f.calls.length, 0);
 });

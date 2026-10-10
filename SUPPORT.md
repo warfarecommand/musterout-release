@@ -1,13 +1,13 @@
 # What Muster Out covers
 
-Pack usmc-2026.10 covers the situations in the first table, with enlisted retirement covered in part. For the situations in the second table, the assistant names the office to call first and builds no plan.
+Pack usmc-2026.10 covers the situations in the first table. For the situations in the second table, the assistant names the office to call first and builds no plan. Covered items name the office that confirms your eligibility, dates and any detail left to that office.
 
 ## Covered paths
 | Situation | Covered | Notes |
 | --- | --- | --- |
 | Officer resigning a regular commission | Yes | MCO 1900.16 chapter 5, MARADMIN 175/24 timing |
 | Officer retiring (20 or more years) | Yes | MCO 1900.16 chapter 2 retirement procedures, SBP, retired pay, TRICARE retiree enrollment |
-| Enlisted retiring | Partial | Transition, SBP, and benefits items apply; the request route runs through MMEA and is marked "confirm with IPAC" |
+| Enlisted retiring with 20 or more years of active service | Yes | FMCR transfer at 20 to 29 years; direct retirement at 30 or more. MCO 1900.16 chapter 7, MARADMIN 175/24, MARADMIN 326/23 and MMSR-2 guidance. The reporting unit submits to MMSR-2 through unit diary; IPAC confirms your record and dates. Shared transition, SBP and benefits items apply. |
 | Enlisted or officer separating at EAS | Yes | No retirement or resignation request; confirm separation processing with IPAC. Transition gates, orders, and benefits tasks remain. |
 | Reserve affiliation through DAP | Yes | Officer and enlisted windows, NAVMC 763, check in |
 | SkillBridge | Yes | Category caps and approval rules from MARADMIN 280/24 and NAVMC 1700.2B. The sources conflict on approval and absence limits; confirm the applicable rule with the SkillBridge coordinator and approving command. |
@@ -17,10 +17,10 @@ Pack usmc-2026.10 covers the situations in the first table, with enlisted retire
 ## Paths referred to an office
 | Situation | Who to call first |
 | --- | --- |
-| Medical separation, IDES, TDRL or PDRL | Your PEBLO and the Wounded Warrior Regiment |
-| Involuntary separation (SERB, ECFC, administrative) | IPAC and your installation legal assistance office |
-| Guard and Reserve retirement (gray area, age 60 pay) | Your unit Career Planner and Reserve Affairs |
-| Another service | Nothing here applies yet; a pack per service is on the roadmap |
+| Medical separation or disability retirement | PEBLO and Wounded Warrior Regiment |
+| Involuntary separation | IPAC and legal assistance |
+| Guard or Reserve retirement with nonregular pay | Unit Career Planner and Reserve Affairs |
+| Another service | Your service personnel office |
 
 ## Set up your board
 If your path is covered, send this one message in any Claude chat: the Claude app on a phone, claude.ai, or the desktop app. Claude Pro costs $20 a month. You need Pro or higher; the Free plan cannot store board data.

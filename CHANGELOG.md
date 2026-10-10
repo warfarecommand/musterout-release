@@ -1,5 +1,14 @@
 # Release notes
 
+## 0.1.4 (2026-10-09)
+
+- Enlisted retirement covers FMCR transfer at 20 to 29 years of active service and direct retirement at 30 or more. New items cover eligibility, grade limits, obligations, CO counseling and Appendix J, waivers, HQMC receipt, PCS cancellation, status changes and the 45-day modification deadline.
+- Enlisted requests go through the reporting unit diary to MMSR-2. The copied MMSR-2 guidance confirms the 6-to-18-month window for retirement and FMCR. Coverage now lists covered paths and the offices for paths outside the pack.
+- Register your board anonymously from the setup link or the board banner, then sign up for correction alerts.
+- The setup message button counts setup attempts without sending board data. Registration counts each random install id once.
+- Warfare Command forms accept tool suggestions and updates signups. Suggestions go to the feedback inbox.
+- The lesson link now opens AI 101 at Warfare Command.
+
 ## 0.1.3 (2026-10-09)
 
 - The board has weekly and update messages with links and Copy buttons under Talk to Claude.

@@ -17,8 +17,10 @@ assert "/*SEED*/" in tpl and "MUSTEROUT_PATCHED" in tpl
 out = tpl.replace("/*SEED*/", blob)
 for d in (chr(0x2014), chr(0x2013)):
     if d in out: sys.exit("dash found in page")
+# The exact, source-verified enlisted counseling quote uses generic pronouns.
+privacy_text = out.replace('Counsel the Marine concerning his or her potential for recall to active duty and/or mobilization.', '')
 for bad in _leak_words():
-    if bad in out: sys.exit(f"personal string in page: {bad}")
+    if bad in privacy_text: sys.exit(f"personal string in page: {bad}")
 (here / "board.html").write_text(out)
 # syntax check the inline script
 js = re.findall(r"<script>(.*?)</script>", out, re.S)[-1]
