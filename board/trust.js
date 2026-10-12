@@ -242,7 +242,7 @@
     function watchSummary(b) {
       if (!b.last_success) return sourceLabel(b.source) + ': No successful check yet.';
       const count = Number.isInteger(b.checked_count) && b.checked_count >= 0 ? b.checked_count + ' ' + (b.source === 'ORDER' ? 'orders' : b.source + 's') : 'Count not stated';
-      const coverage = typeof b.body_available === 'boolean' ? (b.body_available ? 'full text':'titles only') : 'Coverage not stated';
+      const coverage = typeof b.body_available === 'boolean' ? (b.body_available ? 'full text':'titles only') : 'text availability not recorded';
       const matches = Number.isInteger(b.possible_matches) && b.possible_matches >= 0 ? (b.possible_matches === 0 ? 'No possible matches.' : b.possible_matches + ' possible matches. Review before changing your plan.') : 'Possible matches are unknown for this check.';
       return 'Checked ' + utc(b.last_success) + ': ' + count + ', ' + coverage + '. ' + (b.status === 'failed' ? MESSAGES.WATCH_FAILED : matches);
     }
@@ -255,24 +255,25 @@
       if (update.correctionPending && update.status !== 'done') { const banner = node('section',undefined,'mot-warning'); paragraph(banner,'Correction ready: ' + (update.version || 'Review update'),'mot-strong'); paragraph(banner,update.impact || MESSAGES.UPDATE_UNTRUSTED); banner.append(button('Review correction',openUpdates)); el.append(banner); }
       const blocks = sourceBlocks().filter(b => ['MARADMIN','ALMAR'].includes(b.source));
       const row = node('section',undefined,'mot-watch-line');
-      if (!blocks.length) paragraph(row,'Coverage not stated.');
-      blocks.forEach(b => { paragraph(row,sourceLabel(b.source),'mot-strong'); paragraph(row,watchSummary(b),'mot-meta'); });
-      if (watchCode) paragraph(row,message(watchCode,'feed'),'mot-meta');
-      if (stale()) paragraph(row,MESSAGES.FEED_STALE,'mot-meta'); if (gap()) paragraph(row,MESSAGES.FEED_GAP,'mot-meta');
+      const checked = blocks.some(b => b.last_success), quiet = !checked || watchCode === 'WATCH_NOT_CHECKED';
+      if (quiet) paragraph(row,'Watch: not checked yet.','mot-meta');
+      (quiet ? [] : blocks).forEach(b => { paragraph(row,sourceLabel(b.source),'mot-strong'); paragraph(row,watchSummary(b),'mot-meta'); });
+      if (watchCode && watchCode !== 'WATCH_NOT_CHECKED' && checked) paragraph(row,message(watchCode,'feed'),'mot-meta');
+      if (!quiet && stale()) paragraph(row,MESSAGES.FEED_STALE,'mot-meta'); if (!quiet && gap()) paragraph(row,MESSAGES.FEED_GAP,'mot-meta');
       row.append(button('Watch coverage',openCoverage)); el.append(row);
     }
     function mountToday(el) { if (el) { slots.today.push(el); renderToday(el); } }
     function setWatch(value) {
-      if (value?.code && ['FEED_UNTRUSTED','WATCH_FAILED'].includes(value.code)) { watchCode = value.code; recordError('feed','verify',value.code); }
+      if (value?.code && ['FEED_UNTRUSTED','WATCH_FAILED','WATCH_NOT_CHECKED'].includes(value.code)) { watchCode = value.code; recordError('feed','verify',value.code); }
       else { watchCode = null; feed = value; } redraw(slots.today,renderToday); emit('watch'); }
     function openCoverage() {
       let s; s = sheet('Watch coverage',() => closeSheet(s));
       const blocks = sourceBlocks().filter(b => ['MARADMIN','ALMAR'].includes(b.source));
-      if (!blocks.length) paragraph(s.body,'Coverage not stated.');
+      if (!blocks.length) paragraph(s.body,'Watch: not checked yet.');
       blocks.forEach(b => {
         const section = node('section',undefined,'mot-coverage'); section.append(node('h3',sourceLabel(b.source)));
         paragraph(section,feed?.cadence === 'daily' && feed?.daily_shipped === true ? 'Daily checks.' : 'Weekly checks.');
-        paragraph(section,b.coverage || 'Coverage not stated.');
+        paragraph(section,b.coverage || sourceLabel(b.source) + ' coverage has not been recorded.');
         paragraph(section,'Last successful check','mot-meta'); paragraph(section,utc(b.last_success),'mot-mono');
         paragraph(section,'Last attempt','mot-meta'); paragraph(section,utc(b.last_attempt),'mot-mono');
         paragraph(section,'Checked window','mot-meta'); paragraph(section,b.window?.from && b.window?.to ? milDate(b.window.from) + ' to ' + milDate(b.window.to) : 'Not recorded');
@@ -281,7 +282,7 @@
         if (Number.isInteger(b.unclassified_count) && b.unclassified_count > 0) paragraph(section,b.unclassified_count + ' notices await classification.');
         if (b.status === 'failed') paragraph(section,b.reason || 'Last attempt failed.'); s.body.append(section);
       });
-      if (watchCode) paragraph(s.body,message(watchCode,'feed'));
+      if (watchCode && watchCode !== 'WATCH_NOT_CHECKED' && blocks.some(b => b.last_success)) paragraph(s.body,message(watchCode,'feed'));
       if (!blocks.some(b => b.source === 'ALMAR')) paragraph(s.body,'ALMAR: Not watched.');
       if (stale()) paragraph(s.body,MESSAGES.FEED_STALE); if (gap()) paragraph(s.body,MESSAGES.FEED_GAP);
       for (const name of ['ALNAV','Cited orders']) paragraph(s.body,name + ': Not yet covered.');

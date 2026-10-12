@@ -670,7 +670,7 @@ html[data-large-text] #app .hero{flex-wrap:wrap}
 
 /* WC v1 contact metadata. */
 .contact .ln{font:400 12px/16px var(--mono);letter-spacing:.02em;color:var(--ink-3)}
-</style>
+#registrationBanner{margin:16px 0;padding:0;border:0;border-radius:var(--r-card);background:var(--surface);box-shadow:var(--shadow-card)}#registrationBanner a{display:flex;align-items:center;min-height:56px;padding:12px 20px;font:600 15px/22px var(--sans);letter-spacing:0;text-transform:none;color:var(--accent-ink);text-decoration:none;border-radius:var(--r-card)}#registrationBanner a::after{content:"\203A";margin-left:auto;padding-left:12px;color:var(--ink-3);font-size:20px}#registrationBanner a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}</style>
 
 <div class="wrap" id="app">
   <header class="top">
@@ -1283,7 +1283,7 @@ function c1ActionRow(it){var open=!!UI.open[it.id], w=boardReady()?winOf(it):nul
  return '<div class="row c1-row'+(it.status==='done'?' done':'')+'" data-id="'+esc(it.id)+'"><button class="chk" role="checkbox" data-act="toggle" data-id="'+esc(it.id)+'" data-s="'+esc(it.status)+'" aria-checked="'+(it.status==='done')+'" aria-label="Mark '+esc(it.label||it.title)+' done"'+(!canEdit()||!boardReady()||it.kind==='marker'?' disabled':'')+'></button><button class="ttl" data-act="open" data-id="'+esc(it.id)+'" aria-expanded="'+open+'"><span class="t">'+esc(it.label||it.title)+'</span><span class="meta">'+meta.map(function(x,n){return '<span'+(n===(c1Late(it)?1:0)?' class="chip'+(it.kind==='window'?' win':'')+'"':'')+'>'+esc(x)+'</span>';}).join('')+(it.critical&&!closed(it)&&UI.tab==='brief'?'<svg class="c1-critical-icon" viewBox="0 0 16 16" role="img" aria-label="Critical"><path d="M8 2 14 8 8 14 2 8Z" fill="none" stroke="currentColor"/></svg>':'')+'</span></button>'+(open?itemCard(it):'')+'</div>';
 }
 function c1AskCard(){var starters=['What should I do this week?','What is late and what does it block?','Walk me through my claim timeline.','What changes if my date moves 30 days?'];
- return '<section class="panel c1-ask" aria-labelledby="c1AskTitle"><h2 id="c1AskTitle">Ask about your plan</h2><p class="muted">Answers from this board.</p><label class="field"><span class="label">Question</span><textarea rows="2" id="askq" placeholder="What should I do this week?">'+esc(UI.askQ||'')+'</textarea></label><div class="ctl"><button class="btn pri" data-act="ask" id="askBtn"'+(!SAMPLE||UI.askBusy?' disabled':'')+'>Ask</button><button class="btn" data-act="ask-stop" id="askStop"'+(!UI.askBusy?' hidden':'')+'>Stop</button><button class="btn" data-act="ask-copy-question">Copy question</button></div><p class="muted" id="askNote" role="status">'+esc(UI.askNote||(!SAMPLE?'Ask is unavailable in this view. Copy your question into Claude.':''))+'</p><div class="c1-starters">'+starters.map(function(q){return '<button class="btn" data-act="ask-starter" data-question="'+esc(q)+'">'+esc(q)+'</button>';}).join('')+'</div><div class="answer" id="askOut"'+(!UI.askAnswer?' hidden':'')+'>'+esc(UI.askAnswer||'')+'</div><button class="btn" data-act="ask-copy-answer"'+(!UI.askAnswer?' hidden':'')+'>Copy answer</button></section><p class="c1-project-line">Records, mail, and research live in <button class="linkbtn" data-act="project-open">your Project</button>.</p>';
+ return '<section class="panel c1-ask" aria-labelledby="c1AskTitle"><h2 id="c1AskTitle">Ask about your plan</h2><p class="muted">Answers from this board.</p><label class="field"><span class="label">Question</span><textarea rows="2" id="askq" placeholder="What should I do this week?">'+esc(UI.askQ||'')+'</textarea></label><div class="ctl"><button class="btn pri" data-act="ask" id="askBtn"'+(!SAMPLE||UI.askBusy?' disabled':'')+'>Ask</button><button class="btn" data-act="ask-stop" id="askStop"'+(!UI.askBusy?' hidden':'')+'>Stop</button><button class="btn" data-act="ask-copy-question">Copy question</button></div><p class="muted" id="askNote" role="status">'+esc(UI.askNote||(!SAMPLE?'Ask is unavailable in this view. Copy your question into Claude.':''))+'</p><div class="c1-starters">'+starters.map(function(q){return '<button class="btn" data-act="ask-starter" data-question="'+esc(q)+'">'+esc(q)+'</button>';}).join('')+'</div><div class="answer" id="askOut"'+(!UI.askAnswer?' hidden':'')+'>'+esc(UI.askAnswer||'')+'</div><button class="btn" data-act="ask-copy-answer"'+(!UI.askAnswer?' hidden':'')+'>Copy answer</button></section><p class="c1-project-line"><button class="linkbtn" data-act="project-open">Open your Project for records, mail, and research</button></p>';
 }
 function renderBrief(){var xs=itemsArr().filter(function(i){return !closed(i)&&i.kind!=='marker';}),next=c1Next();
  var late=xs.filter(c1Late).length,critical=xs.filter(function(i){return i.critical;}).length,undated=xs.filter(function(i){return !boardReady()||endOf(i)==null;}).length;
@@ -1449,8 +1449,9 @@ function renderVA(){var old=legacyRenderVA(),conditions=c1Extract(old,function(n
 }
 function c1RenderContacts(){var n=c1Extract(renderPeople(),function(n){return n.querySelector('h2')?.textContent==='People';});return '<p class="c1-intro">Find an office and copy its contact details.</p>'+(n?n.outerHTML:'<p>No contacts yet. Finish setup to add the offices for your path.</p>');}
 var C1_FEED_ERROR=null,C1_FEED_STARTED=false,C1_FEED_SEQ=0,C1_FEED_WRITES=Promise.resolve();
-function c1FeedFailure(code){C1_FEED_ERROR='FEED_UNTRUSTED';if(C1_TRUST){C1_TRUST.recordError('feed','verify',code||'other');C1_TRUST.setWatch({code:'FEED_UNTRUSTED'});}}
+function c1FeedFailure(code){var verification=['bad_signature','hash_mismatch','size_mismatch','wrong_kind','untrusted_key','invalid_keychain','replay','expired'].includes(code);C1_FEED_ERROR=verification?'FEED_UNTRUSTED':'WATCH_NOT_CHECKED';if(C1_TRUST){C1_TRUST.recordError('feed',verification?'verify':'load',code||'other');C1_TRUST.setWatch({code:C1_FEED_ERROR});}}
 function c1ValidateFeed(data,allowStale){function fail(){throw {code:'invalid_payload'};}function integer(v){return Number.isSafeInteger(v)&&v>=0;}function stamp(v){return typeof v==='string'&&/^\d{4}-\d{2}-\d{2}T.+(?:Z|[+-]\d{2}:\d{2})$/.test(v)&&Number.isFinite(Date.parse(v));}function day(v){return typeof v==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(v)&&Number.isFinite(parseD(v))&&iso(parseD(v))===v;}function text(v,max){return typeof v==='string'&&v.trim()&&v.length<=max&&!/[<>\x00-\x1f\x7f]/.test(v);}function url(series,value){try{var u=new URL(value);if(u.protocol!=='https:'||u.username||u.password||u.port||u.search||u.hash||/[\s<>\\]|%2f|%5c/i.test(value)||decodeURIComponent(u.pathname).split('/').some(function(p){return p==='.'||p==='..';}))return false;if(['MARADMIN','ALMAR'].includes(series))return u.hostname==='www.marines.mil'&&/^\/News\/Messages\/Messages-Display\/Article\/\d+\/[A-Za-z0-9-]+\/$/.test(u.pathname);if(series==='ALNAV')return u.hostname==='www.mynavyhr.navy.mil'&&(/^\/References\/Messages\//.test(u.pathname)||/^\/Portals\/55\/Messages\//.test(u.pathname));return series==='ORDER'&&u.hostname==='www.marines.mil'&&(/^\/News\/Publications\/MCPEL\//.test(u.pathname)||/^\/Portals\/1\/Publications\//.test(u.pathname));}catch(e){return false;}}
+ if(!allowStale&&data&&stamp(data.expires_at)&&Date.parse(data.expires_at)<=Date.now())throw {code:'expired'};
  if(!data||data.schema_version!==2||!integer(data.seq)||data.seq<1||!stamp(data.generated_at)||!stamp(data.expires_at)||Date.parse(data.generated_at)>Date.now()||Date.parse(data.expires_at)-Date.parse(data.generated_at)!==8*DAY||(!allowStale&&Date.parse(data.expires_at)<=Date.now())||typeof data.capture_replay!=='boolean'||!Array.isArray(data.sources)||data.sources.length>4)fail();var sources=new Set(),ids=new Set();
  data.sources.forEach(function(b){if(!b||!['MARADMIN','ALMAR','ALNAV','ORDER'].includes(b.source)||sources.has(b.source)||!text(b.coverage,500)||!['ok','failed'].includes(b.status)||!stamp(b.last_attempt)||Date.parse(b.last_attempt)>Date.now()||(b.last_success!==null&&(!stamp(b.last_success)||Date.parse(b.last_success)>Date.parse(b.last_attempt)))||!b.window||!day(b.window.from)||!day(b.window.to)||parseD(b.window.from)>parseD(b.window.to)||parseD(b.window.to)-parseD(b.window.from)>30*DAY||parseD(b.window.to)>parseD(iso(Date.now()))||!integer(b.checked_count)||!integer(b.unclassified_count)||typeof b.truncated!=='boolean'||typeof b.body_available!=='boolean'||!Array.isArray(b.notices)||b.notices.length>1000||(b.status==='failed'?!text(b.reason,500):b.reason!==null))fail();sources.add(b.source);
   b.notices.forEach(function(n){if(!n||n.series!==b.source||!text(n.number,100)||!text(n.id,120)||ids.has(n.id)||!text(n.title,1000)||!url(n.series,n.url)||!day(n.posted)||n.posted<b.window.from||n.posted>b.window.to||typeof n.body_available!=='boolean'||!Array.isArray(n.lines)||!n.lines.length||!n.lines.every(function(l){return ['separation','retirement','va','skillbridge','reserve','leave','family'].includes(l);})||!Array.isArray(n.paths)||!n.paths.length||!n.paths.every(function(l){return ['resign','retire','eas','all'].includes(l);}))fail();if(n.series!=='ORDER'&&(!/^\d{1,4}\/\d{2}$/.test(n.number)||n.id!==n.series+'-'+n.number.replace('/','-')))fail();if(n.series==='ORDER'&&!n.id.startsWith('ORDER-'))fail();['summary','action','confidence'].forEach(function(k){if(n[k]!=null&&!text(n[k],k==='confidence'?100:2000))fail();});if(n.deadline!=null&&!day(n.deadline))fail();ids.add(n.id);});
@@ -2107,7 +2108,7 @@ function watchLine(){
     if (w.window && w.window.from && w.window.to) line += " Window " + mil(dayOf(w.window.from)) + " to " + mil(dayOf(w.window.to)) + ".";
     if (w.matches && w.matches.length != null) line += " " + w.matches.length + " matched your plan" + (w.confidence === "titles" ? " by title." : ".");
   } else if (w && (w.checked_from || w.run_at)) {
-    line = "Watch: checked " + fmtDay(w.checked_from) + " to " + fmtDay(w.checked_to) + ". Coverage not stated. Send Claude: " + WEEKLY_MESSAGE;
+    line = "Watch: checked " + fmtDay(w.checked_from) + " to " + fmtDay(w.checked_to) + ". Send Claude: " + WEEKLY_MESSAGE;
   } else line = "Not checked yet. Send Claude: " + WEEKLY_MESSAGE;
   if (e && e.at && (!w || !w.checkedAt || Date.parse(e.at) > Date.parse(w.checkedAt))) line += " Last check failed " + mil(dayOf(e.at)) + ": " + (e.reason || "no reason given") + "." + (w ? " Showing the last good check." : "");
   return line;
@@ -2209,6 +2210,8 @@ function runSeed(profile, settings, planSet, prog){
 }
 function seedFailText(e){
   var code = e && e.code;
+  if (code === "busy" && c1SeedComplete()) return "";
+  if (code === "busy" && S.seeding && S.seeding.by === SEED_ID) return "Setup paused. Reload the page to resume.";
   if (code === "busy") return "Another window is setting this board up. This page checks again in a minute.";
   if (code === "nolock") return LOCK_LINE;
   if (code === "mixed") return "Your profile changed while the board was being set up. Ask Claude to rebuild the plan.";
@@ -2418,7 +2421,7 @@ function maybeMigrateSeed(){
   runSeedMigration().then(function(){ UI.migrationBusy = false; render(); }, migrationFailed);
 }
 function migrationFailed(e){
-  UI.migrationBusy = false;
+  UI.migrationBusy = false; UI.seedErrorOwner="migration";
   UI.seedError = e && e.code === "busy" ? "Another window is updating this board. This page checks again in a minute." : "The pack update stopped. Reload the board to resume. " + (e && e.code === "nolock" ? LOCK_LINE : "");
   if (e && e.code === "busy") UI.seedRetry = setTimeout(function(){ UI.seedRetry = null; UI.seedError = null; maybeMigrateSeed(); }, 60000);
   else UI.migrationHalt = true;
@@ -2445,13 +2448,13 @@ document.addEventListener("click", function(ev){
 
 function maybeAutoSeed(){
   if (!seedNeeded()) { maybeMigrateSeed(); return; }
-  UI.setupBusy = true; UI.autoSeeding = true; render();
+  UI.setupBusy = true; UI.autoSeeding = true; UI.seedProgress=null; render();
   var planSet = S.settings.planSet && S.settings.planSet !== "SETUP" ? S.settings.planSet : iso(today());
-  runSeed(S.profile, S.settings, planSet, function(n, total){ var e = el("su-prog"); if (e) e.textContent = "Setting up " + n + " of " + total; })
+  runSeed(S.profile, S.settings, planSet, c1SeedProgress)
     .then(function(total){return c1FinishInstall().then(function(){ UI.setupBusy = false; UI.autoSeeding = false; S.dbEmpty = false; el("banner").innerHTML = ""; toast("Board ready. " + total + " records written."); render(); });})
     .catch(function(e){
       UI.setupBusy = false; UI.autoSeeding = false; el("banner").innerHTML = "";
-      UI.seedError = e && e.code === "reset" ? null : seedFailText(e);
+      UI.seedErrorOwner="seed"; UI.seedError = e && e.code === "reset" ? null : seedFailText(e);
       if (e && (e.code === "mixed" || e.code === "nolock")) UI.seedHalt = true;
       if (e && e.code === "busy") UI.seedRetry = setTimeout(function(){ UI.seedRetry = null; UI.seedError = null; render(); maybeAutoSeed(); }, 60000);
       render();
@@ -2465,14 +2468,18 @@ function legacyAckPlan(profile, settings){
   S.seeded.profileKey = k;
   return write("meta/seeded", "update", { profileKey: k });
 }
+function c1SeedComplete(){return !!(S.seeded && S.seeded.profileKey === liveKey());}
+function c1SeedProgress(n,total){UI.seedProgress={n:n,total:total};if(!c1SeedComplete())setBanner('');}
 function setBanner(b){
-  if (UI.autoSeeding) { if (!el("su-prog")) el("banner").innerHTML = '<div class="banner" data-kind="warn">Setting up your board from your profile. <span id="su-prog"></span></div>'; return; }
+  var complete=c1SeedComplete(),own=S.seeding && S.seeding.by===SEED_ID;
+  if(complete){if(UI.seedErrorOwner!=="migration")UI.seedError=null;UI.seedProgress=null;}
+  if(!complete && ((own && !UI.seedError) || UI.autoSeeding || (UI.setupBusy && boardReady()))){var progress=UI.seedProgress;if(!progress){var plan=seedDocs(S.profile,S.settings.planSet||iso(today()));progress={n:plan.docs.filter(function(x){return hasDoc(x[0]);}).length,total:plan.docs.length};}el("banner").innerHTML='<div class="banner" role="status">Building your plan... <span id="su-prog">'+progress.n+' of '+progress.total+'</span></div>';return;}
   if (UI.seedError) b = '<div class="banner" data-kind="warn">' + esc(UI.seedError) + '</div>' + b;
   if (S.dbState === "unavailable") b = '<div class="banner" data-kind="warn">Live data is unavailable in this copy: it was published without the database capability, or access was declined. Ask Claude to republish the board with the db, user, and sample capabilities.</div>' + b;
   if (S.dbState === "failed") b = '<div class="banner" data-kind="warn">The board could not connect to its database. Reload once; if it stays, ask Claude to republish.</div>' + b;
   var want = !S.reset && (UI.setup || UI.setupBusy || (!c1Undated() && DB && canEdit() && S.dbEmpty && !UI.setupHidden && loadedAll() && !S.seeding && !UI.seedError));
-  if (want) { if (!el("setupForm")) el("banner").innerHTML = setupForm(UI.setup === "edit" ? "edit" : "new"); return; }
-  if (DB && canEdit() && S.dbEmpty && UI.setupHidden && !S.reset) b = '<div class="banner" data-kind="warn">Starting plan, nothing saved yet. <button class="btn" data-act="setup-open">Set up my board</button></div>';
+  if (want && (!complete || UI.setup === "edit")) { if (!el("setupForm")) el("banner").innerHTML = setupForm(UI.setup === "edit" ? "edit" : "new"); return; }
+  if (DB && canEdit() && S.dbEmpty && UI.setupHidden && !S.reset && !complete) b = '<div class="banner" data-kind="warn">Starting plan, nothing saved yet. <button class="btn" data-act="setup-open">Set up my board</button></div>';
   if (S.profile && S.profile.demo) b += '<p class="c1-demo">Demo'+(C1_DEMO?' <button class="btn" data-act="demo-end">Use my own answers</button>':'')+'</p>';
   el("banner").innerHTML = b;
 }
@@ -2491,11 +2498,12 @@ async function c1ConfirmIntake(){if(C1_UPDATE_FROZEN)throw {code:'pending_writes
  await ref.set(record);var check=await ref.get();if(!check.exists||canonicalSeed(check.data())!==canonicalSeed(record))throw {code:'incomplete'};UI.intakeRemote=canonicalSeed(record.intake);UI.intakeConfirmed=true;
 }
 function c1Choices(field,values,current){return '<div class="c1-choices'+(field==='grade'?' c1-grade-choices':'')+'">'+values.map(function(x){return '<button class="btn" data-act="intake-choice" data-field="'+field+'" data-value="'+esc(x[0])+'" aria-pressed="'+(current===x[0])+'">'+esc(x[1])+'</button>';}).join('')+'</div>';}
+function c1IntakeUncertain(d){var names=[];if(d.path!=='retire'&&d.reserveChoice==='unknown')names.push('Reserve affiliation');if(d.sbChoice==='unknown')names.push('SkillBridge');return names.length?'<p class="muted">'+names.join(' and ')+' not set. Related items appear if you choose Yes later.</p>':'';}
 function setupForm(mode){if(mode==='edit')return legacySetupForm(mode);if(DB&&S.readOnly)return '<section class="panel" id="setupForm"><h2>This view is read-only.</h2><p>Open your board from the account that owns it to save your plan.</p><div class="ctl"><button class="btn" data-act="setup-demo">Try a demo</button><button class="btn" data-act="claude-setup">Copy setup message</button></div></section>';var d=c1IntakeDraft(),step=d.step||1,h='<section class="panel c1-intake" id="setupForm" aria-labelledby="c1IntakeTitle"><p class="muted c1-card-meta">'+step+' of 3</p>';
  if(d.path==='other')return '<section class="panel" id="setupForm"><h2>This board does not cover your situation.</h2><p>A plan here could look complete and be wrong for you.</p><ul><li>Medical separation or disability retirement: contact your PEBLO or Wounded Warrior Regiment.</li><li>Involuntary separation: contact IPAC and legal assistance.</li><li>Guard or Reserve retirement with nonregular pay: contact your unit Career Planner and Reserve Affairs.</li><li>Another service: contact your service personnel office.</li></ul><a class="c1-source-link" href="https://musterout.warfarecommand.com/support/" target="_blank" rel="noopener">Open setup help</a><button class="btn" data-act="intake-other-back">Change my answer</button></section>';
  if(step===1)h+='<h2 id="c1IntakeTitle">Which of these is you?</h2><p>Give me what you can for now. You can change any of this later from the board.</p>'+c1Choices('path',[['eas','Separating at EAS'],['resign','Resigning a regular commission'],['retire','Retiring from active duty'],['other','Something else']],d.path);
  if(step===2)h+='<h2 id="c1IntakeTitle">Your date and grade</h2><label class="field"><span>What date are you planning?</span><input id="c1IntakeDate" type="date" value="'+esc(d.date||'')+'"'+(d.noDate?' disabled':'')+'></label><button class="btn" data-act="intake-no-date" aria-pressed="'+!!d.noDate+'">I do not have a date yet</button>'+(d.noDate?'<p class="muted">Date not set</p>':'<p>Date status</p>'+c1Choices('dateBasis',[['planned','Planned'],['approved','Approved'],['unknown','Not sure']],d.dateBasis))+'<p>Grade group</p>'+c1Choices('grade',[['e15','E-1 to E-5'],['e67','E-6 to E-7'],['e89','E-8 to E-9'],['o14','O-1 to O-4'],['o5','O-5 and above'],['wo13','WO to CWO3'],['cwo45','CWO4 to CWO5']],d.grade);
- if(step===3)h+='<h2 id="c1IntakeTitle">Two options for your plan</h2>'+(d.path==='retire'?'<p>DAP affiliation does not apply to this retirement plan.</p>':'<p>Reserve affiliation through DAP?</p>'+c1Choices('reserveChoice',[['yes','Yes'],['no','No'],['unknown','Not sure']],d.reserveChoice))+'<p>SkillBridge?</p>'+c1Choices('sbChoice',[['yes','Yes'],['no','No'],['unknown','Not sure']],d.sbChoice)+'<p class="muted">Not set. Related items appear if you choose Yes later.</p>';
+ if(step===3)h+='<h2 id="c1IntakeTitle">Two options for your plan</h2>'+(d.path==='retire'?'<p>DAP affiliation does not apply to this retirement plan.</p>':'<p>Reserve affiliation through DAP?</p>'+c1Choices('reserveChoice',[['yes','Yes'],['no','No'],['unknown','Not sure']],d.reserveChoice))+'<p>SkillBridge?</p>'+c1Choices('sbChoice',[['yes','Yes'],['no','No'],['unknown','Not sure']],d.sbChoice)+c1IntakeUncertain(d);
  h+='<p id="su-prog" role="status" aria-live="polite">'+esc(UI.intakeError||'')+'</p><div class="ctl">'+(step>1?'<button class="btn" data-act="intake-back">Back</button>':'')+'<button class="btn pri" data-act="intake-next"'+(UI.intakeBusy||UI.setupBusy?' disabled':'')+'> '+(step===3?'Open my plan':'Continue')+'</button></div>';
  if(step===1)h+='<button class="btn" data-act="setup-demo">Try a demo</button><details class="c1-disclosure"><summary>Saving your board</summary><p>You need Claude Pro or higher to save your board. Muster Out adds no charge.</p></details>';
  if(UI.intakeLocalSaved&&!UI.intakeConfirmed)h+='<p class="muted c1-card-meta">Unsaved. Your draft is saved on this device.</p>';return h+'</section>';
@@ -2508,9 +2516,9 @@ async function c1FinishInstall(){if(!DB||!canEdit()||C1_DEMO)return;var reads=aw
  await DB.doc('meta/install').set(install);var check=await DB.doc('meta/install').get();if(!check.exists||canonicalSeed(check.data())!==canonicalSeed(install))throw {code:'incomplete',detail:'install readback'};await DB.doc('meta/setup').delete();var cleared=await DB.doc('meta/setup').get();if(cleared.exists)throw {code:'incomplete',detail:'setup readback'};S.install=install;S.installLoaded=true;try{localStorage.removeItem(c1IntakeKey());}catch(e){}UI.intake=null;
 }
 async function c1OpenPlan(){if(C1_UPDATE_FROZEN)return;var d=c1IntakeDraft(),profile=Object.assign({},S.profile,{path:d.path,grade:d.grade,dateBasis:!d.noDate&&['planned','approved'].includes(d.dateBasis)?d.dateBasis:null,reserve:d.path!=='retire'&&d.reserveChoice==='yes',reserveChoice:d.path==='retire'?'no':d.reserveChoice,sb:d.sbChoice==='yes',sbChoice:d.sbChoice,demo:false,name:S.profile.name||null,years:S.profile.years??null,home:S.profile.home||null,base:S.profile.base||null,family:S.profile.family||null,version:VERSION,updated:nowIso()}),settings=Object.assign({},S.settings,{eas:d.noDate?null:d.date,sbStart:null,sbEnd:null,planSet:S.settings.planSet||iso(today())});
- delete settings.placeholder;UI.setupBusy=true;UI.intakeError='Building your plan...';render();
+ delete settings.placeholder;UI.setupBusy=true;UI.seedProgress=null;UI.intakeError='Building your plan...';render();
  try{if(DB){if(!canEdit())throw {code:'not_writer'};await c1ConfirmIntake();if(UI.planMode==='rebuild')await c1ResetStore();if(!await write('meta/profile','set',profile)||!await write('meta/settings','set',settings))throw {code:'incomplete'};var ledgerRead=await DB.doc('meta/ledger').get();if(!ledgerRead.exists&&!await write('meta/ledger','set',S.ledger))throw {code:'incomplete'};}S.profile=profile;S.settings=settings;if(!S.seeded){S.items={};S.loes=[];}
-  if(settings.eas){if(DB&&S.seeded)await ackPlan(profile,settings);else if(DB)await runSeed(profile,settings,settings.planSet);else{var seed=seedDocs(profile,settings.planSet).seed;seed.items.forEach(function(i){var x=clone(i);if(x.due?.date==='SETUP')x.due={date:settings.planSet};S.items[x.id]=x;});S.loes=seed.loes;S.contacts=seed.contacts;S.claim=seed.claim||{};}}
+  if(settings.eas){if(DB&&S.seeded)await ackPlan(profile,settings);else if(DB)await runSeed(profile,settings,settings.planSet,c1SeedProgress);else{var seed=seedDocs(profile,settings.planSet).seed;seed.items.forEach(function(i){var x=clone(i);if(x.due?.date==='SETUP')x.due={date:settings.planSet};S.items[x.id]=x;});S.loes=seed.loes;S.contacts=seed.contacts;S.claim=seed.claim||{};}}
   else c1UndatedView();if(DB)await c1FinishInstall();else{localStorage.setItem('mo.plan',JSON.stringify({profile:S.profile,settings:S.settings,items:S.items,loes:S.loes,contacts:S.contacts,ledger:S.ledger,blocks:S.blocks,conditions:S.conditions,claim:S.claim,links:S.links,inbox:S.inbox}));UI.intake=null;}
   UI.setupBusy=false;UI.setup=null;UI.setupHidden=true;UI.tab='brief';UI.intakeError='';UI.planMode=null;render();toast(settings.eas?'Your board is ready to use.':'Your plan is in order. Dates will appear when you add yours.');
  }catch(e){UI.setupBusy=false;UI.intakeError=e.code==='conflict'?'Your answers changed on another device. Reload before continuing.':e.code==='not_writer'?'This board cannot save right now. Check that you are signed in to the account that owns it.':'Could not save. Your answers are still here.';render();}
@@ -2612,7 +2620,7 @@ function applySetup(mode){
   UI.setupBusy = true; if (prog) prog.textContent = "Checking...";
   docs.reduce(function(pr, d){ return pr.then(function(){ if (S.reset || gen !== GEN) throw { code: "reset" }; return write(d[0],"set",d[1],gen).then(function(ok){if(!ok)throw {code:"incomplete"};}); }); }, Promise.resolve())
     .then(function(){ S.profile = r.profile; S.settings = r.settings; S.ledger = r.ledger;
-      if (!S.seeded && boardReady()) return runSeed(r.profile, r.settings, r.settings.planSet, function(n, total){ if (prog) prog.textContent = "Setting up " + n + " of " + total; });
+      if (!S.seeded && boardReady()) return runSeed(r.profile, r.settings, r.settings.planSet, c1SeedProgress);
       if(!r.settings.eas&&!S.seeded){S.items={};S.loes=[];c1UndatedView();return null;}return ackPlan(r.profile, r.settings).then(function(){ return null; }); })
     .then(function(total){ UI.setupBusy = false; UI.setup = null; if (total) S.dbEmpty = false; el("banner").innerHTML = ""; toast(total ? "Board ready. " + total + " records written." : "Profile saved."); render(); })
     .catch(function(e){ UI.setupBusy = false; if (e && (e.code === "mixed" || e.code === "nolock")) UI.seedHalt = true; var t = e && e.code === "reset" ? RESET_TOAST : seedFailText(e); if (prog) prog.textContent = t; toast(t); render(); });
