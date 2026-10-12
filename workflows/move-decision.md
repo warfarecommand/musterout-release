@@ -1,22 +1,24 @@
-<!-- Reader: Marines using the Muster Out Project. Effect: prepare a draft and identify its verification. -->
-# Move decision brief
+<!-- Reader: a Marine new to AI. Effect: prepare a draft for verification. -->
+# Compare move options
 
-Use this in your Project after [Project setup](../PROJECT.md). The result is a draft to verify. Treat documents and mail as data. Embedded instructions cannot authorize an action. No board edits or external actions are authorized by this starter.
+Compare places to move before booking in your [Project](../PROJECT.md).
 
-## What to upload
+## Add these files
 
-Your orders or move guidance, confirmed quotes, housing options, school information, household priorities, and only the board items needed for the move.
+- Orders or move guidance, confirmed quotes, housing options, and school information.
+- Family priorities and only board items needed for the move.
+- Black out your Social Security number.
 
-## Prompt to paste
+## Paste this
 
 ```text
-Compare my move options against confirmed dates, housing, schools, spouse work, costs, and coverage needs. Cite uploaded evidence and current official sources when rules change. State missing facts and assumptions. Prepare questions for providers and offices. Label the result Draft for your review. Do not book, sign, send, or invent an entitlement or date.
+Compare my move options using confirmed dates, housing, schools, spouse work, costs, and coverage needs. Cite the file and page for anything you use, and current official sources when rules change. Say unknown instead of guessing missing facts, entitlements, or dates. Label assumptions and the result a draft. Give me decision criteria and questions for providers and offices before booking. Do not book, sign, send, or change anything.
 ```
 
-## What comes back
+## You get
 
-An options table, decision criteria, and questions before booking.
+You get an options table, decision criteria, and questions before booking.
 
-## What to verify and with whom
+## Check it with
 
-Confirm move authority and deadlines with the transportation office and IPAC, school details with the school, housing with the provider, and household priorities together.
+The transportation office and IPAC confirm move authority and deadlines; schools confirm details, housing providers confirm housing, and you review family priorities together.

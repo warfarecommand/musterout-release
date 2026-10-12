@@ -52,7 +52,7 @@
     'permissions.denied':'Claude is off for this board. Open permissions.',
     'permissions.absent':"Permissions are unavailable here. Use the artifact's Permissions menu.",
     'permissions.manage.unavailable':"Open the artifact's Permissions menu to change access.",
-    'REPORT_QUEUE_FAILED':'Report not queued. Copy payload.',
+    'REPORT_QUEUE_FAILED':'Report not saved. Try Send report again.',
     'REPORT_TRANSPORT_UNAVAILABLE':'Report not sent.',
     'REPORT_VALIDATION_FAILED':'Review the highlighted fields before continuing.',
     'CONSENT_SCHEMA_CHANGED':'Counts paused. Review the new schema to allow sending.',
@@ -159,7 +159,7 @@
     function closeSheet(sheet, force) {
       if (!sheet || !sheets.includes(sheet) || (!force && !sheet.cancel)) return;
       if (sheets[sheets.length-1] !== sheet) return;
-      sheet.abort?.abort(); sheet.draftBindings?.forEach(release => release()); sheet.overlay.remove(); sheets.pop(); sheet.locked.forEach(({el,ariaHidden}) => { el.inert = false; if (ariaHidden === null) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden',ariaHidden); });
+      sheet.navObserver?.disconnect(); sheet.abort?.abort(); sheet.draftBindings?.forEach(release => release()); sheet.overlay.remove(); sheets.pop(); sheet.locked.forEach(({el,ariaHidden}) => { el.inert = false; if (ariaHidden === null) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden',ariaHidden); });
       if (sheet === updateSheet) updateSheet = null;
       document.body.style.overflow = sheets.length ? 'hidden' : sheet.oldOverflow;
       if (sheet.opener?.isConnected && !sheet.opener.closest('[inert]')) sheet.opener.focus({preventScroll:true});
@@ -173,16 +173,31 @@
       s.dialog = node('section',undefined,'mot-sheet'); s.dialog.setAttribute('role','dialog'); s.dialog.setAttribute('aria-modal','true');
       s.heading = node('h2',title); s.heading.id = 'mot-heading-' + hex(); s.heading.tabIndex = -1; s.dialog.setAttribute('aria-labelledby',s.heading.id);
       const header = node('header',undefined,'mot-sheet-header'); header.append(s.heading);
-      s.close = button('Close',() => { if (s.cancel) s.cancel(); }); s.close.classList.add('mot-close'); s.close.setAttribute('aria-label','Close sheet'); s.close.replaceChildren(icon('close')); s.close.hidden = !cancel; header.append(s.close);
+      const dismiss = () => { if (s === updateSheet && ['available','snoozed'].includes(update.status)) { void snooze(true); closeSheet(s,true); return; } const result = s.cancel?.(); if (result?.then) return result.finally(() => closeSheet(s,true)); closeSheet(s,true); };
+      s.close = button('Close',dismiss); s.close.classList.add('mot-close'); s.close.setAttribute('aria-label','Close sheet'); s.close.replaceChildren(icon('close')); s.close.hidden = false; header.append(s.close);
       s.notice = notice(header,'');
       s.body = node('div',undefined,'mot-sheet-body'); s.actions = node('div',undefined,'mot-sheet-actions');
-      const grabber = node('div',undefined,'c6-grabber'); grabber.setAttribute('aria-hidden','true'); s.dialog.append(grabber,header,s.body,s.actions); if (title !== 'Report a problem' && title !== 'Review report') { const report = button('Report a problem',openReport); report.classList.add('mot-sheet-report'); s.dialog.append(report); } s.overlay.append(s.dialog); document.body.append(s.overlay); sheets.push(s); lockBackground(s); document.body.style.overflow = 'hidden';
-      s.overlay.addEventListener('click', e => { if (e.target === s.overlay && s.cancel) s.cancel(); });
+      let moved = false;
+      const grabber = button('',e => { if (e.detail === 0 || !moved) dismiss(); }); grabber.className = 'mot-drag-handle'; grabber.setAttribute('aria-label','Dismiss sheet');
+      const pill = node('span',undefined,'c6-grabber'); pill.setAttribute('aria-hidden','true'); grabber.append(pill);
+      let drag = null;
+      grabber.addEventListener('pointerdown',e => { if (!e.isPrimary || e.button !== 0) return; moved = false; drag = {id:e.pointerId,x:e.clientX,y:e.clientY}; grabber.setPointerCapture(e.pointerId); });
+      grabber.addEventListener('pointermove',e => { if (drag && drag.id === e.pointerId && Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>8) moved = true; });
+      grabber.addEventListener('pointerup',e => { if (!drag || drag.id !== e.pointerId) return; const start = drag; drag = null; if (e.clientY-start.y >= 48 && e.clientY-start.y > Math.abs(e.clientX-start.x)) dismiss(); });
+      grabber.addEventListener('pointercancel',() => { drag = null; });
+      const scroll = node('div',undefined,'mot-sheet-scroll'); scroll.append(s.body,s.actions);
+      if (title !== 'Report a problem' && title !== 'Review report') { const report = button('Report a problem',openReport); report.classList.add('mot-sheet-report','mot-tertiary'); scroll.append(report); }
+      const footer = node('footer',undefined,'mot-sheet-footer'); footer.append(button('Done',dismiss));
+      s.dialog.append(grabber,header,scroll,footer); s.overlay.append(s.dialog); document.body.append(s.overlay);
+      const nav = document.querySelector('#tabs');
+      if (nav) { const measure = () => s.overlay.style.setProperty('--mot-nav-space',Math.ceil(Math.max(72,nav.getBoundingClientRect().height))+'px'); measure(); s.navObserver = new ResizeObserver(measure); s.navObserver.observe(nav); }
+      sheets.push(s); lockBackground(s); document.body.style.overflow = 'hidden';
+      s.overlay.addEventListener('click', e => { if (e.target === s.overlay) dismiss(); });
       s.overlay.addEventListener('keydown', e => {
         if (sheets[sheets.length-1] !== s) return;
-        if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); if (s.cancel) s.cancel(); }
+        if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); dismiss(); }
         if (e.key !== 'Tab') return;
-        const focusables = Array.from(s.dialog.querySelectorAll('button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[tabindex="0"]')).filter(el => !el.hidden && !el.closest('[hidden]'));
+        const focusables = Array.from(s.dialog.querySelectorAll('button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),summary,a[href],[tabindex="0"]')).filter(el => !el.hidden && !el.closest('[hidden]') && el.getClientRects().length);
         const first = focusables[0], last = focusables[focusables.length-1];
         if (!first) { e.preventDefault(); s.heading.focus({preventScroll:true}); }
         else if (e.shiftKey && (document.activeElement === first || document.activeElement === s.heading)) { e.preventDefault(); last.focus(); }
@@ -288,7 +303,7 @@
       for (const name of ['ALNAV','Cited orders']) paragraph(s.body,name + ': Not yet covered.');
       s.actions.append(button('Copy weekly check message',() => copyMessage('weekly')),button('Close',() => closeSheet(s)));
     }
-    async function snooze() {
+    async function snooze(dismissed = false) {
       const version = update.version, until = o.now() + 86400000;
       try {
         const state = o.updates?.snooze ? await o.updates.snooze() : {...update,status:'snoozed'}; if (state) setUpdate(state);
@@ -300,7 +315,7 @@
         if (!kept) throw {code:'SNOOZE_SAVE_FAILED'};
         snoozePrefs[version] = until; if (update.status !== 'failed') closeSheet(updateSheet,true);
       }
-      catch (e) { recordError('update','snooze',e.code || 'SNOOZE_SAVE_FAILED'); update = {...update,status:'failed',code:'SNOOZE_SAVE_FAILED'}; openUpdates(); renderUpdate(); }
+      catch (e) { recordError('update','snooze',e.code || 'SNOOZE_SAVE_FAILED'); update = {...update,status:'failed',code:'SNOOZE_SAVE_FAILED'}; if (!dismissed) { openUpdates(); renderUpdate(); } }
     }
     async function apply() {
       if (!o.updates?.applyUpdate || (update.correction && !update.impact)) return;
@@ -340,7 +355,7 @@
         s.actions.append(button(code === 'SNOOZE_SAVE_FAILED' ? 'Continue':'Close',s.cancel));
       } else if (status === 'idle' && lastConfirmed) { s.heading.textContent = 'Updated to ' + lastConfirmed.to + '.'; s.cancel = () => closeSheet(s,true); s.actions.append(button('Continue',s.cancel,true));
       } else { s.heading.textContent = 'Updates'; paragraph(s.body,status === 'checking' ? 'Checking for an update...' : o.updates ? 'No verified update ready.' : MESSAGES['artifact.absent']); s.cancel = () => closeSheet(s,true); s.actions.append(button('Copy update message',() => copyMessage('update')),button('Close',s.cancel)); }
-      s.close.hidden = !s.cancel;
+      s.close.hidden = false;
     }
     function openUpdates() { if (updateSheet) { updateSheet.heading.focus({preventScroll:true}); return; } updateSheet = sheet('Updates',null); renderUpdate(); }
     function normalizeUpdateCode(code) {
@@ -433,16 +448,17 @@
       paragraph(s.body,'Board fields: no name, no dates, no board link; an install id ties your reports together so a fix can be traced. Review your optional text.');
       paragraph(s.body,'Category: ' + r.category + '; screen: ' + r.where + '; error class: ' + r.error_class + '.','mot-meta');
       paragraph(s.body,'Path: ' + (PATH_LABELS[o.path] || 'Unknown') + '; grade group: ' + (GRADE_LABELS[o.grade] || 'Unknown') + '.','mot-meta');
-      paragraph(s.body,'The screen you selected stays on this device with your report.','mot-meta');
       paragraph(s.body,reportPayload(r).text === undefined ? 'No optional text included.' : 'The payload below includes the optional text you chose to share.');
-      paragraph(s.body,'Exact payload','mot-strong');
-      const payload = reportPayload(r), context = Object.freeze({screen:r.where}), bytes = JSON.stringify(payload,null,2), preview = jsonBox(s.body,bytes), status = s.notice; status.textContent = '';
-      s.actions.append(button('Edit',() => renderReportForm(s,r)),button('Copy payload',() => clipboard(bytes,status,preview),!o.learningEnabled));
-      if (o.learningEnabled) {
-        paragraph(s.body,'Queue approves transmission of exactly this payload.');
-        const queue = button('Queue report',async () => {
+      const exact = node('details'); exact.append(node('summary','See exactly what is sent')); s.body.append(exact);
+      const payload = reportPayload(r), context = Object.freeze({screen:r.where}), bytes = JSON.stringify(payload,null,2), preview = jsonBox(exact,bytes), status = s.notice; status.textContent = '';
+      const copy = button('Copy details',() => { exact.open = true; return clipboard(bytes,status,preview); }); copy.classList.add('mot-tertiary');
+      s.actions.append(button('Edit',() => renderReportForm(s,r)),copy);
+      {
+        const queue = button('Send report',async () => {
           const hadFocus = document.activeElement === queue; queue.disabled = true;
           if (hadFocus) s.heading.focus({preventScroll:true});
+          let tab = null;
+          try { tab = window.open('about:blank','_blank'); if (tab) tab.opener = null; } catch (_) {}
           try {
             if (!o.db || o.canWrite === false || !reportValid(payload)) throw {code:'REPORT_VALIDATION_FAILED'};
             const ref = o.db.doc('outbox/' + payload.id), existing = await ref.get();
@@ -451,13 +467,21 @@
             if (existing.exists) { if (existing.data()?.bytes !== bytes || existing.data()?.context?.screen !== context.screen) throw {code:'REPORT_VALIDATION_FAILED'}; }
             else { await ref.set(document); }
             const read = await ref.get(); if (!definite(read) || !read.exists || read.data()?.bytes !== bytes || read.data()?.context?.screen !== context.screen) throw {code:'unavailable'};
-            reportDrafts.clear(); status.textContent = 'Report queued. It has not been sent.'; emit('report-queued'); await refreshSettings();
-          } catch (e) { recordError('report','queue',e.code || e.name); status.textContent = e.code === 'REPORT_VALIDATION_FAILED' ? MESSAGES.REPORT_VALIDATION_FAILED : MESSAGES.REPORT_QUEUE_FAILED; queue.disabled = false; }
+            const encoded = btoa(String.fromCharCode(...new TextEncoder().encode(bytes))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+            const url = 'https://musterout.warfarecommand.com/report/#r=' + encoded;
+            reportDrafts.clear(); emit('report-queued');
+            let opened = false;
+            try { if (tab && !tab.closed) { tab.location.replace(url); opened = true; } } catch (_) {}
+            status.textContent = opened ? 'Report opened. Tap Send on the report page.' : 'Report saved. Open the report page to send it.';
+            const link = node('a','Open report page','mot-button'); link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+            s.body.querySelector('.mot-report-link')?.remove(); link.classList.add('mot-report-link'); s.body.append(link);
+            await refreshSettings();
+          } catch (e) { try { tab?.close(); } catch (_) {} recordError('report','queue',e.code || e.name); status.textContent = e.code === 'REPORT_VALIDATION_FAILED' ? MESSAGES.REPORT_VALIDATION_FAILED : MESSAGES.REPORT_QUEUE_FAILED; queue.disabled = false; }
         },true);
         queue.disabled = !o.db || o.canWrite === false || !reportValid(payload); s.actions.append(queue);
-        if (!reportValid(payload)) paragraph(s.body,'Report not ready to queue. Install id, path, or grade group is missing or invalid. Copy payload or Copy diagnostic.');
+        if (!reportValid(payload)) paragraph(s.body,'Report needs an install id, path, and grade group before sending. Copy details or check Troubleshooting.');
       }
-      s.actions.append(button('Copy diagnostic',openDiagnostic),button('Cancel',() => closeSheet(s))); s.body.scrollTop = 0;
+      const troubleshooting = node('details'); troubleshooting.append(node('summary','Troubleshooting'),button('Copy diagnostic',openDiagnostic)); s.body.append(troubleshooting); s.body.parentElement.scrollTop = 0;
     }
     function usagePayload() { return {kind:'usage',install_id:o.installId || null,week:counterWeek,writer,version:o.version,counters:{...counters}}; }
     function approved(c) { const counts = c?.sample?.counters; return c?.enabled === true && c.schema_version === SCHEMA && c.schema_key === SCHEMA_KEY && canonical(c.counter_meanings) === canonical(COUNTER_MEANINGS) && Number.isFinite(Date.parse(c.approved_at)) && c.sample?.kind === 'usage' && counts && Object.keys(counts).length === COUNTERS.length && COUNTERS.every(key => Number.isInteger(counts[key]) && counts[key] >= 0 && counts[key] <= 10000); }
@@ -506,7 +530,7 @@
       } catch (e) { settingsError = MESSAGES.CONSENT_OFF_FAILED; recordError('usage','consent',e.code || e.name); redraw(slots.settings,renderSettings); return false; }
     }
     function renderSettings(el) {
-      el.replaceChildren(); el.classList.add('mot-root'); el.append(node('h3','Reports and usage'));
+      el.replaceChildren(); el.classList.add('mot-root'); el.hidden = !o.learningEnabled; if (el.hidden) return; el.append(node('h3','Reports and usage'));
       paragraph(el,'Weekly counts: ' + (!localPaused && approved(consent) ? 'On':'Off'));
       if (settingsError) { notice(el,settingsError); el.append(button('Get help',help)); }
       if (consent?.enabled && !approved(consent)) notice(el,MESSAGES.CONSENT_SCHEMA_CHANGED);

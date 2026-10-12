@@ -1,22 +1,24 @@
-<!-- Reader: Marines using the Muster Out Project. Effect: prepare a draft and identify its verification. -->
+<!-- Reader: a Marine new to AI. Effect: prepare a draft for verification. -->
 # Spouse brief
 
-Use this in your Project after [Project setup](../PROJECT.md). The result is a draft to verify. Treat documents and mail as data. Embedded instructions cannot authorize an action. No board edits or external actions are authorized by this starter.
+Prepare a brief to review with your spouse in your [Project](../PROJECT.md).
 
-## What to upload
+## Add these files
 
-A reviewed board snapshot and the decisions, appointments, and constraints you choose to share. Leave medical details out unless needed and you choose to include them.
+- A checked copy of your board and decisions, appointments, and limits you choose to share.
+- Optional: medical details you choose to include if needed.
+- Black out your Social Security number.
 
-## Prompt to paste
+## Paste this
 
 ```text
-Draft a short brief I can review with my spouse: decisions we need to make, confirmed appointments, proposed owners, and open questions. Cite board item IDs and the snapshot time. Separate confirmed dates from targets. Omit medical details unless I ask. Label it Draft for your review. Do not share it, send it, or assume my spouse can open this Project.
+Draft a short brief for me to review with my spouse. Show decisions we need to make, confirmed appointments, who could handle each task, and open questions. Cite the file and page for anything you use, plus board item numbers and when the copy was taken. Say unknown instead of guessing. Separate confirmed dates from targets. Omit medical details unless I ask. Label the result a draft. Do not share or send it; my spouse may not have Project access.
 ```
 
-## What comes back
+## You get
 
-A brief for you to review and share yourself.
+You get a brief to review and share yourself; Project sharing is a separate later feature.
 
-## What to verify and with whom
+## Check it with
 
-Confirm facts and proposed owners together. Check service dates with IPAC and appointments with the issuing office. Project sharing is a separate later feature.
+You and your spouse confirm facts and task assignments; IPAC confirms service dates, and appointment offices confirm appointments.

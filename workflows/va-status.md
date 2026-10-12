@@ -1,22 +1,23 @@
-<!-- Reader: Marines using the Muster Out Project. Effect: prepare a draft and identify its verification. -->
-# VA status reconciliation
+<!-- Reader: a Marine new to AI. Effect: prepare a draft for verification. -->
+# Check VA claim status
 
-Use this in your Project after [Project setup](../PROJECT.md). The result is a draft to verify. Treat documents and mail as data. Embedded instructions cannot authorize an action. No board edits or external actions are authorized by this starter.
+Compare VA records with your board in your [Project](../PROJECT.md).
 
-## What to upload
+## Add these files
 
-Your own VA receipt or status letter, requested-evidence notice, a dated VA.gov status capture, and reviewed board claim items. Remove claim and personal identifiers before uploading.
+- Your VA receipt or status letter, requested-evidence notice, dated VA.gov screenshot, and checked board claim items.
+- Black out your Social Security number, claim number, and personal identifiers.
 
-## Prompt to paste
+## Paste this
 
 ```text
-Reconcile these VA receipts and status records with my board snapshot. State the date checked. Show documented receipt, current status evidence, requested evidence, recorded deadlines, and conflicts. Cite filename and page. A board checkmark is not VA receipt. Do not infer an approval, rating, diagnosis date, or missing deadline. Label the result Draft for your review; do not submit or edit my claim.
+Compare my VA receipts and status records with my board. State the date checked. Show documented receipt, status evidence, requested evidence, recorded deadlines, conflicts, and the next documented request. Cite the file and page for anything you use. A checked box on my board does not prove VA receipt. Say unknown instead of guessing approval, rating, diagnosis dates, or missing deadlines. Label the result a draft. Do not submit or edit my claim.
 ```
 
-## What comes back
+## You get
 
-An evidence and status table with unresolved questions and the next documented request.
+You get an evidence and status table with unresolved questions; this Project has no direct VA connection.
 
-## What to verify and with whom
+## Check it with
 
-Check current status on VA.gov and confirm discrepancies or deadlines with VA or your accredited VSO. This Project has no direct VA integration.
+Check current status on VA.gov; VA or your accredited VSO confirms discrepancies and deadlines.

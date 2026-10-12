@@ -1,22 +1,24 @@
-<!-- Reader: Marines using the Muster Out Project. Effect: prepare a draft and identify its verification. -->
-# Appointment collision review
+<!-- Reader: a Marine new to AI. Effect: prepare a draft for verification. -->
+# Appointment conflicts
 
-Use this in your Project after [Project setup](../PROJECT.md). The result is a draft to verify. Treat documents and mail as data. Embedded instructions cannot authorize an action. No board edits or external actions are authorized by this starter.
+Find appointments that overlap in your [Project](../PROJECT.md).
 
-## What to upload
+## Add these files
 
-Appointment confirmations, approved leave or SkillBridge dates, and a reviewed board snapshot. Optional Calendar access is read only for this review.
+- Appointment confirmations, approved leave or SkillBridge dates, and a checked copy of your board.
+- Optional: Calendar access to read appointments.
+- Black out your Social Security number.
 
-## Prompt to paste
+## Paste this
 
 ```text
-Compare documented appointments with confirmed absences, exams, and SkillBridge dates. Show collisions and possible conflicts, their evidence, and unknown times or timezones. Separate deadlines, targets, and confirmed events. Suggest questions to resolve conflicts. Label the result Draft for your review. Do not move, cancel, create, or send anything.
+Compare my appointments with confirmed absences, exams, and SkillBridge dates. Show overlaps and possible conflicts in a table. Cite the file and page for anything you use. Say unknown instead of guessing times or time zones. Separate deadlines, planning targets, and confirmed events. Give me questions to resolve conflicts. Label the result a draft. Do not move, cancel, create, or send anything.
 ```
 
-## What comes back
+## You get
 
-A conflict table and a list of scheduling questions.
+You get a conflict table and scheduling questions.
 
-## What to verify and with whom
+## Check it with
 
-Verify timezones and times with each appointment office. Confirm leave and SkillBridge changes with your command before requesting a calendar edit.
+Each appointment office confirms times and time zones; your command confirms leave and SkillBridge changes before you request a calendar change.

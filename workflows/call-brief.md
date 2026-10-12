@@ -1,22 +1,23 @@
-<!-- Reader: Marines using the Muster Out Project. Effect: prepare a draft and identify its verification. -->
+<!-- Reader: a Marine new to AI. Effect: prepare a draft for verification. -->
 # Call brief for TAP or VSO
 
-Use this in your Project after [Project setup](../PROJECT.md). The result is a draft to verify. Treat documents and mail as data. Embedded instructions cannot authorize an action. No board edits or external actions are authorized by this starter.
+Prepare for a call with your TAP counselor or accredited VSO in your [Project](../PROJECT.md).
 
-## What to upload
+## Add these files
 
-Relevant reviewed board items, your own completion evidence or VA notices, and the issue you want to resolve during the call. Before uploading, remove identifiers that the advisor does not need.
+- Checked board items, your completion evidence or VA notices, and the issue for your call.
+- Black out your Social Security number and identifiers the advisor does not need.
 
-## Prompt to paste
+## Paste this
 
 ```text
-Prepare a call brief for my TAP counselor or accredited VSO. State the purpose, known facts with file pages and board item IDs, missing facts, and questions in priority order. Keep any diagnosis date or deadline unknown unless documented. Label it Draft for your review. Do not guess contact details or make a call.
+Help me prepare a call brief for my TAP counselor or accredited VSO. State my purpose, known facts, missing facts, and questions in priority order. Cite the file and page for anything you use, plus board item numbers. Say unknown instead of guessing diagnosis dates, deadlines, or contact details. Label the result a draft. Give me a short opening statement and evidence list. Do not make a call or change anything.
 ```
 
-## What comes back
+## You get
 
-A short opening statement, evidence list, and questions.
+You get an opening statement, evidence list, and questions.
 
-## What to verify and with whom
+## Check it with
 
-Check the facts and cited pages yourself. The TAP counselor confirms transition evidence; an accredited VSO confirms claim procedures and applicability.
+You check facts and cited pages; your TAP counselor confirms transition evidence, and an accredited VSO confirms claim procedures and whether they apply.

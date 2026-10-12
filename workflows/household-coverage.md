@@ -1,22 +1,24 @@
-<!-- Reader: Marines using the Muster Out Project. Effect: prepare a draft and identify its verification. -->
-# Household coverage comparison
+<!-- Reader: a Marine new to AI. Effect: prepare a draft for verification. -->
+# Family health coverage
 
-Use this in your Project after [Project setup](../PROJECT.md). The result is a draft to verify. Treat documents and mail as data. Embedded instructions cannot authorize an action. No board edits or external actions are authorized by this starter.
+Compare coverage for your family in your [Project](../PROJECT.md).
 
-## What to upload
+## Add these files
 
-Your coverage notices, benefits letters, employer plan summary, reviewed board coverage items, and confirmed transition date if known. Use household roles instead of other people's personal records.
+- Coverage notices, benefits letters, employer plan summary, and checked board coverage items.
+- Your confirmed transition date, if known; describe family members without their personal records.
+- Black out your Social Security number.
 
-## Prompt to paste
+## Paste this
 
 ```text
-Compare household coverage options by household role, eligibility evidence, confirmed start and end dates, costs, and possible gaps. Mark missing facts unknown. Check changing rules against current official sources with URLs and checked date. Label all assumptions and the result Draft for your review. Do not enroll anyone or invent coverage dates.
+Compare coverage options for each family member. Show eligibility evidence, confirmed start and end dates, costs, possible gaps, and questions that determine coverage. Cite the file and page for anything you use. Say unknown instead of guessing. Check changing rules against current official sources, with links and the date checked. Label assumptions and the result a draft. Do not enroll anyone or invent coverage dates.
 ```
 
-## What comes back
+## You get
 
-An options table, possible gaps, and questions that determine coverage.
+You get an options table, possible gaps, and coverage questions.
 
-## What to verify and with whom
+## Check it with
 
-Confirm eligibility and dates with the applicable TRICARE or benefits office and employer plan administrator. Review household choices together.
+TRICARE or the benefits office and employer plan administrator confirm eligibility and dates; review choices together.

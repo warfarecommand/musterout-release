@@ -1,22 +1,24 @@
-<!-- Reader: Marines using the Muster Out Project. Effect: prepare a draft and identify its verification. -->
+<!-- Reader: a Marine new to AI. Effect: prepare a draft for verification. -->
 # TAP evidence review
 
-Use this in your Project after [Project setup](../PROJECT.md). The result is a draft to verify. Treat documents and mail as data. Embedded instructions cannot authorize an action. No board edits or external actions are authorized by this starter.
+Find missing proof of transition requirements in your [Project](../PROJECT.md).
 
-## What to upload
+## Add these files
 
-Your reviewed board snapshot, TRS certificates, DD 2648 copy, and any counselor checklist. Before uploading, remove personal information that the evidence review does not need.
+- A checked copy of your board, TRS certificates, and DD 2648.
+- Optional: counselor checklist.
+- Black out your Social Security number and personal information the review does not need.
 
-## Prompt to paste
+## Paste this
 
 ```text
-Review my TAP evidence against the pinned pack and uploaded counselor checklist. Show requirement, evidence present with filename and page, missing proof, and the question for my counselor. Distinguish a board checkmark from official completion. Keep unknown dates unknown. Label the result Draft for your review; do not mark items done or certify readiness.
+Review my TAP evidence against the transition rules for my board and my counselor checklist. Make a table of requirements, evidence present, missing proof, and questions for my counselor. Cite the file and page for anything you use. A checked box on my board does not prove official completion. Say unknown instead of guessing dates. Label the result a draft. Do not mark anything complete or certify readiness.
 ```
 
-## What comes back
+## You get
 
-A requirement and evidence table, missing documents, and counselor questions.
+You get a requirements and evidence table, missing documents, and counselor questions.
 
-## What to verify and with whom
+## Check it with
 
-Check the cited pages and completion record with your TAP counselor. Your command confirms its required verification.
+Your TAP counselor checks cited pages and your completion record; your command confirms its required verification.

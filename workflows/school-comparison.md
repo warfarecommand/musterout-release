@@ -1,22 +1,24 @@
-<!-- Reader: Marines using the Muster Out Project. Effect: prepare a draft and identify its verification. -->
-# School comparison
+<!-- Reader: a Marine new to AI. Effect: prepare a draft for verification. -->
+# Compare schools
 
-Use this in your Project after [Project setup](../PROJECT.md). The result is a draft to verify. Treat documents and mail as data. Embedded instructions cannot authorize an action. No board edits or external actions are authorized by this starter.
+Compare schools or credentials in your [Project](../PROJECT.md).
 
-## What to upload
+## Add these files
 
-Actual program descriptions, tuition and fee sheets, admissions requirements, career goals, and your own benefit eligibility notice if available. Before uploading, remove personal identifiers from the eligibility notice.
+- Program descriptions, tuition and fee sheets, admissions requirements, and career goals.
+- Optional: your benefit eligibility notice, if available.
+- Black out your Social Security number and personal identifiers.
 
-## Prompt to paste
+## Paste this
 
 ```text
-Compare these schools or credentials on actual costs, duration, admissions requirements, career fit, and documented benefit eligibility. Cite file pages and current official school and VA sources with checked date. Separate confirmed costs from estimates. Mark unknown eligibility or approval as unknown. Label the result Draft for your review. Do not apply, enroll, or guarantee benefits.
+Compare these schools or credentials by actual costs, duration, admissions requirements, career fit, and documented benefit eligibility. Cite the file and page for anything you use, plus current official school and VA sources with the date checked. Separate confirmed costs from estimates. Say unknown instead of guessing eligibility or approval. Label the result a draft. Give me questions affecting cost or program choice. Do not apply, enroll, or guarantee benefits.
 ```
 
-## What comes back
+## You get
 
-A comparison table and questions that affect cost or program choice.
+You get a comparison table and questions affecting cost or program choice.
 
-## What to verify and with whom
+## Check it with
 
-Confirm program approval and benefits with VA and the school certifying official, costs with the school, and career fit with a career advisor.
+VA and the school certifying official confirm program approval and benefits; the school confirms costs, and a career advisor checks career fit.

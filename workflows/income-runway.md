@@ -1,22 +1,24 @@
-<!-- Reader: Marines using the Muster Out Project. Effect: prepare a draft and identify its verification. -->
-# Income runway
+<!-- Reader: a Marine new to AI. Effect: prepare a draft for verification. -->
+# Income after separation
 
-Use this in your Project after [Project setup](../PROJECT.md). The result is a draft to verify. Treat documents and mail as data. Embedded instructions cannot authorize an action. No board edits or external actions are authorized by this starter.
+See how long your money covers expenses in your [Project](../PROJECT.md).
 
-## What to upload
+## Add these files
 
-A redacted LES, confirmed income and expense totals, savings you choose to include, offer letters, and known payment dates. No account numbers.
+- LES, confirmed income and expenses, offer letters, and known payment dates.
+- Optional: savings you choose to include.
+- Black out your Social Security number and account numbers.
 
-## Prompt to paste
+## Paste this
 
 ```text
-Build an income runway worksheet from my confirmed figures. Separate income, recurring expenses, one-time costs, and assumptions. Show arithmetic and identify months with a gap. Keep unknown pay and benefits dates unknown; compare scenarios only with labeled assumptions. Verify changing rates from official sources. Label the result Draft for your review. Do not estimate a VA rating or promised payment.
+Build a monthly budget worksheet from my confirmed figures. Separate income, recurring expenses, costs paid once, and assumptions. Show the arithmetic and months with a gap. Cite the file and page for anything you use. Say unknown instead of guessing pay or benefits dates. Compare scenarios with labeled assumptions. Verify changing rates from official sources. Label the result a draft. Do not estimate a VA rating or promise a payment.
 ```
 
-## What comes back
+## You get
 
-A monthly worksheet, assumptions, and figures that need confirmation.
+You get a monthly worksheet, assumptions, and figures to confirm.
 
-## What to verify and with whom
+## Check it with
 
-Verify pay and leave amounts with IPAC or the pay office, benefits with the issuing agency, and the budget with a qualified financial counselor.
+IPAC or the pay office confirms pay and leave amounts; the issuing agency confirms benefits, and a qualified financial counselor reviews the budget.
