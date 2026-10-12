@@ -1,6 +1,6 @@
 {
   "product": "Muster Out",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "pack": "usmc-2026.10",
   "release_url": "https://musterout.warfarecommand.com/release.json",
   "watch_feed": "https://watch.warfarecommand.com/feed/latest.json",
@@ -9,5 +9,13 @@
   "docs": "https://musterout.warfarecommand.com",
   "repo": "https://github.com/warfarecommand/musterout-release",
   "ingest_url": "https://vfozrzohrdrbohjqkghk.supabase.co/functions/v1/ingest",
-  "publisher": "Warfare Command"
+  "publisher": "Warfare Command",
+  "update_keys": {
+    "release_keys": {
+      "release-2026-10-6da55817": "lJHnis3XITfBHO3iy0tBM60/QydDw4fe4R3Znh6wuwY="
+    },
+    "feed_keys": {
+      "feed-2026-10-05bbe934": "Wu+hyhxyklR3J/HQsbRq6XkCcWjNmiunuCfCb3G8TLo="
+    }
+  }
 }

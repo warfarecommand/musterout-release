@@ -1,0 +1,55 @@
+name: Publish signed Muster Out feed
+
+on:
+  workflow_run:
+    workflows: ['Sync public daily feed']
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: musterout-feed-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: >-
+      github.repository == 'warfarecommand/musterout-release' &&
+      ((github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_repository.full_name == github.repository))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout protected main after the sync commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: main
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Verify signed data and newer npm sequence
+        id: verify
+        env:
+          MO_FEED_PUBLIC_KEY: ${{ vars.MO_FEED_PUBLIC_KEY }}
+          MO_FEED_KEY_ID: ${{ vars.MO_FEED_KEY_ID }}
+        run: node feed/verify_publish.mjs
+      - name: Install pinned npm
+        if: steps.verify.outputs.publish == 'true'
+        run: npm install -g npm@11.17.0
+      - name: Publish verified data with OIDC
+        if: steps.verify.outputs.publish == 'true'
+        working-directory: npm/musterout-feed
+        run: npm publish --provenance --access public
+      - name: Purge the jsDelivr feed alias
+        if: steps.verify.outputs.publish == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -q --fail --silent --show-error --max-time 60 --proto '=https' https://purge.jsdelivr.net/npm/musterout-feed@latest/feed.js

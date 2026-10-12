@@ -3,43 +3,77 @@ const assert = (ok: unknown, message = "Assertion failed") => { if (!ok) throw n
 const equal = (a: unknown, b: unknown) => assert(JSON.stringify(a) === JSON.stringify(b), `${JSON.stringify(a)} differs from ${JSON.stringify(b)}`);
 
 function fixture() {
-  const tables: Record<string, Record<string, unknown>[]> = { ingest_rate: [], setup_intents: [], install_registrations: [], setup_pings: [] };
+  let now = Date.parse("2026-10-09T21:00:00Z");
+  const budgets: Record<string, { accepted: number; text_units: number; overflow: number }> = {};
+  const tables: Record<string, Record<string, unknown>[]> = { ingest_rate: [], setup_intents: [], install_registrations: [], setup_pings: [], feedback_reports: [], usage_weeks: [], learn_install_cohorts: [] };
   let fail = "";
-  const db = { rpc: async (name: string, args: { p_ip_hash: string; p_minute: string }) => {
+  const db = { rpc: async (name: string, args: any) => {
+    if (name === "learn_abuse_admit") {
+      if (fail === "abuse") return { data: null, error: {} };
+      if (fail === "abuse_shape") return { data: { admitted: "yes" }, error: null };
+      const date = new Date(now); date.setUTCDate(date.getUTCDate() - (date.getUTCDay() + 6) % 7); date.setUTCHours(0, 0, 0, 0);
+      const key = `${date.toISOString()}:${args.p_kind}:`;
+      const g = budgets[key + "global"] ??= { accepted: 0, text_units: 0, overflow: 0 };
+      const feedbackKind = args.p_kind === "feedback";
+      if (g.accepted >= (feedbackKind ? 90 : 2000) || (feedbackKind && g.text_units + args.p_text_units > 100000)) {
+        g.overflow++; if (budgets[key + args.p_ip_hash]) budgets[key + args.p_ip_hash].overflow++;
+        return { data: { admitted: false, quarantined: false }, error: null };
+      }
+      const ip = budgets[key + args.p_ip_hash] ??= { accepted: 0, text_units: 0, overflow: 0 };
+      if (ip.accepted >= (feedbackKind ? 20 : 100)) {
+        g.overflow++; ip.overflow++; return { data: { admitted: false, quarantined: false }, error: null };
+      }
+      for (const b of [g, ip]) { b.accepted++; b.text_units += args.p_text_units; }
+      const cohorts = tables.learn_install_cohorts;
+      let row = cohorts.find(r => r.install_id === args.p_install_id);
+      if (!row) { row = { install_id: args.p_install_id, ip_hash: args.p_ip_hash, first_seen: now, quarantined: false }; cohorts.push(row); }
+      const recent = cohorts.filter(r => r.ip_hash === args.p_ip_hash && Number(r.first_seen) >= now - 3600000);
+      if (recent.length > 5) for (const r of recent) r.quarantined = true;
+      return { data: { admitted: true, quarantined: row.quarantined }, error: null };
+    }
     equal(name, "ingest_rate_hit");
-    if (fail === "ingest_rate") return { data: null, error: { message: "private detail" } };
+    if (fail === "ingest_rate" || (fail === "ingest_rate_kind" && args.p_ip_hash.startsWith("learn:"))) return { data: null, error: { message: "private detail" } };
     let row = tables.ingest_rate.find(r => r.ip_hash === args.p_ip_hash && r.minute === args.p_minute);
     if (!row) { row = { ip_hash: args.p_ip_hash, minute: args.p_minute, n: 0 }; tables.ingest_rate.push(row); }
     row.n = Number(row.n) + 1;
-    return { data: row.n, error: null };
+    return { data: fail === "ingest_rate_bad_data" ? "1" : row.n, error: null };
   }, from: (table: string) => {
     assert(table !== "ingest_rate", "Rate hits must use the atomic RPC");
     const filters: [string, unknown][] = [];
+    let count = 0;
     let operation = "select", value: Record<string, unknown> = {}, options: { ignoreDuplicates?: boolean } = {};
     const query = {
       select: () => query,
       eq: (key: string, v: unknown) => { filters.push([key, v]); return query; },
-      maybeSingle: async () => ({ data: tables[table].find(row => filters.every(([key, v]) => row[key] === v)), error: fail === table ? {} : null }),
+      maybeSingle: async () => ({ data: tables[table].find(row => filters.every(([key, v]) => row[key] === v)), error: fail === table || fail === table + ":select" ? {} : null }),
       insert: (row: Record<string, unknown>) => { operation = "insert"; value = row; return query; },
       upsert: (row: Record<string, unknown>, opts = {}) => { operation = "upsert"; value = row; options = opts; return query; },
       delete: () => { operation = "delete"; return query; },
       then: (resolve: (v: unknown) => unknown) => {
+        if (fail === "throw") throw new Error("private detail");
         if (fail === table) return Promise.resolve({ error: { message: "private detail" } }).then(resolve);
-        if (operation === "delete") tables[table] = tables[table].filter(row => !filters.every(([key, v]) => row[key] === v));
-        else if (operation === "insert") tables[table].push(structuredClone(value));
+        if (operation === "delete") {
+          count = tables[table].filter(row => filters.every(([key, v]) => row[key] === v)).length;
+          tables[table] = tables[table].filter(row => !filters.every(([key, v]) => row[key] === v));
+        }
+        else if (operation === "insert") {
+          const conflict = tables[table].some(row => table === "feedback_reports" ? row.id === value.id : table === "usage_weeks" ? row.install_id === value.install_id && row.week === value.week && row.writer === value.writer : false);
+          if (conflict) return Promise.resolve({ error: { code: "23505" } }).then(resolve);
+          tables[table].push(structuredClone(value));
+        }
         else if (operation === "upsert") {
           const existing = tables[table].find(row => table === "ingest_rate" ? row.ip_hash === value.ip_hash && row.minute === value.minute : row.install_id === value.install_id);
           if (!existing) tables[table].push(structuredClone(value));
           else if (!options.ignoreDuplicates) Object.assign(existing, value);
         }
-        return Promise.resolve({ error: null }).then(resolve);
+        return Promise.resolve({ error: null, count: fail === "bad_count" ? null : count }).then(resolve);
       }
     };
     return query;
   } };
-  const handler = createHandler({ db, env: name => name === "INGEST_SALT" ? "test-salt" : undefined, now: () => Date.parse("2026-10-09T21:00:00Z") });
-  const send = (body: unknown, origin = "https://musterout.warfarecommand.com") => handler(new Request("https://endpoint.invalid/ingest", { method: "POST", headers: { origin, "x-forwarded-for": "192.0.2.1" }, body: JSON.stringify(body) }));
-  return { tables, handler, send, fail: (table: string) => { fail = table; } };
+  const handler = createHandler({ db, env: name => name === "INGEST_SALT" ? "test-salt" : undefined, now: () => now });
+  const send = (body: unknown, origin = "https://musterout.warfarecommand.com", address = "192.0.2.1") => handler(new Request("https://endpoint.invalid/ingest", { method: "POST", headers: { origin, "x-forwarded-for": address }, body: JSON.stringify(body) }));
+  return { tables, budgets, advance: (ms: number) => { now += ms; }, handler, send, fail: (table: string) => { fail = table; } };
 }
 const install = { kind: "install", product: "musterout", version: "0.1.4", path: "eas", grade: "e67", channel: "chat", install_id: "0123456789abcdef0123456789abcdef" };
 
@@ -137,4 +171,150 @@ Deno.test("new kinds share the minute rate limit and failures are visible", asyn
   equal(g.tables.ingest_rate.length, 0);
   equal((await g.send(null)).status, 400);
   equal((await g.send([])).status, 400);
+});
+
+const feedback = { kind: "feedback", id: "report_123456", install_id: install.install_id, version: "0.2.2", pack: "usmc-2026.10", path: "eas", grade: "e67", category: "bug", error_class: "save", text: "Synthetic save failed", created: "2026-10-09T20:00:00Z" };
+const usage = { kind: "usage", install_id: install.install_id, week: "2026-W41", writer: "a".repeat(16), version: "0.2.2", counters: { opens: 3, errors_save: 1 } };
+
+Deno.test("feedback validates every required field, rejects extras, and bounds text before stripping", async () => {
+  const invalid: Record<string, unknown[]> = { id: [null, "tiny", "a".repeat(65), "report/1234"], install_id: [null, "X".repeat(16)], version: [null, "1.2", "01.2.3", "1.2.3-01", "1.2.3-", "1.2.3+", "1.2.3+" + "a".repeat(64)], pack: [null, "usmc-2026.13", "other"], path: [null, "other"], grade: [null, "e6"], category: [null, "security"], error_class: [null, "secret"], text: [9, {}, "x".repeat(1001), "\u0000".repeat(1001)], created: [null, "2026-02-30T00:00:00Z", "2026-10-09", "2026-10-09T22:00:00Z", "2026-10-09T20:00:00+00:00"] };
+  for (const [key, values] of Object.entries(invalid)) {
+    for (const value of values) { const f = fixture(); equal((await f.send({ ...feedback, [key]: value })).status, 400); equal(f.tables.feedback_reports.length, 0); }
+    if (key !== "text") { const f = fixture(), row: Record<string, unknown> = { ...feedback }; delete row[key]; equal((await f.send(row)).status, 400); }
+  }
+  for (const key of ["name", "received", "board_url", "__proto__"]) { const f = fixture(); equal((await f.send({ ...feedback, [key]: "extra" })).status, 400); }
+  for (const text of [undefined, null, "", "x".repeat(1000), "\u{1f600}".repeat(1000)]) { const f = fixture(); equal((await f.send({ ...feedback, text })).status, 200); }
+  const f = fixture(); equal((await f.send({ ...feedback, text: "a\n\t\u0000\u0085b" })).status, 200); equal(f.tables.feedback_reports[0].text, "ab");
+  assert(!("ip_hash" in f.tables.feedback_reports[0]));
+});
+
+Deno.test("feedback enumerations, semver prerelease and build metadata are accepted", async () => {
+  for (const category of ["bug", "content", "usability", "other"]) for (const error_class of ["none", "save", "update", "feed", "storage", "sample", "unavailable", "other"]) { const f = fixture(); equal((await f.send({ ...feedback, category, error_class, path: "unsure", grade: "unsure" })).status, 200); }
+  for (const version of ["0.0.0", "1.2.3-rc.1", "1.2.3+build.01", "1.2.3-0+build"]) { const f = fixture(); equal((await f.send({ ...feedback, version })).status, 200); equal((await f.send({ ...usage, version })).status, 200); }
+});
+
+Deno.test("usage requires a real ISO week, bounded writer and only capped integer counters", async () => {
+  const invalid: Record<string, unknown[]> = { install_id: [null, "tiny"], writer: [null, "x".repeat(16), "a".repeat(33)], version: [null, "v1.2.3"], week: [null, "2026-W00", "2026-W54", "2025-W53", "2026-W1", "26-W41", "0000-W01"], counters: [null, [], {}, { secret: 1 }, { opens: -1 }, { opens: 1.1 }, { opens: 10001 }, { opens: "1" }, { opens: true }, { opens: null }, { errors: { save: 1 } }] };
+  for (const [key, values] of Object.entries(invalid)) {
+    for (const value of values) { const f = fixture(); equal((await f.send({ ...usage, [key]: value })).status, 400); equal(f.tables.usage_weeks.length, 0); }
+    const f = fixture(), row: Record<string, unknown> = { ...usage }; delete row[key]; equal((await f.send(row)).status, 400);
+  }
+  const f = fixture(); equal((await f.send({ ...usage, text: "extra" })).status, 400);
+  for (const week of ["2026-W53", "2020-W53", "2026-W01"]) { const g = fixture(); equal((await g.send({ ...usage, week, counters: { opens: 0, errors_other: 10000 } })).status, 200); }
+});
+
+Deno.test("learning duplicates acknowledge immutable records and distinct writers remain separate", async () => {
+  const f = fixture();
+  equal(await (await f.send(feedback)).json(), { ok: true, receipt: { id: feedback.id }, duplicate: false });
+  equal(await (await f.send({ ...feedback, text: "Retry changed" })).json(), { ok: true, receipt: { id: feedback.id }, duplicate: true });
+  equal(f.tables.feedback_reports[0].text, feedback.text);
+  equal((await f.send({ ...feedback, install_id: "b".repeat(16) })).status, 409);
+  equal((await f.send(usage)).status, 200);
+  equal(await (await f.send({ ...usage, counters: { opens: 99 } })).json(), { ok: true, receipt: { install_id: usage.install_id, week: usage.week, writer: usage.writer }, duplicate: true });
+  equal(f.tables.usage_weeks[0].counters, usage.counters);
+  equal((await f.send({ ...usage, writer: "b".repeat(16) })).status, 200);
+  equal(f.tables.usage_weeks.length, 2);
+});
+
+Deno.test("delete receipts count all four tables and leave other installations alone", async () => {
+  const f = fixture(); await f.send(feedback); await f.send(usage); await f.send(install);
+  await f.send({ kind: "ping", id: install.install_id, service: "usmc", path: "eas", grade: "e67", version: "0.1.3" });
+  await f.send({ ...feedback, id: "other_report", install_id: "b".repeat(16) });
+  equal(await (await f.send({ kind: "delete", install_id: install.install_id })).json(), { ok: true, deleted: { setup_pings: 1, install_registrations: 1, feedback_reports: 1, usage_weeks: 1 } });
+  equal(f.tables.feedback_reports.length, 1);
+  equal(await (await f.send({ kind: "delete", id: install.install_id })).json(), { ok: true, deleted: { setup_pings: 0, install_registrations: 0, feedback_reports: 0, usage_weeks: 0 } });
+  for (const body of [{ kind: "delete", id: "bad" }, { kind: "delete", id: install.install_id, text: "extra" }, { kind: "delete", id: install.install_id, install_id: "b".repeat(16) }]) { const g = fixture(); equal((await g.send(body)).status, 400); }
+  const g = fixture(); g.fail("feedback_reports"); const res = await g.send({ kind: "delete", id: install.install_id }); equal(res.status, 500); equal((await res.json()).deleted, { setup_pings: 0, install_registrations: 0 });
+});
+
+Deno.test("per-kind learning ceilings use namespaced hashed IPs and the global ceiling still applies", async () => {
+  for (const [body, cap] of [[feedback, 5], [usage, 10], [{ kind: "delete", id: install.install_id }, 5]] as const) {
+    const f = fixture(); const responses = await Promise.all(Array.from({ length: cap + 2 }, () => f.send(body)));
+    equal(responses.filter(r => r.status === 200).length, cap); equal(responses.filter(r => r.status === 429).length, 2);
+    assert(f.tables.ingest_rate.some(r => String(r.ip_hash).startsWith(`learn:${body.kind}:`)));
+    assert(!JSON.stringify(f.tables.ingest_rate).includes("192.0.2.1"));
+  }
+  const f = fixture(); for (let i = 0; i < 20; i++) await f.send({ kind: "intent", product: "musterout", version: "0.1.4" }); equal((await f.send(usage)).status, 429);
+});
+
+Deno.test("learning GETs, body oversize bytes, malformed JSON and dependency failures fail closed", async () => {
+  const f = fixture();
+  for (const kind of ["feedback", "usage"]) equal((await f.handler(new Request(`https://endpoint.invalid/ingest?kind=${kind}`))).status, 400);
+  for (const body of ["{", "null", "[]"]) { const g = fixture(); equal((await g.handler(new Request("https://endpoint.invalid/ingest", { method: "POST", body }))).status, 400); }
+  equal((await fixture().handler(new Request("https://endpoint.invalid/ingest", { method: "POST", body: "é".repeat(10001) }))).status, 413);
+  for (const [table, body] of [["feedback_reports", feedback], ["usage_weeks", usage], ["setup_pings", { kind: "ping", id: install.install_id, service: "usmc", path: "eas", grade: "e67", version: "0.1.4" }]] as const) { const g = fixture(); g.fail(table); const res = await g.send(body); equal(res.status, 500); assert(!(await res.text()).includes("private detail")); }
+  const missing = createHandler({ db: {}, env: () => undefined }); equal((await missing(new Request("https://endpoint.invalid/ingest", { method: "POST", body: "{}" }))).status, 503);
+  equal((await fixture().handler(new Request("https://endpoint.invalid/ingest", { method: "PUT" }))).status, 405);
+});
+
+Deno.test("rate kind dependency, duplicate lookup, delete counts, invalid UTF-8 and thrown failures are bounded", async () => {
+  for (const mode of ["ingest_rate_kind", "ingest_rate_bad_data"]) { const f = fixture(); f.fail(mode); const r = await f.send(feedback); equal(r.status, 503); equal((await r.json()).error, "unavailable"); }
+  const f = fixture(); await f.send(feedback); f.fail("feedback_reports:select"); equal((await f.send(feedback)).status, 500);
+  const g = fixture(); g.fail("bad_count"); const r = await g.send({ kind: "delete", id: install.install_id }); equal(r.status, 500); equal((await r.json()).deleted, {});
+  const h = fixture(); h.fail("throw"); const failed = await h.send(feedback); equal(failed.status, 503); assert(!(await failed.text()).includes("private detail"));
+  const bad = await fixture().handler(new Request("https://endpoint.invalid/ingest", { method: "POST", body: new Uint8Array([0xff,0xfe]) })); equal(bad.status, 400);
+});
+
+Deno.test("weekly per-IP and global ceilings reject with stable overflow counters, reset by server week", async () => {
+  for (const [body, ipCap, globalCap, table] of [[feedback, 20, 90, "feedback_reports"], [usage, 100, 2000, "usage_weeks"]] as const) {
+    const f = fixture();
+    for (let i = 0; i < ipCap; i++) {
+      f.advance(60001);
+      equal((await f.send({ ...body, ...(body.kind === "feedback" ? { id: `budget_${i.toString().padStart(8, "0")}` } : { writer: i.toString(16).padStart(16, "0") }) })).status, 200);
+    }
+    f.advance(60001);
+    const denied = await f.send(body); equal(denied.status, 429); equal(await denied.json(), { ok: false, error: "budget_exceeded" });
+    equal(f.tables[table].length, ipCap);
+    equal(Object.values(f.budgets).filter(b => b.overflow === 1).length, 2);
+    const g = fixture();
+    for (let i = 0; i <= globalCap; i++) {
+      const r = await g.send({ ...body, ...(body.kind === "feedback" ? { id: `global_${i.toString().padStart(8, "0")}` } : { writer: i.toString(16).padStart(16, "0") }) }, "", `192.0.${Math.floor(i / 250)}.${i % 250}`);
+      equal(r.status, i === globalCap ? 429 : 200);
+    }
+    equal(g.tables[table].length, globalCap);
+    equal(Object.keys(g.budgets).length, globalCap + 1);
+    equal(Object.entries(g.budgets).find(([key]) => key.endsWith(":global"))![1].overflow, 1);
+    g.advance(7 * 86400000); equal((await g.send({ ...body, ...(body.kind === "feedback" ? { id: "next_week_report" } : { writer: "f".repeat(16) }) })).status, 200);
+  }
+});
+
+Deno.test("correlated new IDs quarantine retroactively across kinds; established IDs and old cohorts remain separate", async () => {
+  const f = fixture();
+  for (let i = 0; i < 10; i++) {
+    f.advance(60001);
+    const install_id = (i + 1).toString(16).padStart(16, "0");
+    equal((await f.send({ ...feedback, install_id, id: `cohort_${i.toString().padStart(8, "0")}` }, "")).status, 200);
+    equal((await f.send({ ...usage, install_id, writer: install_id }, "")).status, 200);
+  }
+  equal(f.tables.learn_install_cohorts.filter(r => r.quarantined).length, 10);
+  equal(f.tables.feedback_reports.filter(r => !f.tables.learn_install_cohorts.find(c => c.install_id === r.install_id)!.quarantined).length, 0);
+  const g = fixture();
+  for (let i = 0; i < 6; i++) { g.advance(3600001); equal((await g.send({ ...usage, install_id: (i + 1).toString(16).padStart(16, "0") })).status, 200); }
+  equal(g.tables.learn_install_cohorts.filter(r => r.quarantined).length, 0);
+  // New IPs cannot change an established ID's original correlation record.
+  g.advance(60001); await g.send(usage, "", "192.0.2.9");
+  const first = g.tables.learn_install_cohorts.find(r => r.install_id === usage.install_id)!;
+  g.advance(60001); await g.send(usage, "", "192.0.2.10"); equal(g.tables.learn_install_cohorts.find(r => r.install_id === usage.install_id), first);
+  await f.send({ kind: "delete", id: f.tables.learn_install_cohorts[0].install_id }); equal(f.tables.learn_install_cohorts.length, 9);
+});
+
+Deno.test("escaped text budget prevents prompt overflow, invalid payloads spend no budget, dependencies fail closed", async () => {
+  const f = fixture();
+  for (let i = 0; i < 9; i++) {
+    const r = await f.send({ ...feedback, id: `text_${i.toString().padStart(8, "0")}`, text: "\u{10000}".repeat(1000) }, "", `192.0.2.${i + 1}`);
+    equal(r.status, i < 8 ? 200 : 429);
+  }
+  equal(f.tables.feedback_reports.length, 8);
+  equal(Object.keys(f.budgets).length, 9);
+  equal(Object.entries(f.budgets).find(([key]) => key.endsWith(":global"))![1].text_units, 96016);
+  const g = fixture(); equal((await g.send({ ...feedback, category: "unknown" })).status, 400); equal(Object.keys(g.budgets).length, 0);
+  for (const mode of ["abuse", "abuse_shape"]) { const h = fixture(); h.fail(mode); for (const body of [feedback, usage]) { const r = await h.send(body); equal(r.status, 503); equal((await r.json()).error, "unavailable"); } equal(h.tables.feedback_reports.length + h.tables.usage_weeks.length, 0); }
+});
+
+Deno.test("correlation deletion failure preserves the complete source deletion receipt", async () => {
+  const f = fixture(); await f.send(feedback); await f.send(usage);
+  f.fail("learn_install_cohorts"); const r = await f.send({ kind: "delete", id: feedback.install_id });
+  equal(r.status, 500); equal((await r.json()).deleted, { setup_pings: 0, install_registrations: 0, feedback_reports: 1, usage_weeks: 1 });
+  equal(f.tables.learn_install_cohorts.length, 1);
+  f.fail(""); equal((await f.send({ kind: "delete", id: feedback.install_id })).status, 200); equal(f.tables.learn_install_cohorts.length, 0);
 });

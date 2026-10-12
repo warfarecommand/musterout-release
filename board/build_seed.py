@@ -14,6 +14,7 @@ texts when they are present, and checks every path combination). --no-verify ski
 """
 import itertools, json, re, sys
 from pathlib import Path
+from seed_copy import COPY
 
 HERE = Path(__file__).resolve().parent
 DASHES = (chr(0x2014), chr(0x2013))
@@ -1316,6 +1317,25 @@ claim = {
 }
 
 PACK = json.loads((HERE.parent / "config.json").read_text()).get("pack")
+
+def merge_copy(records, copy):
+    """Require exact item coverage before adding the seed-owned display copy."""
+    errors = []
+    item_ids = {record["id"] for record in records}
+    for key in sorted(set(copy) - item_ids):
+        errors.append(f"COPY key names no seeded item: {key}")
+    for record in records:
+        entry = copy.get(record["id"])
+        for field in ("label", "brief"):
+            value = entry.get(field) if isinstance(entry, dict) else None
+            if not isinstance(value, str) or not value.strip():
+                errors.append(f"{record['id']}: missing COPY {field}")
+    if errors:
+        raise SystemExit("SEED COPY CHECK FAILED\n" + "\n".join(" - " + error for error in errors))
+    for record in records:
+        record.update({field: copy[record["id"]][field] for field in ("label", "brief")})
+
+merge_copy(items, COPY)
 seed = {"pack": PACK, "settings": settings, "ledger": ledger, "loes": loes, "items": items, "contacts": contacts, "blocks": blocks, "conditions": conditions, "claim": claim}
 
 # ---------------- checks ----------------

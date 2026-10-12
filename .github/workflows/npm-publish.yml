@@ -1,0 +1,101 @@
+name: Stage signed Muster Out release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: musterout-npm-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout signed release
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Check signed bytes and tag
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          node --input-type=module <<'VERIFY'
+          import fs from 'node:fs';
+          import {createPublicKey, verify, createHash} from 'node:crypto';
+          import assert from 'node:assert/strict';
+          function canonical(v) {
+            if (v === null || typeof v === 'string' || typeof v === 'boolean' || Number.isSafeInteger(v)) return JSON.stringify(v);
+            if (Array.isArray(v)) return '[' + v.map(canonical).join(',') + ']';
+            assert(v && typeof v === 'object');
+            return '{' + Object.keys(v).sort().map(k => { assert(/^[\x20-\x7e]+$/.test(k)); return JSON.stringify(k) + ':' + canonical(v[k]); }).join(',') + '}';
+          }
+          function exact(v, fields) { assert(v && !Array.isArray(v)); assert.deepEqual(Object.keys(v).sort(), fields.sort()); }
+          function raw64(s, n) { assert.equal(typeof s, 'string'); const b = Buffer.from(s, 'base64'); assert.equal(b.length, n); assert.equal(b.toString('base64'), s); return b; }
+          function check(key, signature, message) {
+            const raw = raw64(key, 32);
+            const publicKey = createPublicKey({key:Buffer.concat([Buffer.from('302a300506032b6570032100', 'hex'), raw]), format:'der', type:'spki'});
+            assert(verify(null, Buffer.from(canonical(message)), publicKey, raw64(signature, 64)), 'Invalid Ed25519 signature');
+          }
+          const source = fs.readFileSync('npm/musterout/release.js', 'utf8');
+          assert(Buffer.byteLength(source) <= 2000030, 'Oversized release');
+          assert(source.startsWith('self.postMessage(') && source.endsWith(');\n'));
+          const payload = JSON.parse(source.slice(17, -3));
+          exact(payload, ['envelope','signature','html']);
+          assert(Buffer.byteLength(canonical(payload)) <= 2000000);
+          const e = payload.envelope;
+          exact(e, ['product','kind','version','pack','sha256','size','created','key_id','notes','correction','impact','keychain']);
+          assert.equal(e.product, 'Muster Out'); assert.equal(e.kind, 'release');
+          const pkg = JSON.parse(fs.readFileSync('npm/musterout/package.json'));
+          const config = JSON.parse(fs.readFileSync('config.json'));
+          assert.equal(pkg.name, 'musterout'); assert.equal(pkg.license, 'MIT'); assert(!pkg.scripts);
+          assert.deepEqual(pkg.files, ['release.js']);
+          assert.equal(pkg.repository.url, 'https://github.com/warfarecommand/musterout-release.git');
+          assert.equal(process.env.RELEASE_TAG, 'v' + e.version);
+          assert.equal(pkg.version, e.version); assert.equal(config.version, e.version); assert.equal(config.pack, e.pack);
+          assert(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/.test(e.created) && Number.isFinite(Date.parse(e.created)));
+          assert(Array.isArray(e.notes) && e.notes.length <= 3 && e.notes.every(s => typeof s === 'string' && s.length <= 500));
+          assert.equal(typeof e.correction, 'boolean');
+          assert(e.impact === null || typeof e.impact === 'string' && e.impact.length <= 1000);
+          assert(!e.correction || e.impact && e.impact.trim());
+          const roots = JSON.parse(fs.readFileSync('npm/musterout/public_keys.json'));
+          const trusted = new Map(Object.entries(roots.release_keys));
+          assert(Array.isArray(e.keychain) && e.keychain.length <= 16);
+          for (const link of e.keychain) {
+            exact(link, ['key_id','public_key','signed_by','signature']);
+            assert(typeof link.key_id === 'string' && link.key_id && !trusted.has(link.key_id) && trusted.has(link.signed_by));
+            raw64(link.public_key, 32);
+            check(trusted.get(link.signed_by), link.signature, {product:e.product, kind:'release', key_id:link.key_id, public_key:link.public_key, signed_by:link.signed_by});
+            trusted.set(link.key_id, link.public_key);
+          }
+          assert(trusted.has(e.key_id), 'Signing key is not a committed release root or its descendant');
+          check(trusted.get(e.key_id), payload.signature, e);
+          assert.equal(typeof payload.html, 'string');
+          const html = Buffer.from(payload.html);
+          assert(Number.isSafeInteger(e.size) && e.size > 0 && e.size <= 2000000);
+          assert.equal(html.length, e.size);
+          assert.equal(createHash('sha256').update(html).digest('hex'), e.sha256);
+          assert(html.equals(fs.readFileSync('board/board.publish.html')), 'Signed document differs from committed document');
+          const reset = ':root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif;background:#fafaf9}img{max-width:100%}[hidden]{display:none!important}';
+          const prefix = '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>' + reset + '</style></head><body>';
+          assert(payload.html.startsWith(prefix) && payload.html.endsWith('</body></html>'));
+          assert(html.subarray(Buffer.byteLength(prefix), -14).equals(fs.readFileSync('board/board.html')), 'Fragment differs');
+          console.log('Verified signed release ' + e.version);
+          VERIFY
+      - name: Install npm with staged publishing
+        run: npm install -g npm@11.17.0
+      - name: Check npm supports staged publishing
+        run: node -e "const v=require('child_process').execFileSync('npm',['--version'],{encoding:'utf8'}).trim().split('.').map(Number); if(v[0]<11 || v[0]===11 && v[1]<15) process.exit(1)"
+      - name: Stage verified package with OIDC (a maintainer approves with 2FA before it goes public)
+        working-directory: npm/musterout
+        run: npm stage publish --provenance --access public

@@ -5,6 +5,43 @@ import hashlib, json, re, subprocess, sys
 from pathlib import Path
 here = Path(__file__).resolve().parent
 
+# Copied byte for byte from _cook/research/update-test.html buildDoc.
+RESET = ':root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,-apple-system,sans-serif;background:#fafaf9}img{max-width:100%}[hidden]{display:none!important}'
+DOCUMENT_PREFIX = '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>' + RESET + '</style></head><body>'
+DOCUMENT_SUFFIX = '</body></html>'
+
+def complete_document(fragment):
+    return DOCUMENT_PREFIX + fragment + DOCUMENT_SUFFIX
+
+def update_config(root=here.parent):
+    config = json.loads((root / 'config.json').read_text())
+    keys = config.get('update_keys', {})
+    return dict(product=config['product'], version=config['version'], pack=config['pack'],
+                release_keys=keys.get('release_keys', {}), feed_keys=keys.get('feed_keys', {}))
+
+def embed_updates(fragment, root=here.parent):
+    config = canonical(update_config(root)).replace('</', '<\\/')
+    engine = (root / 'board/update_client.js').read_text()
+    # The template can opt into markers without changing the fragment contract.
+    has_engine = '/*UPDATE_ENGINE*/' in fragment
+    fragment = fragment.replace('/*UPDATE_CONFIG*/', config)
+    if has_engine:
+        fragment = fragment.replace('/*UPDATE_ENGINE*/', 'window.MusterOutUpdateConfig=' + config + ';\n' + engine)
+    else:
+        fragment += '\n<script>window.MusterOutUpdateConfig=' + config + ';\n' + engine + '</script>\n'
+    return fragment
+
+def embed_trust(fragment, root=here.parent):
+    """Inline the trust components; templates may opt into explicit markers."""
+    for marker, filename, tag in (("/*TRUST_CSS*/", "trust.css", "style"),
+                                   ("/*TRUST_JS*/", "trust.js", "script")):
+        content = (root / "board" / filename).read_text()
+        if marker in fragment:
+            fragment = fragment.replace(marker, content)
+        else:
+            fragment += "\n<" + tag + ">" + content + "</" + tag + ">\n"
+    return fragment
+
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
@@ -111,14 +148,16 @@ def seed_fingerprints(root=here.parent):
     add("current", current)
     result["revision"] = hashlib.sha256(canonical(result["versions"]["current"]).encode()).hexdigest()
     result["version"] = config["version"]
-    if len(canonical(result).encode()) >= 100000:
-        raise SystemExit("seed fingerprint map exceeds 100 KB")
+    # Budget raised from 100 KB to 150 KB for 0.2.0 (label and brief changed every current hash).
+    # Compact the map (shared digest table) before it reaches this bound; each release adds about 15 KB.
+    if len(canonical(result).encode()) >= 150000:
+        raise SystemExit("seed fingerprint map exceeds 150 KB")
     return result
 
 
-def embed(template, seed, fingerprints):
+def embed(template, seed, fingerprints, root=here.parent):
     escape = lambda value: canonical(value).replace("</", "<\\/")
-    return template.replace("/*SEED*/", escape(seed)).replace("/*SEED_FINGERPRINTS*/", escape(fingerprints))
+    return embed_trust(embed_updates(template.replace("/*SEED*/", escape(seed)).replace("/*SEED_FINGERPRINTS*/", escape(fingerprints)), root), root)
 
 def build_page():
     seed = json.loads((here / "seed.json").read_text())
@@ -138,14 +177,15 @@ def build_page():
     privacy_text = out.replace('Counsel the Marine concerning his or her potential for recall to active duty and/or mobilization.', '')
     for bad in _leak_words():
         if bad in privacy_text: sys.exit(f"personal string in page: {bad}")
-    (here / "board.html").write_text(out)
+    document = complete_document(out)
+    assert document.encode()[len(DOCUMENT_PREFIX.encode()):-len(DOCUMENT_SUFFIX.encode())] == out.encode()
     # syntax check the inline script
-    js = re.findall(r"<script>(.*?)</script>", out, re.S)[-1]
-    chk = here / "_dev" / "_board_check.js"; chk.write_text(js)
-    r = subprocess.run(["node", "--check", str(chk)], capture_output=True, text=True)
-    chk.unlink()
-    if r.returncode: sys.exit("script does not parse:\n" + r.stderr)
-    print(f"board.html {len(out)//1024} KB, fingerprints {len(canonical(fingerprints).encode())} bytes, script parses")
+    for js in re.findall(r"<script>(.*?)</script>", out, re.S):
+        r = subprocess.run(["node", "--check"], input=js, capture_output=True, text=True)
+        if r.returncode: sys.exit("script does not parse:\n" + r.stderr)
+    (here / "board.html").write_bytes(out.encode())
+    (here / "board.publish.html").write_bytes(document.encode())
+    print(f"board.html {len(out.encode())//1024} KB; board.publish.html {len(document.encode())} bytes; fragment identical; fingerprints {len(canonical(fingerprints).encode())} bytes; scripts parse")
 
 if __name__ == "__main__":
     build_page()

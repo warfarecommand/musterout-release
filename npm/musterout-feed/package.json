@@ -1,0 +1,13 @@
+{
+  "name": "musterout-feed",
+  "version": "1.0.0",
+  "description": "Signed Muster Out regulation feed data",
+  "files": [
+    "feed.js"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/warfarecommand/musterout-release.git"
+  }
+}

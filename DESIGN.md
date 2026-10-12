@@ -1,43 +1,105 @@
+<!-- Reader: board and release maintainers. Effect: implement the view contract while preserving planning rules and personal records. -->
 # Design system and data schema
 
-## Look
-The board is the design system. Everything the product shows (the docs site, the lesson, the watch page) uses the same tokens.
+## View layer
 
-- **Surfaces, dark:** `#0a0a0b` page, `#101012` secondary, `#151517` panel, `#1c1c1f` raised panel. Hairlines at 8 and 15 percent white.
-- **Surfaces, light:** `#f3f4f5` page, `#e9ebed` secondary, `#ffffff` panel, `#f6f7f8` raised. Hairlines at 10 and 18 percent near black. The page follows the viewer's theme; both are first class.
-- **Ink, dark:** white at 93, 66, and 56 percent. Light: near black at the same steps. Labels never drop below 4.5:1 against their surface.
-- **Signal colors, semantic only:** red `#C8102E` (ink `#ff4d63` on dark) for the critical path, late, and the brand stroke; amber `#FF6B00` for warnings and the SkillBridge band; green `#1f9d6b` for done; blue `#9db0d3` for information. Red is not decoration.
-- **Type:** IBM Plex Sans for reading, IBM Plex Sans Condensed for dense rows and the Timeline, IBM Plex Mono for dates, labels, the stamp, and the wordmark. Minimum 12 px for body text and for labels.
-- **Dates:** `12 OCT 2026` in mono caps everywhere, always with a four digit year, the date column included. The EAS carries its basis as a label when one is set: `EAS 1 MAY 2027, planned`. E-labels count from the date: `E-120`, `E-DAY`, `E+30`. Long form `Mon 12 Oct 2026` in prose.
-- **Components:** the stamp (red stroke box, EAS or RET over the date), the hero countdown, the LOE strip with progress bars, item rows with the regulation drawer, the Timeline with office days, the Do next panel, the Flags list, toasts with save state.
-- **Mark:** the stamp. The wordmark is MUSTER OUT in Plex Mono caps inside the stamp stroke. No service insignia, ever.
-- **Voice in the interface:** short declaratives, "you", no exclamation points, no emoji, short hyphens only.
+The board is the design system. The view changes density and navigation; the planning engine, seed rules, date resolution, leave math, fingerprints and pack behavior remain intact except the approved migration add step for a plan option change.
+
+Phone navigation has Today, Plan, Dates, Claim and More in an opaque bottom bar, 64 px plus safe area. Targets are at least 48 px, labels use mixed case and simple line icons, and selection uses red ink. At 900 px and wider, the same five destinations use a left rail with a content column at most 720 px wide. No horizontal tab rail or global dashboard header remains. BUILD_SPEC rules take precedence over the earlier L3 four-cell specimen.
+
+Today presents the reduced Stack wordmark and EAS or RET stamp with date basis, a 64 px Condensed countdown, three next-action rows, then Late, Critical and Needs a date counts linking to full Plan filters. An undated view shows Add your date instead of a countdown; a demo is labeled. Save failure comes first among health/update lines, and a dismissed correction keeps its banner. Ask about your plan is a first-class card: Answers from this board., question field, Ask, streamed answer, Stop and Copy answer. Its four starters are `What should I do this week?`, `What is late and what does it block?`, `Walk me through my claim timeline.`, and `What changes if my date moves 30 days?`. They fill the field. Records, mail, and research live in your Project. links to More > Open your Project. One watch line follows. A quiet Report a problem control remains in every screen header.
+
+Plan filters are `All`, `Open`, `Late`, `Critical`, `Needs a date`, `Waiting` and `Done`. The seven lines of effort collapse with progress. Critical sequence and office questions live here, along with Add item. Dates is a monthly vertical agenda with upcoming first and a Past toggle. Show timeline reveals the wide chart. Leave ledger and blocks precede chart disclosures; What if your date moves and Edit your date stay available. Claim opens at BDD dates and filing target, then conditions and steps. VA math, exposures, benefits, appointment routing and guidance are disclosures. More holds contacts, sources, watch coverage, Updates, Settings, Talk to Claude and Open your Project.
+
+Each item has three depths:
+
+| Depth | Content and controls |
+| --- | --- |
+| Row | Seed label, date or relative offset, status meaning, 20 px check graphic within a 48 px button, and full-width title target at least 48 px. No regulation text. |
+| Card | Seed brief, owner, date basis, Mark done, Steps and source. Only one card is open per view. |
+| Drawer | Full why, how, verify, citations and excerpt, Open source, status, notes, date editor, custom Delete, and Ask about this item prefilled with the title. Escape and Close restore focus. |
+
+Until new seed copy arrives, render title for label and the first sentence of why for brief. Item completion remains two taps from Today. The first phone screen is under 60 words; full critical and undated lists remain reachable.
+
+## Tokens
+
+The L3 token contract is in `_cook/overhaul/lenses/L3_tokens.css` and `L3_TOKENS.md`. Automatic and explicit light use one map. Keep embedded IBM Plex fonts and their license. Values below replace the prior look section; use ink tokens for semantic text and matching tints for fills.
+
+| `Token` | Light | Dark |
+| `---` | --- | --- |
+| `bg` | #f3f2ee | #0a0a0b |
+| `bg-2` | #e9e8e3 | #101012 |
+| `panel` | #ffffff | #151517 |
+| `panel-2` | #f7f6f2 | #1c1c1f |
+| `ink` | #1a1a1c | #eeeeee |
+| `ink-2` | #4a4a4f | #b3b3b7 |
+| `ink-3` | #5f5f65 | #98989e |
+| `line` | #d9d8d3 | #343437 |
+| `line-2` | #858580 | #737379 |
+| `red` | #c8102e | #c8102e |
+| `red-ink` | #8f0b21 | #ff4d63 |
+| `red-tint` | #fbeaed | #33141b |
+| `amber` | #b84e00 | #ff6b00 |
+| `amber-ink` | #9a4000 | #ff8f40 |
+| `amber-tint` | #f8ede5 | #342318 |
+| `green` | #1a7d55 | #1f9d6b |
+| `green-ink` | #166a49 | #43d197 |
+| `green-tint` | #e8f2ee | #1b2c26 |
+| `blue / blue-ink / focus` | #3b5c9a | #9db0d3 |
+| `blue-tint` | #ebeff5 | #262c38 |
+| `sb-band` | #f2e5db | #271b11 |
+| `grid` | #e2e1dd | #242427 |
+| `on-accent` | #ffffff | #ffffff |
+
+Plex Sans is for reading; Mono is for dates and short metadata, stamp and wordmark; Condensed is for countdown and numeric summaries. The six sizes and line heights are 12/16, 14/20, 16/24, 20/28, 24/32 and 64/64 px. Weights are regular 400, medium 500 and strong 600; tabular numerals on dates, counts and balances. Use body text at `16/24`, count tracking at `-.02em`, label tracking at `.04em`, and body tracking at `0`.
+
+Use an 8 px grid: 8, 16, 24, 32 and 48 px spaces. A 4 px optical exception is for icon placement and label-to-value gaps. Card radius is 6 px, controls and stamp 4 px, sheets and drawers 8 px. Hairlines are 1 px, stamp stroke 1.5 px, focus 2 px; progress 4 px, icons 20 px and dots 8 px. Cards have no shadow. Sheets, drawers and toasts alone use `0 8px 24px rgba(26,26,28,.16)` in light and `0 8px 24px rgba(0,0,0,.5)` in dark. Set the scrim to `rgba(0,0,0,.5)` for both themes.
+
+Expand/collapse measured height and chevrons over 200 ms with `cubic-bezier(.2,0,0,1)`; state feedback is 120 ms. Reduced motion is immediate. Cancel prior animation on rapid toggles. Return focus before hiding a focused card. The bottom bar has layer 6, dialogs 20. Content bottom padding includes bar height, 24 px and safe area. Drawers and sheets trap focus, announce errors and return focus on close; controls remain usable at 200 percent text.
+
+Use one accent per screen. Red denotes the stamp, urgency and primary action. Every semantic signal has words or a shape. White text is approved only on red. Input placeholders are ink-2 at opacity 1. Decorative separators use line; control boundaries use line-2. All text pairs require 4.5:1 in both themes. Verify keyboard, VoiceOver, TalkBack, focus return, reduced motion, 200 percent text and no horizontal scroll at phone and desktop widths.
+
+Dates are `12 OCT 2026` with a four-digit year. The stamp includes date basis when known. E-labels count from the action date: E-120, E-DAY, E+30. The compact Today mark reads MUSTER OUT, red rule, WARFARE COMMAND. Other destinations show a plain title and small stamp. No service insignia.
+
+## Intake and trust
+
+Chat delivers verified bytes and ends at Open your board. The page's three cards own path; date, basis and grade; Reserve and SkillBridge. Unknown options show Not set and seed as false. Later Yes runs only the engine's migration add step under its lock. It adds relevant items and preserves existing work. Undated mode resolves relative offsets from seed definitions and writes no dated seed marker. Demo is isolated. Successful dated completion preserves install id, original created time and channel, writes install state and clears setup. Open chats verify rather than rewrite.
+
+Save states are Unsaved, Saving, Saved, Failed, Read-only and Unavailable beside the editor. Saved requires matching readback. Drafts persist before publish and are compared with newer device work on recovery. Update publishing requires files.write or the documented canEdit fallback, distinct from data.write. Signed release verification, publish, migration and install readbacks are required before Updated to is shown. UPDATE.md documents the separate page and chat journal contracts. The first offer is a sheet; Not now snoozes that version for 24 hours and a correction remains on Today. Keep pasted recovery available when the signed channel cannot finish.
+
+Watch coverage is source-specific with checked time and timezone, window, last success, full-text/title-only status and possible matches. Never infer zero from failure or claim uncovered sources checked. Keep the last good result on failure, stale after eight days and use weekly recovery beyond the 30-day feed window. The board never posts. Reporting needs neither db nor sample for review and Copy diagnostic; queueing and usage transmission require the learning gate. SUPPORT.md owns exact failure copy.
 
 ## Schema
-Documents are keyed by collection and document id (`items/<id>`, `meta/profile`). The key is the identity. `meta/*` and `claim/*` documents have no `id` field. Records in `items`, `loes`, `contacts`, `blocks`, `conditions`, `links`, and `inbox` repeat their key in an `id` field. Unknown values are stored as `null`, never invented.
+Documents are keyed by collection and document id (`items/<id>`, `meta/profile`). The key is the identity. `meta/*` and `claim/*` documents have no `id` field. Records in `items`, `loes`, `contacts`, `blocks`, `conditions`, `links`, and `inbox` repeat their key in an `id` field. Unknown values remain `null` until confirmed.
 
 | Collection | Fields |
 | --- | --- |
-| `meta/profile` | name, grade (o5, o14, cwo45, wo13, e89, e67, e15), path (resign, retire, eas), reserve, sb, years, home, base, family, demo, dateBasis (planned, approved, or null when the person did not say), version, updated |
-| `meta/settings` | eas, sbStart, sbEnd (null when unknown; the page never substitutes the EAS, and a `sb` rule resolves when its own endpoint is known while only the missing endpoint stays pending), planSet |
-| `meta/ledger` | balance, asOf, accrualPerMonth, note, optional sla. With no balance: `{"balance": null, "asOf": null, "accrualPerMonth": 2.5, "note": null}`, and the Leave tab shows its empty state |
-| `meta/seeding` | claimedAt, by, profileKey (the claim while a seed runs; renewed every 30 seconds, expired after 2 minutes) |
-| `meta/seeded` | at, count, profileKey, pack, version, revision. Boards seeded before 09 Oct 2026 have no `profileKey`; the page shows no mismatch line for them, and the key is attached only when the person makes an explicit keep or reset choice. It records acceptance of the retained plan, not the original seed profile. |
-| `meta/migration` | from, to, at, revision, updated, added, retired, review[ids], state (running, complete), ops (per-id operation kind, expected field hash and readback flag; no personal values) |
-| `meta/reset` | at, token (present only while a reset runs) |
-| `meta/watch` | checkedAt, feedGeneratedAt, window {from, to}, checkedCount, truncated, bodyAvailable, confidence (full, titles), matches[{id, title, date, why, url}], status (ok) |
-| `meta/watch_error` | at, reason (present only when the newest check failed) |
-| `loes/<id>` | id, n, name, lead, purpose |
-| `items/<id>` | id, loe, order, kind (task, marker, window, milestone), title, why, how[], owner, due (rule or null), window ({from, to} rules or null), basis (optional: rule or target; absent means rule), critical, presence, cite[{ref, para, quote, url}], verify, status (open, doing, waiting, done, na), doneOn, notes, user, updated |
-| `contacts/<id>` | id, name, role, org, phone, email, loe, note |
-| `blocks/<id>` | id, start, end, status (approved, requested, known, planned, cancellation requested, canceled in MOL; legacy cancel is read and migrated as cancellation requested), away, kind (leave, liberty, ptad), note, updated |
-| `conditions/<id>` | id, name, status (needs visit, in records, seen, in claim, rated), code, side, limb (null, LUE, RUE, LLE, RLE), words, rule, todo[], evidence[], exam, note, record[{date, entry, src}], src[{label, url}], updated |
-| `claim/where` | rows[{appt, where, home, base, how}], note |
-| `claim/vso` | rows[{rank, name, why, phone, email}], script, note, updated |
-| `claim/exposure` | rows[{location, hazards, presumptive, action}], notes[] |
-| `claim/benefits` | title, label, rows[{what, detail}], note |
-| `links/<id>` | id, title, url, loe, added |
-| `inbox/<id>` | id, number, title, url, date, note, keys[], action, deadline, confidence, body_available, status (new, dismissed), filed |
+| `meta/profile` | `name, grade (o5, o14, cwo45, wo13, e89, e67, e15), path (resign, retire, eas), reserve, sb, years, home, base, family, demo, dateBasis (planned, approved, or null when the person did not say), version, updated` |
+| `meta/settings` | `eas, sbStart, sbEnd (null when unknown; the page never substitutes the EAS, and a sb rule resolves when its own endpoint is known while only the missing endpoint stays pending), planSet` |
+| `meta/ledger` | `balance, asOf, accrualPerMonth, note, optional sla. With no balance: {"balance": null, "asOf": null, "accrualPerMonth": 2.5, "note": null}, and the Leave section in Dates shows its empty state` |
+| `meta/seeding` | `claimedAt, by, profileKey (the claim while a seed runs; renewed every 30 seconds, expired after 2 minutes)` |
+| `meta/seeded` | `at, count, profileKey, pack, version, revision. Boards seeded before 09 Oct 2026 have no profileKey; the page shows no mismatch line for them, and the key is attached only when the person makes an explicit keep or reset choice. It records acceptance of the retained plan, not the original seed profile.` |
+| `meta/migration` | `from, to, at, revision, updated, added, retired, review[ids], state (running, complete), ops (per-id operation kind, expected field hash and readback flag; no personal values)` |
+| `meta/reset` | `at, token (present only while a reset runs)` |
+| `meta/watch` | `schemaVersion, feedSeq, feedGeneratedAt, feedExpiresAt, checkedAt, sources[{source, coverage, status, reason, lastAttempt, lastSuccess, window, checkedCount, unclassifiedCount, truncated, bodyAvailable, confidence, matches}]; legacy top-level window, checkedCount, truncated, bodyAvailable, confidence, matches and status project MARADMIN only` |
+| `meta/watch_error` | `at, reason (present only when the newest check failed)` |
+| `loes/<id>` | `id, n, name, lead, purpose` |
+| `items/<id>` | `id, loe, order, kind (task, marker, window, milestone), title, label, brief, why, how[], owner, due (rule or null), window ({from, to} rules or null), basis (optional: rule or target; absent means rule), critical, presence, cite[{ref, para, quote, url}], verify, status (open, doing, waiting, done, na), doneOn, notes, user, updated` |
+| `contacts/<id>` | `id, name, role, org, phone, email, loe, note` |
+| `blocks/<id>` | `id, start, end, status (approved, requested, known, planned, cancellation requested, canceled in MOL; legacy cancel is read and migrated as cancellation requested), away, kind (leave, liberty, ptad), note, updated` |
+| `conditions/<id>` | `id, name, status (needs visit, in records, seen, in claim, rated), code, side, limb (null, LUE, RUE, LLE, RLE), words, rule, todo[], evidence[], exam, note, record[{date, entry, src}], src[{label, url}], updated` |
+| `claim/where` | `rows[{appt, where, home, base, how}], note` |
+| `claim/vso` | `rows[{rank, name, why, phone, email}], script, note, updated` |
+| `claim/exposure` | `rows[{location, hazards, presumptive, action}], notes[]` |
+| `claim/benefits` | `title, label, rows[{what, detail}], note` |
+| `links/<id>` | `id, title, url, loe, added` |
+| `inbox/<id>` | `id, series, number, title, url, date, note, keys[], action, deadline, confidence, body_available, status (new, dismissed), applicability (possible until reviewed), filed` |
+
+Seed display fields: label is imperative and at most six words. Brief is at most two sentences at grade 8, grounded entirely in the existing why, how or cite. Both belong to SEED_OWNED_FIELDS and receive released-hash replacement on existing boards; why remains the full drawer text. The brief checker rejects numbers, dates, form numbers and paragraph numbers absent from that item's source fields. Display copy never changes planning rules.
+
+Chat setup state uses `meta/setup` for unfinished progress and `meta/install` for version, original created, channel, install_id and any existing registered or unknown fields. Page completion preserves installation identity and clears setup. A chat update stores stage and the confirmed manifest in `meta/update`; a page update stores from, to, at and state. Never confuse those owners or erase recovery state before verification.
+
+Learning storage is `usage/<week>-<writer>` for weekly counters and immutable `outbox/<id>` for approved reports, plus consent and receipts in the board's Settings records. Settings uses `meta/usage_consent` with enabled, schema_version, schema_key, sample and approved_at; `receipts/<payload id>` with payload_id, status and acknowledged_at; and `outbox_control/<id>` with cancelled and at. Chat verifies the installed trust-layer contract before sending. Outbox envelopes carry schema_version, kind, id, payload, bytes, approved_at and status; only the frozen reviewed payload bytes go on the wire. Usage documents include local schema_version/status wrappers excluded from the wire payload. Copy diagnostic uses an in-memory error ring independent of these collections. B3's wire schema differs from L5's proposed samples: feedback allows kind, id, install_id, version, pack, path, grade, category, error_class, optional text and created; usage allows kind, install_id, week, writer, version and flat counters. Record schema approval on the board. It does not add a wire key. Reports are deleted from outbox only after matching acknowledgment and receipt readback. Counts are closed-week totals sent once per writer under current fixed-schema consent.
 
 Date rules: `{"date": "YYYY-MM-DD"}`, `{"eas": n}`, `{"easMonths": n}`, `{"sb": "start"|"end"}`, `{"item": "<id>", "days": n}`, with optional `"biz": "prev"` to pull weekends and observed federal holidays back to the preceding business day. The seed uses `{"date": "SETUP"}` for "the day the board was set up". An `sb` rule with a null `sbStart` or `sbEnd` resolves to no date; the date column shows "Date pending SkillBridge approval" and the item sorts after dated items.
 
@@ -45,13 +107,13 @@ Three kinds of date, named the same in the page, the docs, and the skills: a rul
 
 Profile key: `path|grade|reserve|sb|eas|sbStart|sbEnd` from `meta/profile` and `meta/settings`, joined with `|`, booleans as `true` or `false`, nulls as the string `null`.
 
-Seeding: the page seeds when it opens with a profile, no `meta/seeded`, and no `meta/reset`. It takes `meta/seeding` with the runtime's `acquire` lease (holder is the tab's seed id, 45 second lease, renewed every 30 seconds); a browser without `acquire` does not seed and says so. A busy or rejected renewal aborts the seed at once. Before each seed write it reads that document fresh and skips it if it exists, so it never overwrites an item, line of effort, contact, or claim document, whoever wrote it. Before writing `meta/seeded` it reads `meta/profile` and `meta/settings` fresh and aborts without the marker if the key changed; the page then shows "Your profile changed while the board was being set up. Run /intake reset in the Muster Out folder to rebuild the plan." While `meta/reset` exists the page refuses every write, closes any open edit form, drops its cached records from the view, and stops claim renewal; when the marker clears it re reads the meta documents fresh before deciding to seed. If `meta/seeded.profileKey` differs from the live key, the page does not reseed; it shows "Your path or dates changed since the plan was seeded. Run /intake reset to rebuild the plan, or Edit profile to keep this one." and still recomputes dates from the live settings.
+Seeding: the page seeds when it opens with a confirmed dated profile, no `meta/seeded`, and no `meta/reset`. It takes `meta/seeding` with the runtime's `acquire` lease (holder is the tab's seed id, 45 second lease, renewed every 30 seconds); a browser without `acquire` does not seed and says so. A busy or rejected renewal aborts the seed at once. Before each seed write it reads that document fresh and skips it if it exists, so it never overwrites an item, line of effort, contact, or claim document, whoever wrote it. Before writing `meta/seeded` it reads `meta/profile` and `meta/settings` fresh and aborts without the marker if the key changed; the page then shows "Your profile changed while the board was being set up. Run /intake reset in the Muster Out folder to rebuild the plan." While `meta/reset` exists the page refuses every write, closes any open edit form, drops its cached records from the view, and stops claim renewal; when the marker clears it re reads the meta documents fresh before deciding to seed. If `meta/seeded.profileKey` differs from the live key, the page does not reseed; it shows "Your path or dates changed since the plan was seeded. Run /intake reset to rebuild the plan, or Edit profile to keep this one." and still recomputes dates from the live settings.
 
-Pack corrections: after the existing seed checks, a writable page migrates an older seed version under the same `meta/seeding` acquire lease and claim deletion used by first seeding. It also recognizes legacy markers without a version and changes to the embedded seed revision at the same product version. A newer installed seed is never downgraded. A present pack and profile key must agree. Legacy markers without a pack receive the current pack after migration. Resets, profile changes, unavailable locks and failed renewals stop the migration. The page makes no release request.
+Pack corrections: after the existing seed checks, a writable page migrates an older seed version under the same `meta/seeding` acquire lease and claim deletion used by first seeding. It also recognizes legacy markers without a version and changes to the embedded seed revision at the same product version. A newer installed seed is never downgraded. A present pack and profile key must agree. Legacy markers without a pack receive the current pack after migration. Resets, profile changes, unavailable locks and failed renewals stop the migration. Release checks use a separately verified isolated worker with no board context; they do not change planning or migration rules.
 
 Item ownership is defined once by `SEED_OWNED_FIELDS`, `PERSON_OWNED_FIELDS`, and `PERSON_OWNED_COLLECTIONS` in `board/template.html`. The builder reads those lists and rejects an emitted item field without an owner. The item key and repeated `id` hold its identity throughout migration.
 
-- Seed fields: `loe`, `order`, `kind`, `title`, `why` (body), `how`, `owner`, `due`, `window`, `basis`, `critical`, `presence`, `cite`, `verify`, `when` (path flags), `phase`, `path`.
+- Seed fields: `loe`, `order`, `kind`, `title`, `label`, `brief`, `why` (body), `how`, `owner`, `due`, `window`, `basis`, `critical`, `presence`, `cite`, `verify`, `when` (path flags), `phase`, `path`.
 - Person fields: `status`, `doneOn`, `notes`, `user`, `updated`, `userDates`, `retired`, `retiredNote`, and every unknown item field. A person's changes to `due` or another seed field require review and stay intact until accepted. Entire `user: true` items belong to the person. Seed status, notes and doneOn values are defaults used only when adding an item.
 - Person collections: `blocks`, `contacts`, `conditions`, `inbox`, `links`, `claim`, `meta/ledger`, `meta/settings`, `meta/profile`. Migration never writes these collections. It also preserves all other meta documents and unknown marker fields.
 
@@ -59,7 +121,7 @@ Fingerprints are SHA-256 over UTF-8 JSON of seed fields with object keys recursi
 
 Older pages stripped `when` and materialized `due.date: SETUP`. Matching restores missing tags from each historical fingerprint's shape and restores SETUP only when the stored date equals `meta/settings.planSet`, or the original `meta/seeded.at` date when planSet is absent. Unknown setup dates are kept for review. Hashes matching any released seed allow replacement of all seed fields. Field patches remove obsolete nested rule keys and preserve every other field. Edited seed fields receive a review entry. New applicable items are added; dropped historical items are retained with `retired: true` and a short `retiredNote`. Unrecognized custom items stay outside migration; retirement preserves status and personal notes on historical seed items.
 
-`meta/migration.ops` journals each planned item write before it runs and its completion after readback. A resume recognizes writes that succeeded before the completion flag was saved, so counts survive interruptions. Every item write, the completed journal, and the final seed marker are read back. Only then does `meta/seeded` advance its version, revision and non-user item count. Retired items remain in that count. A completed version and revision cause subsequent loads to make no writes. The Brief shows `Updated to <version>: <n> items corrected, <n> added.` and each review item with an `Accept pack version` button. Acceptance takes the same lock, replaces only seed fields, keeps personal fields, verifies the record, and removes that id from review. A dropped edited item stays in review for Claude to resolve.
+`meta/migration.ops` journals each planned item write before it runs and its completion after readback. A resume recognizes writes that succeeded before the completion flag was saved, so counts survive interruptions. Every item write, the completed journal, and the final seed marker are read back. Only then does `meta/seeded` advance its version, revision and non-user item count. Retired items remain in that count. A completed version and revision cause subsequent loads to make no writes. Plan shows `Updated to <version>: <n> items corrected, <n> added.` and each review item with an `Accept pack version` button. Acceptance takes the same lock, replaces only seed fields, keeps personal fields, verifies the record, and removes that id from review. A dropped edited item stays in review for Claude to resolve.
 
 The browser database API has no document version precondition. Migration uses the supported cooperative lease, fresh reads before field patches, and readback. Personal notes and completion never appear in replacement patches. A writer that changes seed fields without taking the lease during the final read/write interval cannot be excluded by this API; keep the board idle during the confirmed update and review any concurrent changes before completion.
 

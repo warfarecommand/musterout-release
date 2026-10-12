@@ -1,4 +1,4 @@
-import { createHandler, FEED, roundupVariables, validateFeed, weekKey } from "./index.ts";
+import { createHandler, FEED, roundupVariables, validateFeed, weeklyFeed, weekKey } from "./index.ts";
 import { fixture } from "../alerts/index_test.ts";
 import { ENDPOINT, hash } from "../alerts/index.ts";
 import { sendAlert } from "../alerts/send_alert.ts";
@@ -67,10 +67,10 @@ Deno.test("delivery window starts at Monday 15 UTC and ends at midnight",async()
  }
  for(const stamp of ["2026-10-12T15:00:00Z","2026-10-12T23:59:59.999Z"]){const f=digestFixture();f.add("on");f.setTime(stamp);equal((await(await f.handler(f.request())).json()).accepted,1);equal(f.mail().length,1);}
 });
-Deno.test("current cycle requires a feed generated since Monday Watch at 13 UTC",async()=>{
- for(const stamp of ["2026-10-09T20:00:00Z","2026-10-12T12:59:59.999Z"]){for(const dry of [false,true]){const f=digestFixture();f.add("on");f.setFeed({...feed(),generated_at:stamp});equal(await(await f.handler(f.request(dry))).json(),{ok:true,...(dry?{dry:true}:{}),noop:"stale_feed"});equal(f.calls.length,0);equal(f.mail().length,0);equal(f.tables.email_delivery_receipts.length,0);}}
- const f=digestFixture();f.add("on");f.setFeed({...feed(),generated_at:"2026-10-12T12:59:59Z"});equal((await(await f.handler(f.request())).json()).noop,"stale_feed");
- f.setFeed({...feed(),generated_at:"2026-10-12T13:00:00Z"});equal((await(await f.handler(f.request(true))).json()).eligible,1);equal(f.tables.email_delivery_receipts.length,0);equal((await(await f.handler(f.request())).json()).accepted,1);
+Deno.test("current cycle requires a feed generated since daily Watch at 10 UTC",async()=>{
+ for(const stamp of ["2026-10-09T20:00:00Z","2026-10-12T09:59:59.999Z"]){for(const dry of [false,true]){const f=digestFixture();f.add("on");f.setFeed({...feed(),generated_at:stamp});equal(await(await f.handler(f.request(dry))).json(),{ok:true,...(dry?{dry:true}:{}),noop:"stale_feed"});equal(f.calls.length,0);equal(f.mail().length,0);equal(f.tables.email_delivery_receipts.length,0);}}
+ const f=digestFixture();f.add("on");f.setFeed({...feed(),generated_at:"2026-10-12T09:59:59Z"});equal((await(await f.handler(f.request())).json()).noop,"stale_feed");
+ f.setFeed({...feed(),generated_at:"2026-10-12T10:00:00Z"});equal((await(await f.handler(f.request(true))).json()).eligible,1);equal(f.tables.email_delivery_receipts.length,0);equal((await(await f.handler(f.request())).json()).accepted,1);
  f.setTime("2026-10-19T15:00:00Z");equal((await(await f.handler(f.request())).json()).noop,"stale_feed");equal(f.mail().length,1);equal(f.tables.email_delivery_receipts.length,1);
 });
 Deno.test("digest rejects unsafe, incomplete or malformed feeds before writes",async()=>{
@@ -89,4 +89,46 @@ Deno.test("digest and Monthly compete for the same atomic cap, reflected in dry 
  const f=digestFixture();f.add("on");const message=JSON.stringify({template:"monthly",campaign:"october",variables:{SHIPPED:"A reviewed release shipped.",NEXT:"The next release is in review.",AI_MOVE:"Ask Claude to explain a term.",QUESTION:"Which term needs an explanation?"}});
  await Promise.all([f.handler(f.request()),sendAlert(message,true,{...f.deps,print:()=>{}})]);equal(f.mail().length,1);equal(f.tables.email_delivery_receipts.filter(r=>r.state==="accepted").length,1);
  const dry=await(await f.handler(f.request(true))).json();equal(dry.eligible,0);equal(dry.skipped,1);assert(dry.reasons.duplicate===1||dry.reasons.weekly_cap===1);
+});
+
+function v2feed(): any {
+ const legacy = feed();
+ const block = (source: string, number: string) => ({ source, coverage: `${source} official RSS; posted in the stated window`, status: "ok", reason: null, last_attempt: legacy.generated_at, last_success: legacy.generated_at, window: {from: "2026-09-13", to: "2026-10-12"}, checked_count: 14, unclassified_count: 0, truncated: false, body_available: false, notices: [{...legacy.notices[0],series: source,number,id: source + "-" + number.replace("/","-"),lines:["reserve"],paths:["all"]}] });
+ return {schema_version:2,seq:4,generated_at:legacy.generated_at,expires_at:"2026-10-20T13:30:00Z",capture_replay:false,sources:[block("MARADMIN","473/26"),block("ALMAR","473/26")]};
+}
+Deno.test("v2 groups colliding series identities and retains ISO week idempotency", async () => {
+ const f = digestFixture(); f.add("on"); f.setFeed(v2feed());
+ equal((await(await f.handler(f.request())).json()).notices,2);
+ const variables = (f.mail()[0].body as any[])[0].template.variables;
+ assert(variables.ITEMS_TEXT.includes("MARADMIN")); assert(variables.ITEMS_TEXT.includes("ALMAR"));
+ equal((await(await f.handler(f.request())).json()).reasons.duplicate,1); equal(f.mail().length,1);
+});
+Deno.test("v2 daily catch-up feed contributes only the digest week", async () => {
+ const f = digestFixture(); f.add("on"); const v = v2feed();
+ v.sources[0].notices.push({...v.sources[0].notices[0],number:"100/26",id:"MARADMIN-100-26",posted:"2026-09-30"});
+ f.setFeed(v); equal((await(await f.handler(f.request())).json()).notices,2);
+ const weekly = weeklyFeed(validateFeed(v,f.deps.now()),f.deps.now()) as any;
+ equal(weekly.sources[0].notices.length,1); equal(weekly.sources[0].notices[0].number,"473/26");
+});
+Deno.test("v2 failed source remains visible and does not suppress a healthy source", async () => {
+ const f=digestFixture();f.add("on");const v=v2feed();v.sources[1].status="failed";v.sources[1].reason="Official source unavailable";v.sources[1].last_success="2026-10-11T10:00:00Z";f.setFeed(v);
+ equal((await(await f.handler(f.request())).json()).notices,1);
+ const variables=(f.mail()[0].body as any[])[0].template.variables;
+ assert(variables.ITEMS_TEXT.includes("ALMAR"));assert(variables.ITEMS_TEXT.includes("failed"));assert(!variables.ITEMS_TEXT.includes("ALMAR 473/26"));
+ const all=digestFixture();all.add("on");v.sources[0].status="failed";v.sources[0].reason="Source unavailable";all.setFeed(v);
+ equal((await(await all.handler(all.request())).json()).noop,"incomplete_sources");equal(all.mail().length,0);
+});
+Deno.test("v2 zero-match result carries coverage for every source", async () => {
+ const f=digestFixture();f.add("on");const v=v2feed();for(const b of v.sources)b.notices=[];f.setFeed(v);
+ const result=await(await f.handler(f.request())).json();equal(result.noop,"no_matches");equal(result.coverage.length,2);assert(result.coverage.every((b:any)=>b.coverage&&typeof b.body_available==="boolean"));equal(f.mail().length,0);
+});
+Deno.test("v2 rejects replay-shaped metadata, bad identities, dates, and source URLs", async () => {
+ const changes=[(v:any)=>v.seq=true,(v:any)=>v.expires_at="2026-10-21T13:30:00Z",(v:any)=>v.sources.push(v.sources[0]),(v:any)=>v.sources[0].notices[0].id="ALMAR-473-26",(v:any)=>v.sources[0].notices[0].url="https://www.marines.mil/News/Messages/Messages-Display/../evil",(v:any)=>v.sources[0].notices[0].url+="?next=x",(v:any)=>v.sources[0].notices[0].posted="2026-02-30",(v:any)=>v.sources[0].checked_count=true,(v:any)=>v.sources[0].last_success=null,(v:any)=>v.sources[0].notices[0].lines=["unknown"],(v:any)=>v.sources[0].hidden={text:"bad\u0001"},(v:any)=>v.capture_replay=true];
+ for(const change of changes){const f=digestFixture();f.add("on");const v=v2feed();change(v);f.setFeed(v);equal((await f.handler(f.request())).status,503);equal(f.mail().length,0);equal(f.calls.length,0);}
+});
+Deno.test("v2 ALNAV and ORDER use their own official URL rules",()=>{
+ const v=v2feed();const alnav=v.sources[1];alnav.source="ALNAV";alnav.notices[0].series="ALNAV";alnav.notices[0].id="ALNAV-473-26";alnav.notices[0].url="https://www.mynavyhr.navy.mil/Portals/55/Messages/ALNAV/ALN2026/ALN26073.txt";
+ validateFeed(v,Date.parse("2026-10-12T15:00:00Z"));
+ const order=v.sources[0];order.source="ORDER";order.notices[0].series="ORDER";order.notices[0].number="MCO 1900.16";order.notices[0].id="ORDER-MCO-1900-16";order.notices[0].url="https://www.marines.mil/News/Publications/MCPEL/Electronic-Library-Display/Article/900/mco-190016/";
+ validateFeed(v,Date.parse("2026-10-12T15:00:00Z"));
 });

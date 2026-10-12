@@ -1,5 +1,14 @@
 # Release notes
 
+## 0.2.0 (2026-10-12)
+
+- The board uses Today, Plan, Dates, Claim and More, with short action rows and steps and sources behind each item.
+- Setup ends at Open your board. Answer there, keep an undated plan if you have no date, and add optional details later.
+- Ask about your plan answers from this board. The Project guide and ten starter workflows help review records and decisions as drafts to verify.
+- A verified pasted update adds the artifact capability at the same address. Update now is available when the signed update channel passes its release gates; pasted recovery remains available.
+- Save failures keep your draft and show recovery steps. Copy diagnostic and report review work even when board data or Claude is unavailable.
+- Privacy and operations explain CDN reads, uploads, connectors, separate report and usage consent, and deletion receipts. Sending reports and counts remains behind the learning release gate.
+
 ## 0.1.6 (2026-10-09)
 
 - Confirmation and welcome emails list your email choices in plain English.
