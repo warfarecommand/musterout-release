@@ -90,6 +90,12 @@ Save status is beside the editor. Saved means the write was read back and matche
 | `DRAFT_STORAGE_FAILED` | Your draft could not be kept on this device. Copy changes before continuing. Do not update or reload until the draft is preserved. |
 | A reset or profile mismatch | Resume the confirmed reset through SETUP at the same URL, or choose Keep my plan after reviewing the changes. Never clear a reset marker to dismiss a warning. |
 
+## Planned dates
+
+Enter your proposed EAS, resignation, retirement or FMCR date to see the whole plan. Deadlines compute before approval and say "From planned date" until your date is approved. Tap the date on Today, edit it, and Save to move the deadlines. Dates you set on individual items stay fixed.
+
+EAS and resignation use the entered date as the last active-duty day. Ordinary retirement uses the preceding day; an enlisted month-end retirement-path date projects FMCR service end on that day. Confirm the action and any exception with IPAC and MMSR-2. A fixed date you set on the last-active-duty milestone overrides the projection. Approvals, orders and appointments remain undated until you record them.
+
 ## Update help
 
 | State or diagnostic | Message and recovery |

@@ -110,10 +110,10 @@
    "order": 2,
    "kind": "task",
    "title": "Individualized Initial Counseling (IC)",
-   "why": "Complete this mandatory TRP gate no later than 365 days before EAS under MCO 1700.31A. Count calendar days from the confirmed end of active service on va-service-end. Keep the Retired List action date separate. Retiree IC may begin as soon as possible during the 24-month period preceding anticipated retirement. Other Marines may complete IC 18 months before separation or release from active duty.",
+   "why": "Complete this mandatory TRP gate no later than 365 days before EAS under MCO 1700.31A. Count calendar days from the projected last active-duty day on the \"Last day of active duty\" item. A date you confirm there overrides the projection. Keep the Retired List action date separate. Retiree IC may begin as soon as possible during the 24-month period preceding anticipated retirement. Other Marines may complete IC 18 months before separation or release from active duty.",
    "how": [
-    "Have IPAC and the TRP office confirm the EAS used by the order and record it on va-service-end. The rule date stays separate from the appointment.",
-    "Record the actual appointment as a fixed date on sep-ic-appt and actual completion as doneOn on this gate.",
+    "The rule deadline computes from your entered date, planned or approved. Have IPAC and the TRP office confirm the EAS used by the order; record any different service-end date on the \"Last day of active duty\" item. Keep the appointment separate.",
+    "Record the actual appointment as a fixed date on the \"Individualized Initial Counseling (IC): confirmed appointment\" item and actual completion as the done date on this item.",
     "Complete IC, pre-separation counseling, TRS workshops, Capstone and Commander's Verification in that order. For SkillBridge, complete all transition requirements before participation under NAVMC 1700.2B, enclosure (2), paragraph 7."
    ],
    "owner": "TAP counselor",
@@ -197,10 +197,10 @@
    "order": 4,
    "kind": "task",
    "title": "Pre-separation counseling brief",
-   "why": "Complete this mandatory TRP gate no later than 365 days before EAS under MCO 1700.31A. Count calendar days from the confirmed end of active service on va-service-end. Keep the Retired List action date separate.",
+   "why": "Complete this mandatory TRP gate no later than 365 days before EAS under MCO 1700.31A. Count calendar days from the projected last active-duty day on the \"Last day of active duty\" item. A date you confirm there overrides the projection. Keep the Retired List action date separate.",
    "how": [
-    "Have IPAC and the TRP office confirm the EAS used by the order and record it on va-service-end. The rule date stays separate from the appointment.",
-    "Record the actual appointment as a fixed date on sep-presep-appt and actual completion as doneOn on this gate.",
+    "The rule deadline computes from your entered date, planned or approved. Have IPAC and the TRP office confirm the EAS used by the order; record any different service-end date on the \"Last day of active duty\" item. Keep the appointment separate.",
+    "Record the actual appointment as a fixed date on the \"Pre-separation counseling brief: confirmed appointment\" item and actual completion as the done date on this item.",
     "Complete IC, pre-separation counseling, TRS workshops, Capstone and Commander's Verification in that order. For SkillBridge, complete all transition requirements before participation under NAVMC 1700.2B, enclosure (2), paragraph 7."
    ],
    "owner": "TAP counselor",
@@ -278,10 +278,10 @@
    "order": 6,
    "kind": "task",
    "title": "Transition Readiness Seminar workshops",
-   "why": "Complete this mandatory TRP gate no later than 180 days before EAS under MCO 1700.31A. Count calendar days from the confirmed end of active service on va-service-end. Keep the Retired List action date separate.",
+   "why": "Complete this mandatory TRP gate no later than 180 days before EAS under MCO 1700.31A. Count calendar days from the projected last active-duty day on the \"Last day of active duty\" item. A date you confirm there overrides the projection. Keep the Retired List action date separate.",
    "how": [
-    "Have IPAC and the TRP office confirm the EAS used by the order and record it on va-service-end. The rule date stays separate from the appointment.",
-    "Record the actual appointment as a fixed date on sep-trs-appt and actual completion as doneOn on this gate.",
+    "The rule deadline computes from your entered date, planned or approved. Have IPAC and the TRP office confirm the EAS used by the order; record any different service-end date on the \"Last day of active duty\" item. Keep the appointment separate.",
+    "Record the actual appointment as a fixed date on the \"Transition Readiness Seminar workshops: confirmed appointment\" item and actual completion as the done date on this item.",
     "Complete IC, pre-separation counseling, TRS workshops, Capstone and Commander's Verification in that order. For SkillBridge, complete all transition requirements before participation under NAVMC 1700.2B, enclosure (2), paragraph 7."
    ],
    "owner": "You",
@@ -476,10 +476,10 @@
    "order": 11,
    "kind": "task",
    "title": "TRP Capstone",
-   "why": "Complete this mandatory TRP gate no later than 120 days before EAS under MCO 1700.31A. Count calendar days from the confirmed end of active service on va-service-end. Keep the Retired List action date separate.",
+   "why": "Complete this mandatory TRP gate no later than 120 days before EAS under MCO 1700.31A. Count calendar days from the projected last active-duty day on the \"Last day of active duty\" item. A date you confirm there overrides the projection. Keep the Retired List action date separate.",
    "how": [
-    "Have IPAC and the TRP office confirm the EAS used by the order and record it on va-service-end. The rule date stays separate from the appointment.",
-    "Record the actual appointment as a fixed date on sep-capstone-appt and actual completion as doneOn on this gate.",
+    "The rule deadline computes from your entered date, planned or approved. Have IPAC and the TRP office confirm the EAS used by the order; record any different service-end date on the \"Last day of active duty\" item. Keep the appointment separate.",
+    "Record the actual appointment as a fixed date on the \"TRP Capstone: confirmed appointment\" item and actual completion as the done date on this item.",
     "Complete IC, pre-separation counseling, TRS workshops, Capstone and Commander's Verification in that order. For SkillBridge, complete all transition requirements before participation under NAVMC 1700.2B, enclosure (2), paragraph 7."
    ],
    "owner": "TAP counselor",
@@ -557,10 +557,10 @@
    "order": 13,
    "kind": "task",
    "title": "Commander's Verification on the DD 2648",
-   "why": "Complete this mandatory TRP gate no later than 90 days before EAS under MCO 1700.31A. Count calendar days from the confirmed end of active service on va-service-end. Keep the Retired List action date separate.",
+   "why": "Complete this mandatory TRP gate no later than 90 days before EAS under MCO 1700.31A. Count calendar days from the projected last active-duty day on the \"Last day of active duty\" item. A date you confirm there overrides the projection. Keep the Retired List action date separate.",
    "how": [
-    "Have IPAC and the TRP office confirm the EAS used by the order and record it on va-service-end. The rule date stays separate from the appointment.",
-    "Record the actual appointment as a fixed date on sep-cv-appt and actual completion as doneOn on this gate.",
+    "The rule deadline computes from your entered date, planned or approved. Have IPAC and the TRP office confirm the EAS used by the order; record any different service-end date on the \"Last day of active duty\" item. Keep the appointment separate.",
+    "Record the actual appointment as a fixed date on the \"Commander's Verification on the DD 2648: confirmed appointment\" item and actual completion as the done date on this item.",
     "Complete IC, pre-separation counseling, TRS workshops, Capstone and Commander's Verification in that order. For SkillBridge, complete all transition requirements before participation under NAVMC 1700.2B, enclosure (2), paragraph 7."
    ],
    "owner": "CO",
@@ -1232,12 +1232,15 @@
    "order": 27,
    "kind": "task",
    "title": "Confirm the resignation change deadline",
-   "why": "The manual ties a change request to before 45 days from the resignation date or commencement of separation leave. IPAC and MMSR-2 must confirm both actual anchors. Use a conservative target 46 calendar days before the earlier anchor and move a weekend back. The date stays unresolved until the actual leave start or absence of leave is confirmed.",
+   "why": "The manual ties a change request to before 45 days from the resignation date or commencement of separation leave. IPAC and MMSR-2 must confirm both actual anchors. Use a conservative target 46 calendar days before the earlier anchor and move a weekend back. The entered resignation date gives a projection; earlier separation leave requires an earlier target.",
    "how": [
-    "The date is pending confirmation by IPAC and MMSR-2. Give Claude the date the office confirms and ask Claude to record it on this item. Keep the item open until the action is complete."
+    "Your entered resignation date projects the conservative target 46 calendar days earlier. If separation leave starts first, move the target earlier with IPAC and MMSR-2; a fixed date overrides the projection."
    ],
    "owner": "You",
-   "due": null,
+   "due": {
+    "eas": -46,
+    "biz": "prev"
+   },
    "window": null,
    "critical": false,
    "presence": false,
@@ -3152,19 +3155,45 @@
    "loe": "va",
    "order": 4,
    "kind": "milestone",
-   "title": "Confirmed last day of active duty",
-   "why": "The BDD window uses the last active-duty day. For ordinary Retired List retirement, the manual makes that the day before the effective retirement date. IPAC and MMSR-2 must confirm FMCR, exception and other individual service-end dates separately from the approved action date.",
+   "title": "Last day of active duty",
+   "why": "Your entered date projects the last active-duty day and the BDD and transition deadlines. EAS, resignation and month-end FMCR use that day; ordinary Retired List retirement uses the preceding day. A confirmed date you set here overrides the projection. Confirm exceptions with IPAC and MMSR-2.",
    "how": [
-    "The last active-duty day is pending IPAC and MMSR-2 confirmation. Give Claude that date and the separate approved retirement or FMCR action date. Ask Claude to record the confirmed last active-duty day here and the action date on the retirement/FMCR item.",
+    "Plan from your entered EAS, resignation, retirement or FMCR action date. For enlisted retirement, a month-end date projects FMCR service end on that day; other dates project the preceding day. Confirm the action and any exception with IPAC and MMSR-2. Give Claude any different confirmed last active-duty day to set here as a fixed date.",
     "Have VA or your accredited VSO confirm both BDD window endpoints. Keep this milestone's date equal to the confirmed last active-duty day when recording completion.",
-    "IPAC, the installation TRP office and UTC must also confirm this is the EAS used to count the MCO 1700.31A transition deadlines. Record the confirmed date here before relying on those dates."
+    "IPAC, the installation TRP office and UTC must also confirm this is the EAS used to count the MCO 1700.31A transition deadlines. Your entered date already projects the deadlines. Record a different confirmed date here when needed."
    ],
    "owner": "You",
-   "due": null,
+   "due": {
+    "serviceEnd": 0
+   },
    "window": null,
    "critical": true,
    "presence": false,
    "cite": [
+    {
+     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+     "para": "Appendix E, E006.1.c(2)",
+     "quote": "For Regular officer retirements and enlisted 30-year retirements, the PRR date is the first day on the retired list. The PRR minus one day is the last day of active duty and the day (at midnight) on which all active duty pay and allowances terminate.",
+     "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf"
+    },
+    {
+     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+     "para": "Appendix E, E006.1.c(3)",
+     "quote": "For enlisted transfers to the FMCR, the PRR date is the last day of active duty and the day (at midnight) on which all active duty pay and allowances terminate.",
+     "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf"
+    },
+    {
+     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+     "para": "Appendix E, E006.1.c(5)",
+     "quote": "For all resignations, the PRR date is the last day of active duty and the day (at midnight) on which all active duty pay and allowances terminate.",
+     "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf"
+    },
+    {
+     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+     "para": "Definitions, 274",
+     "quote": "Expiration of Active Service (EAS). The day active service terminates,",
+     "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf"
+    },
     {
      "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
      "para": "7007.1.a",
@@ -3197,7 +3226,7 @@
    "when": [],
    "basis": "rule",
    "label": "Confirm your last active duty day",
-   "brief": "Your last active duty day sets the BDD window and transition deadlines. Confirm it separately from the retirement action date so those dates are counted from the correct day."
+   "brief": "Your last active duty day projects from your entered date and sets the BDD window and transition deadlines. A confirmed date you set here replaces the projection."
   },
   {
    "id": "va-str",
@@ -3207,10 +3236,13 @@
    "title": "Deliver the complete STR before absence or separation",
    "why": "Submit the complete STR to IPAC/Administration RUC before transition PTAD, terminal leave, IRR transfer, separation or retirement. Include service and civilian medical/dental records, the required AHLTA web print and DD Form 2963. Confirm the required export with medical records and IPAC.",
    "how": [
-    "The date is pending confirmation by the military medical records office and IPAC. Give Claude the date the office confirms and ask Claude to record it on this item. Keep the item open until the action is complete."
+    "The projected date is the latest service-end boundary. Deliver the STR earlier if transition PTAD, terminal leave or IRR transfer comes first. Give Claude that earlier date confirmed by medical records and IPAC to override the projection."
    ],
    "owner": "You",
-   "due": null,
+   "due": {
+    "item": "va-service-end",
+    "days": -1
+   },
    "window": null,
    "critical": true,
    "presence": false,
@@ -3596,7 +3628,7 @@
    "how": [
     "If BDD is missed, ask VA or your accredited VSO about an intent to file. Keep the VA receipt or automatic online intent confirmation.",
     "Give Claude the actual date VA records and ask Claude to record that fixed date here. Do not substitute EAS, setup day or a planned submission date.",
-    "At the same time, have VA or your VSO confirm the calendar anniversary and ask Claude to set that fixed rule deadline on va-itf-complete. Keep this event undated until the actual intent is recorded. Mark it not applicable if no intent is needed."
+    "The calendar anniversary computes on the \"Complete the VA claim within 1 year of intent to file\" item once this actual event date is recorded; have VA or your VSO confirm it. Keep this event undated until the actual intent is recorded. Mark it not applicable if no intent is needed."
    ],
    "owner": "You",
    "due": null,
@@ -3638,14 +3670,15 @@
    "order": 18,
    "kind": "task",
    "title": "Complete the VA claim within 1 year of intent to file",
-   "why": "Complete and file your claim within 1 year of the actual VA intent date on va-intent. This boundary is separate from the existing separation effective-date item.",
+   "why": "Complete and file your claim within 1 year of the actual VA intent date on the \"VA intent to file: confirmed receipt date\" item. It stays undated until the actual intent event is recorded; it is separate from the separation effective-date item.",
    "how": [
-    "After recording va-intent, give Claude the exact calendar-year deadline confirmed by VA or your VSO and ask Claude to set a fixed rule date here. Keep it undated until the actual intent date is known.",
-    "Use a calendar year, including leap years. The board cannot add calendar years to another item automatically; do not use a 365-day approximation.",
-    "Confirm VA received the completed claim before this deadline and retain the receipt. VA decides the effective date and entitlement. Mark this item not applicable if no intent is needed."
+    "After recording the actual VA intent date, the calendar-year deadline computes automatically. Have VA or your VSO confirm it; give Claude any different confirmed deadline to set here."
    ],
    "owner": "You",
-   "due": null,
+   "due": {
+    "item": "va-intent",
+    "months": 12
+   },
    "window": null,
    "critical": true,
    "presence": false,
@@ -4945,8 +4978,8 @@
    "why": "Arrange your final household goods (HHG) move with the installation Distribution Management Office (DMO) or Transportation Management Office (TMO). The appointment target is 90 days before your board separation or retirement date.",
    "how": [
     "Contact DMO/TMO for counseling and bring your separation, retirement or FMCR orders, destination and requested move dates.",
-    "Record the actual appointment as a fixed date on fam-hhg-appt. The 90-day target is a pack planning choice.",
-    "Have DMO/TMO confirm shipment eligibility, weight allowance, authorized destination, excess costs, storage and the applicable expiration on fam-hhg-entitlement."
+    "Record the actual appointment as a fixed date on the \"Final HHG move: confirmed DMO/TMO appointment\" item. The 90-day target is a pack planning choice.",
+    "Have DMO/TMO confirm shipment eligibility, weight allowance, authorized destination, excess costs, storage and the applicable expiration on the \"Final HHG shipment entitlement and expiration: confirm with DMO/TMO\" item."
    ],
    "owner": "You",
    "due": {
@@ -5018,13 +5051,29 @@
    "title": "Final HHG shipment entitlement and expiration: confirm with DMO/TMO",
    "why": "Your shipment entitlement and time limit require DMO/TMO confirmation against your orders and active-duty termination date. For ordinary separation under JTR 052012, the authorized destination is home of record (HOR) or place last entered active duty (PLEAD), within 180-day authority and a timely written-request provision. For qualifying retirement or FMCR under JTR 052013, home of selection (HOS) authority requires turnover within 3 years for termination dates on or after 24 JUN 2022, subject to exceptions. DMO/TMO must confirm the separate storage expiration.",
    "how": [
+    "Your entered date projects the ordinary separation application limit or qualifying retirement/FMCR turnover limit. Have DMO/TMO confirm eligibility, any exception and the separate storage expiration. Give Claude any different confirmed deadline to set as a fixed date here.",
     "Ask DMO/TMO which JTR paragraph applies to your orders, including any special separation-pay category. Confirm the authorized destination, PCS weight limit, excess costs and storage expiration.",
     "Under 052012.C, authority ends on the 181st day following separation or relief unless the written HHG request reaches the transportation officer before the end of the 180th day. Timely applications require turnover as soon as practicable; DMO/TMO determines reasonableness.",
     "JTR paragraph 052013 (B) sets a 3-year turnover limit with exceptions and extensions. Table 5-52 ends non-temporary storage 1 year from active-duty termination unless its exceptions apply. DMO/TMO must confirm any storage costs after expiration.",
-    "Have DMO/TMO give you the exact shipment or application deadline and storage limit in writing. Give Claude those dates and ask Claude to set the fixed shipment rule date here and record the storage date in notes. Keep this date unknown until office confirmation. After shipment, record the actual date and retain the receipts DMO/TMO requires."
+    "Have DMO/TMO give you the exact shipment or application deadline and storage limit in writing. Give Claude those dates and ask Claude to set the fixed shipment rule date here and record the storage date in notes. The ordinary rule deadline is already projected from your entered date. After shipment, record the actual date and retain the receipts DMO/TMO requires."
    ],
    "owner": "You",
-   "due": null,
+   "due": {
+    "byPath": {
+     "eas": {
+      "item": "va-service-end",
+      "days": 180
+     },
+     "resign": {
+      "item": "va-service-end",
+      "days": 180
+     },
+     "retire": {
+      "item": "va-service-end",
+      "months": 36
+     }
+    }
+   },
    "window": null,
    "critical": true,
    "presence": false,

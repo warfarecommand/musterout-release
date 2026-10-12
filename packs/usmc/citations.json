@@ -1654,5 +1654,45 @@
     "line_start": 24,
     "line_end": 30,
     "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "Appendix E, E006.1.c(2)",
+    "quote": "For Regular officer retirements and enlisted 30-year retirements, the PRR date is the first day on the retired list. The PRR minus one day is the last day of active duty and the day (at midnight) on which all active duty pay and allowances terminate.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 29224,
+    "line_end": 29227,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "Appendix E, E006.1.c(3)",
+    "quote": "For enlisted transfers to the FMCR, the PRR date is the last day of active duty and the day (at midnight) on which all active duty pay and allowances terminate.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 29229,
+    "line_end": 29231,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "Appendix E, E006.1.c(5)",
+    "quote": "For all resignations, the PRR date is the last day of active duty and the day (at midnight) on which all active duty pay and allowances terminate.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 29238,
+    "line_end": 29240,
+    "verified": true
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "Definitions, 274",
+    "quote": "Expiration of Active Service (EAS). The day active service terminates,",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 1315,
+    "line_end": 1315,
+    "verified": true
   }
 ]

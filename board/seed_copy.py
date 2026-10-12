@@ -255,7 +255,7 @@ COPY = {
     },
     "va-service-end": {
         "label": "Confirm your last active duty day",
-        "brief": "Your last active duty day sets the BDD window and transition deadlines. Confirm it separately from the retirement action date so those dates are counted from the correct day.",
+        "brief": "Your last active duty day projects from your entered date and sets the BDD window and transition deadlines. A confirmed date you set here replaces the projection.",
     },
     "va-str": {
         "label": "Deliver your complete service treatment record",

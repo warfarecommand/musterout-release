@@ -1,5 +1,14 @@
 # Release notes
 
+## 0.2.1 (2026-10-12)
+
+- Deadlines compute from your entered EAS, resignation, retirement or FMCR date, including a planned date. Late transition gates appear as late.
+- Dates counted from a planned date say From planned date. Tap your date on Today to edit it; saving moves the deadlines.
+- Ask knows today's date, starts with late items, writes dates as 12 OCT 2026, and shows bold text and short lists.
+- Item steps name other items by their titles.
+- Updating a board preserves dates you set and lists edited pack items for review. Actual approvals, orders and appointments stay undated until you record them.
+- The pack stays usmc-2026.10. This release updates the date rules and citation index without changing the source texts.
+
 ## 0.2.0 (2026-10-12)
 
 - The board uses Today, Plan, Dates, Claim and More, with short action rows and steps and sources behind each item.
