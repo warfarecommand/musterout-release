@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-12T00:15:02.984Z",
-  "expires_at": "2026-10-20T00:15:02.984Z",
-  "seq": 3,
+  "generated_at": "2026-10-12T16:02:23.927Z",
+  "expires_at": "2026-10-20T16:02:23.927Z",
+  "seq": 12000001,
   "capture_replay": false,
   "classification_mode": "keyword-baseline",
   "sources": [
@@ -11,8 +11,8 @@
       "coverage": "MARADMIN messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-12T00:14:53.091Z",
-      "last_success": "2026-10-12T00:14:53.091Z",
+      "last_attempt": "2026-10-12T16:02:09.714Z",
+      "last_success": "2026-10-12T16:02:09.714Z",
       "window": {
         "from": "2026-09-13",
         "to": "2026-10-12"
@@ -176,8 +176,8 @@
       "coverage": "ALMAR messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-12T00:14:53.091Z",
-      "last_success": "2026-10-12T00:14:53.091Z",
+      "last_attempt": "2026-10-12T16:02:09.714Z",
+      "last_success": "2026-10-12T16:02:09.714Z",
       "window": {
         "from": "2026-09-13",
         "to": "2026-10-12"
@@ -190,7 +190,7 @@
     },
     {
       "source": "ALNAV",
-      "coverage": "ALNAV adapter; no successful check recorded",
+      "coverage": "Official ALNAV listings; titles only",
       "last_success": null,
       "window": {
         "from": "2026-09-13",
@@ -203,11 +203,11 @@
       "notices": [],
       "status": "failed",
       "reason": "ALNAV collection failed: HTTPError: 403 Client Error: Forbidden for url: https://www.mynavyhr.navy.mil/References/Messages/ALNAV-2026/",
-      "last_attempt": "2026-10-12T00:14:53.091Z"
+      "last_attempt": "2026-10-12T16:02:09.714Z"
     },
     {
       "source": "ORDER",
-      "coverage": "ORDER adapter; no successful check recorded",
+      "coverage": "Cited MCPEL publications; metadata and PDF hashes; changes awaiting review",
       "last_success": null,
       "window": {
         "from": "2026-09-13",
@@ -220,7 +220,7 @@
       "notices": [],
       "status": "failed",
       "reason": "Order collection failed: MCO 1050.3J: HTTPError: 403 Client Error: Forbidden for url: https://www.marines.mil/News/Publications/MCPEL/Electronic-Library-Display/Article/1210812/mco-10503j/; MCO 1300.8: HTTPError: 403 Client Error: Forbidden for url: https://www.marines.mil/News/Publications/MCPEL/Electronic-Library-Display/Article/900339/mco-13008-wadmin-ch-2/; MCO 1700.31A: HTTPError: 403 Client Error: Forbidden for url: https://www.marines.mil/News/Publications/MCPEL/Electronic-Library-Display/Article/900630/mco-170031a/; MCO 1741.8: HTTPError: 403 Client Error: Forbidden for url: https://www.marines.mil/News/Publications/MCPEL/Electronic-Library-Display/Article/899313/mco-17418/; MCO 1900.16 CH-3 (MARCORSEPMAN): HTTPError: 403 Client Error: Forbidden for url: https://www.marines.mil/News/Publications/MCPEL/Electronic-Library-Display/Article/1759302/mco-190016-wch-3/; NAVMC 1700.2B: HTTPError: 403 Client Error: Forbidden for url: https://www.marines.mil/News/Publications/MCPEL/Electronic-Library-Display/Article/3598160/navmc-17002b/; NAVMC 763: ValueError: Canonical MCPEL detail and PDF could not be resolved for this form; no URL or baseline inferred.",
-      "last_attempt": "2026-10-12T00:14:53.091Z"
+      "last_attempt": "2026-10-12T16:02:09.714Z"
     }
   ]
 }
