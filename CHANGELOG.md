@@ -1,5 +1,11 @@
 # Release notes
 
+## 0.2.2 (2026-10-12)
+
+- Enlisted FMCR transfers on the last day of the month count leave through the transfer date, per MCO 1900.16 Appendix E. Retired List retirement still stops the day before.
+- The update check reads both public CDNs, verifies each signature, and takes the newest release, so a stale CDN copy no longer hides an update.
+- The pack stays usmc-2026.10.
+
 ## 0.2.1 (2026-10-12)
 
 - Deadlines compute from your entered EAS, resignation, retirement or FMCR date, including a planned date. Late transition gates appear as late.

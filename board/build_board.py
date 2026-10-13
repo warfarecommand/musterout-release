@@ -108,16 +108,31 @@ def seed_fingerprints(root=here.parent):
                 result["reissues"].setdefault(version, []).append(commit)
     for repo in (root.parent / "musterout-release", root):
         try:
-            commits = git(repo, "log", "--format=%H %as").splitlines()
+            # Tags identify published bytes even when a later feed sync carries
+            # the same config version. Untagged releases use publication commits.
+            tags = git(repo, "tag", "--list").splitlines()
+            commits = []
+            for version in sorted(missing):
+                for tag in ("v" + version, version):
+                    if tag in tags:
+                        commit = git(repo, "rev-parse", tag + "^{commit}").strip()
+                        commits.append((commit, version))
+                        break
+            for row in git(repo, "log", "--format=%H %s").splitlines():
+                commit, subject = row.split(" ", 1)
+                match = re.match(r"^Muster Out (\d+\.\d+\.\d+)(?:$|[ :])", subject)
+                if match:
+                    commits.append((commit, match[1]))
         except subprocess.CalledProcessError:
             continue
-        for row in commits:
-            commit, date = row.split()
+        for commit, published_version in commits:
+            if published_version not in missing:
+                continue
             try:
                 version = json.loads(git(repo, "show", commit + ":config.json"))["version"]
             except (subprocess.CalledProcessError, KeyError, json.JSONDecodeError):
                 continue
-            if version not in missing or date != versions[version]:
+            if version != published_version:
                 continue
             try:
                 snapshot = json.loads(git(repo, "show", commit + ":board/seed.json"))

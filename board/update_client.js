@@ -98,8 +98,7 @@
     }
     return e;
   }
-  var workerSource = "try { importScripts('https://unpkg.com/musterout@latest/release.js'); } catch (_) { importScripts('https://cdn.jsdelivr.net/npm/musterout@latest/release.js'); }";
-  function loadRelease() {
+  function loadWorker(source, kind) {
     return new Promise(function (resolve, reject) {
       var worker, url, timer, settled = false;
       function finish(error, value) {
@@ -111,7 +110,7 @@
         if (error) reject(Object.assign(new Error(error), {code:error})); else resolve(value);
       }
       try {
-        url = URL.createObjectURL(new Blob([workerSource], {type:'text/javascript'}));
+        url = URL.createObjectURL(new Blob(['importScripts(' + JSON.stringify(source) + ');'], {type:'text/javascript'}));
         worker = new Worker(url);
         timer = setTimeout(function () { finish('worker_timeout'); }, 20000);
         worker.onerror = function (event) { event.preventDefault(); finish('worker_error'); };
@@ -121,13 +120,32 @@
           var value = event.data;
           worker.terminate();
           try {
-            exact(value, ['envelope','signature','html']);
-            if (typeof value.html !== 'string' || value.html.length > MAX_BYTES || typeof value.signature !== 'string' || value.signature.length > 100 || enc.encode(JSON.stringify(value)).length > MAX_BYTES) return finish('too_large');
+            exact(value, kind === 'release' ? ['envelope','signature','html'] : ['envelope','signature','data']);
+            if (typeof value.signature !== 'string' || value.signature.length > 100 || enc.encode(JSON.stringify(value)).length > MAX_BYTES || kind === 'release' && (typeof value.html !== 'string' || value.html.length > MAX_BYTES)) return finish('too_large');
             finish(null, value);
           } catch (_) { finish('invalid_message'); }
         };
       } catch (_) { finish('worker_unavailable'); }
     });
+  }
+  async function loadVerified(options, validate) {
+    var kind = options.kind, path = kind === 'release' ? 'musterout@latest/release.js' : 'musterout-feed@latest/feed.js';
+    // Each CDN has its own worker, first-message limit and 20 s deadline.
+    // No board state or identifiers are sent to either worker.
+    var results = await Promise.allSettled(['https://unpkg.com/', 'https://cdn.jsdelivr.net/npm/'].map(async function (host) {
+      var value = await loadWorker(host + path, kind);
+      await verifyEnvelope(value.envelope, value.signature, kind === 'release' ? value.html : canonical(value.data), options);
+      if (validate) validate(value);
+      return value;
+    }));
+    var best = null;
+    for (var result of results) {
+      if (result.status !== 'fulfilled') continue;
+      var value = result.value, e = value.envelope;
+      if (!best || (kind === 'release' ? compare(e.version, best.envelope.version) > 0 : e.seq > best.envelope.seq || e.seq === best.envelope.seq && stamp(e.created) > stamp(best.envelope.created))) best = value;
+    }
+    if (!best) throw results[0].reason;
+    return best;
   }
   function create(options) {
     options = options || {};
@@ -153,11 +171,10 @@
       report('checking');
       checkTask = (async function () {
         try {
-          var value = await loadRelease();
-          await verifyEnvelope(value.envelope, value.signature, value.html, Object.assign({}, config, {kind:'release', currentVersion:config.version}));
-          candidate = value;
-          correctionPending = value.envelope.correction;
-          return report(snoozed(value.envelope.version) ? 'snoozed' : 'available', info());
+          var value = await loadVerified(Object.assign({}, config, {kind:'release', currentVersion:config.version}));
+          if (!candidate || compare(value.envelope.version, candidate.envelope.version) > 0) candidate = value;
+          correctionPending = candidate.envelope.correction;
+          return report(snoozed(candidate.envelope.version) ? 'snoozed' : 'available', info());
         } catch (error) {
           // A failed network check never hides an already verified correction.
           return candidate ? report(snoozed(candidate.envelope.version) ? 'snoozed' : 'available', info()) : report('idle', {quietCode:error.code || 'check_failed'});
@@ -255,5 +272,6 @@
     return Object.freeze({get state() { return state; }, ready:ready, checkForUpdate:checkForUpdate, applyUpdate:applyUpdate, snooze:snooze,
       subscribe:function (fn) { listeners.add(fn); try { fn(state); } catch (_) {} return function () { listeners.delete(fn); }; }});
   }
-  global.MusterOutUpdate = Object.freeze({create:create, verifyEnvelope:verifyEnvelope, canonical:canonical, compareVersions:compare});
+  global.MusterOutUpdate = Object.freeze({create:create, verifyEnvelope:verifyEnvelope, canonical:canonical, compareVersions:compare,
+    loadFeed:function (options, validate) { return loadVerified(Object.assign({}, options, {kind:'feed'}), validate); }});
 })(window);
