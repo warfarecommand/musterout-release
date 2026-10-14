@@ -26,3 +26,7 @@ Unsubscribe from everything is one click in every email.
 
 ## Templates
 confirm-subscription, welcome, correction-alert, monthly (replaces monthly-update; release notes and the feedback question fold in), weekly-roundup, lesson-launch (replaces release-notes as a standalone), unsubscribed page only (no email after someone leaves).
+
+## Setup help amendment proposal (14 OCT 2026)
+
+The no-drip statement above remains the published policy until the owner approves the replacement in _cook/coach/build/PRIVACY_PROPOSAL.md. The proposed exception is an unticked, optional Setup help choice after address confirmation, with setup-1 replacing welcome and setup-2 and setup-3 around 20 and 44 hours later. These are outside the ongoing campaign caps, under lifetime cap 3. No tracking or completion linkage. Owner approval freezes all three templates once; the supervisor verifies images, text fallback, stop/preferences/unsubscribe, and receipt suppression before enabling the scheduled sender. Nothing in this source amendment authorizes a send.

@@ -1,5 +1,13 @@
 # Release notes
 
+## 0.2.7 (2026-10-14)
+- Your coach: set up a Muster Out Project in the Claude app, paste the coach block and type Start. The coach reads your board at every chat and offers a Monday check-in.
+- Today shows a coach card with your last check-in and its next step. The setup steps replace pasting a Project link.
+- What your coach knows lists the facts your coach keeps on your board. Add, edit or delete them, with Undo. The Project chat and Ask both save there, and every save is read back.
+- Ask keeps your last 10 questions and answers on your board until you clear them. Save to coach memory turns an answer into a coach fact.
+- Coach check-ins show on the board, newest first.
+- The pack stays usmc-2026.10.
+
 ## 0.2.6 (2026-10-14)
 - Phone layout: reference tables on the VA Claim, Benefits and Leave screens show as labeled cards on phones, with no split words or empty columns. Month labels stay with leave balances.
 - Dates name the target, the opening and the close, and say whether a window is projected or confirmed. The BDD window stays projected until your service end and its endpoints are confirmed.

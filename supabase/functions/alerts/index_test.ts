@@ -1,4 +1,4 @@
-import { createHandler, ENDPOINT, hash, SITE, ORIGINS, token, streamNames } from "./index.ts";
+import { createHandler, ENDPOINT, hash, SITE, ORIGINS, token, streamNames, sendSetup, sendTemplates, SETUP_CONSENT, freshLinks, database } from "./index.ts";
 import { readMessage, sendAlert } from "./send_alert.ts";
 
 const assert = (ok: unknown, message = "Assertion failed") => { if (!ok) throw new Error(message); };
@@ -7,18 +7,27 @@ type Stored = Record<string, unknown>;
 
 // All HTTP is mocked, including PostgREST filters, conflict handling, and CAS.
 export function fixture() {
-  const tables: Record<string, Stored[]> = { alert_signups: [], ingest_rate: [], suggestions: [], email_delivery_receipts: [], digest_feed_highwater: [] };
+  const tables: Record<string, Stored[]> = { alert_signups: [], ingest_rate: [], suggestions: [], email_delivery_receipts: [], email_setup_claims: [], digest_feed_highwater: [] };
   const calls: { url: URL; method: string; body: unknown; headers: Headers }[] = [];
   const values: Record<string, string> = { SUPABASE_URL: "https://database.invalid", SUPABASE_SERVICE_ROLE_KEY: "test-service-key", RESEND_API_KEY: "test-send-key", IP_HASH_SALT: "test-salt" };
   let now = Date.parse("2026-10-09T21:00:00Z"), seq = 0, mailStatus = 200, templateStatus = 200, templateError: unknown = {}, failDb = false, throwMail = false, badMail = false;
   const matches = (row: Stored, params: URLSearchParams) => [...params].every(([key, filter]) => {
     if (["select", "order", "limit", "on_conflict"].includes(key)) return true;
+    if (key === "or") {
+      const terms = filter.slice(1, -1).split(",");
+      return terms.some(term => {
+        const match = /^(unsubscribe_hashes|setup_token_hashes)\.cs\.\{([a-f0-9]{64})\}$/.exec(term);
+        assert(match, "Unsupported mock OR filter");
+        return ((row[match![1]] ?? []) as string[]).includes(match![2]);
+      });
+    }
     const dot = filter.indexOf("."), op = filter.slice(0, dot), value = filter.slice(dot + 1);
     if (op === "is") return value === "null" && row[key] === null;
+    if (op === "lte") return row[key] != null && String(row[key]) <= value;
     if (op === "gte") return row[key] != null && String(row[key]) >= value;
     if (op === "gt") return String(row[key]) > value;
     if (op === "in") return value.slice(1,-1).split(",").includes(String(row[key]));
-    if (op === "cs") return (row[key] as string[]).includes(value.slice(1, -1));
+    if (op === "cs") return ((row[key] ?? []) as string[]).includes(value.slice(1, -1));
     if (op === "eq" && Array.isArray(row[key])) return `{${(row[key] as string[]).join(",")}}` === value;
     if (op === "eq") return String(row[key]) === value;
     throw new Error(`Unsupported mock filter: ${filter}`);
@@ -52,12 +61,22 @@ export function fixture() {
       let decision = "eligible";
       if (prior) decision = ["reserved","unknown","failed"].includes(String(prior.state)) ? "blocked" : p.p_stream === "weekly" || prior.content_hash === p.p_content_hash ? "duplicate" : "changed";
       else if (p.p_stream !== "weekly" && receipts.some(r => r.campaign === p.p_campaign && r.content_hash !== p.p_content_hash)) decision = "changed";
-      else if (p.p_stream !== "corrections") {
+      else if (!["corrections", "setup"].includes(p.p_stream)) {
         const d = new Date(now); d.setUTCHours(0,0,0,0); d.setUTCDate(d.getUTCDate() - (d.getUTCDay()+6)%7);
         const week = d.getTime(), month = Date.UTC(new Date(now).getUTCFullYear(),new Date(now).getUTCMonth(),1);
         const used = receipts.filter(r => r.recipient_hash === p.p_recipient_hash && ["monthly","weekly","lessons"].includes(String(r.stream)) && ["reserved","accepted","unknown"].includes(String(r.state)));
         if (used.filter(r=>Date.parse(String(r.created_at))>=month).length>=4) decision="monthly_cap";
         else if (used.some(r=>Date.parse(String(r.created_at))>=week)) decision="weekly_cap";
+      }
+      if (p.p_stream === "setup") {
+        const claims = tables.email_setup_claims, old = claims.find(r => r.campaign === p.p_campaign && r.recipient_hash === p.p_recipient_hash);
+        const step = Number(p.p_campaign[6]);
+        assert(/^setup-[123]:v1$/.test(p.p_campaign), "Setup IDs cannot change to evade the lifetime cap");
+        if (old) decision = old.content_hash !== p.p_content_hash ? "changed" : ["reserved", "unknown", "failed"].includes(String(old.state)) ? "blocked" : "duplicate";
+        else if (claims.some(r => r.campaign === p.p_campaign && r.content_hash !== p.p_content_hash)) decision = "changed";
+        else if (claims.filter(r => r.recipient_hash === p.p_recipient_hash).length >= 3) decision = "lifetime_cap";
+        else if (step > 1 && !claims.some(r => r.recipient_hash === p.p_recipient_hash && r.campaign === `setup-${step-1}:v1` && r.state === "accepted" && Date.parse(String(r.created_at)) <= now - (step === 2 ? 20 : 24)*3600000)) decision = "sequence_wait";
+        if (decision === "eligible" && !p.p_dry) claims.push({campaign: p.p_campaign, recipient_hash: p.p_recipient_hash, content_hash: p.p_content_hash, state: "reserved", created_at: new Date(now).toISOString()});
       }
       if(decision==="eligible"&&!p.p_dry){receipts.push({campaign:p.p_campaign,recipient_hash:p.p_recipient_hash,content_hash:p.p_content_hash,stream:p.p_stream,state:"reserved",created_at:new Date(now).toISOString(),updated_at:new Date(now).toISOString()});decision="claimed";}
       return reply({decision});
@@ -69,7 +88,7 @@ export function fixture() {
       const entry = body as Stored;
       const duplicate = rows.some((r) => table === "alert_signups" ? r.email === entry.email : table === "ingest_rate" ? r.ip_hash === entry.ip_hash && r.minute === entry.minute : table === "email_delivery_receipts" ? r.campaign === entry.campaign && r.recipient_hash === entry.recipient_hash : false);
       if (duplicate) { assert(headers.get("prefer")?.includes("ignore-duplicates")); return reply([]); }
-      const row = table === "alert_signups" ? { id: String(++seq).padStart(8, "0"), created_at: new Date(now).toISOString(), confirmed_at: null, last_sent_at: null, confirm_hash: null, unsubscribe_hashes: [], weekly: false, monthly: true, corrections: false, lessons: false, ...entry } : { id: String(++seq), ...entry };
+      const row = table === "alert_signups" ? { id: String(++seq).padStart(8, "0"), created_at: new Date(now).toISOString(), confirmed_at: null, last_sent_at: null, confirm_hash: null, unsubscribe_hashes: [], setup_token_hashes: [], weekly: false, monthly: true, corrections: false, lessons: false, ...entry } : { id: String(++seq), ...entry };
       rows.push(row);
       return reply([row]);
     }
@@ -703,4 +722,184 @@ Deno.test("alerts accepts complete JSON at the byte cap including split UTF-8", 
   const body = new ReadableStream<Uint8Array>({ start(c) { for (const b of raw) c.enqueue(new Uint8Array([b])); c.close(); } });
   equal((await f.handler(new Request(ENDPOINT, { method: "POST", headers: { origin: SITE }, body, duplex: "half" } as any))).status, 200);
   equal(f.calls.length, 0); equal(f.mail().length, 0);
+});
+
+
+const coachSignup = (f: ReturnType<typeof fixture>, extra: Stored = {}) => f.handler(request({kind: "subscribe", source: "coach", email: "marine@example.com", setup: true, ...extra}));
+const confirmCoach = async (f: ReturnType<typeof fixture>) => { f.values.SETUP_EMAIL_ENABLED = "true"; equal((await coachSignup(f)).status,200); return f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`)); };
+const setupMail = (f: ReturnType<typeof fixture>) => f.mail().filter(c => c.url.pathname === "/emails/batch").flatMap(c => c.body as any[]).filter(m => /^setup-/.test(m.template.id));
+
+Deno.test("setup requires enabled explicit unchecked-by-default opt-in and rejects telemetry fields",async()=>{
+  const f=fixture(); equal((await coachSignup(f)).status,503); equal(f.mail().length,0);
+  f.values.SETUP_EMAIL_ENABLED="true";
+  for(const extra of [{setup:false},{setup:undefined},{setup:"true"},{install_id:"0123456789abcdef"},{path:"eas"},{board:"private"}]) equal((await coachSignup(f,extra)).status,400);
+  equal(f.calls.length,0);
+  equal((await f.handler(request({kind:"subscribe",source:"musterout",email:"marine@example.com",setup:true}))).status,400);
+});
+Deno.test("setup confirmation scope is narrow and setup-1 replaces welcome",async()=>{
+  const f=fixture(); f.values.SETUP_EMAIL_ENABLED="true"; await coachSignup(f);
+  const r=f.tables.alert_signups[0], vars=(f.mail()[0].body as any).template.variables;
+  equal([r.corrections,r.monthly,r.weekly,r.lessons,r.setup],[false,false,false,false,true]);
+  assert(String(vars.CONSENT_SCOPE).includes("up to three emails")); equal(setupMail(f).length,0);
+  equal((await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`))).status,303);
+  equal(r.confirm_hash,SETUP_CONSENT); equal(setupMail(f).map(m=>m.template.id),["setup-1"]);
+  assert(!f.mail().some(c=>(c.body as any).template?.id==="welcome"));
+  const claims=f.tables.email_setup_claims; equal(claims.length,1);equal(claims[0].state,"accepted");
+  assert(!JSON.stringify(claims).includes("marine@example.com"));
+});
+Deno.test("setup sends at 0, 20 and 44 hours with lifetime cap after deletion and receipt cleanup",async()=>{
+  const f=fixture();await confirmCoach(f);
+  await sendSetup(f.deps,false);equal(setupMail(f).length,1);
+  f.advance(20*3600000-1);await sendSetup(f.deps,false);equal(setupMail(f).length,1);
+  f.advance(1);await sendSetup(f.deps,false);equal(setupMail(f).length,2);
+  f.advance(24*3600000);await sendSetup(f.deps,false);equal(setupMail(f).map(m=>m.template.id),["setup-1","setup-2","setup-3"]);
+  f.tables.alert_signups.length=0;f.tables.email_delivery_receipts.length=0;
+  f.advance(400*86400000);await confirmCoach(f);await sendSetup(f.deps,false);
+  equal(setupMail(f).length,3);equal(f.tables.email_setup_claims.length,3);
+});
+Deno.test("late setup cron spaces catchup instead of sending three at once",async()=>{
+  const f=fixture();f.values.SETUP_EMAIL_ENABLED="true";await coachSignup(f);
+  // Confirm while globally paused, then enable much later.
+  f.values.SETUP_EMAIL_ENABLED="false";await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));
+  f.advance(50*3600000);f.values.SETUP_EMAIL_ENABLED="true";await sendSetup(f.deps,false);
+  equal(setupMail(f).map(m=>m.template.id),["setup-1"]);
+  f.advance(20*3600000);await sendSetup(f.deps,false);equal(setupMail(f).length,2);
+  f.advance(24*3600000);await sendSetup(f.deps,false);equal(setupMail(f).length,3);
+});
+Deno.test("setup dry run makes no claims, tokens or mail and concurrent crons send once",async()=>{
+  const f=fixture();f.values.SETUP_EMAIL_ENABLED="true";await coachSignup(f);
+  f.values.SETUP_EMAIL_ENABLED="false";await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));f.values.SETUP_EMAIL_ENABLED="true";
+  const snapshot=JSON.stringify(f.tables), mails=f.mail().length;
+  const dry=await sendSetup(f.deps);equal(dry[0].eligible,1);equal(JSON.stringify(f.tables),snapshot);equal(f.mail().length,mails);
+  await Promise.all([sendSetup(f.deps,false),sendSetup(f.deps,false)]);equal(setupMail(f).length,1);equal(f.tables.email_setup_claims.length,1);
+});
+Deno.test("setup stop page GET does not opt out; POST stops setup only and expired tokens fail",async()=>{
+  const f=fixture();await confirmCoach(f);const r=f.tables.alert_signups[0];r.monthly=true;
+  const stop=setupMail(f)[0].template.variables.STOP_SETUP_URL;
+  equal((await f.handler(new Request(stop))).status,200);equal(r.setup,true);
+  const raw=new URL(stop).searchParams.get("stop_setup")!;
+  assert((r.setup_token_hashes as string[]).includes(await hash(raw)));assert(!JSON.stringify(f.tables).includes(raw));
+  equal((await f.handler(new Request(stop,{method:"POST"}))).status,200);equal(r.setup,false);equal(r.monthly,true);
+  f.advance(48*3600000);await sendSetup(f.deps,false);equal(setupMail(f).length,1);
+  equal((await f.handler(new Request(`${ENDPOINT}?stop_setup=${token()}`,{method:"POST"}))).status,404);
+});
+Deno.test("setup errors remain visible, consume lifetime slot and block later stages",async()=>{
+  for(const mode of ["reject","throw","ambiguous"]){
+    const f=fixture();f.values.SETUP_EMAIL_ENABLED="true";await coachSignup(f);
+    if(mode==="reject")f.mailStatus(500);else if(mode==="throw")f.throwMail();else f.badMail();
+    await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));
+    equal(f.tables.alert_signups[0].status,"confirmed");equal(f.tables.email_setup_claims[0].state,"unknown");
+    const before=f.mail().length;f.advance(48*3600000);await sendSetup(f.deps,false);equal(f.mail().length,before);equal(f.tables.email_setup_claims.length,1);
+  }
+});
+Deno.test("setup scheduler requires private auth, POST, and enable flag",async()=>{
+  const f=fixture(),url=`${ENDPOINT}/setup`;
+  equal((await f.handler(new Request(url))).status,405);
+  equal((await f.handler(new Request(url,{method:"POST"}))).status,403);
+  f.values.SETUP_CRON_SECRET="a-private-test-key";
+  equal((await f.handler(new Request(url,{method:"POST",headers:{"x-setup-cron-secret":"wrong"}}))).status,403);
+  equal((await f.handler(new Request(url,{method:"POST",headers:{"x-setup-cron-secret":f.values.SETUP_CRON_SECRET}}))).status,503);
+  f.values.SETUP_EMAIL_ENABLED="true";
+  equal((await f.handler(new Request(url+"?dry=1",{method:"POST",headers:{"x-setup-cron-secret":f.values.SETUP_CRON_SECRET}}))).status,200);equal(f.mail().length,0);
+});
+Deno.test("legacy preference saves preserve setup, fifth choice can stop but cannot silently enroll",async()=>{
+  const f=fixture();await confirmCoach(f);const vars=setupMail(f)[0].template.variables;
+  const choices={corrections:false,monthly:false,weekly:false,lessons:false};
+  const update=(body:unknown)=>f.handler(new Request(ENDPOINT+"?prefs="+new URL(vars.PREFS_URL).searchParams.get("prefs"),{method:"POST",headers:{origin:SITE},body:JSON.stringify(body)}));
+  equal((await update(choices)).status,200);equal(f.tables.alert_signups[0].setup,true);
+  equal((await update({...choices,setup:false})).status,200);equal(f.tables.alert_signups[0].setup,false);
+  equal((await update({...choices,setup:true})).status,409);
+});
+Deno.test("confirmed signup cannot change choices or add setup through source spoofing",async()=>{
+  const f=fixture();await f.subscribe();await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));f.values.SETUP_EMAIL_ENABLED="true";
+  const saved=JSON.stringify(f.tables.alert_signups),before=f.mail().length;
+  equal((await coachSignup(f)).status,200);equal(JSON.stringify(f.tables.alert_signups),saved);equal(f.mail().length,before);equal(setupMail(f).length,0);
+});
+Deno.test("setup rereads consent before provider send and refuses arbitrary campaigns",async()=>{
+  const f=fixture();f.values.SETUP_EMAIL_ENABLED="true";await coachSignup(f);f.values.SETUP_EMAIL_ENABLED="false";await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));f.values.SETUP_EMAIL_ENABLED="true";
+  const net:typeof fetch=async(input,init)=>{if(String(input).includes("alert_signups?")&&init?.method==="PATCH"&&String(init.body).includes("setup_token_hashes"))f.tables.alert_signups[0].setup=false;return f.deps.fetch(input,init);};
+  await sendSetup({...f.deps,fetch:net},false);equal(setupMail(f).length,0);equal(f.tables.email_setup_claims[0].state,"skipped");
+  let refused=false;try{await sendTemplates("setup-1","setup-1:v2",{}, {setup:"eq.true"},f.deps,"setup");}catch{refused=true;}assert(refused);
+});
+
+Deno.test("setup sender refuses legacy or missing consent receipts even with setup flag set", async () => {
+  const f = fixture(); await confirmCoach(f);
+  const r = f.tables.alert_signups[0];
+  f.advance(48 * 3600000); r.confirm_hash = "consent:campaign-streams:v2";
+  const before = setupMail(f).length;
+  await sendSetup(f.deps, false);
+  equal(setupMail(f).length, before);
+  equal(f.tables.email_setup_claims.length, 1);
+});
+Deno.test("proven setup provider rejection stays failed and never retries or advances", async () => {
+  const f = fixture(); f.values.SETUP_EMAIL_ENABLED = "true"; await coachSignup(f);
+  f.mailStatus(400);
+  await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));
+  equal(f.tables.email_setup_claims[0].state, "failed");
+  const before = f.mail().length; f.advance(48 * 3600000);
+  await sendSetup(f.deps, false);
+  equal(f.mail().length, before); equal(f.tables.email_setup_claims.length, 1);
+});
+
+async function completeSetupAndRotate() {
+  const f = fixture(); await confirmCoach(f);
+  f.advance(20 * 3600000); await sendSetup(f.deps, false);
+  f.advance(24 * 3600000); await sendSetup(f.deps, false);
+  const row = f.tables.alert_signups[0]; row.corrections = true;
+  const stable = JSON.stringify(row.setup_token_hashes);
+  // Corrections are a permitted ongoing stream outside campaign week caps.
+  for (let n = 0; n < 6; n++) {
+    equal((await sendTemplates("correction-alert", `footer-regression-${n}`, {}, { corrections: "eq.true" }, f.deps, "corrections")).accepted, 1);
+  }
+  equal((row.unsubscribe_hashes as string[]).length, 8);
+  equal((row.setup_token_hashes as string[]).length, 9);
+  equal(JSON.stringify(row.setup_token_hashes), stable);
+  equal(setupMail(f).length, 3);
+  f.values.SETUP_EMAIL_ENABLED = "false";
+  return f;
+}
+Deno.test("every setup unsubscribe works after all stages and ongoing token rotation", async () => {
+  for (let n = 0; n < 3; n++) {
+    const f = await completeSetupAndRotate();
+    const url = setupMail(f)[n].template.variables.ALERT_UNSUBSCRIBE_URL;
+    equal((await f.handler(new Request(url, { method: "POST" }))).status, 200);
+    equal(f.tables.alert_signups.length, 0);
+    equal(f.tables.email_setup_claims.length, 3);
+    // Deleted authorization cannot affect a later signup at the same address.
+    f.advance(24 * 3600000); await confirmCoach(f);
+    equal((await f.handler(new Request(url, { method: "POST" }))).status, 200);
+    equal(f.tables.alert_signups.length, 1); equal(setupMail(f).length, 3);
+  }
+});
+Deno.test("every setup preference link reads and saves after all stages and rotation", async () => {
+  const f = await completeSetupAndRotate();
+  for (const message of setupMail(f)) {
+    const raw = new URL(message.template.variables.PREFS_URL).searchParams.get("prefs");
+    const url = `${ENDPOINT}?prefs=${raw}`;
+    equal((await f.handler(new Request(url))).status, 200);
+    equal((await f.handler(new Request(url, { method: "POST", headers: { origin: SITE }, body: JSON.stringify({ corrections: true, monthly: true, weekly: false, lessons: false }) }))).status, 200);
+    equal(f.tables.alert_signups[0].monthly, true); equal(f.tables.alert_signups[0].setup, true);
+  }
+});
+Deno.test("every setup stop control survives all stages, rotation and prior stop", async () => {
+  const f = await completeSetupAndRotate();
+  for (const message of setupMail(f)) {
+    const url = message.template.variables.STOP_SETUP_URL;
+    const before = f.tables.alert_signups[0].setup;
+    equal((await f.handler(new Request(url))).status, 200);
+    equal(f.tables.alert_signups[0].setup, before);
+    equal((await f.handler(new Request(url, { method: "POST" }))).status, 200);
+    equal(f.tables.alert_signups[0].setup, false); equal(f.tables.alert_signups[0].corrections, true);
+    equal((f.tables.alert_signups[0].setup_token_hashes as string[]).length, 9);
+  }
+});
+Deno.test("setup footer retention fails closed for missing schema or a fourth set", async () => {
+  const f = await completeSetupAndRotate(), db = database(f.deps.env, f.deps.fetch);
+  for (const missing of [false, true]) {
+    if (missing) delete f.tables.alert_signups[0].setup_token_hashes;
+    let refused = false;
+    try { await freshLinks(db, String(f.tables.alert_signups[0].id), { setup: "eq.true" }); } catch { refused = true; }
+    assert(refused);
+  }
+  equal(setupMail(f).length, 3);
 });

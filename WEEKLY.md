@@ -88,3 +88,7 @@
 
 
 For another weekly check, give this full message: "Run the Muster Out weekly check. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/WEEKLY.md and follow it." The board also shows it under Talk to Claude.
+
+## Project Monday coach handoff
+
+When this weekly check runs inside the Project as part of an approved Monday check-in, first verify COACH.md against the release manifest using SETUP.md's rules. The coach reads coach facts and recent check-ins, drafts up to 3 priorities and one question, then writes coach/status and one coach_checkins document for the local Monday only under the separate narrow recurring-write consent. Follow COACH.md's exact schema, version preconditions, readback, and latest-12 retention. Ordinary weekly runs have no coach-write permission. A missing or unverified playbook, unreadable board, or missing approval leaves the summary in the conversation and says it was not saved. COACH.md's recurring approval covers only coach documents. Without separate weekly-maintenance approval, use the feed and release validation read-only and do not write meta/watch, inbox, release notices, or other maintenance state. Report and usage sends stay outside the coach task's no-send scope. This does not broaden any report, usage, item-edit, send, or schedule approval above.

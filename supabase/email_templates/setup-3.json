@@ -1,0 +1,21 @@
+{
+  "subject": "What your coach can do now",
+  "preheader": "Add a record, ask for sourced research, and review saved facts.",
+  "altText": [
+    {
+      "file": "add-record.gif",
+      "url": "https://warfarecommand.com/musterout/coach/add-record.gif",
+      "alt": "Redact sensitive identifiers, turn off model training, then add a file in the Project."
+    },
+    {
+      "file": "coach-facts.gif",
+      "url": "https://warfarecommand.com/musterout/coach/coach-facts.gif",
+      "alt": "Open What your coach knows on the board. Review, edit, or delete an approved saved fact."
+    }
+  ],
+  "variables": [
+    "STOP_SETUP_URL",
+    "PREFS_URL",
+    "ALERT_UNSUBSCRIBE_URL"
+  ]
+}

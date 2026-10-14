@@ -209,6 +209,14 @@ def seed_fingerprints(root=here.parent):
 
 def embed(template, seed, fingerprints, root=here.parent):
     escape = lambda value: canonical(value).replace("</", "<\\/")
+    if "/*COACH_SETUP*/" in template:
+        project = (root / "PROJECT.md").read_text(encoding="utf-8")
+        block = re.search(r"## Instructions to paste\s+```text\n(.*?)\n```", project, re.S)
+        if not block:
+            raise SystemExit("PROJECT.md lacks the complete coach setup block")
+        template = template.replace("/*COACH_SETUP*/", escape(block[1]))
+    if "/*COACH_JS*/" in template:
+        template = template.replace("/*COACH_JS*/", (root / "board/coach.js").read_text(encoding="utf-8"))
     workflows = []
     for file in sorted((root / "workflows").glob("*.md")):
         text = file.read_text(encoding="utf-8")
