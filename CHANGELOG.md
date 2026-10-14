@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.2.3 (2026-10-13)
+
+- Setup and update instructions state the two accepted release feed lists on their own lines, so a setup chat no longer stops on the 0.2.2 manifest.
+- The board, pack and dates are unchanged from 0.2.2. The pack stays usmc-2026.10.
+
 ## 0.2.2 (2026-10-12)
 
 - Enlisted FMCR transfers on the last day of the month count leave through the transfer date, per MCO 1900.16 Appendix E. Retired List retirement still stops the day before.
