@@ -1,5 +1,15 @@
 # Release notes
 
+## 0.2.4 (2026-10-14)
+
+- The header is compact on phones, and the plan starts near the top of the screen. The EAS date sits on one line next to the title.
+- Timeline is its own tab and opens on the timeline, with a List view one tap away. Lanes show only what falls in the visible dates, with earlier and later counts.
+- Marking an item done asks you to confirm and gives you 8 seconds to undo. Plan has a Done filter, and done items can be reopened.
+- After setup, the board shows that it is building, then a short note on what to add next.
+- Plain labels: Join the Reserves (Direct Affiliation Program) and VA claim timeline.
+- Phones and tablets use the bottom tabs. Wide screens use tabs under the header instead of a side rail.
+- The pack stays usmc-2026.10.
+
 ## 0.2.3 (2026-10-13)
 
 - Setup and update instructions state the two accepted release feed lists on their own lines, so a setup chat no longer stops on the 0.2.2 manifest.

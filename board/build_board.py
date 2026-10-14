@@ -163,10 +163,11 @@ def seed_fingerprints(root=here.parent):
     add("current", current)
     result["revision"] = hashlib.sha256(canonical(result["versions"]["current"]).encode()).hexdigest()
     result["version"] = config["version"]
-    # Budget raised from 100 KB to 150 KB for 0.2.0 (label and brief changed every current hash).
-    # Compact the map (shared digest table) before it reaches this bound; each release adds about 15 KB.
-    if len(canonical(result).encode()) >= 150000:
-        raise SystemExit("seed fingerprint map exceeds 150 KB")
+    # Budget raised from 100 KB to 150 KB for 0.2.0 (label and brief changed every current hash),
+    # then to 200 KB for 0.2.4 (one more released seed version, no seed change). Compact the map
+    # (shared digest table) before it reaches this bound; each release adds about 15 KB. Tracked in MTN-55.
+    if len(canonical(result).encode()) >= 200000:
+        raise SystemExit("seed fingerprint map exceeds 200 KB")
     return result
 
 
