@@ -1,5 +1,6 @@
 // Website correction alerts. Deploy with verify_jwt false. No contact sync.
 // Reader: a Marine who requested alerts. Effect: confirm consent or delete the signup.
+import { BodyReadError, readBody } from "../_shared/body.ts";
 export const SITE = "https://musterout.warfarecommand.com";
 export const ORIGINS = [SITE, "https://warfarecommand.com", "https://www.warfarecommand.com"];
 const SOURCES = ["hub", "musterout", "register", "ai101"];
@@ -266,7 +267,7 @@ async function reserveRate(db: Database, namespace: string, slots: number, wait:
   return false;
 }
 
-export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () => number }) {
+export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () => number; bodyDeadlineMs?: number }) {
   return async (req: Request): Promise<Response> => {
     const origin = req.headers.get("origin") || "";
     const cors = { ...CORS, "Access-Control-Allow-Origin": ORIGINS.includes(origin) ? origin : SITE };
@@ -290,20 +291,21 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
         if (req.method !== "GET" && req.method !== "POST") return json(405, { ok: false, error: "method" });
         if (!tokenOk(prefs)) return json(404, { ok: false, error: "expired" });
         if (req.method === "POST" && origin !== SITE) return json(403, { ok: false, error: "origin" });
+        let changes;
+        if (req.method === "POST") {
+          const raw = await readBody(req.body, 1024, deps.bodyDeadlineMs);
+          try { changes = JSON.parse(raw); } catch { return json(400, { ok: false, error: "bad_json" }); }
+          if (!changes || typeof changes !== "object" || Array.isArray(changes)) return json(400, { ok: false, error: "bad_input" });
+          if (!(changes.unsubscribe === true && Object.keys(changes).length === 1) && (["corrections", "monthly", "weekly", "lessons"].some(k => typeof changes[k] !== "boolean") || Object.keys(changes).length !== 4)) return json(400, { ok: false, error: "bad_input" });
+        }
         const db = database(deps.env, deps.fetch), auth = { unsubscribe_hashes: `cs.{${await hash(prefs)}}` };
         let row = (await db.rows("alert_signups", "GET", { ...auth, select: ROW_FIELDS }))[0];
         if (!row) return json(404, { ok: false, error: "expired" });
         if (req.method === "POST") {
-          const raw = await req.text();
-          if (raw.length > 1024) return json(413, { ok: false, error: "too_large" });
-          let changes;
-          try { changes = JSON.parse(raw); } catch { return json(400, { ok: false, error: "bad_json" }); }
-          if (!changes || typeof changes !== "object" || Array.isArray(changes)) return json(400, { ok: false, error: "bad_input" });
           if (changes.unsubscribe === true && Object.keys(changes).length === 1) {
             await db.rows("alert_signups", "DELETE", auth);
             return success();
           }
-          if (["corrections", "monthly", "weekly", "lessons"].some(k => typeof changes[k] !== "boolean") || Object.keys(changes).length !== 4) return json(400, { ok: false, error: "bad_input" });
           if (row.status !== "confirmed") return json(409, { ok: false, error: "pending" });
           row = (await db.rows("alert_signups", "PATCH", { ...auth, status: "eq.confirmed" }, { corrections: changes.corrections, monthly: changes.monthly, weekly: changes.weekly, lessons: changes.lessons }))[0];
           if (!row) return json(404, { ok: false, error: "expired" });
@@ -330,8 +332,7 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
       }
       if (req.method !== "POST") return json(405, { ok: false, error: "method" });
       if (!ORIGINS.includes(origin)) return json(403, { ok: false, error: "origin" });
-      const text = await req.text();
-      if (text.length > 8192) return json(413, { ok: false, error: "too_large" });
+      const text = await readBody(req.body, 8192, deps.bodyDeadlineMs);
       let body: Record<string, unknown>;
       try {
         body = JSON.parse(text);
@@ -424,7 +425,10 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
         }
       }
       return json(503, { ok: false, error: "retry" });
-    } catch { return json(503, { ok: false, error: "unavailable" }); }
+    } catch (error) {
+      if (error instanceof BodyReadError) return json(error.status, { ok: false, error: error.code });
+      return json(503, { ok: false, error: "unavailable" });
+    }
   };
 }
 

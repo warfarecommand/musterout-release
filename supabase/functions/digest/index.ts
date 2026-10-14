@@ -2,7 +2,10 @@
 // Reader: a confirmed weekly subscriber. Effect: review the official notices.
 import { database, escapeHtml, sendTemplates } from "../alerts/index.ts";
 import type { SendDeps } from "../alerts/index.ts";
+import { BodyReadError, readBody } from "../_shared/body.ts";
+import { canonical, MAX_FEED_BYTES, verifyFeedTransport } from "../_shared/feed.ts";
 export const FEED = "https://watch.warfarecommand.com/feed/v2/latest.json";
+export const SIGNED_FEED = "https://watch.warfarecommand.com/feed/v2/feed.js";
 export const WATCH = "https://watch.warfarecommand.com/";
 type Notice = { series?: string; id?: string; lines?: string[]; paths?: string[]; number: string; title: string; summary?: string; url: string; posted: string; body_available: boolean };
 export type LegacyFeed = { schema_version: number; source: string; checked_from: string; checked_to: string; generated_at: string; checked_count: number; unclassified_count: number; truncated: boolean; capture_replay: boolean; notices: Notice[] };
@@ -110,7 +113,8 @@ export function weekKey(now: number): string {
   day.setUTCDate(day.getUTCDate() - weekday);
   return day.toISOString().slice(0, 10);
 }
-export function createHandler(deps: SendDeps) {
+export type DigestDeps = SendDeps & { feedKeys?: Readonly<Record<string, string>>; bodyDeadlineMs?: number };
+export function createHandler(deps: DigestDeps) {
   return async (req: Request): Promise<Response> => {
     const json = (status: number, body: unknown) => new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", "Cache-Control": "no-store" } });
     if (req.method !== "GET" && req.method !== "POST") return json(405, { ok: false, error: "method" });
@@ -126,12 +130,35 @@ export function createHandler(deps: SendDeps) {
       const monday = Date.parse(weekKey(now));
       const cycleStart = monday + 10 * 3600000;
       if (now < monday + 15 * 3600000 || now >= monday + 86400000) return json(200, { ok: true, ...(dry ? { dry: true } : {}), noop: "outside_window" });
-      const response = await deps.fetch(FEED, { headers: { Accept: "application/json" }, redirect: "error", signal: AbortSignal.timeout(15000) });
+      // pg_cron posts {}. Also retain the historical zero-byte trigger.
+      // No trigger fields are accepted or rendered.
+      if (req.method === "POST") {
+        try {
+          const text = await readBody(req.body, 1024, deps.bodyDeadlineMs);
+          if (text !== "") {
+            let trigger;
+            try { trigger = JSON.parse(text); } catch { return json(400, { ok: false, error: "unexpected_body" }); }
+            if (!trigger || Object.getPrototypeOf(trigger) !== Object.prototype || Object.keys(trigger).length !== 0) return json(400, { ok: false, error: "unexpected_body" });
+          }
+        } catch (error) {
+          if (error instanceof BodyReadError) return json(error.status, { ok: false, error: error.code });
+          throw error;
+        }
+      }
+      const response = await deps.fetch(SIGNED_FEED, { headers: { Accept: "application/javascript" }, redirect: "error", signal: AbortSignal.timeout(15000) });
       if (!response.ok) throw new Error("Feed unavailable");
-      const raw = await response.text();
-      if (new TextEncoder().encode(raw).length > 2_000_000) throw new Error("Feed too large");
-      const feed = weeklyFeed(validateFeed(JSON.parse(raw), now), now);
+      const verified = await verifyFeedTransport(await readBody(response.body, MAX_FEED_BYTES, deps.bodyDeadlineMs), { now, keys: deps.feedKeys });
+      const { seq, sha256 } = verified.envelope;
+      const projection = await deps.fetch(FEED, { headers: { Accept: "application/json" }, redirect: "error", signal: AbortSignal.timeout(15000) });
+      if (!projection.ok || canonical(JSON.parse(await readBody(projection.body, MAX_FEED_BYTES, deps.bodyDeadlineMs))) !== canonical(verified.data)) throw new Error("Feed projection mismatch");
+      const feed = weeklyFeed(validateFeed(verified.data, now), now);
       if (Date.parse(feed.generated_at) < cycleStart) return json(200, { ok: true, ...(dry ? { dry: true } : {}), noop: "stale_feed" });
+      // Authentication, schema, and projection checks finish before this first
+      // database operation. The service-only RPC serializes the durable pair
+      // across cold starts and concurrent function instances. Exact retries
+      // are allowed; rollback and same-sequence replacement fail closed.
+      const gate = await database(deps.env, deps.fetch).rpc<{ accepted: boolean; decision: string }>("digest_feed_accept", { p_seq: seq, p_sha256: sha256 });
+      if (!gate || gate.accepted !== true || !["advanced", "retry"].includes(gate.decision)) throw new Error("Feed sequence not admitted");
       const count = noticeCount(feed);
       const coverage = feed.schema_version === 2 ? (feed as V2Feed).sources.map(b => ({ source: b.source, status: b.status, coverage: b.coverage, body_available: b.body_available, truncated: b.truncated, unclassified_count: b.unclassified_count })) : undefined;
       if (feed.schema_version === 2 && !(feed as V2Feed).sources.some(usable)) return json(200, { ok: true, dry, noop: "incomplete_sources", coverage });
@@ -141,7 +168,10 @@ export function createHandler(deps: SendDeps) {
       }
       const result = await sendTemplates("weekly-roundup", `weekly-roundup:${weekKey(now)}`, roundupVariables(feed), { weekly: "eq.true" }, deps, "weekly", dry);
       return json(200, { ok: true, dry, ...(result.eligible ? {} : { noop: "no_eligible_recipients" }), notices: count, batches: Math.ceil(result.eligible / 100), ...result });
-    } catch { return json(503, { ok: false, error: "unavailable", review_receipts: true }); }
+    } catch (error) {
+      if (error instanceof BodyReadError && error.status !== 400) return json(error.status, { ok: false, error: error.code });
+      return json(503, { ok: false, error: "unavailable", review_receipts: true });
+    }
   };
 }
 // Hash both inputs to fixed-size buffers, then compare every byte without an

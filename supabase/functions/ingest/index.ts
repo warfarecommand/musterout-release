@@ -2,6 +2,7 @@
 // POST JSON {kind: "ping" | "intent" | "install" | "feedback" | "usage" | "delete", ...}; GET ?kind=ping&service=&path=&grade=&version=&id=
 // Validates shape and size, rate limits by hashed IP (20 a minute plus learning kind caps), inserts with the service role.
 // No reads are served here. Deploy with --no-verify-jwt; the anon key alone cannot touch the tables.
+import { BodyReadError, readBody } from "../_shared/body.ts";
 
 const SERVICES = ["usmc"];
 const PATHS = ["resign", "retire", "eas", "unsure"];
@@ -42,7 +43,7 @@ async function ipHash(req: Request, env: (name: string) => string | undefined): 
 }
 
 // The production client is loaded only by the Deno entrypoint; tests inject a database.
-export function createHandler(deps: { env: (name: string) => string | undefined; db: any; now?: () => number }) {
+export function createHandler(deps: { env: (name: string) => string | undefined; db: any; now?: () => number; bodyDeadlineMs?: number }) {
  return async (req: Request): Promise<Response> => {
   const origin = req.headers.get("origin");
   const cors = { ...CORS, ...(origin && ORIGINS.includes(origin) ? { "Access-Control-Allow-Origin": origin } : {}) };
@@ -51,6 +52,16 @@ export function createHandler(deps: { env: (name: string) => string | undefined;
   if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
   if (Number(req.headers.get("content-length")) > 20000) return json(413, { ok: false, error: "too_large" });
   try {
+  // Read, decode, and parse before even accessing the injected database.
+  let body: Record<string, unknown> = {};
+  if (req.method === "GET") {
+    const u = new URL(req.url); u.searchParams.forEach((v, k) => { body[k] = v; });
+  } else if (req.method === "POST") {
+    const text = await readBody(req.body, 20000, deps.bodyDeadlineMs);
+    try { body = JSON.parse(text); if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("shape"); }
+    catch { return json(400, { ok: false, error: "bad_json" }); }
+  } else return json(405, { ok: false, error: "method" });
+
   const db = deps.db;
   if (!deps.env("IP_HASH_SALT") && !deps.env("INGEST_SALT")) return json(503, { ok: false, error: "not_configured" });
   const ip = await ipHash(req, deps.env);
@@ -60,18 +71,6 @@ export function createHandler(deps: { env: (name: string) => string | undefined;
   const { data: n, error: rateError } = await db.rpc("ingest_rate_hit", { p_ip_hash: ip, p_minute: minute });
   if (rateError || !Number.isInteger(n) || n < 1) return json(503, { ok: false, error: "unavailable" });
   if (n > 20) return json(429, { ok: false, error: "rate_limited" });
-
-  let body: Record<string, unknown> = {};
-  if (req.method === "GET") {
-    const u = new URL(req.url); u.searchParams.forEach((v, k) => { body[k] = v; });
-  } else if (req.method === "POST") {
-    const reader = req.body?.getReader();
-    const chunks: Uint8Array[] = []; let bytes = 0;
-    if (reader) { try { while (true) { const part = await reader.read(); if (part.done) break; bytes += part.value.byteLength; if (bytes > 20000) { await reader.cancel(); return json(413, { ok: false, error: "too_large" }); } chunks.push(part.value); } } finally { reader.releaseLock(); } }
-    const combined = new Uint8Array(bytes); let offset = 0;
-    for (const chunk of chunks) { combined.set(chunk, offset); offset += chunk.byteLength; }
-    try { const text = new TextDecoder("utf-8", { fatal: true }).decode(combined); body = JSON.parse(text); if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("shape"); } catch { return json(400, { ok: false, error: "bad_json" }); }
-  } else return json(405, { ok: false, error: "method" });
 
   // Learning reports are POST-only and never accept URL-carried data.
   if (body.kind === "feedback" || body.kind === "usage" || body.kind === "delete") {
@@ -152,7 +151,10 @@ export function createHandler(deps: { env: (name: string) => string | undefined;
   }
 
   return json(400, { ok: false, error: "kind" });
-  } catch { return json(503, { ok: false, error: "unavailable" }); }
+  } catch (error) {
+    if (error instanceof BodyReadError) return json(error.status, { ok: false, error: error.code });
+    return json(503, { ok: false, error: "unavailable" });
+  }
  };
 }
 

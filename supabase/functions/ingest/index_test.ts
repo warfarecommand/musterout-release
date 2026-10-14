@@ -77,6 +77,39 @@ function fixture() {
 }
 const install = { kind: "install", product: "musterout", version: "0.1.4", path: "eas", grade: "e67", channel: "chat", install_id: "0123456789abcdef0123456789abcdef" };
 
+Deno.test("ingest rejects hostile and malformed bodies before accessing the database", async () => {
+  for (const mode of ["oversize", "multibyte", "slow", "invalid_utf8", "malformed_json"]) {
+    let dbAccesses = 0, pulls = 0, cancelled = 0;
+    const handler = createHandler({
+      get db() { dbAccesses++; throw new Error("Database must not be accessed"); },
+      env: () => "synthetic-salt", bodyDeadlineMs: 20,
+    });
+    const body = new ReadableStream<Uint8Array>({
+      pull(c) {
+        pulls++;
+        if (mode === "slow") return;
+        if (mode === "oversize") c.enqueue(new Uint8Array(pulls === 1 ? 20000 : 1));
+        if (mode === "multibyte") c.enqueue(new TextEncoder().encode("é".repeat(10001)));
+        if (mode === "invalid_utf8") { c.enqueue(new Uint8Array([0xff])); c.close(); }
+        if (mode === "malformed_json") { c.enqueue(new TextEncoder().encode("{")); c.close(); }
+      }, cancel() { cancelled++; }
+    }, { highWaterMark: 0 });
+    const response = await handler(new Request("https://endpoint.invalid/ingest", { method: "POST", headers: { "content-length": "1" }, body, duplex: "half" } as any));
+    equal(response.status, mode === "slow" ? 408 : ["invalid_utf8", "malformed_json"].includes(mode) ? 400 : 413);
+    equal(dbAccesses, 0);
+    if (["oversize", "multibyte", "slow"].includes(mode)) equal(cancelled, 1);
+    if (mode === "oversize") equal(pulls, 2);
+  }
+});
+Deno.test("ingest accepts JSON at its byte cap with split multibyte UTF-8", async () => {
+  const f = fixture();
+  const json = JSON.stringify({ kind: "intent", product: "musterout", version: "0.1.4", discarded: "é" });
+  const raw = new TextEncoder().encode(json + " ".repeat(20000 - new TextEncoder().encode(json).length));
+  const splitAt = raw.indexOf(0xc3) + 1;
+  const body = new ReadableStream<Uint8Array>({ start(c) { c.enqueue(raw.slice(0, splitAt)); c.enqueue(raw.slice(splitAt)); c.close(); } });
+  equal((await f.handler(new Request("https://endpoint.invalid/ingest", { method: "POST", body, duplex: "half" } as any))).status, 200);
+  equal(f.tables.setup_intents.length, 1); equal(f.tables.ingest_rate[0].n, 1);
+});
 Deno.test("intent accepts all supported origins and stores only anonymous allowed fields", async () => {
   for (const origin of ["https://warfarecommand.com", "https://www.warfarecommand.com", "https://musterout.warfarecommand.com"]) {
     const f = fixture();

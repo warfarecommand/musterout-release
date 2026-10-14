@@ -7,7 +7,7 @@ type Stored = Record<string, unknown>;
 
 // All HTTP is mocked, including PostgREST filters, conflict handling, and CAS.
 export function fixture() {
-  const tables: Record<string, Stored[]> = { alert_signups: [], ingest_rate: [], suggestions: [], email_delivery_receipts: [] };
+  const tables: Record<string, Stored[]> = { alert_signups: [], ingest_rate: [], suggestions: [], email_delivery_receipts: [], digest_feed_highwater: [] };
   const calls: { url: URL; method: string; body: unknown; headers: Headers }[] = [];
   const values: Record<string, string> = { SUPABASE_URL: "https://database.invalid", SUPABASE_SERVICE_ROLE_KEY: "test-service-key", RESEND_API_KEY: "test-send-key", IP_HASH_SALT: "test-salt" };
   let now = Date.parse("2026-10-09T21:00:00Z"), seq = 0, mailStatus = 200, templateStatus = 200, templateError: unknown = {}, failDb = false, throwMail = false, badMail = false;
@@ -38,6 +38,14 @@ export function fixture() {
     assert(url.origin === "https://database.invalid", "Unexpected network destination");
     assert(headers.get("authorization") === "Bearer test-service-key");
     if (failDb) return reply({ error: "private database detail" }, 500);
+    if (url.pathname === "/rest/v1/rpc/digest_feed_accept") {
+      const p = body as { p_seq: number; p_sha256: string };
+      const saved = tables.digest_feed_highwater[0];
+      if (saved && p.p_seq < Number(saved.seq)) return reply({ accepted: false, decision: "rollback" });
+      if (saved && p.p_seq === saved.seq) return reply({ accepted: p.p_sha256 === saved.sha256, decision: p.p_sha256 === saved.sha256 ? "retry" : "replacement" });
+      tables.digest_feed_highwater[0] = { seq: p.p_seq, sha256: p.p_sha256 };
+      return reply({ accepted: true, decision: "advanced" });
+    }
     if (url.pathname === "/rest/v1/rpc/email_delivery_gate") {
       const p = body as any, receipts = tables.email_delivery_receipts;
       const prior = receipts.find(r => r.campaign === p.p_campaign && r.recipient_hash === p.p_recipient_hash);
@@ -663,4 +671,36 @@ Deno.test("stream names read as a plain English list", () => {
   equal(streamNames({ corrections: true, monthly: true, weekly: false, lessons: false }), "Muster Out corrections and Warfare Command Monthly");
   equal(streamNames({ corrections: true, monthly: true, weekly: true, lessons: false }), "Muster Out corrections, Warfare Command Monthly, and Weekly MARADMIN roundup");
   equal(streamNames({ corrections: false, monthly: false, weekly: false, lessons: false }), "No email streams");
+});
+
+Deno.test("alerts rejects hostile normal and preference streams before database or provider calls", async () => {
+  for (const prefs of [false, true]) for (const mode of ["oversize", "multibyte", "slow", "invalid_utf8"]) {
+    const f = fixture(); let cancelled = 0, pulls = 0;
+    const cap = prefs ? 1024 : 8192;
+    const body = new ReadableStream<Uint8Array>({
+      pull(c) {
+        pulls++;
+        if (mode === "slow") return;
+        if (mode === "oversize") c.enqueue(new Uint8Array(pulls === 1 ? cap : 1));
+        if (mode === "multibyte") c.enqueue(new TextEncoder().encode("é".repeat(cap / 2 + 1)));
+        if (mode === "invalid_utf8") { c.enqueue(new Uint8Array([0xff])); c.close(); }
+      }, cancel() { cancelled++; }
+    }, { highWaterMark: 0 });
+    const handler = createHandler({ ...f.deps, bodyDeadlineMs: 20 });
+    const response = await handler(new Request(ENDPOINT + (prefs ? "?prefs=" + "a".repeat(64) : ""), { method: "POST", headers: { origin: SITE, "content-length": "1" }, body, duplex: "half" } as any));
+    equal(response.status, mode === "slow" ? 408 : mode === "invalid_utf8" ? 400 : 413);
+    equal(f.calls.length, 0); equal(f.mail().length, 0);
+    if (mode !== "invalid_utf8") equal(cancelled, 1);
+    if (mode === "oversize") equal(pulls, 2);
+  }
+});
+Deno.test("alerts accepts complete JSON at the byte cap including split UTF-8", async () => {
+  const f = fixture();
+  // A honeypot exits after parsing without any database or provider calls.
+  const json = JSON.stringify({ kind: "subscribe", website: "é" });
+  const text = json + " ".repeat(8192 - new TextEncoder().encode(json).length);
+  const raw = new TextEncoder().encode(text);
+  const body = new ReadableStream<Uint8Array>({ start(c) { for (const b of raw) c.enqueue(new Uint8Array([b])); c.close(); } });
+  equal((await f.handler(new Request(ENDPOINT, { method: "POST", headers: { origin: SITE }, body, duplex: "half" } as any))).status, 200);
+  equal(f.calls.length, 0); equal(f.mail().length, 0);
 });

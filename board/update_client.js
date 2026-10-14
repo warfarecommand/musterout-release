@@ -144,7 +144,8 @@
       var value = result.value, e = value.envelope;
       if (!best || (kind === 'release' ? compare(e.version, best.envelope.version) > 0 : e.seq > best.envelope.seq || e.seq === best.envelope.seq && stamp(e.created) > stamp(best.envelope.created))) best = value;
     }
-    if (!best) throw results[0].reason;
+    // A CDN that verified a release no newer than this board means the board is current.
+    if (!best) throw results.map(function (r) { return r.reason; }).find(function (r) { return r && r.code === 'not_newer'; }) || results[0].reason;
     return best;
   }
   function create(options) {
@@ -177,7 +178,8 @@
           return report(snoozed(candidate.envelope.version) ? 'snoozed' : 'available', info());
         } catch (error) {
           // A failed network check never hides an already verified correction.
-          return candidate ? report(snoozed(candidate.envelope.version) ? 'snoozed' : 'available', info()) : report('idle', {quietCode:error.code || 'check_failed'});
+          if (candidate) return report(snoozed(candidate.envelope.version) ? 'snoozed' : 'available', info());
+          return error && error.code === 'not_newer' ? report('idle', {upToDate:true}) : report('idle', {quietCode:error.code || 'check_failed'});
         } finally { checkTask = null; }
       })();
       return checkTask;

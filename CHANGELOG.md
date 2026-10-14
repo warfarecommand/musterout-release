@@ -1,5 +1,12 @@
 # Release notes
 
+## 0.2.5 (2026-10-14)
+- Check for updates says Up to date when your board already has the newest release, instead of Could not check.
+- Settings shows your path and grade group in words, such as Separating at EAS · E-6 to E-7.
+- VA math and Exposures on the VA Claim tab explain what to add when they are empty, instead of opening blank.
+- Setup and update instructions lead with the current feed list and explain why the weekly Watch feed files carry no release hash.
+- The pack stays usmc-2026.10.
+
 ## 0.2.4 (2026-10-14)
 
 - The header is compact on phones, and the plan starts near the top of the screen. The EAS date sits on one line next to the title.
