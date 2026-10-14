@@ -11,6 +11,8 @@ Compare VA records with your board in your [Project](../PROJECT.md).
 ## Paste this
 
 ```text
+Read my Muster Out board with your artifact tools before you begin. If you cannot read it, say so and ask for the board link.
+
 Compare my VA receipts and status records with my board. State the date checked. Show documented receipt, status evidence, requested evidence, recorded deadlines, conflicts, and the next documented request. Cite the file and page for anything you use. A checked box on my board does not prove VA receipt. Say unknown instead of guessing approval, rating, diagnosis dates, or missing deadlines. Label the result a draft. Do not submit or edit my claim.
 ```
 

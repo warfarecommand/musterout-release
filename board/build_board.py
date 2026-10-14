@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Inject seed.json into template.html and write board.html, the page Claude Code publishes.
 Run from board/: python3 build_seed.py && python3 build_board.py"""
-import hashlib, json, re, subprocess, sys
+import hashlib, json, os, re, subprocess, sys
 from pathlib import Path
 here = Path(__file__).resolve().parent
 
@@ -60,6 +60,17 @@ def seed_fingerprints(root=here.parent):
     config = json.loads((root / "config.json").read_text())
     result = {"versions": {}, "shapes": {}, "sources": {}, "variants": {}, "reissues": {}}
 
+    def legacy_browser_decode(value):
+        # Historical L2 captures omitted charset; reproduce only the exact UTF-8/Windows-1252 transform.
+        if isinstance(value, str):
+            decoded = value.encode("utf-8").decode("cp1252", errors="surrogateescape")
+            return "".join(chr(ord(c)-0xDC00) if 0xDC80 <= ord(c) <= 0xDCFF else c for c in decoded)
+        if isinstance(value, list):
+            return [legacy_browser_decode(v) for v in value]
+        if isinstance(value, dict):
+            return {k: legacy_browser_decode(v) for k, v in value.items()}
+        return value
+
     def add(label, snapshot):
         hashes = {}
         for item in snapshot["items"]:
@@ -70,6 +81,13 @@ def seed_fingerprints(root=here.parent):
             digest = hashlib.sha256(canonical(fields).encode()).hexdigest()
             hashes[item["id"]] = digest
             result["shapes"][digest] = {"when": item.get("when", []), "setup": item.get("due", {}).get("date") == "SETUP" if item.get("due") else False}
+            damaged = legacy_browser_decode(fields)
+            if damaged != fields and any(any(ord(c) > 127 for c in citation.get("quote", "")) for citation in item.get("cite", [])):
+                damaged_hash = hashlib.sha256(canonical(damaged).encode()).hexdigest()
+                variants = result["variants"].setdefault(item["id"], [])
+                if damaged_hash not in variants:
+                    variants.append(damaged_hash)
+                result["shapes"][damaged_hash] = result["shapes"][digest]
         result["versions"][label] = hashes
 
     def git(repo, *args):
@@ -161,7 +179,25 @@ def seed_fingerprints(root=here.parent):
     for hashes in result["variants"].values():
         hashes.sort()
     add("current", current)
-    result["revision"] = hashlib.sha256(canonical(result["versions"]["current"]).encode()).hexdigest()
+    # add() may append current variants after the history sort; keep every list ordered.
+    for hashes in result["variants"].values():
+        hashes.sort()
+    # Claim data belongs to the owner. Admit only the exact traced encoding
+    # damage of a canonical seeded quotation, scoped by row and source identity.
+    result["claimQuoteRepairs"] = []
+    for row in current.get("claim", {}).get("benefits", {}).get("rows", []):
+        if not row.get("id"):
+            continue
+        for cite in row.get("cite", []):
+            quote = cite.get("quote", "")
+            damaged = legacy_browser_decode(quote)
+            if damaged != quote:
+                result["claimQuoteRepairs"].append(dict(
+                    row=row["id"], ref=cite.get("ref"), para=cite.get("para"),
+                    url=cite.get("url"), before=damaged, after=quote))
+    # Content updates also run on boards already at this product version.
+    revision_content = dict(items=result["versions"]["current"], claimQuoteRepairs=result["claimQuoteRepairs"])
+    result["revision"] = hashlib.sha256(canonical(revision_content).encode()).hexdigest()
     result["version"] = config["version"]
     # Budget raised from 100 KB to 150 KB for 0.2.0 (label and brief changed every current hash),
     # then to 200 KB for 0.2.4 (one more released seed version, no seed change). Compact the map
@@ -173,11 +209,25 @@ def seed_fingerprints(root=here.parent):
 
 def embed(template, seed, fingerprints, root=here.parent):
     escape = lambda value: canonical(value).replace("</", "<\\/")
+    workflows = []
+    for file in sorted((root / "workflows").glob("*.md")):
+        text = file.read_text(encoding="utf-8")
+        title = re.search(r"^# (.+)$", text, re.M)
+        if not title or "## Paste this" not in text:
+            raise SystemExit(f"workflow lacks title or prompt: {file}")
+        workflows.append({"file": file.name, "title": title[1], "text": text})
+    if "/*WORKFLOWS*/" in template:
+        if len(workflows) != 10:
+            raise SystemExit("expected ten starter workflow prompts")
+        template = template.replace("/*WORKFLOWS*/", escape(workflows))
     return embed_trust(embed_updates(template.replace("/*SEED*/", escape(seed)).replace("/*SEED_FINGERPRINTS*/", escape(fingerprints)), root), root)
 
 def build_page():
     seed = json.loads((here / "seed.json").read_text())
     def _leak_words():
+        if os.environ.get("MUSTEROUT_PUBLIC_BUILD") == "1":
+            print("private word-list check not run: public build forbids private-file access")
+            return []
         p = Path.home() / ".musterout" / "leak_words.txt"
         if not p.exists():
             print("leak guard skipped: no private word list at ~/.musterout/leak_words.txt")

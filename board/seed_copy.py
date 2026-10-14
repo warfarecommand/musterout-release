@@ -103,7 +103,7 @@ COPY = {
     },
     "sep-approval": {
         "label": "Confirm resignation approval and EAS",
-        "brief": "Resignation approval and an EAS in MCTFS allow the Reserve appointment request to proceed. Confirm HQMC receipt separately because the resignation target does not guarantee Reserve approval before EAS.",
+        "brief": "Ask IPAC to confirm resignation approval and your recorded EAS. If you choose a Reserve commission, confirm its receipt and approval separately.",
     },
     "sep-orders": {
         "label": "Get your separation orders",
@@ -234,7 +234,7 @@ COPY = {
         "brief": "Your approved program dates and completed prerequisites must be checked before participation. Confirm the governing absence rules with your command; you cannot extend obligated service to finish the program.",
     },
     "sb-start": {
-        "label": "Record your approved SkillBridge start",
+        "label": "Plan your SkillBridge start",
         "brief": "A proposed start helps plan preparation while approval is pending. Replace it with the written approved dates and recheck prerequisites so targets are not treated as permission to depart.",
     },
     "sb-cert": {

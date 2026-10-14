@@ -58,7 +58,7 @@
     'CONSENT_SCHEMA_CHANGED':'Counts paused. Review the new schema to allow sending.',
     'CONSENT_OFF_FAILED':'Counts paused on this device. Off could not be saved for other devices.',
     'REPORT_DELETE_FAILED':'Deletion is not confirmed. Keep this receipt and try again.',
-    'CLIPBOARD_UNAVAILABLE':'Copy did not finish. Select the text below and copy it.'
+    'CLIPBOARD_UNAVAILABLE':'Copy did not finish. On your phone, press and hold the text below to copy it.'
   });
   const ABSENT = ['revoked','not_granted','not_declared','sampling_disabled','capability_disabled','capability_removed'];
   function message(code, component) {
@@ -205,7 +205,7 @@
       });
       s.heading.focus({preventScroll:true}); return s;
     }
-    function openText(title,text) { let s; s = sheet(title,() => closeSheet(s)); paragraph(s.body,text); s.actions.append(button('Close',() => closeSheet(s))); }
+    function openText(title,text) { let s; s = sheet(title,() => closeSheet(s)); paragraph(s.body,text);  }
     async function clipboard(bytes,status,preview) {
       try { if (!navigator.clipboard?.writeText) throw {code:'CLIPBOARD_UNAVAILABLE'}; await navigator.clipboard.writeText(bytes); status.textContent = 'Copied.'; return true; }
       catch (e) { recordError('clipboard','copy',e.code || e.name || 'CLIPBOARD_UNAVAILABLE'); status.textContent = MESSAGES.CLIPBOARD_UNAVAILABLE; preview?.focus(); if (preview) { const r = document.createRange(); r.selectNodeContents(preview); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); } return false; }
@@ -213,7 +213,7 @@
     function openCopy(title,bytes,success) {
       let s; s = sheet(title,() => closeSheet(s)); paragraph(s.body,title === 'Copy diagnostic' ? 'Exact diagnostic':'Exact payload'); const preview = jsonBox(s.body,bytes); const status = s.notice; status.textContent = '';
       if (title === 'Copy diagnostic' && !ring.length) paragraph(s.body,'No errors recorded in this view.');
-      s.actions.append(button('Copy',async () => { if (await clipboard(bytes,status,preview)) { status.textContent = success || 'Copied.'; if (title === 'Copy diagnostic') emit('diagnostic-copied'); } }),button('Close',() => closeSheet(s)));
+      s.actions.append(button('Copy',async () => { if (await clipboard(bytes,status,preview)) { status.textContent = success || 'Copied.'; if (title === 'Copy diagnostic') emit('diagnostic-copied'); } }));
     }
     function openDiagnostic() { openCopy('Copy diagnostic',JSON.stringify(diagnostic(),null,2),'Diagnostic copied.'); }
     function copyMessage(kind) { const value = o[kind + 'Message']; if (typeof value === 'string' && value) openCopy('Copy ' + kind + ' message',value); else openText('Copy ' + kind + ' message','Open ' + kind.toUpperCase() + ' in Claude for the current message.'); }
@@ -275,14 +275,14 @@
       (quiet ? [] : blocks).forEach(b => { paragraph(row,sourceLabel(b.source),'mot-strong'); paragraph(row,watchSummary(b),'mot-meta'); });
       if (watchCode && watchCode !== 'WATCH_NOT_CHECKED' && checked) paragraph(row,message(watchCode,'feed'),'mot-meta');
       if (!quiet && stale()) paragraph(row,MESSAGES.FEED_STALE,'mot-meta'); if (!quiet && gap()) paragraph(row,MESSAGES.FEED_GAP,'mot-meta');
-      row.append(button('Watch coverage',openCoverage)); el.append(row);
+      row.append(button('Policy update checks',openCoverage)); el.append(row);
     }
     function mountToday(el) { if (el) { slots.today.push(el); renderToday(el); } }
     function setWatch(value) {
       if (value?.code && ['FEED_UNTRUSTED','WATCH_FAILED','WATCH_NOT_CHECKED'].includes(value.code)) { watchCode = value.code; recordError('feed','verify',value.code); }
       else { watchCode = null; feed = value; } redraw(slots.today,renderToday); emit('watch'); }
     function openCoverage() {
-      let s; s = sheet('Watch coverage',() => closeSheet(s));
+      let s; s = sheet('Policy update checks',() => closeSheet(s)); paragraph(s.body,'These checks compare published Marine Corps policy messages with your plan. Sources without a successful check still need review with the confirming office.');
       const blocks = sourceBlocks().filter(b => ['MARADMIN','ALMAR'].includes(b.source));
       if (!blocks.length) paragraph(s.body,'Watch: not checked yet.');
       blocks.forEach(b => {
@@ -301,7 +301,7 @@
       if (!blocks.some(b => b.source === 'ALMAR')) paragraph(s.body,'ALMAR: Not watched.');
       if (stale()) paragraph(s.body,MESSAGES.FEED_STALE); if (gap()) paragraph(s.body,MESSAGES.FEED_GAP);
       for (const name of ['ALNAV','Cited orders']) paragraph(s.body,name + ': Not yet covered.');
-      s.actions.append(button('Copy weekly check message',() => copyMessage('weekly')),button('Close',() => closeSheet(s)));
+      s.actions.append(button('Copy weekly check message',() => copyMessage('weekly')));
     }
     async function snooze(dismissed = false) {
       const version = update.version, until = o.now() + 86400000;

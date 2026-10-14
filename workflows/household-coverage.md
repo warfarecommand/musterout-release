@@ -12,6 +12,8 @@ Compare coverage for your family in your [Project](../PROJECT.md).
 ## Paste this
 
 ```text
+Read my Muster Out board with your artifact tools before you begin. If you cannot read it, say so and ask for the board link.
+
 Compare coverage options for each family member. Show eligibility evidence, confirmed start and end dates, costs, possible gaps, and questions that determine coverage. Cite the file and page for anything you use. Say unknown instead of guessing. Check changing rules against current official sources, with links and the date checked. Label assumptions and the result a draft. Do not enroll anyone or invent coverage dates.
 ```
 

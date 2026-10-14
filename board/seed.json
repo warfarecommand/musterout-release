@@ -1151,12 +1151,10 @@
    "order": 25,
    "kind": "task",
    "title": "Resignation approved and EAS populated in MCTFS",
-   "why": "Resignation approval and a populated EAS permit RA to submit the Reserve appointment request. The minimum 4-month processing interval starts at HQMC receipt of that request. A 7-month resignation target does not promise Reserve approval by EAS.",
+   "why": "Confirm resignation approval and the EAS shown in Marine Corps Total Force System (MCTFS) with IPAC. If you choose a Reserve commission, its receipt and approval are separate steps.",
    "how": [
-    "IPAC sees approval through the EDFR.",
-    "Check your MOL Basic Individual Record for the EAS.",
-    "Ask RAM-1 to confirm and record HQMC receipt of the Reserve appointment request.",
-    "HQMC receipt remains pending RAM-1 confirmation after resignation approval. Give Claude the actual receipt date to record on the separate receipt item; the Reserve decision remains separate."
+    "Ask IPAC to confirm resignation approval in the electronic diary feedback report (EDFR) and the EAS in your Marine Online (MOL) record.",
+    "[Reserve only] Ask RAM-1 to confirm HQMC receipt of your Reserve appointment request. Record receipt separately from the Reserve appointment decision."
    ],
    "owner": "MMSR-2",
    "due": null,
@@ -1174,16 +1172,22 @@
      "ref": "MARADMIN 045/25",
      "para": "2",
      "quote": "Reserve appointments for officers transitioning from the AC to the RC require a minimum of four months from the date received at Headquarters Marine Corps (HQMC) for approval. In cases where the officer was subject to adversity this timeline is increased.",
-     "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4047837/"
+     "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4047837/",
+     "when": [
+      "reserve"
+     ]
     },
     {
      "ref": "MARADMIN 045/25",
      "para": "3.b.1",
      "quote": "Once the resignation has been approved and an EAS is populated in the resigning officer's record, CMC(RA) will submit for a Reserve commission via the Secretary of Defense.",
-     "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4047837/"
+     "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4047837/",
+     "when": [
+      "reserve"
+     ]
     }
    ],
-   "verify": "IPAC, MMSR-2 and RAM-1: confirm resignation approval, populated EAS and actual HQMC receipt of the Reserve appointment request.",
+   "verify": "IPAC and MMSR-2: confirm resignation approval and the populated EAS. If you choose a Reserve commission, ask RAM-1 to confirm its separate receipt and processing.",
    "status": "waiting",
    "doneOn": null,
    "notes": "",
@@ -1192,7 +1196,7 @@
    ],
    "basis": "target",
    "label": "Confirm resignation approval and EAS",
-   "brief": "Resignation approval and an EAS in MCTFS allow the Reserve appointment request to proceed. Confirm HQMC receipt separately because the resignation target does not guarantee Reserve approval before EAS."
+   "brief": "Ask IPAC to confirm resignation approval and your recorded EAS. If you choose a Reserve commission, confirm its receipt and approval separately."
   },
   {
    "id": "sep-orders",
@@ -1687,6 +1691,7 @@
    "title": "Submit the retirement request by unit diary",
    "why": "The MARADMIN window is 6 to 18 months before the date you request; the order's own window is 4 to 14 months. The board sets a planning target of 9 months out, inside both. The target does not decide when approval comes; HQMC does. Do not make big personal commitments on the strength of a submitted request.",
    "how": [
+    "Ask IPAC and MMSR-2 which submission window and unit-diary process apply to your selected path. Confirm the governing authority before relying on the board's planning target.",
     "Sign Appendix J for the service record.",
     "IPAC submits by unit diary with your requested date.",
     "A request outside the window, or one needing a waiver, goes to MMSR-2 by separate correspondence with the chain's endorsements.",
@@ -1752,6 +1757,7 @@
    "title": "Unit diary: submit the enlisted retirement or FMCR request",
    "why": "The current MMSR-2 guidance applies the 6-to-18-month window to retirement and FMCR requests. Manual 7005.1 still prints 4 to 14 months. The board targets 9 months, inside both. Submission does not approve your date; do not make major personal commitments based on submission alone.",
    "how": [
+    "Ask IPAC and MMSR-2 which submission window and unit-diary process apply to your selected path. Confirm the governing authority before relying on the board's planning target.",
     "After eligibility review and CO counseling, give the reporting unit your signed Appendix J and requested action date. The reporting unit submits by MCTFS unit diary to MMSR-2; IPAC confirms local processing.",
     "Supply desired leave and PTAD dates, duration and planned detachment date with the request. Ask IPAC and MMSR-2 to check 120 days plus desired leave/PTAD and any earlier deployment deadline. Move the target earlier if needed, within the current window.",
     "A request outside the current window goes by separate correspondence with justification and endorsements to MMSR-2. Confirm the AA Form and endorsements on the waiver item."
@@ -2998,7 +3004,7 @@
     "sb"
    ],
    "basis": "target",
-   "label": "Record your approved SkillBridge start",
+   "label": "Plan your SkillBridge start",
    "brief": "A proposed start helps plan preparation while approval is pending. Replace it with the written approved dates and recheck prerequisites so targets are not treated as permission to depart."
   },
   {
@@ -4667,9 +4673,10 @@
    "order": 3,
    "kind": "task",
    "title": "Confirm coverage after active duty and CHCBP eligibility",
-   "why": "The copied pack establishes one qualifying Selected Reserve TAMP route. It does not establish all TAMP categories or CHCBP eligibility, sponsor/dependent durations or enrollment deadlines. Ask IPAC, DEERS and TRICARE to check every qualifying status before choosing coverage.",
+   "why": "Your family needs a coverage plan for the day active-duty coverage ends. Eligibility and enrollment dates depend on each person's status.",
    "how": [
-    "CHCBP eligibility, sponsor/dependent durations and enrollment deadlines remain pending IPAC, DEERS, TRICARE and contractor confirmation."
+    "Ask IPAC and the DEERS/TRICARE benefits office when each family member's coverage ends and which replacement plans they can use.",
+    "Ask whether Transitional Assistance Management Program (TAMP) or Continued Health Care Benefit Program (CHCBP) coverage applies, how long it lasts, what it costs and when each person must enroll."
    ],
    "owner": "You and spouse",
    "due": {
@@ -4905,6 +4912,7 @@
    "title": "Confirm SGLI continuation or VGLI conversion",
    "why": "For eligible SGLI-insured Marines, the VA guide gives 240 days after separation without proof of good health, while the manual gives 120 days. VA Insurance must settle the applicable deadline, Ready Reserve SGLI continuation, conversion eligibility and combined coverage maximum before you select amounts. Day 120 is a planning target.",
    "how": [
+    "Ask the VA insurance office which conversion or enrollment window applies to you. Confirm the deadline before selecting coverage.",
     "Individual eligibility, Ready Reserve continuation, combined coverage maximum and the 120/240-day policy difference remain pending VA Insurance/OSGLI confirmation."
    ],
    "owner": "You",

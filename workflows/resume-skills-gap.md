@@ -11,6 +11,8 @@ Match your experience to a job in your [Project](../PROJECT.md).
 ## Paste this
 
 ```text
+Read my Muster Out board with your artifact tools before you begin. If you cannot read it, say so and ask for the board link.
+
 Compare my documented experience with this job posting. Draft resume bullets and a table showing job requirements, evidence, missing experience, and questions for me. Cite the file and page for anything you use. Say unknown instead of guessing credentials, achievements, dates, or performance numbers. Label the result a draft. Help me identify claims I need to check against my records. Do not submit an application or change anything.
 ```
 

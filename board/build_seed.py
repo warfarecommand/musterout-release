@@ -12,7 +12,7 @@ day the board was installed. The optional biz="prev" moves weekends to Friday.
 Run: python3 build_seed.py  (writes seed.json, verifies every quote against the local regulation
 texts when they are present, and checks every path combination). --no-verify skips the quote check.
 """
-import itertools, json, re, sys
+import itertools, json, os, re, sys
 from pathlib import Path
 from seed_copy import COPY
 
@@ -1335,6 +1335,20 @@ def merge_copy(records, copy):
     for record in records:
         record.update({field: copy[record["id"]][field] for field in ("label", "brief")})
 
+# FX026: plain next actions; authoritative excerpts remain byte-for-byte unchanged.
+by_id = {record["id"]: record for record in items}
+by_id["sep-approval"].update(why="Confirm resignation approval and the EAS shown in Marine Corps Total Force System (MCTFS) with IPAC. If you choose a Reserve commission, its receipt and approval are separate steps.", how=["Ask IPAC to confirm resignation approval in the electronic diary feedback report (EDFR) and the EAS in your Marine Online (MOL) record.", "[Reserve only] Ask RAM-1 to confirm HQMC receipt of your Reserve appointment request. Record receipt separately from the Reserve appointment decision."], verify="IPAC and MMSR-2: confirm resignation approval and the populated EAS. If you choose a Reserve commission, ask RAM-1 to confirm its separate receipt and processing.")
+by_id["fam-chcbp"].update(why="Your family needs a coverage plan for the day active-duty coverage ends. Eligibility and enrollment dates depend on each person's status.", how=["Ask IPAC and the DEERS/TRICARE benefits office when each family member's coverage ends and which replacement plans they can use.", "Ask whether Transitional Assistance Management Program (TAMP) or Continued Health Care Benefit Program (CHCBP) coverage applies, how long it lasts, what it costs and when each person must enroll."])
+# No governing insurance/submission rule is selected by this copy pass.
+for record in items:
+    if record["id"].startswith(("ret-request", "sep-submit")):
+        record["how"].insert(0,"Ask IPAC and MMSR-2 which submission window and unit-diary process apply to your selected path. Confirm the governing authority before relying on the board's planning target.")
+    if record["id"] in ("fam-vgli", "fam-sgli", "va-vgli"):
+        record["how"].insert(0,"Ask the VA insurance office which conversion or enrollment window applies to you. Confirm the deadline before selecting coverage.")
+# A Reserve branch is explicit, and only its task-specific source needs conditional presentation.
+for citation in by_id["sep-approval"]["cite"]:
+    if citation["ref"] == "MARADMIN 045/25": citation["when"] = ["reserve"]
+
 merge_copy(items, COPY)
 seed = {"pack": PACK, "settings": settings, "ledger": ledger, "loes": loes, "items": items, "contacts": contacts, "blocks": blocks, "conditions": conditions, "claim": claim}
 
@@ -1393,6 +1407,9 @@ for flags in combos():
             if r and "sb" in r and "sb" not in flags: errs.append(f"{key}: {i['id']} uses a SkillBridge rule without SkillBridge")
 
 def _leak_words():
+    if os.environ.get("MUSTEROUT_PUBLIC_BUILD") == "1":
+        print("private word-list check not run: public build forbids private-file access")
+        return []
     p = Path.home() / ".musterout" / "leak_words.txt"
     if not p.exists():
         print("leak guard skipped: no private word list at ~/.musterout/leak_words.txt")

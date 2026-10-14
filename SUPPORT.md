@@ -155,4 +155,4 @@ Reports and counts have separate consent. Counts start off and require a filled 
 
 ## Project help
 
-Use [PROJECT.md](PROJECT.md) after your first useful board. It includes the full instructions, uploads and optional connector guidance. A Project uses your own Claude account and records; its drafts still need verification. If Claude cannot read the board, upload a reviewed snapshot with its capture time. Finish setup on a computer if the phone path is unavailable. The [starter workflows](PROJECT.md#starter-workflows) name the evidence and confirming office for each draft.
+Use [PROJECT.md](PROJECT.md) after your first useful board. It includes the full instructions, uploads and optional connector guidance. A Project uses your own Claude account and records; its drafts still need verification. If Claude cannot read the board, upload a reviewed snapshot with its capture time. Finish setup on a computer if the phone path is unavailable. The starter workflows are on your board under More, then Project, each with a Copy button. Each one names the evidence and the confirming office for its draft.

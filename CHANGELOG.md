@@ -1,5 +1,17 @@
 # Release notes
 
+## 0.2.6 (2026-10-14)
+- Phone layout: reference tables on the VA Claim, Benefits and Leave screens show as labeled cards on phones, with no split words or empty columns. Month labels stay with leave balances.
+- Dates name the target, the opening and the close, and say whether a window is projected or confirmed. The BDD window stays projected until your service end and its endpoints are confirmed.
+- Shared boards are view only: profile and rebuild actions are hidden for viewers.
+- Deleting a condition asks to confirm and offers Undo. Each condition shows its next evidence step.
+- Instructions and references follow your path and grade. VSO options each end with a next step.
+- Leave warns about overlaps as soon as you save, and one continuous block can run longer than 30 days.
+- Timeline opens in List on phones. The bottom tabs are solid and long titles get their own row.
+- The Veterans Crisis Line (dial 988, then press 1, or text 838255) is on Today and in More.
+- The ten ready-made prompts are on the Project screen with Copy buttons.
+- The pack stays usmc-2026.10.
+
 ## 0.2.5 (2026-10-14)
 - Check for updates says Up to date when your board already has the newest release, instead of Could not check.
 - Settings shows your path and grade group in words, such as Separating at EAS · E-6 to E-7.

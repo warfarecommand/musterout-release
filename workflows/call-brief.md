@@ -5,13 +5,15 @@ Prepare for a call with your TAP counselor or accredited VSO in your [Project](.
 
 ## Add these files
 
-- Checked board items, your completion evidence or VA notices, and the issue for your call.
+- Your board, read directly with artifact tools, your completion evidence or VA notices, and the issue for your call.
 - Black out your Social Security number and identifiers the advisor does not need.
 
 ## Paste this
 
 ```text
-Help me prepare a call brief for my TAP counselor or accredited VSO. State my purpose, known facts, missing facts, and questions in priority order. Cite the file and page for anything you use, plus board item numbers. Say unknown instead of guessing diagnosis dates, deadlines, or contact details. Label the result a draft. Give me a short opening statement and evidence list. Do not make a call or change anything.
+Read my Muster Out board with your artifact tools before you begin. If you cannot read it, say so and ask for the board link.
+
+Help me prepare a call brief for my TAP counselor or accredited VSO. State my purpose, known facts, missing facts, and questions in priority order. Cite the file and page for anything you use, plus board item titles. Say unknown instead of guessing diagnosis dates, deadlines, or contact details. Label the result a draft. Give me a short opening statement and evidence list. Do not make a call or change anything.
 ```
 
 ## You get
