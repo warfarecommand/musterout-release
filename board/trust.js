@@ -21,7 +21,7 @@
     'read-only':'This view is read-only. You can view saved work.',
     'db.absent':'Saving is unavailable in this view.',
     'db.refresh':'Saved data could not refresh.',
-    'PLAN_PRO_REQUIRED':'Claude Pro is required to save this board. Free cannot store your plan.',
+    'PLAN_PRO_REQUIRED':'This account cannot save this board. Check that you are signed in to the account that owns it.',
     'artifact.not_writer':'This view cannot publish updates.',
     'artifact.not_granted':'This view cannot publish updates.',
     'artifact.consent_required':'This view cannot publish updates.',

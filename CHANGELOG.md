@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.2.8 (2026-10-15)
+- Works on Claude Free. An owner test on a Free account installed the board in a Project, saved checked items, and kept them after closing and reopening the app twice. Claude Pro at $20 a month gives more room for long coach chats.
+- Setup, help and the board no longer say Pro is required.
+- The pack stays usmc-2026.10.
+
 ## 0.2.7 (2026-10-14)
 - Your coach: set up a Muster Out Project in the Claude app, paste the coach block and type Start. The coach reads your board at every chat and offers a Monday check-in.
 - Today shows a coach card with your last check-in and its next step. The setup steps replace pasting a Project link.

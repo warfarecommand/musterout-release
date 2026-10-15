@@ -2309,7 +2309,7 @@ function subscribe(){
   DB.collection("inbox").onSnapshot(function(snap){if(C1_DEMO)return;mark("inbox",snap); S.inbox = toList(snap); render(); }, errd);
 }
 /* ---------- Muster Out: profile, setup, seeding ---------- */
-var VERSION = "0.2.7";
+var VERSION = "0.2.8";
 var GRADES = [["o5","O-5 and above","officer","cat3"],["o14","O-1 to O-4","officer","cat2"],["cwo45","CWO4 to CWO5","officer","cat3"],["wo13","WO to CWO3","officer","cat2"],["e89","E-8 to E-9","enlisted","cat3"],["e67","E-6 to E-7","enlisted","cat2"],["e15","E-1 to E-5","enlisted","cat1"]];
 var CAP = { cat1: 120, cat2: 90, cat3: 90 };
 function gradeRow(g){ return GRADES.find(function(x){ return x[0] === g; }) || GRADES[0]; }
@@ -2790,7 +2790,7 @@ function setupForm(mode){if(mode==='edit')return legacySetupForm(mode);if(DB&&S.
  if(step===2)h+='<h2 id="c1IntakeTitle">Your date and grade</h2><label class="field"><span>What date are you planning?</span><input id="c1IntakeDate" type="date" value="'+esc(d.date||'')+'"'+(d.noDate?' disabled':'')+'></label><button class="btn" data-act="intake-no-date" aria-pressed="'+!!d.noDate+'">I do not have a date yet</button>'+(d.noDate?'<p class="muted">Date not set</p>':'<p>Date status</p>'+c1Choices('dateBasis',[['planned','Planned'],['approved','Approved'],['unknown','Not sure']],d.dateBasis))+'<p>Grade group</p>'+c1Choices('grade',[['e15','E-1 to E-5'],['e67','E-6 to E-7'],['e89','E-8 to E-9'],['o14','O-1 to O-4'],['o5','O-5 and above'],['wo13','WO to CWO3'],['cwo45','CWO4 to CWO5']],d.grade);
  if(step===3)h+='<h2 id="c1IntakeTitle">Two options for your plan</h2>'+(d.path==='retire'?'<p>The Direct Affiliation Program does not apply to this retirement plan.</p>':'<p>Join the Reserves (Direct Affiliation Program)</p>'+c1Choices('reserveChoice',[['yes','Yes'],['no','No'],['unknown','Not sure']],d.reserveChoice))+'<p>SkillBridge?</p>'+c1Choices('sbChoice',[['yes','Yes'],['no','No'],['unknown','Not sure']],d.sbChoice)+c1IntakeUncertain(d);
  h+='<p id="su-prog" role="status" aria-live="polite">'+esc(UI.intakeError||'')+'</p><div class="ctl">'+(step>1?'<button class="btn" data-act="intake-back">Back</button>':'')+'<button class="btn pri" data-act="intake-next"'+(UI.intakeBusy||UI.setupBusy?' disabled':'')+'> '+(step===3?'Open my plan':'Continue')+'</button></div>';
- if(step===1)h+='<button class="btn" data-act="setup-demo">Try a demo</button><details class="c1-disclosure"><summary>Saving your board</summary><p>You need Claude Pro or higher to save your board. Muster Out adds no charge.</p></details>';
+ if(step===1)h+='<button class="btn" data-act="setup-demo">Try a demo</button><details class="c1-disclosure"><summary>Saving your board</summary><p>Muster Out works on Claude Free and saves your progress on your board. Claude Pro at $20 a month gives more room for long coach chats. Muster Out adds no charge.</p></details>';
  if(UI.intakeLocalSaved&&!UI.intakeConfirmed)h+='<p class="muted c1-card-meta">Unsaved. Your draft is saved on this device.</p>';return h+'</section>';
 }
 var C1_COMPLETION_TRIED=false;

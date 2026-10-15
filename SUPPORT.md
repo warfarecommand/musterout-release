@@ -25,8 +25,8 @@ Pack usmc-2026.10 covers the situations in the first table. For the situations i
 
 ## Setup help
 
-### Claude plan requirement
-You need Claude Pro or higher to save board data. The Free plan cannot store it. Muster Out adds no charge.
+### Claude plan
+Muster Out works on Claude Free. Your board installs in a Project and saves your progress. Claude Pro at $20 a month gives more room for long coach chats. Muster Out adds no charge.
 
 ### Publishing your board
 Tap Publish when Claude asks. Publishing creates the board page in your Claude account; keep its visibility private and share its link only with people you choose.
@@ -41,7 +41,7 @@ Open [claude.ai in a browser](https://claude.ai) and paste the setup message to 
 Use a personal phone or computer to open [claude.ai](https://claude.ai), then paste the setup message.
 
 ## Set up your board
-If your path is covered, send this one message in any Claude chat: the Claude app on a phone, claude.ai, or the desktop app, including Claude Code and the desktop Code tab. You need Pro or higher; the Free plan cannot store board data.
+If your path is covered, send this one message in any Claude chat: the Claude app on a phone, claude.ai, or the desktop app, including Claude Code and the desktop Code tab. Muster Out works on Claude Free.
 
 ```
 Set up Muster Out for me. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/SETUP.md and follow it.
@@ -85,7 +85,6 @@ Save status is beside the editor. Saved means the write was read back and matche
 | Confirmed data-write permission false | This view is read-only. You can view saved work. Open the owner's view to edit. |
 | Missing db or host; `revoked`, `not_granted`, `capability_disabled`, `capability_removed` | Saving is unavailable in this view. Open your board in Claude / Copy diagnostic. A retained snapshot is a Last loaded copy. |
 | Terminal refresh listener error, including `queue_overflow` | Saved data could not refresh. Reload once / Copy diagnostic. A repeated write does not repair a stopped listener. |
-| Free confirmed by account evidence | Claude Pro is required to save this board. Free cannot store your plan. View demo / Copy setup message. A missing permission alone does not identify your plan. |
 | Seed still running after two minutes | Open the same board and reload once. The expired claim can resume missing writes. Never change counts or seed by hand. |
 | `DRAFT_STORAGE_FAILED` | Your draft could not be kept on this device. Copy changes before continuing. Do not update or reload until the draft is preserved. |
 | A reset or profile mismatch | Resume the confirmed reset through SETUP at the same URL, or choose Keep my plan after reviewing the changes. Never clear a reset marker to dismiss a warning. |
