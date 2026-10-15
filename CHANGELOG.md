@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.2.10 (2026-10-15)
+- Date edits save and can be retried after a failed write. VA dates follow the last active-duty day, including a confirmed override, with an earlier confirmation target and a separate 1-year filing boundary.
+- VA Class II dental guidance uses the current 180-day application window. Privacy, watch coverage and update help match the shipped routes.
+- Required release checks now include date-editor saves, failure and retry, VA boundary fixtures and current policy rules.
+
 ## 0.2.9 (2026-10-15)
 - Update now works again. Boards on 0.2.6 or earlier showed "could not be verified" for 0.2.7 and 0.2.8 because those releases carried one note instead of two.
 - Includes everything in 0.2.7 (your coach) and 0.2.8 (works on Claude Free).

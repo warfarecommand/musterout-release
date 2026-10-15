@@ -1288,7 +1288,7 @@
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
-    "para": "1101.4.e(1)-(3)",
+    "para": "Source conflict: older manual 1101.4.e(1)-(3)",
     "quote": "The veteran must have served not less than 180 days of active duty to be eligible for dental treatment provided by VA. ... Application for VA dental treatment must be made within 90 days of discharge or release from active duty. ... The veteran will not be eligible for dental treatment if the DD Form 214 contains a statement that the veteran was provided a complete dental ... examination and all appropriate dental services and treatment were completed within 90 days before separation from active duty.",
     "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
     "file": "regs/mco-1900.16-ch3.txt",
@@ -1693,6 +1693,16 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 1315,
     "line_end": 1315,
+    "verified": true
+  },
+  {
+    "ref": "VA dental care eligibility",
+    "para": "Class II: qualifying service and all eligibility requirements",
+    "quote": "I served on active duty for 90 days or more during the Persian Gulf War era ... Class II ... One-time dental care if you meet all of these requirements ... You didn’t receive a dishonorable discharge, ... You applied for dental care within 180 days of discharge or release, ... Your DD214 certificate of discharge doesn’t show that you had a complete dental exam and all needed dental treatment before you were discharged",
+    "url": "https://www.va.gov/health-care/about-va-health-benefits/dental-care/",
+    "file": "regs/va-dental-care.txt",
+    "line_start": 43,
+    "line_end": 53,
     "verified": true
   }
 ]

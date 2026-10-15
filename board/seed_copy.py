@@ -326,12 +326,16 @@ COPY = {
         "brief": "VA and your Reserve unit must reconcile actual paid training days. Confirm the notice instructions and deadline so guessed day counts do not become your waiver response.",
     },
     "va-dental": {
-        "label": "Confirm your VA dental eligibility",
-        "brief": "Your VA dental eligibility and application deadline need prompt confirmation. Ask VA dental and your VSO before relying on the manual's printed criteria so you do not miss the applicable window.",
+        "label": "Confirm Class II dental care and apply",
+        "brief": "VA's current Class II criteria include 90 days of Persian Gulf War-era active service, no dishonorable discharge, application within 180 days and no DD214 certification of a complete dental exam and all needed treatment. Ask VA dental to confirm your eligibility and receipt deadline; the older manual is a source conflict.",
     },
     "va-net": {
-        "label": "Confirm your claim effective date",
-        "brief": "Your claim's effective date depends on individual entitlement and filing timing. Have VA confirm both so a guide example is not mistaken for your actual benefit date or deadline.",
+        "label": "1-year VA claim filing boundary",
+        "brief": "The calendar anniversary counts from your last active-duty day, including a confirmed override. Have VA or your VSO confirm your receipt deadline, effective date and any exception before this boundary. The board does not extend it for weekends or holidays.",
+    },
+    "va-net-confirm": {
+        "label": "Confirm your VA claim receipt deadline",
+        "brief": "Ask VA or your VSO to confirm your claim receipt deadline and effective date before the separate 1-year boundary. This planning target is 11 calendar months after service end, moved earlier for weekends and federal holidays. Arrange filing before the confirmed deadline.",
     },
     "dap-ram1": {
         "label": "Ask RAM-1 about your Reserve commission",

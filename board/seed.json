@@ -3047,7 +3047,8 @@
    ],
    "owner": "You",
    "due": {
-    "eas": -200,
+    "item": "va-service-end",
+    "days": -200,
     "biz": "prev"
    },
    "window": null,
@@ -3086,7 +3087,8 @@
    "how": [],
    "owner": "You",
    "due": {
-    "easMonths": -6
+    "item": "va-service-end",
+    "months": -6
    },
    "window": null,
    "critical": true,
@@ -3128,7 +3130,8 @@
    ],
    "owner": "You",
    "due": {
-    "eas": -190
+    "item": "va-service-end",
+    "days": -190
    },
    "window": null,
    "critical": false,
@@ -3279,7 +3282,8 @@
    "how": [],
    "owner": "You",
    "due": {
-    "eas": -185
+    "item": "va-service-end",
+    "days": -185
    },
    "window": null,
    "critical": true,
@@ -3304,7 +3308,8 @@
    "how": [],
    "owner": "You",
    "due": {
-    "eas": -120
+    "item": "va-service-end",
+    "days": -120
    },
    "window": null,
    "critical": true,
@@ -3329,7 +3334,8 @@
    "how": [],
    "owner": "You",
    "due": {
-    "eas": -120
+    "item": "va-service-end",
+    "days": -120
    },
    "window": null,
    "critical": false,
@@ -3354,7 +3360,8 @@
    "how": [],
    "owner": "You",
    "due": {
-    "eas": -120
+    "item": "va-service-end",
+    "days": -120
    },
    "window": null,
    "critical": false,
@@ -3381,7 +3388,8 @@
    ],
    "owner": "You",
    "due": {
-    "eas": -120
+    "item": "va-service-end",
+    "days": -120
    },
    "window": null,
    "critical": true,
@@ -3406,7 +3414,8 @@
    "how": [],
    "owner": "You",
    "due": {
-    "eas": -150
+    "item": "va-service-end",
+    "days": -150
    },
    "window": null,
    "critical": false,
@@ -3715,7 +3724,8 @@
    "how": [],
    "owner": "VA",
    "due": {
-    "eas": 30
+    "item": "va-service-end",
+    "days": 30
    },
    "window": null,
    "critical": false,
@@ -3740,7 +3750,8 @@
    "how": [],
    "owner": "You",
    "due": {
-    "eas": 30
+    "item": "va-service-end",
+    "days": 30
    },
    "window": null,
    "critical": false,
@@ -3775,7 +3786,8 @@
    ],
    "owner": "You",
    "due": {
-    "eas": 60
+    "item": "va-service-end",
+    "days": 60
    },
    "window": null,
    "critical": false,
@@ -3797,49 +3809,59 @@
    "loe": "va",
    "order": 22,
    "kind": "task",
-   "title": "Confirm VA dental eligibility and application deadline",
-   "why": "The manual prints 180 days of service and application within 90 days after release. It also uses the DD 214 certification of a complete exam and all appropriate treatment within 90 days before separation. The copied pack does not establish current Class II criteria. VA dental must settle your eligibility and deadline promptly.",
+   "title": "Confirm VA dental Class II eligibility and apply promptly",
+   "why": "The current VA source provides one-time Class II dental care for qualifying Persian Gulf War-era active service of 90 days or more. All conditions must be met: no dishonorable discharge, application within 180 days of discharge or release, and a DD214 that does not show a complete dental exam and all needed treatment before discharge. VA dental must confirm your individual eligibility and application deadline.",
    "how": [
-    "Current Class II criteria and application deadline remain pending VA dental clinic confirmation."
+    "Apply promptly with VA dental. The day-30 date is a planning target; the current VA application window is 180 days after discharge or release.",
+    "Ask VA dental to check your service, discharge and DD214 treatment entry. The VA source also excludes a pre-1955 VBA award letter stating dental conditions are not compensable.",
+    "Source conflict: the older separation manual prints 180 days of service and a 90-day application limit. The current VA Class II source below states 90 days of qualifying service and a 180-day application window. Have VA dental resolve any individual exception; do not treat the older 90-day application language as the current rule."
    ],
    "owner": "You",
    "due": {
-    "eas": 30
+    "item": "va-service-end",
+    "days": 30
    },
    "window": null,
    "critical": false,
    "presence": false,
    "cite": [
     {
+     "ref": "VA dental care eligibility",
+     "para": "Class II: qualifying service and all eligibility requirements",
+     "quote": "I served on active duty for 90 days or more during the Persian Gulf War era ... Class II ... One-time dental care if you meet all of these requirements ... You didn’t receive a dishonorable discharge, ... You applied for dental care within 180 days of discharge or release, ... Your DD214 certificate of discharge doesn’t show that you had a complete dental exam and all needed dental treatment before you were discharged",
+     "url": "https://www.va.gov/health-care/about-va-health-benefits/dental-care/"
+    },
+    {
      "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
-     "para": "1101.4.e(1)-(3)",
+     "para": "Source conflict: older manual 1101.4.e(1)-(3)",
      "quote": "The veteran must have served not less than 180 days of active duty to be eligible for dental treatment provided by VA. ... Application for VA dental treatment must be made within 90 days of discharge or release from active duty. ... The veteran will not be eligible for dental treatment if the DD Form 214 contains a statement that the veteran was provided a complete dental ... examination and all appropriate dental services and treatment were completed within 90 days before separation from active duty.",
      "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf"
     }
    ],
-   "verify": "VA dental clinic and accredited VSO: confirm current Class II service/discharge criteria, the DD 214 examination/treatment entry and actual application deadline. IPAC: confirm the entry.",
+   "verify": "VA dental clinic and accredited VSO: confirm individual Class II eligibility, DD214 entry, application receipt deadline and any exception. IPAC: confirm the DD214 entry. The manual citation is a source conflict, not current VA guidance.",
    "status": "open",
    "doneOn": null,
    "notes": "",
    "when": [],
    "basis": "target",
-   "label": "Confirm your VA dental eligibility",
-   "brief": "Your VA dental eligibility and application deadline need prompt confirmation. Ask VA dental and your VSO before relying on the manual's printed criteria so you do not miss the applicable window."
+   "label": "Confirm Class II dental care and apply",
+   "brief": "VA's current Class II criteria include 90 days of Persian Gulf War-era active service, no dishonorable discharge, application within 180 days and no DD214 certification of a complete dental exam and all needed treatment. Ask VA dental to confirm your eligibility and receipt deadline; the older manual is a source conflict."
   },
   {
    "id": "va-net",
    "loe": "va",
    "order": 23,
    "kind": "marker",
-   "title": "Confirm the claim effective date and 1-year filing boundary",
-   "why": "The guide illustrates a claim received within 1 year of separation becoming effective the day after separation. That example does not decide individual entitlement. Have VA confirm your claim effective date and filing deadline.",
+   "title": "1-year VA claim filing boundary: confirm with VA",
+   "why": "The guide illustrates a claim received within 1 year of separation becoming effective the day after separation. This calendar anniversary counts from the last active-duty day, including any confirmed override. It does not decide individual entitlement or exceptions. Have VA or your accredited VSO confirm the actual receipt deadline and effective date before this boundary.",
    "how": [],
    "owner": "You",
    "due": {
-    "easMonths": 12
+    "item": "va-service-end",
+    "months": 12
    },
    "window": null,
-   "critical": false,
+   "critical": true,
    "presence": false,
    "cite": [
     {
@@ -3849,14 +3871,51 @@
      "url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
     }
    ],
-   "verify": "VA benefits office or accredited VSO: confirm the individual effective date, entitlement and filing deadline before the 1-year boundary.",
+   "verify": "VA benefits office or accredited VSO: confirm the individual effective date, entitlement, receipt deadline and any applicable exception. The board does not extend the anniversary for weekends or holidays.",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "when": [],
+   "basis": "rule",
+   "label": "1-year VA claim filing boundary",
+   "brief": "The calendar anniversary counts from your last active-duty day, including a confirmed override. Have VA or your VSO confirm your receipt deadline, effective date and any exception before this boundary. The board does not extend it for weekends or holidays."
+  },
+  {
+   "id": "va-net-confirm",
+   "loe": "va",
+   "order": 24,
+   "kind": "task",
+   "title": "Confirm the claim receipt deadline and effective date with VA",
+   "why": "Contact VA or your accredited VSO before the separately displayed 1-year filing boundary. The target is 11 calendar months after your last active-duty day, moved earlier for a weekend or federal holiday. Do not wait until the boundary to confirm or file.",
+   "how": [
+    "Ask VA or your VSO to confirm the actual claim receipt deadline, effective date and any individual exception. Arrange filing before the confirmed deadline.",
+    "Record the confirming office and any confirmed date in notes. Keep the separate 1-year boundary visible."
+   ],
+   "owner": "You",
+   "due": {
+    "item": "va-service-end",
+    "months": 11,
+    "biz": "prev"
+   },
+   "window": null,
+   "critical": true,
+   "presence": false,
+   "cite": [
+    {
+     "ref": "VA Benefits and Services Participant Guide v6.1",
+     "para": "Module 3, p. 73",
+     "quote": "Because VA received it within one year of your separation, your claim is effective on October 19, 2019",
+     "url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+    }
+   ],
+   "verify": "VA benefits office or accredited VSO: confirm the receipt deadline and effective date before the separately displayed 1-year boundary.",
    "status": "open",
    "doneOn": null,
    "notes": "",
    "when": [],
    "basis": "target",
-   "label": "Confirm your claim effective date",
-   "brief": "Your claim's effective date depends on individual entitlement and filing timing. Have VA confirm both so a guide example is not mistaken for your actual benefit date or deadline."
+   "label": "Confirm your VA claim receipt deadline",
+   "brief": "Ask VA or your VSO to confirm your claim receipt deadline and effective date before the separate 1-year boundary. This planning target is 11 calendar months after service end, moved earlier for weekends and federal holidays. Arrange filing before the confirmed deadline."
   },
   {
    "id": "dap-ram1",
@@ -4917,7 +4976,8 @@
    ],
    "owner": "You",
    "due": {
-    "eas": 120
+    "item": "va-service-end",
+    "days": 120
    },
    "window": null,
    "critical": false,

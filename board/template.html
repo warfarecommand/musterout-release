@@ -736,11 +736,14 @@ html[data-large-text] #setupForm .form{grid-template-columns:repeat(2,minmax(0,1
 .k1-building{display:grid;gap:16px}.k1-building progress{width:100%;height:8px;accent-color:var(--accent)}
 .k1-framing{margin:0 0 16px}.k1-framing .ctl{margin-top:8px;gap:8px}
 @media(max-width:599px){
- #app.c1-today .top{grid-template-columns:minmax(0,1fr) 48px}
- #app.c1-today #trustHeader{grid-column:2;grid-row:1}
- #app.c1-today .top>.stamp{grid-column:1/-1;grid-row:2;justify-content:flex-start;gap:0 8px}
- #app.c1-today .stamp .basis{flex-basis:auto}
- #app.c1-today .stamp .linkbtn{min-height:48px}
+ #app.c1-today .top{grid-template-columns:auto minmax(0,1fr);gap:0 8px;margin-bottom:12px}
+ #app.c1-today .top>div:first-child{grid-column:1;grid-row:1/3;align-self:end}
+ #app.c1-today #trustHeader{grid-column:2;grid-row:1;justify-self:end}
+ #app.c1-today .top>.stamp{grid-column:2;grid-row:2;align-self:end;justify-content:flex-end;text-align:right;gap:0 6px;font-size:11px;line-height:1;margin-bottom:-1px}
+ #app.c1-today .stamp .linkbtn{min-height:48px;margin:-18px 0;display:inline-flex;align-items:center;font-size:11px;line-height:1;white-space:nowrap}
+ html[data-large-text] #app.c1-today .stamp .linkbtn{white-space:normal;margin:0;font-size:inherit}
+ #app.c1-today #hero{margin-top:0;margin-bottom:8px}
+ #app.c1-today .stamp .basis{flex-basis:auto;font-size:11px;line-height:1}
  #app:not(.c1-today) .top{grid-template-columns:minmax(0,1fr) auto 48px}
  #app:not(.c1-today) #trustHeader{grid-column:3;grid-row:1}
  #app:not(.c1-today) .top>.stamp{grid-column:2;grid-row:1;display:grid;grid-template-columns:auto auto;grid-template-rows:1fr 1fr;gap:0 8px;justify-content:end}
@@ -783,6 +786,12 @@ select{appearance:none;-webkit-appearance:none;box-sizing:border-box;min-height:
 
 .crisis-line{padding:12px 0;margin:16px 0;border-top:1px solid var(--sep);font-size:13px;line-height:1.4}.crisis-line p{user-select:text;-webkit-user-select:text}.crisis-line .ctl{gap:8px}.crisis-line a,.reference-card a,.vso a{display:inline-flex;align-items:center;min-height:48px;min-width:48px}.reference-card h3{font-size:17px}
 .workflow{margin:20px 0}.workflow .btn{width:100%}.workflow-text{white-space:pre-wrap;overflow-wrap:anywhere;font:400 13px/1.5 var(--mono);user-select:text;-webkit-user-select:text;padding:12px;background:var(--fill)}
+/* Tighter list rows: 48px touch targets kept, less dead space. */
+#app .c1-row{min-height:56px;padding:2px 12px 2px 4px;gap:4px}
+#app .c1-row .ttl{min-height:48px;padding:6px 24px 6px 0;gap:2px}
+#app .c1-row .t{font:600 16px/1.3125 var(--sans)}
+#app .c1-row .meta{line-height:1.3333333}
+#app .c1-row+.c1-row::before{left:56px}
 </style>
 
 <div class="wrap" id="app">
@@ -1371,16 +1380,17 @@ async function i1SaveDate(){
  if(UI.dateBusy||!editGuard())return;var date=el('i1-date').value,basis=el('i1-basis').value,status=el('i1-date-status');
  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||iso(parseD(date))!==date){status.textContent='Enter a valid date.';return;}
  if(S.settings.sbEnd&&parseD(S.settings.sbEnd)>=parseD(date)){status.textContent='Your date must be after SkillBridge ends.';return;}
- UI.dateBusy=true;status.textContent='Saving...';var button=document.querySelector('[data-act="date-save","date-edit"]');button.disabled=true;
+ var button=null;UI.dateBusy=true;
  try{
+  status.textContent='Saving...';button=document.querySelector('[data-act="date-save"]');button.disabled=true;
   if(!await write('meta/settings','update',{eas:date}))throw {code:'save'};
   if(!await write('meta/profile','update',{dateBasis:basis||null}))throw {code:'save'};
   await ackPlan(S.profile,S.settings);
   var checks=await Promise.all(['meta/settings','meta/profile','meta/seeded'].map(function(p){return DB.doc(p).get();}));
   if(checks.some(function(s){return s.metadata?.fromCache||s.metadata?.hasPendingWrites;})||!checks[0].exists||checks[0].data().eas!==date||!checks[1].exists||checks[1].data().dateBasis!==(basis||null)||(S.seeded&&(!checks[2].exists||checks[2].data().profileKey!==keyOf(checks[1].data(),checks[0].data()))))throw {code:'readback'};
   c1Close();render();document.querySelector('[data-act="date-edit"]')?.focus();toast('Date saved: '+mil(parseD(date))+'.');
- }catch(e){status.textContent='Save did not finish. Your date is still here. Try Save again.';button.disabled=false;}
- finally{UI.dateBusy=false;}
+ }catch(e){status.textContent='Save did not finish. Your date is still here. Try Save again.';}
+ finally{UI.dateBusy=false;if(button)button.disabled=false;}
 }
 function c1Dialog(title,content,decision){
   var prior=UI.c1Dialog;c1Close(false);var opener=prior&&prior.overlay.contains(document.activeElement)?prior.opener:document.activeElement, selector=opener&&opener.getAttribute('data-act')?'[data-act="'+opener.getAttribute('data-act')+'"]'+(opener.dataset.id?'[data-id="'+opener.dataset.id+'"]':'')+(opener.dataset.tab?'[data-tab="'+opener.dataset.tab+'"]':''):null;
@@ -2309,7 +2319,7 @@ function subscribe(){
   DB.collection("inbox").onSnapshot(function(snap){if(C1_DEMO)return;mark("inbox",snap); S.inbox = toList(snap); render(); }, errd);
 }
 /* ---------- Muster Out: profile, setup, seeding ---------- */
-var VERSION = "0.2.9";
+var VERSION = "0.2.10";
 var GRADES = [["o5","O-5 and above","officer","cat3"],["o14","O-1 to O-4","officer","cat2"],["cwo45","CWO4 to CWO5","officer","cat3"],["wo13","WO to CWO3","officer","cat2"],["e89","E-8 to E-9","enlisted","cat3"],["e67","E-6 to E-7","enlisted","cat2"],["e15","E-1 to E-5","enlisted","cat1"]];
 var CAP = { cat1: 120, cat2: 90, cat3: 90 };
 function gradeRow(g){ return GRADES.find(function(x){ return x[0] === g; }) || GRADES[0]; }
