@@ -5,7 +5,7 @@
 
 The board is the design system. The view changes density and navigation; the planning engine, seed rules, date resolution, leave math, fingerprints and pack behavior remain intact except the approved migration add step for a plan option change.
 
-Phone navigation has Today, Plan, Dates, Claim and More in an opaque bottom bar, 64 px plus safe area. Targets are at least 48 px, labels use mixed case and simple line icons, and selection uses red ink. At 900 px and wider, the same five destinations use a left rail with a content column at most 720 px wide. No horizontal tab rail or global dashboard header remains. BUILD_SPEC rules take precedence over the earlier L3 four-cell specimen.
+Phone navigation has Today, Plan, Dates, Claim and More in an opaque bottom bar, 72 px plus safe area. Targets are at least 48 px, labels use mixed case and simple line icons, and selection uses red ink. At 900 px and wider, the same five destinations use a left rail with a content column at most 720 px wide. No horizontal tab rail or global dashboard header remains. BUILD_SPEC rules take precedence over the earlier L3 four-cell specimen.
 
 Today presents the reduced Stack wordmark and EAS or RET stamp with date basis, a 64 px Condensed countdown, three next-action rows, then Late, Critical and Needs a date counts linking to full Plan filters. An undated view shows Add your date instead of a countdown; a demo is labeled. Save failure comes first among health/update lines, and a dismissed correction keeps its banner. Ask about your plan is a first-class card: Answers from this board., question field, Ask, streamed answer, Stop and Copy answer. Its four starters are `What should I do this week?`, `What is late and what does it block?`, `Walk me through my claim timeline.`, and `What changes if my date moves 30 days?`. They fill the field. Records, mail, and research live in your Project. links to More > Open your Project. One watch line follows. A quiet Report a problem control remains in every screen header.
 
@@ -15,7 +15,7 @@ Each item has three depths:
 
 | Depth | Content and controls |
 | --- | --- |
-| Row | Seed label, date or relative offset, status meaning, 20 px check graphic within a 48 px button, and full-width title target at least 48 px. No regulation text. |
+| Row | Seed label, date or relative offset, status meaning, 24 px check graphic within a 48 px button, and full-width title target at least 48 px. No regulation text. |
 | Card | Seed brief, owner, date basis, Mark done, Steps and source. Only one card is open per view. |
 | Drawer | Full why, how, verify, citations and excerpt, Open source, status, notes, date editor, custom Delete, and Ask about this item prefilled with the title. Escape and Close restore focus. |
 
@@ -51,15 +51,42 @@ The L3 token contract is in `_cook/overhaul/lenses/L3_tokens.css` and `L3_TOKENS
 | `grid` | #e2e1dd | #242427 |
 | `on-accent` | #ffffff | #ffffff |
 
-Plex Sans is for reading; Mono is for dates and short metadata, stamp and wordmark; Condensed is for countdown and numeric summaries. The six sizes and line heights are 12/16, 14/20, 16/24, 20/28, 24/32 and 64/64 px. Weights are regular 400, medium 500 and strong 600; tabular numerals on dates, counts and balances. Use body text at `16/24`, count tracking at `-.02em`, label tracking at `.04em`, and body tracking at `0`.
-
-Use an 8 px grid: 8, 16, 24, 32 and 48 px spaces. A 4 px optical exception is for icon placement and label-to-value gaps. Card radius is 6 px, controls and stamp 4 px, sheets and drawers 8 px. Hairlines are 1 px, stamp stroke 1.5 px, focus 2 px; progress 4 px, icons 20 px and dots 8 px. Cards have no shadow. Sheets, drawers and toasts alone use `0 8px 24px rgba(26,26,28,.16)` in light and `0 8px 24px rgba(0,0,0,.5)` in dark. Set the scrim to `rgba(0,0,0,.5)` for both themes.
+Plex Sans is for reading; Mono is for dates and short metadata, stamp and wordmark; Condensed is for countdown and numeric summaries. Geometry follows the Density and spacing contract below. Hairlines are 1 px, focus 2 px, and all interactive targets remain at least 48 px. Cards keep the existing theme appearance. Sheets and toasts retain their existing elevation and scrim.
 
 Expand/collapse measured height and chevrons over 200 ms with `cubic-bezier(.2,0,0,1)`; state feedback is 120 ms. Reduced motion is immediate. Cancel prior animation on rapid toggles. Return focus before hiding a focused card. The bottom bar has layer 6, dialogs 20. Content bottom padding includes bar height, 24 px and safe area. Drawers and sheets trap focus, announce errors and return focus on close; controls remain usable at 200 percent text.
 
 Use one accent per screen. Red denotes the stamp, urgency and primary action. Every semantic signal has words or a shape. White text is approved only on red. Input placeholders are ink-2 at opacity 1. Decorative separators use line; control boundaries use line-2. All text pairs require 4.5:1 in both themes. Verify keyboard, VoiceOver, TalkBack, focus return, reduced motion, 200 percent text and no horizontal scroll at phone and desktop widths.
 
 Dates are `12 OCT 2026` with a four-digit year. The stamp includes date basis when known. E-labels count from the action date: E-120, E-DAY, E+30. The compact Today mark reads MUSTER OUT, red rule, WARFARE COMMAND. Other destinations show a plain title and small stamp. No service insignia.
+
+## Density and spacing
+
+This section is the geometry contract for future board work. Use the final DESIGN1 geometry block in `board/template.html`. Earlier CSS owns color, state, visibility, and interaction only. Add or change geometry in that final block; do not append another override layer. Research and source links are recorded in the DESIGN1 operation's `RESEARCH.md`.
+
+| Tokens | Values and use |
+| --- | --- |
+| `--s-0` through `--s-8` | 0, 4, 8, 12, 16, 20, 24, 28, 32 px. Use these for padding, margins, and gaps. |
+| `--text-xs/sm/md/lg/xl` | 12, 14, 16, 20, 24 px. Metadata, secondary copy, body and row title, section heading, page title. |
+| `--lh-tight/meta/body` | 1.25, 1.333333333, 1.5. Unitless so text enlargement grows the line box. |
+| `--text-display`, `--text-brand` | 64 px countdown; 11 px stamp matching the rendered WARFARE COMMAND wordmark. These are display exceptions, not reading sizes. |
+| `--target`, `--row-height` | 48 px minimum interactive size; 56 px minimum two-line row. All are minimums and grow with text. |
+| `--radius-sm/md/lg/full` | 8, 12, 20, 999 px. Controls, cards and groups, sheets, pills and circular graphics. |
+| `--reading-width`, `--sheet-width` | 720 px centered reading column; 560 px maximum sheet width. |
+| `--nav-height`, `--rail-width` | 72 px bottom navigation plus safe area below 900 px; 208 px left rail at 900 px and wider. |
+| `--brand-width`, `--icon`, `--icon-sm` | 176 px preserved brand SVG; 24 px control graphic; 16 px source marker. |
+| `--hairline`, `--stroke`, `--optical` | 1, 2, 1 px. Borders, focus, and the stamp's optical baseline adjustment. |
+
+Page and card gutters are 16 px on both phone and tablet. Sections have 24 px separation, headings have an 8 px content gap, and related content uses 12 px. Keep reading and card edges aligned. Nested panels do not add a second gutter.
+
+Rows share a 48 px completion column, 4 px column gap, 4 px vertical inset, 16 px title, and 12 px metadata. The row grows when titles or dates wrap. Keep the disclosure indicator vertically centered in the title target, with a stable trailing edge. Reserve a metadata end position for the critical diamond so it cannot wrap onto its own line.
+
+Controls have 48 px minimum width and height. Buttons in a shared flex or grid row stretch to the same height. A 32 px filter pill sits inside a full 48 px button; informational chips do not acquire fake touch padding. Forms use 12 px gaps and full-width fields, collapsing to one column on phones.
+
+The Today stamp sits beneath help and shares the WARFARE COMMAND bottom edge. Preserve the 176 px SVG and 11 px stamp, with a 1 px optical adjustment. Large text moves the stamp to a separate row and restores full 48 px date targets.
+
+Ask uses the same 24 px section rhythm. Empty states use a 16 px inset and 24 px icon, without a fixed height. Footer separation is 24 px. Toasts are bounded to the viewport and clear the measured navigation by 16 px.
+
+Sheets use 16 px gutters, a scrollable body, 48 px close and drag targets, and a separate action footer. They retain navigation clearance on phone and tablet. Safe-area insets remain additive. Large text and reduced motion remain supported. Dynamic timeline SVG coordinates and measured lane heights continue to use the existing date and collision layout; never replace those data-dependent dimensions with fixed spacing.
 
 ## Intake and trust
 

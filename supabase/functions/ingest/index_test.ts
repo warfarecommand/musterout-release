@@ -5,7 +5,7 @@ const equal = (a: unknown, b: unknown) => assert(JSON.stringify(a) === JSON.stri
 function fixture() {
   let now = Date.parse("2026-10-09T21:00:00Z");
   const budgets: Record<string, { accepted: number; text_units: number; overflow: number }> = {};
-  const tables: Record<string, Record<string, unknown>[]> = { ingest_rate: [], setup_intents: [], install_registrations: [], setup_pings: [], feedback_reports: [], usage_weeks: [], learn_install_cohorts: [] };
+  const tables: Record<string, Record<string, unknown>[]> = { ingest_rate: [], setup_intents: [], install_registrations: [], setup_pings: [], feedback_reports: [], usage_weeks: [], learn_install_cohorts: [], telemetry_admissions: [] };
   let fail = "";
   const db = { rpc: async (name: string, args: any) => {
     if (name === "learn_abuse_admit") {
@@ -101,11 +101,11 @@ Deno.test("ingest rejects hostile and malformed bodies before accessing the data
     if (mode === "oversize") equal(pulls, 2);
   }
 });
-Deno.test("ingest accepts JSON at its byte cap with split multibyte UTF-8", async () => {
+Deno.test("ingest accepts an exact-schema JSON body at its byte cap with split chunks", async () => {
   const f = fixture();
-  const json = JSON.stringify({ kind: "intent", product: "musterout", version: "0.1.4", discarded: "é" });
+  const json = JSON.stringify({ kind: "intent", product: "musterout", version: "0.1.4" });
   const raw = new TextEncoder().encode(json + " ".repeat(20000 - new TextEncoder().encode(json).length));
-  const splitAt = raw.indexOf(0xc3) + 1;
+  const splitAt = Math.floor(raw.length / 2);
   const body = new ReadableStream<Uint8Array>({ start(c) { c.enqueue(raw.slice(0, splitAt)); c.enqueue(raw.slice(splitAt)); c.close(); } });
   equal((await f.handler(new Request("https://endpoint.invalid/ingest", { method: "POST", body, duplex: "half" } as any))).status, 200);
   equal(f.tables.setup_intents.length, 1); equal(f.tables.ingest_rate[0].n, 1);
@@ -115,7 +115,7 @@ Deno.test("intent accepts all supported origins and stores only anonymous allowe
     const f = fixture();
     const preflight = await f.handler(new Request("https://endpoint.invalid/ingest", { method: "OPTIONS", headers: { origin } }));
     equal(preflight.headers.get("access-control-allow-origin"), origin);
-    const response = await f.send({ kind: "intent", product: "musterout", version: "0.1.4", name: "discard", install_id: "discard" }, origin);
+    const response = await f.send({ kind: "intent", product: "musterout", version: "0.1.4" }, origin);
     equal(response.status, 200);
     equal(response.headers.get("access-control-allow-origin"), origin);
     equal(Object.keys(f.tables.setup_intents[0]).sort(), ["ip_hash", "product", "version"]);
@@ -143,7 +143,7 @@ Deno.test("install fixed lists and version/id validation reject unknown values",
 
 Deno.test("install deduplicates the id without replacing fields and deletion removes only matching counts", async () => {
   const f = fixture();
-  equal((await f.send({ ...install, board_url: "Never store this", name: "Discard" })).status, 200);
+  equal((await f.send(install)).status, 200);
   equal((await f.send({ ...install, path: "retire", grade: "o5" })).status, 200);
   equal(f.tables.install_registrations.length, 1);
   equal(f.tables.install_registrations[0].path, "eas");
@@ -158,10 +158,10 @@ Deno.test("install deduplicates the id without replacing fields and deletion rem
 
 Deno.test("legacy ping and receipt deletion still work without a browser origin", async () => {
   const f = fixture();
-  const ping = await f.handler(new Request("https://endpoint.invalid/ingest?kind=ping&service=usmc&path=unsure&grade=unsure&version=0.1.3&id=legacy-uuid-1234"));
+  const ping = await f.handler(new Request("https://endpoint.invalid/ingest?kind=ping&service=usmc&path=unsure&grade=unsure&version=0.1.3&id=3f1c2a9e-8b7d-4e21-9a5c-0d6e4f7b8a12"));
   equal(ping.status, 200);
   equal(f.tables.setup_pings.length, 1);
-  equal((await f.send({ kind: "delete", id: "legacy-uuid-1234" })).status, 200);
+  equal((await f.send({ kind: "delete", id: "3f1c2a9e-8b7d-4e21-9a5c-0d6e4f7b8a12" })).status, 200);
   equal(f.tables.setup_pings.length, 0);
 });
 
@@ -350,4 +350,23 @@ Deno.test("correlation deletion failure preserves the complete source deletion r
   equal(r.status, 500); equal((await r.json()).deleted, { setup_pings: 0, install_registrations: 0, feedback_reports: 1, usage_weeks: 1 });
   equal(f.tables.learn_install_cohorts.length, 1);
   f.fail(""); equal((await f.send({ kind: "delete", id: feedback.install_id })).status, 200); equal(f.tables.learn_install_cohorts.length, 0);
+});
+
+Deno.test("legacy install and intent reject extra identity fields, protected v2 install needs capability deletion", async () => {
+ for (const body of [{...install,name:"Private"},{kind:"intent",product:"musterout",version:"0.2.9",email:"private@example.invalid"}]) {const f=fixture();equal((await f.send(body)).status,400);equal(f.tables.install_registrations.length+f.tables.setup_intents.length,0);}
+ const f=fixture();f.tables.telemetry_admissions.push({install_id:install.install_id});equal((await f.send({kind:"delete",install_id:install.install_id})).status,403);
+});
+
+Deno.test("legacy ping rejects text metadata, extra keys, readable ids and duplicate query keys", async () => {
+ for(const method of ["GET","POST"])for(const patch of [{version:"person@x.test"},{version:"2026-10-14"},{version:"PRIVATE NOTES"},{notes:"private"},{id:"person_name_123"},{version:"1.2.3-extra"}]){
+  const f=fixture(),body={kind:"ping",id:"0123456789abcdef",service:"usmc",path:"eas",grade:"e67",version:"0.2.9",...patch};
+  const response=method==="GET"?await f.handler(new Request("https://endpoint.invalid/ingest?"+new URLSearchParams(body as any))):await f.send(body);
+  equal(response.status,400);equal(f.tables.setup_pings.length,0);
+ }
+ const f=fixture();equal((await f.handler(new Request("https://endpoint.invalid/ingest?kind=ping&kind=ping"))).status,400);
+});
+Deno.test("legacy telemetry address hash is domain separated from subscriber hashes",async()=>{
+ const f=fixture();await f.send({kind:"ping",id:"0123456789abcdef",service:"usmc",path:"eas",grade:"e67",version:"0.2.9"});
+ const raw=new TextEncoder().encode("test-salt"+"192.0.2.1"),old=Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",raw))).slice(0,12).map(b=>b.toString(16).padStart(2,"0")).join("");
+ assert(f.tables.setup_pings[0].ip_hash!==old);
 });

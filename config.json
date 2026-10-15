@@ -1,6 +1,6 @@
 {
   "product": "Muster Out",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "pack": "usmc-2026.10",
   "release_url": "https://musterout.warfarecommand.com/release.json",
   "watch_feed": "https://watch.warfarecommand.com/feed/latest.json",
@@ -17,5 +17,14 @@
     "feed_keys": {
       "feed-2026-10-05bbe934": "Wu+hyhxyklR3J/HQsbRq6XkCcWjNmiunuCfCb3G8TLo="
     }
+  },
+  "telemetry": {
+    "receipt_keys": {
+      "rcpt-2026-10-a": "nVHBADRZGFcK/wPt040Kokw8qTZYMuX7byWFm45+zds="
+    },
+    "licenseAcknowledgmentRequired": false,
+    "licenseAcknowledgmentVersion": null,
+    "licenseAcknowledgmentUrl": null,
+    "licenseAcknowledgmentSha256": null
   }
 }

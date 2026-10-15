@@ -45,6 +45,40 @@ def embed_trust(fragment, root=here.parent):
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
+def decode_fingerprints(value):
+    if "format" not in value:
+        return value
+    if value["format"] != 2:
+        raise ValueError("unknown fingerprint format")
+    digests = value["digests"]
+    if len(set(digests)) != len(digests) or any(not re.fullmatch(r"[a-f0-9]{64}", h) for h in digests) or len(value["shapes"]) != len(digests):
+        raise ValueError("invalid fingerprint dictionary")
+    def digest(n):
+        if type(n) is not int or not 0 <= n < len(digests):
+            raise ValueError("invalid fingerprint index")
+        return digests[n]
+    result = {k: v for k, v in value.items() if k not in ("format", "digests", "versions", "shapes", "variants")}
+    result.update(versions={v: {i: digest(n) for i, n in rows.items()} for v, rows in value["versions"].items()},
+                  shapes=dict(zip(digests, value["shapes"])),
+                  variants={i: [digest(n) for n in rows] for i, rows in value["variants"].items()})
+    return result
+
+
+def pack_fingerprints(value):
+    digests = sorted(value["shapes"])
+    indices = {h: n for n, h in enumerate(digests)}
+    packed = {k: v for k, v in value.items() if k not in ("versions", "shapes", "variants")}
+    packed.update(format=2, digests=digests,
+                  versions={v: {i: indices[h] for i, h in rows.items()} for v, rows in value["versions"].items()},
+                  shapes=[value["shapes"][h] for h in digests],
+                  variants={i: [indices[h] for h in rows] for i, rows in value["variants"].items()})
+    if canonical(decode_fingerprints(packed)) != canonical(value):
+        raise ValueError("fingerprint compaction lost data")
+    if len(canonical(packed).encode()) >= 120000:
+        raise ValueError("compact fingerprint map exceeds TEL1 target")
+    return packed
+
+
 def seed_fingerprints(root=here.parent):
     """Read released snapshots, never approximate a release with today's seed.
 
@@ -166,7 +200,7 @@ def seed_fingerprints(root=here.parent):
         # shipped in its verified page, and fail closed if it lacks a release.
         page = (root / "board/board.html").read_text()
         match = re.search(r'<script type="application/json" id="seed-fingerprints">(.*?)</script>', page, re.S)
-        previous = json.loads(match[1]) if match else {}
+        previous = decode_fingerprints(json.loads(match[1])) if match else {}
         for version in sorted(missing):
             if version not in previous.get("versions", {}):
                 raise SystemExit(f"released seed history unavailable: {version}")
@@ -203,7 +237,7 @@ def seed_fingerprints(root=here.parent):
     # then to 200 KB for 0.2.4 (one more released seed version, no seed change). Compact the map
     # (shared digest table) before it reaches this bound; each release adds about 15 KB. Tracked in MTN-55.
     # Raised to 230 KB for 0.2.8 and 0.2.9 (identical released seeds repeat in the map) until MTN-55 compaction lands.
-    if len(canonical(result).encode()) >= 230000:
+    if len(canonical(pack_fingerprints(result)).encode()) >= 230000:
         raise SystemExit("seed fingerprint map exceeds 230 KB")
     return result
 
@@ -229,7 +263,11 @@ def embed(template, seed, fingerprints, root=here.parent):
         if len(workflows) != 10:
             raise SystemExit("expected ten starter workflow prompts")
         template = template.replace("/*WORKFLOWS*/", escape(workflows))
-    return embed_trust(embed_updates(template.replace("/*SEED*/", escape(seed)).replace("/*SEED_FINGERPRINTS*/", escape(fingerprints)), root), root)
+    libraries = "<script>" + (root / "board/fingerprints.js").read_text() + "</script>\n"
+    libraries += "<script>" + (root / "supabase/functions/_shared/telemetry_contract.js").read_text() + "</script>\n"
+    telemetry_config = json.loads((root / "config.json").read_text()).get("telemetry", {})
+    template = template.replace("/*TEL_JS*/", (root / "board/telemetry.js").read_text()).replace("/*TEL_CONFIG*/", escape(telemetry_config))
+    return libraries + embed_trust(embed_updates(template.replace("/*SEED*/", escape(seed)).replace("/*SEED_FINGERPRINTS*/", escape(pack_fingerprints(fingerprints))), root), root)
 
 def build_page():
     seed = json.loads((here / "seed.json").read_text())
@@ -258,9 +296,13 @@ def build_page():
     for js in re.findall(r"<script>(.*?)</script>", out, re.S):
         r = subprocess.run(["node", "--check"], input=js, capture_output=True, text=True)
         if r.returncode: sys.exit("script does not parse:\n" + r.stderr)
+    contract = (here.parent / "supabase/functions/_shared/telemetry_contract.js").read_text()
+    (here.parent / "docs/assets/telemetry_contract.js").write_text(contract)
+    telemetry_config = json.loads((here.parent / "config.json").read_text()).get("telemetry", {})
+    (here.parent / "docs/assets/telemetry_config.js").write_text("window.MusterOutTelemetryConfig=" + canonical(telemetry_config) + ";\n")
     (here / "board.html").write_bytes(out.encode())
     (here / "board.publish.html").write_bytes(document.encode())
-    print(f"board.html {len(out.encode())//1024} KB; board.publish.html {len(document.encode())} bytes; fragment identical; fingerprints {len(canonical(fingerprints).encode())} bytes; scripts parse")
+    print(f"board.html {len(out.encode())//1024} KB; board.publish.html {len(document.encode())} bytes; fragment identical; fingerprints {len(canonical(pack_fingerprints(fingerprints)).encode())} bytes; scripts parse")
 
 if __name__ == "__main__":
     build_page()

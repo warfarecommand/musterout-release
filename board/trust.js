@@ -144,6 +144,7 @@
       const c = ['db','artifact','sample','permissions','update','feed','report','usage','clipboard','draft','ui'].includes(component) ? component : 'ui';
       const op = ['set','get','delete','onSnapshot','publish','verify','snooze','rewrite','queue','consent','count','copy','render','refresh','apply','unknown'].includes(operation) ? operation : 'unknown';
       ring.push(Object.freeze({component:c,operation:op,code:KNOWN_CODES.has(code) ? code : 'other'})); if (ring.length > 50) ring.shift();
+      if(typeof o.onErrorCount==='function')o.onErrorCount(c);
     }
     function diagnostic() {
       return {version:/^[0-9A-Za-z.+-]{1,64}$/.test(o.version) ? o.version : 'unknown',pack:/^usmc-20\d{2}\.\d{2}$/.test(o.pack) ? o.pack : 'unknown',screen:SCREENS.includes(o.screen) ? o.screen : 'more',capabilities:{db:o.db ? 'available':'unavailable',sample:typeof o.sample === 'function' ? 'available':'unavailable',updates:o.updates ? 'available':'unavailable',data_write:o.canWrite === false ? 'denied':o.canWrite === true ? 'granted':'unknown'},errors:ring.map(e => ({...e}))};
@@ -340,13 +341,16 @@
         s.actions.append(now,button('Not now',cancel)); if (!valid) s.actions.append(button('Copy diagnostic',openDiagnostic)); if (!o.updates?.applyUpdate) { paragraph(s.body,MESSAGES['artifact.absent']); s.actions.append(button('Copy update message',() => copyMessage('update'))); } s.cancel = cancel;
       } else if (status === 'applying') {
         s.heading.textContent = 'Updating Muster Out'; s.cancel = null;
+        const progress = node('div'); window.MusterOutUpdateStatus?.render(progress,update,{version:o.version}); s.body.append(progress);
         const labels = ['Saving your changes...','Publishing update...','Checking your board...'];
         const current = {preparing:0,publishing:1,migrating:2,verifying:2}[update.phase] ?? 0;
         const list = node('ol',undefined,'mot-progress'); labels.forEach((label,index) => { const li = node('li',label,index === current ? 'mot-current':''); if (index === current) li.setAttribute('aria-current','step'); list.append(li); });
         list.setAttribute('role','status'); list.setAttribute('aria-live','polite'); s.body.append(list);
       } else if (status === 'done') {
+        const progress = node('div'); window.MusterOutUpdateStatus?.render(progress,update,{version:o.version}); s.body.append(progress);
         s.heading.textContent = 'Updated to ' + (update.justUpdated?.to || update.version || o.version) + '.'; s.cancel = () => closeSheet(s,true); s.actions.append(button('Continue',s.cancel,true));
       } else if (status === 'failed') {
+        const progress = node('div'); window.MusterOutUpdateStatus?.render(progress,update,{version:o.version,retry:() => window.location.reload()}); s.body.append(progress);
         s.heading.textContent = 'Update status'; const code = update.code || 'artifact.upstream_error'; notice(s.body,message(code,'artifact')); s.cancel = () => closeSheet(s,true);
         if (['artifact.not_writer','artifact.not_granted','artifact.consent_required','artifact.not_declared','artifact.capability_disabled','artifact.capability_removed','artifact.absent'].includes(code)) s.actions.append(button('Copy update message',() => copyMessage('update')));
         else if (code === 'DRAFT_STORAGE_FAILED') s.actions.append(button('Copy changes',copyChanges));

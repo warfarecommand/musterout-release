@@ -2,6 +2,7 @@
 // POST JSON {kind: "ping" | "intent" | "install" | "feedback" | "usage" | "delete", ...}; GET ?kind=ping&service=&path=&grade=&version=&id=
 // Validates shape and size, rate limits by hashed IP (20 a minute plus learning kind caps), inserts with the service role.
 // No reads are served here. Deploy with --no-verify-jwt; the anon key alone cannot touch the tables.
+import { telemetryV2 } from "../_shared/telemetry_v2.ts";
 import { BodyReadError, readBody } from "../_shared/body.ts";
 
 const SERVICES = ["usmc"];
@@ -13,7 +14,7 @@ const CHANNELS = ["chat", "laptop"];
 const versionOk = (v: unknown) => typeof v === "string" && v.length <= 32 && /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(v);
 const installIdOk = (v: unknown) => typeof v === "string" && /^[a-f0-9]{16,32}$/.test(v);
 const CORS = { "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "content-type", "Vary": "Origin" };
-const short = (v: unknown, n: number) => (typeof v === "string" ? v.slice(0, n) : null);
+const legacyInstallIdOk = (v: unknown) => installIdOk(v) || typeof v === "string" && /^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(v);
 const idOk = (v: unknown) => typeof v === "string" && /^[A-Za-z0-9_-]{8,64}$/.test(v);
 
 // Learning schema v1. Update consent before changing keys or meanings.
@@ -38,7 +39,7 @@ const stripControls = (s: string) => s.replace(/[\u0000-\u001f\u007f-\u009f]/g, 
 async function ipHash(req: Request, env: (name: string) => string | undefined): Promise<string> {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() || "0";
   const salt = env("IP_HASH_SALT") || env("INGEST_SALT");
-  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(salt + ip));
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode("musterout-legacy-telemetry-v2\n" + salt + "\n" + ip));
   return Array.from(new Uint8Array(buf)).slice(0, 12).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
@@ -54,13 +55,17 @@ export function createHandler(deps: { env: (name: string) => string | undefined;
   try {
   // Read, decode, and parse before even accessing the injected database.
   let body: Record<string, unknown> = {};
+  let rawBody = "";
   if (req.method === "GET") {
-    const u = new URL(req.url); u.searchParams.forEach((v, k) => { body[k] = v; });
+    const u = new URL(req.url); for (const [k,v] of u.searchParams) { if(Object.hasOwn(body,k))return json(400,{ok:false,error:"bad_input"});body[k]=v; }
   } else if (req.method === "POST") {
     const text = await readBody(req.body, 20000, deps.bodyDeadlineMs);
+    rawBody = text;
     try { body = JSON.parse(text); if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("shape"); }
     catch { return json(400, { ok: false, error: "bad_json" }); }
   } else return json(405, { ok: false, error: "method" });
+
+  if (body.kind === "enroll" || ["schema_version", "records", "access"].some(k => Object.hasOwn(body, k))) return await telemetryV2(req, rawBody, deps, json);
 
   const db = deps.db;
   if (!deps.env("IP_HASH_SALT") && !deps.env("INGEST_SALT")) return json(503, { ok: false, error: "not_configured" });
@@ -114,6 +119,7 @@ export function createHandler(deps: { env: (name: string) => string | undefined;
   }
 
   if (body.kind === "intent" || body.kind === "install") {
+    if (!exactKeys(body, body.kind === "intent" ? ["kind","product","version"] : ["kind","product","version","path","grade","channel","install_id"])) return json(400, {ok:false,error:"bad_input"});
     if (req.method !== "POST" || !PRODUCTS.includes(body.product as string) || !versionOk(body.version)) return json(400, { ok: false, error: "bad_input" });
     const row = { product: body.product, version: body.version, ip_hash: ip };
     if (body.kind === "intent") {
@@ -128,8 +134,8 @@ export function createHandler(deps: { env: (name: string) => string | undefined;
   }
 
   if (body.kind === "ping") {
-    const service = short(body.service, 16), path = short(body.path, 16), grade = short(body.grade, 16), version = short(body.version, 16), id = body.id ?? body.install_id;
-    if (!SERVICES.includes(service ?? "") || !PATHS.includes(path ?? "") || !GRADES.includes(grade ?? "") || !version || !idOk(id)) return json(400, { ok: false, error: "bad_ping" });
+    const service=body.service,path=body.path,grade=body.grade,version=body.version,id=body.id ?? body.install_id;
+    if(!exactKeys(body,["kind","service","path","grade","version","id","install_id"]) || !SERVICES.includes(service as string) || !PATHS.includes(path as string) || !GRADES.includes(grade as string) || !versionOk(version) || !legacyInstallIdOk(id) || body.id!==undefined && body.install_id!==undefined && body.id!==body.install_id)return json(400,{ok:false,error:"bad_ping"});
     const { error } = await db.from("setup_pings").upsert({ install_id: id as string, service, path, grade, version, ip_hash: ip }, { onConflict: "install_id", ignoreDuplicates: true });
     if (error) return json(500, { ok: false, error: "write" });
     return json(200, { ok: true });
@@ -138,6 +144,9 @@ export function createHandler(deps: { env: (name: string) => string | undefined;
   if (body.kind === "delete") {
     const id = body.id ?? body.install_id;
     if (!exactKeys(body, ["kind", "id", "install_id"]) || !idOk(id) || (body.id !== undefined && body.install_id !== undefined && body.id !== body.install_id)) return json(400, { ok: false, error: "bad_token" });
+    const protectedInstall = await db.from("telemetry_admissions").select("install_id").eq("install_id", id as string).maybeSingle();
+    if (protectedInstall.error) return json(503, {ok:false,error:"unavailable"});
+    if (protectedInstall.data) return json(403, {ok:false,error:"capability_required"});
     const deleted: Record<string, number> = {};
     for (const table of ["setup_pings", "install_registrations", "feedback_reports", "usage_weeks"]) {
       const { error, count } = await db.from(table).delete({ count: "exact" }).eq("install_id", id as string);

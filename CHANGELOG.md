@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.2.11 (2026-10-15)
+- A tighter, cleaner board on every screen: compact header, two-line rows, one spacing scale, and an update status you can see with a clear success or retry.
+- Setup now asks once to count installs and usage. Counts never include your plan, notes, dates or questions, and you can stop or delete them in Settings.
+
 ## 0.2.10 (2026-10-15)
 - Date edits save and can be retried after a failed write. VA dates follow the last active-duty day, including a confirmed override, with an earlier confirmation target and a separate 1-year filing boundary.
 - VA Class II dental guidance uses the current 180-day application window. Privacy, watch coverage and update help match the shipped routes.
