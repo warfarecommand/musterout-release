@@ -202,9 +202,9 @@ def seed_fingerprints(root=here.parent):
     # Budget raised from 100 KB to 150 KB for 0.2.0 (label and brief changed every current hash),
     # then to 200 KB for 0.2.4 (one more released seed version, no seed change). Compact the map
     # (shared digest table) before it reaches this bound; each release adds about 15 KB. Tracked in MTN-55.
-    # Raised to 210 KB for 0.2.8 only (one more identical released seed, 202,454 bytes) until MTN-55 compaction lands.
-    if len(canonical(result).encode()) >= 210000:
-        raise SystemExit("seed fingerprint map exceeds 210 KB")
+    # Raised to 230 KB for 0.2.8 and 0.2.9 (identical released seeds repeat in the map) until MTN-55 compaction lands.
+    if len(canonical(result).encode()) >= 230000:
+        raise SystemExit("seed fingerprint map exceeds 230 KB")
     return result
 
 

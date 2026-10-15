@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.2.9 (2026-10-15)
+- Update now works again. Boards on 0.2.6 or earlier showed "could not be verified" for 0.2.7 and 0.2.8 because those releases carried one note instead of two.
+- Includes everything in 0.2.7 (your coach) and 0.2.8 (works on Claude Free).
+- The pack stays usmc-2026.10.
+
 ## 0.2.8 (2026-10-15)
 - Works on Claude Free. An owner test on a Free account installed the board in a Project, saved checked items, and kept them after closing and reopening the app twice. Claude Pro at $20 a month gives more room for long coach chats.
 - Setup, help and the board no longer say Pro is required.
