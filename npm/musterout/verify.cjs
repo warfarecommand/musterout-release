@@ -5,6 +5,9 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const https = require('node:https');
+const http = require('node:http');
+const tls = require('node:tls');
+const zlib = require('node:zlib');
 const MAX_BYTES=2000000, MAX_TOTAL=16000000, MAX_FILES=256, V0='0.2.13', PACK='usmc-2026.10';
 const ROOTS={release:{'release-2026-10-6da55817':'lJHnis3XITfBHO3iy0tBM60/QydDw4fe4R3Znh6wuwY='},feed:{'feed-2026-10-05bbe934':'Wu+hyhxyklR3J/HQsbRq6XkCcWjNmiunuCfCb3G8TLo='}};
 const MIRRORS=['https://cdn.jsdelivr.net/npm/musterout@','https://unpkg.com/musterout@'];
@@ -55,7 +58,7 @@ function preflight(){const k=Buffer.from(VECTOR_KEY,'hex'),s=Buffer.from(VECTOR_
 function signed(k,s,m){need(edverify(b64(k,32),b64(s,64),Buffer.from(canonical(m))),'bad_signature');}
 function stamp(s){need(typeof s==='string'&&!s.startsWith('0000-')&&/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{3})?Z$/.test(s),'invalid_time');const n=Date.parse(s);need(Number.isFinite(n)&&new Date(n).toISOString()===(s.length===20?s.slice(0,-1)+'.000Z':s),'invalid_time');return n/1000;}
 function day(s){need(typeof s==='string'&&!s.startsWith('0000-')&&/^\d{4}-\d\d-\d\d$/.test(s),'invalid_day');const n=Date.parse(s+'T00:00:00Z');need(Number.isFinite(n)&&new Date(n).toISOString().slice(0,10)===s,'invalid_day');return n/86400000;}
-function version(s){need(typeof s==='string'&&s.length<=128&&/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(s),'invalid_version');return s.split('.').map(BigInt);}
+function version(s){need(typeof s==='string'&&s.length<=128&&!/[^0-9.]/.test(s)&&/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(s),'invalid_version');return s.split('.').map(BigInt);}
 function compare(a,b){a=version(a);b=version(b);for(let i=0;i<3;i++)if(a[i]!==b[i])return a[i]>b[i]?1:-1;return 0;}
 function digest(b){return crypto.createHash('sha256').update(b).digest('hex');}
 function hashcheck(raw,sha,size){need(Buffer.isBuffer(raw)&&raw.length<=MAX_BYTES,'transport_size');need(typeof sha==='string'&&/^[a-f0-9]{64}$/.test(sha),'invalid_hash');need(digest(raw)===sha,'hash_mismatch');if(size!==undefined)need(Number.isSafeInteger(size)&&size>0&&size<=MAX_BYTES&&raw.length===size,'size_mismatch');}
@@ -87,11 +90,119 @@ function feed_identity(e){return canonical(Object.fromEntries(['seq','created','
 function highwater(records,now,pack=PACK,roots=ROOTS){need(Array.isArray(records),'invalid_records');let best=null;const identities=new Map();for(const r of records){try{const at=stamp(r.accepted_at);need(at<=now&&r.highest_seq===r.envelope.seq,'invalid_record');const t=feed(record(r),at,pack,roots),seq=t.envelope.seq,identity=feed_identity(t.envelope);need(!identities.has(seq)||identities.get(seq)===identity,'equivocation');identities.set(seq,identity);if(!best||seq>best.envelope.seq)best=t;}catch(e){if(e.message==='equivocation')throw e;}}return best;}
 function replay(t,records,now,pack=PACK,roots=ROOTS){const b=highwater(records,now,pack,roots);if(b){need(t.envelope.seq>=b.envelope.seq,'replay');need(t.envelope.seq!==b.envelope.seq||feed_identity(t.envelope)===feed_identity(b.envelope),'equivocation');}return t;}
 function target_check(t,to,pack=PACK,roots=ROOTS){exact(t,['package','version','pack','mirrors','install','release','release_sha256','html_sha256','html_size','verifier']);need(t.package==='musterout'&&t.version===to&&t.pack===pack&&canonical(t.mirrors)===canonical(MIRRORS),'target_identity');const i=install(Buffer.from(canonical(t.install)),to,pack,roots);exact(t.release,['envelope','signature']);const e=t.release.envelope;exact(e,['product','kind','version','pack','sha256','size','created','key_id','notes','correction','impact','keychain']);need(e.version===to&&e.pack===pack&&e.product==='Muster Out'&&e.kind==='release','target_identity');const trusted=new Map(Object.entries(roots.release));need(Array.isArray(e.keychain)&&e.keychain.length<=16,'invalid_keychain');for(const l of e.keychain){exact(l,['key_id','public_key','signed_by','signature']);need(!trusted.has(l.key_id)&&trusted.has(l.signed_by),'invalid_keychain');signed(trusted.get(l.signed_by),l.signature,{product:'Muster Out',kind:'release',key_id:l.key_id,public_key:l.public_key,signed_by:l.signed_by});trusted.set(l.key_id,l.public_key);}need(trusted.has(e.key_id),'untrusted_key');signed(trusted.get(e.key_id),t.release.signature,e);const r=i.manifest.release;need(r.sha256===t.release_sha256&&r.html_sha256===e.sha256&&e.sha256===t.html_sha256&&r.html_size===e.size&&e.size===t.html_size&&canonical(i.manifest.notes)===canonical(e.notes),'target_binding');exact(t.verifier,['version','cjs_sha256','py_sha256']);version(t.verifier.version);need(['cjs_sha256','py_sha256'].every(k=>typeof t.verifier[k]==='string'&&/^[a-f0-9]{64}$/.test(t.verifier[k])),'verifier_audit');return t;}
-function get(url){need(FEEDS.includes(url)||MIRRORS.some(m=>url.startsWith(m)&&/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)\/(?:install.json|release.js|install\/[A-Za-z0-9_./-]+)$/.test(url.slice(m.length))),'unsafe_url');return new Promise((resolve,reject)=>{let done=false;const finish=(e,v)=>{if(done)return;done=true;clearTimeout(timer);e?reject(e):resolve(v);};const req=https.get(url,{headers:{'Accept-Encoding':'identity'},agent:false},res=>{if([401,403,407,451].includes(res.statusCode)){res.destroy();return finish(new Error('network_policy_refusal'));}if(res.statusCode!==200||(res.headers['content-encoding']||'identity')!=='identity'){res.destroy();return finish(new Error('http_refused'));}let size=0,parts=[];res.on('data',b=>{size+=b.length;if(size>MAX_BYTES){res.destroy();finish(new Error('transport_size'));}else parts.push(b);});res.on('end',()=>finish(null,Buffer.concat(parts)));res.on('error',()=>finish(new Error('http_unavailable')));});const timer=setTimeout(()=>{req.destroy();finish(new Error('http_timeout'));},20000);req.on('error',e=>finish(new Error(['EACCES','EPERM'].includes(e.code)?'network_policy_refusal':'http_unavailable')));});}
-async function retrieve(urls,validate,fetch=get){const good=[];for(const u of urls){try{const raw=await fetch(u);validate(raw);good.push(raw);}catch(e){if(e.message==='network_policy_refusal'||e.message==='aggregate_limit')throw e;}}need(good.length,'unavailable_or_invalid');need(good.every(x=>x.equals(good[0])),'mirror_conflict');return good[0];}
+// Registry integrity detects transport corruption only. Publisher signatures remain authority.
+const REGISTRY='https://registry.npmjs.org/musterout/';
+const MAX_ENTRIES=MAX_FILES+8, MAX_TAR=MAX_TOTAL+MAX_ENTRIES*1024+1024;
+function registry_urls(selected){version(selected);return {metadata:REGISTRY+selected,tarball:REGISTRY+'-/musterout-'+selected+'.tgz'};}
+function url_limit(url){
+ need(typeof url==='string'&&url.length>0&&!/[^\x21-\x7e]/.test(url),'unsafe_url');
+ if(FEEDS.includes(url))return MAX_BYTES;
+ const v='(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)';
+ if(new RegExp('^https://registry\\.npmjs\\.org/musterout/'+v+'$').test(url))return MAX_BYTES;
+ if(new RegExp('^https://registry\\.npmjs\\.org/musterout/-/musterout-'+v+'\\.tgz$').test(url))return MAX_TOTAL;
+ for(const m of MIRRORS)if(url.startsWith(m)){
+  const rest=url.slice(m.length),slash=rest.indexOf('/'),p=rest.slice(slash+1);
+  if(slash<0)continue;
+  try{version(rest.slice(0,slash));if(p!=='install.json'&&p!=='release.js'){need(p.startsWith('install/'),'unsafe_url');safe_path(p.slice(8));}return MAX_BYTES;}catch(_){}
+ }
+ throw new Error('unsafe_url');
+}
+function tar_read(raw){
+ need(Buffer.isBuffer(raw)&&raw.length>0&&raw.length<=MAX_TOTAL,'transport_size');
+ // Exactly one gzip member. Locate its deflate end before gunzip can process
+ // concatenated members; both bounded inflations remain linear in archive size.
+ let tar;try{need(raw.length>=18&&raw[0]===31&&raw[1]===139&&raw[2]===8&&!(raw[3]&224),'invalid_gzip');let at=10;const flags=raw[3];
+ if(flags&4){need(at+2<=raw.length,'invalid_gzip');at+=2+raw.readUInt16LE(at);}
+ for(const flag of [8,16])if(flags&flag){at=raw.indexOf(0,at);need(at>=0,'invalid_gzip');at++;}
+ if(flags&2)at+=2;need(at<raw.length-8,'invalid_gzip');
+ const first=zlib.inflateRawSync(raw.subarray(at),{maxOutputLength:MAX_TAR,info:true});need(at+first.engine.bytesWritten+8===raw.length,'invalid_gzip');
+ const result=zlib.gunzipSync(raw,{maxOutputLength:MAX_TAR,info:true});need(result.engine.bytesWritten===raw.length,'invalid_gzip');tar=result.buffer;}catch(_){throw new Error('invalid_gzip');}
+ need(tar.length%512===0,'invalid_tar');
+ const files=Object.create(null),seen=new Set();let at=0,total=0,ended=false;
+ const text=b=>{const i=b.indexOf(0),end=i<0?b.length:i;need(i<0||b.subarray(i).every(x=>x===0),'invalid_tar');need(b.subarray(0,end).every(x=>x>=32&&x<=126),'invalid_tar');return b.subarray(0,end).toString('ascii');};
+ const octal=b=>{need(b.every(x=>x===0||x===32||x>=48&&x<=55),'invalid_tar');const n=b.toString('ascii').replace(/^[\x00 ]+|[\x00 ]+$/g,'');need(/^[0-7]+$/.test(n),'invalid_tar');return parseInt(n,8);};
+ while(at+512<=tar.length){
+  const h=tar.subarray(at,at+512);
+  if(h.every(x=>x===0)){need(at+1024<=tar.length&&tar.subarray(at).every(x=>x===0),'invalid_tar');ended=true;break;}
+  const checksum=octal(h.subarray(148,156));let sum=0;for(let i=0;i<512;i++)sum+=i>=148&&i<156?32:h[i];need(sum===checksum,'invalid_tar');
+  need(h[156]===0||h[156]===48,'tar_type');need(h.subarray(157,257).every(x=>x===0),'tar_type');
+  const prefix=text(h.subarray(345,500)),name=(prefix?prefix+'/':'')+text(h.subarray(0,100));
+  need(name.startsWith('package/')&&name.length<=300&&/^[A-Za-z0-9_./-]+$/.test(name)&&name.split('/').every(x=>!['','.','..'].includes(x)),'unsafe_tar_path');
+  need(!seen.has(name.toLowerCase()),'duplicate_entry');seen.add(name.toLowerCase());need(seen.size<=MAX_ENTRIES,'file_count');
+  const size=octal(h.subarray(124,136));need(size<=MAX_BYTES,'transport_size');total+=size;need(total<=MAX_TOTAL,'aggregate_limit');
+  const end=at+512+size,next=at+512+Math.ceil(size/512)*512;need(next<=tar.length&&tar.subarray(end,next).every(x=>x===0),'invalid_tar');
+  files[name.slice(8)]=tar.subarray(at+512,end);at=next;
+ }
+ need(ended&&seen.size>0,'invalid_tar');return files;
+}
+async function registry_package(selected,fetch=get){
+ const u=registry_urls(selected),m=parse(await fetch(u.metadata));
+ need(m&&typeof m==='object'&&!Array.isArray(m),'registry_identity');
+ need(m.name==='musterout'&&m.version===selected&&m.dist&&m.dist.tarball===u.tarball,'registry_identity');
+ need(typeof m.dist.integrity==='string'&&m.dist.integrity.startsWith('sha512-'),'registry_integrity');
+ const expected=b64(m.dist.integrity.slice(7),64),raw=await fetch(u.tarball);
+ need(Buffer.isBuffer(raw)&&raw.length>0&&raw.length<=MAX_TOTAL,'transport_size');
+ need(crypto.createHash('sha512').update(raw).digest().equals(expected),'registry_integrity');return tar_read(raw);
+}
+function proxy_config(){
+ const raw=process.env.HTTPS_PROXY||process.env.https_proxy;if(!raw)return null;
+ let p;try{p=new URL(raw);}catch(_){throw Error('unsafe_proxy');}
+ need(['http:','https:'].includes(p.protocol)&&p.hostname&&!p.search&&!p.hash&&['','/'].includes(p.pathname),'unsafe_proxy');return p;
+}
+function proxy_agent(proxy){
+ const agent=new https.Agent({keepAlive:false});let connectRequest,tunnel,secure;
+ agent.abort=()=>{connectRequest?.destroy();secure?.destroy();tunnel?.destroy();};
+ agent.createConnection=(options,callback)=>{
+  const host=options.servername||options.host,authority=host+':'+(options.port||443),headers={Host:authority};let completed=false;
+  const done=(error,socket)=>{if(completed)return;completed=true;callback(error,socket);};
+  if(proxy.username||proxy.password)headers['Proxy-Authorization']='Basic '+Buffer.from(decodeURIComponent(proxy.username)+':'+decodeURIComponent(proxy.password)).toString('base64');
+  connectRequest=(proxy.protocol==='https:'?https:http).request({hostname:proxy.hostname.replace(/^\[|\]$/g,''),port:proxy.port||(proxy.protocol==='https:'?443:80),method:'CONNECT',path:authority,headers,agent:false,rejectUnauthorized:true});
+  connectRequest.on('connect',(response,socket,head)=>{
+   tunnel=socket;if(response.statusCode!==200||head.length){socket.destroy();return done(Error([401,403,407,451].includes(response.statusCode)?'network_policy_refusal':'http_refused'));}
+   secure=tls.connect({socket,servername:host,rejectUnauthorized:true});
+   secure.once('secureConnect',()=>done(null,secure));secure.once('error',e=>done(e));
+  });
+  connectRequest.once('error',e=>done(e));connectRequest.setTimeout(20000,()=>{connectRequest.destroy();done(Error('http_timeout'));});connectRequest.end();
+ };
+ return agent;
+}
+function get(url){
+ const limit=url_limit(url),proxy=proxy_config(),agent=proxy?proxy_agent(proxy):false;
+ return new Promise((resolve,reject)=>{
+  let done=false,req;const finish=(error,value)=>{if(done)return;done=true;clearTimeout(timer);if(agent){agent.abort();agent.destroy();}error?reject(error):resolve(value);};
+  const timer=setTimeout(()=>{req?.destroy();finish(Error('http_timeout'));},20000);
+  req=https.get(url,{headers:{'Accept-Encoding':'identity'},agent,rejectUnauthorized:true},res=>{
+   if([401,403,407,451].includes(res.statusCode)){res.destroy();return finish(Error('network_policy_refusal'));}
+   if(res.statusCode!==200||(res.headers['content-encoding']||'identity')!=='identity'){res.destroy();return finish(Error('http_refused'));}
+   let size=0,parts=[];res.on('data',b=>{size+=b.length;if(size>limit){res.destroy();finish(Error('transport_size'));}else parts.push(b);});res.on('end',()=>{if(!size)return finish(Error('transport_size'));finish(null,Buffer.concat(parts));});res.on('error',()=>finish(Error('http_unavailable')));
+  });
+  req.on('error',e=>finish(Error(['network_policy_refusal','http_refused','http_timeout'].includes(e.message)?e.message:['EACCES','EPERM'].includes(e.code)?'network_policy_refusal':'http_unavailable')));
+ });
+}
+async function retrieve(urls,validate,fetch=get){const good=[];for(const u of urls){try{const raw=await fetch(u);validate(raw);good.push(raw);}catch(_){}}need(good.length,'unavailable_or_invalid');need(good.every(x=>x.equals(good[0])),'mirror_conflict');return good[0];}
 function select_update(selected,current){need(compare(selected,V0)>=0&&compare(selected,current)>0,'not_newer');return selected;}
-async function fetch_feed(now,records=[],pack=PACK,fetch=get,roots=ROOTS){const good=[];for(const url of FEEDS){try{good.push(feed(await fetch(url),now,pack,roots));}catch(e){if(e.message==='network_policy_refusal')throw e;}}need(good.length,'unavailable_or_invalid');const identities=new Map();for(const t of good){const e=t.envelope;need(!identities.has(e.seq)||identities.get(e.seq)===feed_identity(e),'equivocation');identities.set(e.seq,feed_identity(e));}good.sort((a,b)=>b.envelope.seq-a.envelope.seq);return replay(good[0],records,now,pack,roots);}
-async function stage(selected,parent,pack=PACK,target=null,fetch=get,roots=ROOTS){version(selected);if(target!==null)target_check(target,selected,pack,roots);else need(compare(selected,V0)>=0,'below_bootstrap_floor');let total=0;const bounded=async u=>{const raw=await fetch(u);total+=raw.length;need(total<=MAX_TOTAL,'aggregate_limit');return raw;},urls=p=>MIRRORS.map(m=>m+selected+'/'+p);const iraw=await retrieve(urls('install.json'),x=>install(x,selected,pack,roots),bounded),i=install(iraw,selected,pack,roots);if(target!==null)need(canonical(i)===canonical(target.install),'target_changed');const rraw=await retrieve(urls('release.js'),x=>release(x,selected,pack,roots),bounded),files=Object.create(null);for(const [p,sha] of Object.entries(i.manifest.files))files[p]=await retrieve(urls('install/'+p),x=>hashcheck(x,sha),bounded);const checked=package_check(iraw,rraw,selected,files,pack,roots);need(fs.statSync(parent).isDirectory()&&!fs.lstatSync(parent).isSymbolicLink()&&fs.realpathSync(parent)===path.resolve(parent),'unsafe_stage_parent');const dest=fs.mkdtempSync(path.join(parent,'musterout-public-'));fs.chmodSync(dest,0o700);for(const [p,raw] of Object.entries(files)){safe_path(p);const targetPath=path.join(dest,p);fs.mkdirSync(path.dirname(targetPath),{recursive:true});let q=path.dirname(targetPath);while(q!==path.dirname(q)){need(!fs.lstatSync(q).isSymbolicLink(),'symlink_stage');q=path.dirname(q);}const fd=fs.openSync(targetPath,fs.constants.O_WRONLY|fs.constants.O_CREAT|fs.constants.O_EXCL|fs.constants.O_NOFOLLOW,0o600);try{fs.writeFileSync(fd,raw);}finally{fs.closeSync(fd);}hashcheck(fs.readFileSync(targetPath),i.manifest.files[p]);}return {stage:dest,version:selected,install:checked.install,release:{envelope:checked.release.envelope,signature:checked.release.signature},release_sha256:digest(rraw)};}
-async function main(){preflight();const cmd=process.argv[2];if(cmd==='preflight')return preflight();if(cmd==='stage-update'){need(process.argv.length===6,'update_requires_target_current_private_parent');select_update(process.argv[3],process.argv[4]);return stage(process.argv[3],process.argv[5]);}if(['stage','stage-resume'].includes(cmd)){need(process.argv.length===5,'stage_requires_version_and_private_parent');const target=cmd==='stage-resume'?parse(fs.readFileSync(0)):null;if(cmd==='stage-resume')target_check(target,process.argv[3]);return stage(process.argv[3],process.argv[4],PACK,target);}const v=parse(fs.readFileSync(0)),raw=v.transport===undefined?null:b64(v.transport,Buffer.from(v.transport,'base64').length);switch(cmd){case'release':return release(raw,v.version,v.pack);case'install':return install(raw,v.version,v.pack);case'feed':{const now=stamp(v.now);return replay(feed(raw,now,v.pack),v.records||[],now,v.pack);}case'feed-fetch':return fetch_feed(stamp(v.now),v.records||[],v.pack);case'target':return target_check(v.target,v.version,v.pack);default:throw new Error('unknown_command');}}
-module.exports={PACK,ROOTS,MIRRORS,FEEDS,PREFIX,SUFFIX,REQUIRED,OPTIONAL,V0,MAX_BYTES,MAX_TOTAL,canonical,parse,wrapper,b64,preflight,envelope,release,install,package_check,feed,feed_shape,highwater,replay,target_check,stage,select_update,fetch_feed,get,retrieve,hashcheck,safe_path,stamp,day,version,digest,record,feed_identity};
+async function fetch_feed(now,records=[],pack=PACK,fetch=get,roots=ROOTS){const good=[];for(const url of FEEDS){try{good.push(feed(await fetch(url),now,pack,roots));}catch(_){}}need(good.length,'unavailable_or_invalid');const identities=new Map();for(const t of good){const e=t.envelope;need(!identities.has(e.seq)||identities.get(e.seq)===feed_identity(e),'equivocation');identities.set(e.seq,feed_identity(e));}good.sort((a,b)=>b.envelope.seq-a.envelope.seq);return replay(good[0],records,now,pack,roots);}
+async function stage(selected,parent,pack=PACK,target=null,fetch=get,roots=ROOTS,local=null){version(selected);if(target!==null)target_check(target,selected,pack,roots);else need(compare(selected,V0)>=0,'below_bootstrap_floor');// Cache both success and failure: one registry download per stage, no disk extraction.
+let archive=null,registryTried=false;const totals=new Map();
+const bounded=async u=>{const key=u.startsWith(REGISTRY)?REGISTRY:MIRRORS.find(m=>u.startsWith(m));need(key&&(totals.get(key)||0)<=MAX_TOTAL,'aggregate_limit');const raw=await fetch(u);need(Buffer.isBuffer(raw)&&raw.length>0&&raw.length<=url_limit(u),'transport_size');totals.set(key,(totals.get(key)||0)+raw.length);need(totals.get(key)<=MAX_TOTAL,'aggregate_limit');return raw;};
+const registry=registry_urls(selected).tarball;
+const retrieve_path=async(p,validate)=>{
+ if(local!==null){need(Object.hasOwn(local,p),'unavailable_or_invalid');validate(local[p]);return local[p];}
+ const source=async u=>{
+  if(u!==registry)return bounded(u);
+  if(!registryTried){registryTried=true;try{archive=await registry_package(selected,bounded);}catch(_){archive=null;}}
+  need(archive&&Object.hasOwn(archive,p),'unavailable_or_invalid');return archive[p];
+ };
+ return retrieve([registry,...MIRRORS.map(m=>m+selected+'/'+p)],validate,source);
+};
+const iraw=await retrieve_path('install.json',x=>install(x,selected,pack,roots)),i=install(iraw,selected,pack,roots);if(target!==null)need(canonical(i)===canonical(target.install),'target_changed');const rraw=await retrieve_path('release.js',x=>release(x,selected,pack,roots)),files=Object.create(null);for(const [p,sha] of Object.entries(i.manifest.files))files[p]=await retrieve_path('install/'+p,x=>hashcheck(x,sha));const checked=package_check(iraw,rraw,selected,files,pack,roots);need(fs.statSync(parent).isDirectory()&&!fs.lstatSync(parent).isSymbolicLink()&&fs.realpathSync(parent)===path.resolve(parent),'unsafe_stage_parent');const dest=fs.mkdtempSync(path.join(parent,'musterout-public-'));fs.chmodSync(dest,0o700);for(const [p,raw] of Object.entries(files)){safe_path(p);const targetPath=path.join(dest,p);fs.mkdirSync(path.dirname(targetPath),{recursive:true});let q=path.dirname(targetPath);while(q!==path.dirname(q)){need(!fs.lstatSync(q).isSymbolicLink(),'symlink_stage');q=path.dirname(q);}const fd=fs.openSync(targetPath,fs.constants.O_WRONLY|fs.constants.O_CREAT|fs.constants.O_EXCL|fs.constants.O_NOFOLLOW,0o600);try{fs.writeFileSync(fd,raw);}finally{fs.closeSync(fd);}hashcheck(fs.readFileSync(targetPath),i.manifest.files[p]);}return {stage:dest,version:selected,install:checked.install,release:{envelope:checked.release.envelope,signature:checked.release.signature},release_sha256:digest(rraw)};}
+function read_local(file,limit){
+ const fd=fs.openSync(file,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW|fs.constants.O_NONBLOCK);
+ try{const st=fs.fstatSync(fd);need(st.isFile()&&st.size>0&&st.size<=limit,'transport_size');const raw=Buffer.alloc(limit+1);let size=0,n;while(size<=limit&&(n=fs.readSync(fd,raw,size,limit+1-size,null))>0)size+=n;need(size>0&&size<=limit,'transport_size');return raw.subarray(0,size);}finally{fs.closeSync(fd);}
+}
+function transport_integrity(raw,integrity){if(integrity!==null){need(typeof integrity==='string'&&integrity.startsWith('sha512-'),'registry_integrity');need(crypto.createHash('sha512').update(raw).digest().equals(b64(integrity.slice(7),64)),'registry_integrity');}}
+async function stage_tarball(selected,file,parent,pack=PACK,target=null,roots=ROOTS,integrity=null){const raw=read_local(file,MAX_TOTAL);transport_integrity(raw,integrity);return stage(selected,parent,pack,target,()=>{throw Error('offline_network_refused');},roots,tar_read(raw));}
+function feed_file(file,now,records=[],pack=PACK,roots=ROOTS){return replay(feed(read_local(file,MAX_BYTES),now,pack,roots),records,now,pack,roots);}
+async function main(){preflight();const cmd=process.argv[2];if(cmd==='preflight')return preflight();if(['stage-tarball','stage-resume-tarball','stage-update-tarball'].includes(cmd)){const update=cmd==='stage-update-tarball',resume=cmd==='stage-resume-tarball',n=update?7:6;need(process.argv.length===n||process.argv.length===n+1,'tarball_arguments');const selected=process.argv[3];if(update)select_update(selected,process.argv[4]);const target=resume?parse(fs.readFileSync(0)):null;if(resume)target_check(target,selected);const offset=update?5:4;return stage_tarball(selected,process.argv[offset],process.argv[offset+1],PACK,target,ROOTS,process.argv[offset+2]??null);}if(cmd==='feed-file'){need(process.argv.length===4,'feed_file_arguments');const value=parse(fs.readFileSync(0));return feed_file(process.argv[3],stamp(value.now),value.records||[],value.pack||PACK);}if(cmd==='stage-update'){need(process.argv.length===6,'update_requires_target_current_private_parent');select_update(process.argv[3],process.argv[4]);return stage(process.argv[3],process.argv[5]);}if(['stage','stage-resume'].includes(cmd)){need(process.argv.length===5,'stage_requires_version_and_private_parent');const target=cmd==='stage-resume'?parse(fs.readFileSync(0)):null;if(cmd==='stage-resume')target_check(target,process.argv[3]);return stage(process.argv[3],process.argv[4],PACK,target);}const v=parse(fs.readFileSync(0)),raw=v.transport===undefined?null:b64(v.transport,Buffer.from(v.transport,'base64').length);switch(cmd){case'release':return release(raw,v.version,v.pack);case'install':return install(raw,v.version,v.pack);case'feed':{const now=stamp(v.now);return replay(feed(raw,now,v.pack),v.records||[],now,v.pack);}case'feed-fetch':return fetch_feed(stamp(v.now),v.records||[],v.pack);case'target':return target_check(v.target,v.version,v.pack);default:throw new Error('unknown_command');}}
+module.exports={PACK,ROOTS,MIRRORS,FEEDS,PREFIX,SUFFIX,REQUIRED,OPTIONAL,V0,MAX_BYTES,MAX_TOTAL,MAX_TAR,REGISTRY,registry_urls,url_limit,proxy_config,tar_read,registry_package,read_local,transport_integrity,stage_tarball,feed_file,canonical,parse,wrapper,b64,preflight,envelope,release,install,package_check,feed,feed_shape,highwater,replay,target_check,stage,select_update,fetch_feed,get,retrieve,hashcheck,safe_path,stamp,day,version,digest,record,feed_identity};
 if(require.main===module)main().then(v=>process.stdout.write(canonical(v)+'\n')).catch(e=>{process.stderr.write(JSON.stringify({error:/^[a-z_]{1,80}$/.test(e.message)?e.message:'verification_failed'})+'\n');process.exitCode=1;});

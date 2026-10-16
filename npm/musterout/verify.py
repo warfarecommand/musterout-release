@@ -5,19 +5,26 @@ This file runs only after an independently supplied SHA-256 pin is checked.
 Never import downloaded product code. CLI input/output contains public data only.
 """
 import base64
+import zlib
 import datetime as dt
 import decimal
 import hashlib
 import http.client
+import io
+import socket
+import ssl
 import json
 import os
 from pathlib import Path
 import re
 import sys
+import stat
 import tempfile
 import time
+import threading
 import urllib.error
 import urllib.request
+import urllib.parse
 
 MAX_BYTES = 2_000_000
 MAX_TOTAL = 16_000_000
@@ -179,7 +186,7 @@ def day(s):
 
 
 def version(v):
-    need(type(v) is str and len(v) <= 128 and re.fullmatch(r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)', v), 'invalid_version')
+    need(type(v) is str and len(v) <= 128 and not re.search(r'[^0-9.]', v) and re.fullmatch(r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)', v), 'invalid_version')
     return tuple(int(x) for x in v.split('.'))
 
 
@@ -466,26 +473,296 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         raise ValueError('redirect_refused')
 
 
-def get(url):
-    allowed = url in FEEDS or any(url.startswith(m) and re.fullmatch(r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)/(?:install.json|release.js|install/[A-Za-z0-9_./-]+)', url[len(m):]) for m in MIRRORS)
-    need(allowed, 'unsafe_url')
-    req = urllib.request.Request(url, headers={'Accept-Encoding': 'identity'})
-    # Empty proxy/cookie handlers: no ambient credentials or redirect handling.
-    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
-    started = time.monotonic()
+# Registry integrity detects transport corruption only. Publisher signatures remain authority.
+REGISTRY = 'https://registry.npmjs.org/musterout/'
+MAX_ENTRIES = MAX_FILES + 8
+MAX_TAR = MAX_TOTAL + MAX_ENTRIES*1024 + 1024
+
+
+def registry_urls(selected):
+    version(selected)
+    return {'metadata': REGISTRY+selected, 'tarball': REGISTRY+'-/musterout-'+selected+'.tgz'}
+
+
+def url_limit(url):
+    need(type(url) is str and re.fullmatch(r'[\x21-\x7e]+', url), 'unsafe_url')
+    if url in FEEDS:
+        return MAX_BYTES
+    v = r'(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)'
+    if re.fullmatch(r'https://registry\.npmjs\.org/musterout/'+v, url):
+        return MAX_BYTES
+    if re.fullmatch(r'https://registry\.npmjs\.org/musterout/-/musterout-'+v+r'\.tgz', url):
+        return MAX_TOTAL
+    for m in MIRRORS:
+        if not url.startswith(m): continue
+        try:
+            selected, p = url[len(m):].split('/', 1)
+            version(selected)
+            if p not in ('install.json', 'release.js'):
+                need(p.startswith('install/'), 'unsafe_url')
+                safe_path(p[8:])
+            return MAX_BYTES
+        except ValueError:
+            pass
+    raise ValueError('unsafe_url')
+
+
+def tar_read(raw):
+    need(type(raw) is bytes and 0 < len(raw) <= MAX_TOTAL, 'transport_size')
+    # Bounded decompression also validates the gzip CRC and complete stream.
+    # Exactly one gzip member: concatenation cannot multiply decoder work.
     try:
-        with opener.open(req, timeout=20) as response:
+        decoder = zlib.decompressobj(31)
+        tar = decoder.decompress(raw, MAX_TAR+1)
+        need(len(tar) <= MAX_TAR and decoder.eof and not decoder.unused_data, 'invalid_gzip')
+    except zlib.error:
+        raise ValueError('invalid_gzip') from None
+    need(len(tar) % 512 == 0, 'invalid_tar')
+    files, seen, at, total, ended = {}, set(), 0, 0, False
+    def text(b):
+        end = b.find(b'\0')
+        if end < 0: end = len(b)
+        need(not any(b[end:]) and all(32 <= x <= 126 for x in b[:end]), 'invalid_tar')
+        return b[:end].decode('ascii')
+    def octal(b):
+        need(all(x in (0, 32) or 48 <= x <= 55 for x in b), 'invalid_tar')
+        n = b.strip(b'\0 ')
+        need(re.fullmatch(b'[0-7]+', n), 'invalid_tar')
+        return int(n, 8)
+    while at+512 <= len(tar):
+        h = tar[at:at+512]
+        if not any(h):
+            need(at+1024 <= len(tar) and not any(tar[at:]), 'invalid_tar')
+            ended = True
+            break
+        checksum = octal(h[148:156])
+        need(sum(h[:148])+8*32+sum(h[156:]) == checksum, 'invalid_tar')
+        need(h[156] in (0, 48) and not any(h[157:257]), 'tar_type')
+        prefix = text(h[345:500])
+        name = (prefix+'/' if prefix else '')+text(h[:100])
+        need(name.startswith('package/') and len(name) <= 300 and re.fullmatch(r'[A-Za-z0-9_./-]+', name) and all(x not in ('', '.', '..') for x in name.split('/')), 'unsafe_tar_path')
+        need(name.lower() not in seen, 'duplicate_entry')
+        seen.add(name.lower())
+        need(len(seen) <= MAX_ENTRIES, 'file_count')
+        size = octal(h[124:136])
+        need(size <= MAX_BYTES, 'transport_size')
+        total += size
+        need(total <= MAX_TOTAL, 'aggregate_limit')
+        end, next_at = at+512+size, at+512+((size+511)//512)*512
+        need(next_at <= len(tar) and not any(tar[end:next_at]), 'invalid_tar')
+        files[name[8:]] = tar[at+512:end]
+        at = next_at
+    need(ended and seen, 'invalid_tar')
+    return files
+
+
+def registry_package(selected, fetch=None):
+    fetch = fetch or get
+    u = registry_urls(selected)
+    m = parse(fetch(u['metadata']))
+    need(type(m) is dict, 'registry_identity')
+    need(m.get('name') == 'musterout' and m.get('version') == selected and type(m.get('dist')) is dict and m['dist'].get('tarball') == u['tarball'], 'registry_identity')
+    integrity = m['dist'].get('integrity')
+    need(type(integrity) is str and integrity.startswith('sha512-'), 'registry_integrity')
+    expected = b64(integrity[7:], 64)
+    raw = fetch(u['tarball'])
+    need(type(raw) is bytes and 0 < len(raw) <= MAX_TOTAL, 'transport_size')
+    need(hashlib.sha512(raw).digest() == expected, 'registry_integrity')
+    return tar_read(raw)
+
+
+def proxy_config():
+    raw = os.environ.get('HTTPS_PROXY') or os.environ.get('https_proxy')
+    if not raw: return None
+    try:
+        p = urllib.parse.urlsplit(raw)
+        need(p.scheme in ('http', 'https') and p.hostname and p.path in ('', '/') and not p.query and not p.fragment, 'unsafe_proxy')
+        port = p.port or (443 if p.scheme == 'https' else 80)
+        auth = None
+        if p.username is not None or p.password is not None:
+            auth = 'Basic '+base64.b64encode((urllib.parse.unquote(p.username or '')+':'+urllib.parse.unquote(p.password or '')).encode()).decode()
+        return p.scheme, p.hostname, port, auth
+    except ValueError:
+        raise ValueError('unsafe_proxy') from None
+
+
+class TLSReader(io.RawIOBase):
+    def __init__(self, stream):
+        self._sock = stream
+        stream.readers += 1
+    def close(self):
+        if not self.closed:
+            self._sock.readers -= 1
+            if self._sock.closed and not self._sock.readers: self._sock.transport.close()
+        super().close()
+    def readable(self): return True
+    def readinto(self, buffer):
+        raw = self._sock.recv(len(buffer))
+        buffer[:len(raw)] = raw
+        return len(raw)
+
+
+class TLSStream:
+    """Verified origin TLS inside a verified TLS connection to an HTTPS proxy."""
+    def __init__(self, transport, context, hostname):
+        self.transport = transport
+        self.readers, self.closed = 0, False
+        self.incoming, self.outgoing = ssl.MemoryBIO(), ssl.MemoryBIO()
+        self.tls = context.wrap_bio(self.incoming, self.outgoing, server_hostname=hostname)
+        self.call(self.tls.do_handshake)
+    def flush(self):
+        while self.outgoing.pending:
+            self.transport.sendall(self.outgoing.read())
+    def call(self, function, *args):
+        while True:
+            try:
+                result = function(*args)
+                self.flush()
+                return result
+            except ssl.SSLWantWriteError:
+                self.flush()
+            except ssl.SSLWantReadError:
+                self.flush()
+                raw = self.transport.recv(65536)
+                if raw: self.incoming.write(raw)
+                else: self.incoming.write_eof()
+    def sendall(self, raw):
+        at = 0
+        while at < len(raw): at += self.call(self.tls.write, raw[at:])
+    def recv(self, size):
+        try: return self.call(self.tls.read, size)
+        except (ssl.SSLZeroReturnError, ssl.SSLEOFError): return b''
+    def makefile(self, mode):
+        need(mode == 'rb', 'http_refused')
+        return io.BufferedReader(TLSReader(self))
+    def settimeout(self, value): self.transport.settimeout(value)
+    def close(self):
+        self.closed = True
+        if not self.readers: self.transport.close()
+
+
+class EnvironmentProxy(urllib.request.ProxyHandler):
+    def __init__(self, proxy):
+        super().__init__({'https': 'http://proxy.invalid'})
+        self.proxy = proxy
+    def proxy_open(self, req, proxy, type):
+        scheme, host, port, auth = self.proxy
+        if auth: req.add_header('Proxy-authorization', auth)
+        req.set_proxy(('['+host+']' if ':' in host else host)+':'+str(port), 'http')
+        return None
+
+
+class RequestDeadline:
+    """One monotonic deadline, including DNS and trickled headers; no late I/O."""
+    def __init__(self):
+        self.expires = time.monotonic() + 20
+        self.sockets, self.closed, self.lock = [], False, threading.Lock()
+    def remaining(self):
+        remaining = self.expires - time.monotonic()
+        need(not self.closed and remaining > 0, 'http_timeout')
+        return remaining
+    def register(self, sock):
+        with self.lock:
+            if self.closed or time.monotonic() >= self.expires:
+                sock.close()
+                raise ValueError('http_timeout')
+            self.sockets.append(sock)
+        return sock
+    def close(self):
+        with self.lock:
+            self.closed = True
+            sockets, self.sockets = self.sockets, []
+        for sock in sockets:
+            try: sock.shutdown(socket.SHUT_RDWR)
+            except OSError: pass
+            try: sock.close()
+            except OSError: pass
+    def connect(self, address, timeout=None, source_address=None):
+        self.remaining()
+        addresses = socket.getaddrinfo(*address, type=socket.SOCK_STREAM)
+        self.remaining()  # A delayed resolver cannot start a connection after expiry.
+        last = OSError('http_unavailable')
+        for family, kind, protocol, _, endpoint in addresses:
+            raw = self.register(socket.socket(family, kind, protocol))
+            try:
+                raw.settimeout(self.remaining())
+                if source_address: raw.bind(source_address)
+                raw.connect(endpoint)
+                return raw
+            except OSError as error:
+                raw.close()
+                last = error
+        raise last
+    def tls(self, raw, context, hostname):
+        self.remaining()
+        secure = self.register(context.wrap_socket(raw, server_hostname=hostname, do_handshake_on_connect=False))
+        secure.settimeout(self.remaining())
+        secure.do_handshake()
+        return secure
+
+
+class TunnelHTTPSHandler(urllib.request.HTTPSHandler):
+    def __init__(self, proxy, deadline):
+        super().__init__(context=ssl.create_default_context())
+        self.proxy, self.deadline = proxy, deadline
+    def https_open(self, req):
+        proxy, deadline = self.proxy, self.deadline
+        class Connection(http.client.HTTPSConnection):
+            def connect(self):
+                origin = self._tunnel_host if proxy else self.host
+                self.sock = deadline.connect((proxy[1], proxy[2]) if proxy else (self.host, self.port), source_address=self.source_address)
+                try:
+                    if proxy:
+                        if proxy[0] == 'https': self.sock = deadline.tls(self.sock, ssl.create_default_context(), proxy[1])
+                        try: self._tunnel()
+                        except OSError as error:
+                            status = re.search(r'Tunnel connection failed: ([0-9]{3})', str(error))
+                            if status: raise ValueError('network_policy_refusal' if int(status[1]) in (401, 403, 407, 451) else 'http_refused') from None
+                            raise
+                    self.sock = TLSStream(self.sock, self._context, origin) if proxy and proxy[0] == 'https' else deadline.tls(self.sock, self._context, origin)
+                except Exception:
+                    # _tunnel() may already have closed and cleared self.sock.
+                    if self.sock is not None:
+                        try: self.sock.close()
+                        except OSError: pass
+                    raise
+        return self.do_open(Connection, req, context=self._context)
+
+
+def get(url):
+    limit, proxy = url_limit(url), proxy_config()
+    deadline, complete, result = RequestDeadline(), threading.Event(), {}
+    def worker():
+        try: result['raw'] = get_response(url, limit, proxy, deadline)
+        except Exception as error: result['error'] = error
+        finally: complete.set()
+    # A stalled resolver cannot hold the caller past its deadline. All registered
+    # sockets are shut down at expiry, and delayed DNS cannot initiate later I/O.
+    threading.Thread(target=worker, daemon=True).start()
+    try:
+        need(complete.wait(deadline.remaining()), 'http_timeout')
+        deadline.remaining()
+        if 'error' in result: raise result['error']
+        return result['raw']
+    finally: deadline.close()
+
+
+def get_response(url, limit, proxy, deadline):
+    req = urllib.request.Request(url, headers={'Accept-Encoding': 'identity'})
+    handlers = [EnvironmentProxy(proxy) if proxy else urllib.request.ProxyHandler({}), TunnelHTTPSHandler(proxy, deadline)]
+    opener = urllib.request.build_opener(*handlers, NoRedirect())
+    try:
+        with opener.open(req, timeout=deadline.remaining()) as response:
             need(response.status == 200 and response.url == url and response.headers.get('Content-Encoding', 'identity') == 'identity', 'http_refused')
             parts, size = [], 0
             while True:
-                remaining = 20 - (time.monotonic() - started)
-                need(remaining > 0, 'http_timeout')
+                remaining = deadline.remaining()
                 if response.fp is not None:
                     response.fp.raw._sock.settimeout(remaining)
-                chunk = response.read1(min(65536, MAX_BYTES+1-size))
+                chunk = response.read1(min(65536, limit+1-size))
                 if not chunk: break
                 parts.append(chunk); size += len(chunk)
-                need(size <= MAX_BYTES, 'transport_size')
+                need(size <= limit, 'transport_size')
             need(size > 0, 'transport_size')
             return b''.join(parts)
     except urllib.error.HTTPError as e:
@@ -509,9 +786,8 @@ def retrieve(urls, validate, fetch=get):
             raw = fetch(url)
             validate(raw)
             good.append(raw)
-        except (ValueError, OSError) as e:
-            if str(e) in ('network_policy_refusal','aggregate_limit'):
-                raise
+        except (ValueError, OSError):
+            pass
     need(good, 'unavailable_or_invalid')
     need(all(x == good[0] for x in good), 'mirror_conflict')
     return good[0]
@@ -528,8 +804,8 @@ def fetch_feed(now, records=(), pack=PACK, fetch=get, roots=None):
         try:
             t = feed(fetch(url), now, pack, roots)
             good.append(t)
-        except (ValueError, OSError) as error:
-            if str(error) == 'network_policy_refusal': raise
+        except (ValueError, OSError):
+            pass
     need(good, 'unavailable_or_invalid')
     identities = {}
     for t in good:
@@ -539,28 +815,47 @@ def fetch_feed(now, records=(), pack=PACK, fetch=get, roots=None):
     return replay(max(good, key=lambda t: t['envelope']['seq']), list(records), now, pack, roots)
 
 
-def stage(selected, parent, pack=PACK, target=None, fetch=get, roots=None):
+def stage(selected, parent, pack=PACK, target=None, fetch=get, roots=None, local=None):
     version(selected)
     if target is not None:
         target_check(target, selected, pack, roots)
     else:
         need(version(selected) >= version(V0), 'below_bootstrap_floor')
-    total = 0
+    archive, registry_tried = None, False
+    totals = {}
     def bounded(url):
-        nonlocal total
+        key = REGISTRY if url.startswith(REGISTRY) else next((m for m in MIRRORS if url.startswith(m)), None)
+        need(key and totals.get(key, 0) <= MAX_TOTAL, 'aggregate_limit')
         raw = fetch(url)
-        total += len(raw)
-        need(total <= MAX_TOTAL, 'aggregate_limit')
+        need(type(raw) is bytes and 0 < len(raw) <= url_limit(url), 'transport_size')
+        totals[key] = totals.get(key, 0)+len(raw)
+        need(totals[key] <= MAX_TOTAL, 'aggregate_limit')
         return raw
-    urls = lambda p: [m + selected + '/' + p for m in MIRRORS]
-    iraw = retrieve(urls('install.json'), lambda x: install(x, selected, pack, roots), bounded)
+    registry = registry_urls(selected)['tarball']
+    def retrieve_path(p, validate):
+        if local is not None:
+            need(p in local, 'unavailable_or_invalid')
+            validate(local[p])
+            return local[p]
+        def source(url):
+            nonlocal archive, registry_tried
+            if url != registry:
+                return bounded(url)
+            if not registry_tried:
+                registry_tried = True
+                try: archive = registry_package(selected, bounded)
+                except (ValueError, OSError): archive = None
+            need(archive is not None and p in archive, 'unavailable_or_invalid')
+            return archive[p]
+        return retrieve([registry]+[m+selected+'/'+p for m in MIRRORS], validate, source)
+    iraw = retrieve_path('install.json', lambda x: install(x, selected, pack, roots))
     i = install(iraw, selected, pack, roots)
     if target is not None:
         need(canonical(i) == canonical(target['install']), 'target_changed')
-    rraw = retrieve(urls('release.js'), lambda x: release(x, selected, pack, roots), bounded)
+    rraw = retrieve_path('release.js', lambda x: release(x, selected, pack, roots))
     files = {}
     for p, sha in i['manifest']['files'].items():
-        files[p] = retrieve(urls('install/'+p), lambda x: hashcheck(x, sha), bounded)
+        files[p] = retrieve_path('install/'+p, lambda x: hashcheck(x, sha))
     checked = package_check(iraw, rraw, selected, files, pack, roots)
     # Fresh private staging only. Every parent is created by this process.
     parent = Path(parent)
@@ -588,6 +883,32 @@ def stage(selected, parent, pack=PACK, target=None, fetch=get, roots=None):
     return {'stage': str(dest), 'version': selected, 'install': checked['install'], 'release': {k: checked['release'][k] for k in ['envelope','signature']}, 'release_sha256': digest(rraw)}
 
 
+def read_local(file, limit):
+    fd = os.open(file, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+    with os.fdopen(fd, 'rb') as source:
+        info = os.fstat(source.fileno())
+        need(stat.S_ISREG(info.st_mode) and 0 < info.st_size <= limit, 'transport_size')
+        raw = source.read(limit+1)
+    need(0 < len(raw) <= limit, 'transport_size')
+    return raw
+
+
+def transport_integrity(raw, integrity):
+    if integrity is not None:
+        need(type(integrity) is str and integrity.startswith('sha512-'), 'registry_integrity')
+        need(hashlib.sha512(raw).digest() == b64(integrity[7:], 64), 'registry_integrity')
+
+
+def stage_tarball(selected, file, parent, pack=PACK, target=None, roots=None, integrity=None):
+    raw = read_local(file, MAX_TOTAL)
+    transport_integrity(raw, integrity)
+    return stage(selected, parent, pack, target, roots=roots, local=tar_read(raw))
+
+
+def feed_file(file, now, records=(), pack=PACK, roots=None):
+    return replay(feed(read_local(file, MAX_BYTES), now, pack, roots), list(records), now, pack, roots)
+
+
 def main():
     preflight()
     if len(sys.argv) == 2 and sys.argv[1] == 'preflight':
@@ -595,7 +916,21 @@ def main():
         return
     need(len(sys.argv) >= 2, 'command_required')
     command = sys.argv[1]
-    if command == 'stage-update':
+    if command in ('stage-tarball', 'stage-resume-tarball', 'stage-update-tarball'):
+        update, resume = command == 'stage-update-tarball', command == 'stage-resume-tarball'
+        n = 6 if update else 5
+        need(len(sys.argv) in (n, n+1), 'tarball_arguments')
+        selected = sys.argv[2]
+        if update: select_update(selected, sys.argv[3])
+        target = parse(sys.stdin.buffer.read(MAX_BYTES+1)) if resume else None
+        if resume: target_check(target, selected)
+        offset = 4 if update else 3
+        result = stage_tarball(selected, sys.argv[offset], sys.argv[offset+1], target=target, integrity=sys.argv[offset+2] if len(sys.argv) > offset+2 else None)
+    elif command == 'feed-file':
+        need(len(sys.argv) == 3, 'feed_file_arguments')
+        value = parse(sys.stdin.buffer.read(MAX_BYTES+1))
+        result = feed_file(sys.argv[2], stamp(value['now']), value.get('records', []), value.get('pack', PACK))
+    elif command == 'stage-update':
         need(len(sys.argv) == 5, 'update_requires_target_current_private_parent')
         select_update(sys.argv[2], sys.argv[3])
         result = stage(sys.argv[2], sys.argv[4])
@@ -630,5 +965,5 @@ if __name__ == '__main__':
     except Exception as error:
         # Never print raw input, server response, or arbitrary exception content.
         known = str(error)
-        print(json.dumps({'error': known if re.fullmatch(r'[a-z_]{1,80}', known) else 'verification_failed'}), file=sys.stderr)
+        print(canonical({'error': known if re.fullmatch(r'[a-z_]{1,80}', known) else 'verification_failed'}), file=sys.stderr)
         sys.exit(1)

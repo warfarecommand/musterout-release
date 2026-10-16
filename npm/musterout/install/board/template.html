@@ -780,6 +780,8 @@ body{margin:0;font:400 var(--text-md)/var(--lh-body) var(--sans)}
 .panel>h2+p,.panel>h3+p{margin-top:var(--s-2)!important}.panel>p+.ctl,.panel>p+.btn,.panel>h2+.btn,.panel>h2+.form{margin-top:var(--s-3)}
 .phead,.c1-next-head{display:flex;align-items:center;justify-content:space-between;gap:var(--s-2);margin-bottom:var(--s-2)}
 .c1-next{margin-bottom:var(--s-2)}.c1-next h2{margin:0}
+.c1-leave-link{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);width:100%;text-align:left;margin-bottom:var(--s-4);font-size:var(--text-sm)}
+.c1-leave-chevron{width:var(--icon-sm);height:var(--icon-sm);flex:none}
 .c1-intro{margin:0 0 var(--s-4)!important}.c1-counts{flex-wrap:wrap;gap:var(--s-2);margin:0 0 var(--s-6)}
 .c1-rows,.c1-group,.c1-month .rows,.c1-claim-steps .rows{border-radius:var(--radius-md)}
 .c1-group{margin:var(--s-4) 0;padding:0}.k1-plan-filters+.c1-group{margin-top:0}
@@ -931,7 +933,7 @@ input[type=checkbox]:checked::after{width:var(--s-3);height:calc(var(--s-2) - va
  #app nav.tabs button{flex-direction:row;justify-content:flex-start;gap:var(--s-3);padding:var(--s-2) var(--s-3);font-size:var(--text-md)}
  .c1-overlay{display:flex;align-items:center;padding:var(--s-6)}.c1-dialog{max-height:calc(100dvh - var(--s-8) - var(--s-4));border-radius:var(--radius-lg)}.c1-wide{display:block}.toast{bottom:var(--s-6)}
 }
-html[data-large-text] #app nav.tabs button{flex-direction:column}html[data-large-text] #app nav.tabs{grid-template-columns:repeat(auto-fit,minmax(calc(var(--target) * 2),1fr))}html[data-large-text] #app.wrap{/* wc-exception: large-nav-clearance */ padding-bottom:calc(var(--nav-height) * 2 + var(--s-8))}
+html[data-large-text] #app nav.tabs button{flex-direction:column}html[data-large-text] #app nav.tabs{grid-template-columns:repeat(auto-fit,minmax(calc(var(--target) * 3),1fr))}html[data-large-text] #app.wrap{/* wc-exception: large-nav-clearance */ padding-bottom:calc(var(--nav-height) * 2 + var(--s-8))}
 html[data-large-text] #app .top,html[data-large-text] #app.c1-today .top,html[data-large-text] #app .top.long-title{display:grid;grid-template-columns:minmax(0,1fr) var(--target);gap:var(--s-2)}
 html[data-large-text] #app .top>div:first-child,html[data-large-text] #app.c1-today .top>div:first-child{grid-column:1;grid-row:1}
 html[data-large-text] #app .top #trustHeader,html[data-large-text] #app .top.long-title #trustHeader,html[data-large-text] #app.c1-today #trustHeader{grid-column:2;grid-row:1}
@@ -1084,8 +1086,8 @@ else { var c1Media = matchMedia("(prefers-color-scheme: dark)"); var c1ApplyThem
 }
 var SEED = JSON.parse(document.getElementById("seed").textContent);
 var DAY = 86400000;
-var UPDATE_MESSAGE = "Update Muster Out. Keep my existing board at the same address. Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.cjs (SHA-256 88f05a85766ffae6618292535156f22fca31d811b8c3ae68307e736b89d6a40a) and https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.py (SHA-256 70cd6d5e61bfbabce4aeba8e3bbb5d7c6109db8993f2221684fdaf35fa07ee74), then follow the setup guide they verify.";
-var WEEKLY_MESSAGE = "Run the Muster Out weekly check. Use the signed feed. Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.cjs (SHA-256 88f05a85766ffae6618292535156f22fca31d811b8c3ae68307e736b89d6a40a) and https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.py (SHA-256 70cd6d5e61bfbabce4aeba8e3bbb5d7c6109db8993f2221684fdaf35fa07ee74), then follow the setup guide they verify.";
+var UPDATE_MESSAGE = "Update Muster Out. Keep my existing board at the same address. Check https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.14.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the update guide they verify.";
+var WEEKLY_MESSAGE = "Run the Muster Out weekly check. Use the signed feed. Check https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.14.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the weekly guide they verify.";
 var MON = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 var MONL = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 var DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -1572,7 +1574,7 @@ function c1Trust(){
   if(C1_TRUST && C1_TRUST_KEY===key){C1_TRUST.setContext({screen:c1Screen(),path:S.profile.path||null,grade:S.profile.grade||null});C1_TRUST.setWatch(C1_FEED||c1LegacyWatch());if(C1_FEED_ERROR)C1_TRUST.setWatch({code:C1_FEED_ERROR});return C1_TRUST;}
   if(C1_TRUST)C1_TRUST.destroy();C1_TRUST_KEY=key;
   ["trustHeader","saveHeader","trustToday","trustSettings"].forEach(function(k){el(k).replaceChildren();});
-  C1_TRUST=window.MusterOutTrust.create({version:VERSION,pack:PACK,screen:c1Screen(),path:S.profile.path||null,grade:S.profile.grade||null,installId:id||null,db:DB,sample:SAMPLE,updates:updates,learningEnabled:false,onErrorCount:function(component){telCount('error',({db:'save',draft:'storage',sample:'sample',permissions:'permission',update:'update',feed:'feed'})[component]||'other');},canWrite:canEdit(),copyChanges:c1Recovery,updateMessage:UPDATE_MESSAGE,weeklyMessage:WEEKLY_MESSAGE,setupMessage:"Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.cjs (SHA-256 88f05a85766ffae6618292535156f22fca31d811b8c3ae68307e736b89d6a40a) and https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.py (SHA-256 70cd6d5e61bfbabce4aeba8e3bbb5d7c6109db8993f2221684fdaf35fa07ee74), then follow the setup guide they verify."});
+  C1_TRUST=window.MusterOutTrust.create({version:VERSION,pack:PACK,screen:c1Screen(),path:S.profile.path||null,grade:S.profile.grade||null,installId:id||null,db:DB,sample:SAMPLE,updates:updates,learningEnabled:false,onErrorCount:function(component){telCount('error',({db:'save',draft:'storage',sample:'sample',permissions:'permission',update:'update',feed:'feed'})[component]||'other');},canWrite:canEdit(),copyChanges:c1Recovery,updateMessage:UPDATE_MESSAGE,weeklyMessage:WEEKLY_MESSAGE,setupMessage:"Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.14.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify."});
   if(!C1_CORRECTION_OBSERVER){C1_CORRECTION_OBSERVER=new MutationObserver(function(records){if(!records.some(function(r){return r.addedNodes.length||Array.from(r.removedNodes).some(function(n){return n.classList?.contains('mot-watch-line');});}))return;var banner=el("trustToday").querySelector(".mot-warning");C1_CORRECTION.replaceChildren();if(banner)C1_CORRECTION.appendChild(banner);});C1_CORRECTION_OBSERVER.observe(el("trustToday"),{childList:true});}
   C1_TRUST.mountHeader(el("trustHeader"));C1_TRUST.mountSave(el("saveHeader"));C1_TRUST.mountToday(el("trustToday"));C1_TRUST.mountSettings(el("trustSettings"));
   Object.values(C1_SAVE_SLOTS).forEach(function(n){C1_TRUST.mountSave(n);});C1_TRUST.setWatch(C1_FEED||c1LegacyWatch());if(C1_FEED_ERROR)C1_TRUST.setWatch({code:C1_FEED_ERROR});return C1_TRUST;
@@ -1959,6 +1961,8 @@ function renderBrief(){var xs=itemsArr().filter(function(i){return !closed(i)&&i
  var late=xs.filter(c1Late).length,critical=xs.filter(function(i){return i.critical;}).length,undated=xs.filter(function(i){return !boardReady()||endOf(i)==null;}).length;
  var h=S.reset?'<p class="banner" role="status" id="resetLine">'+esc(RESET_LINE)+'</p>':keyMismatch()?'<button class="btn c1-review-plan" data-act="tab" data-tab="lines" id="keyLine">Review changed plan</button>':'';
  if(!boardReady())h+='<div class="c1-add-date"><span>Undated plan</span><button class="btn" data-act="profile">Add your date</button></div>';
+ var lm=boardReady()?leaveModel():null,leaveText=lm&&lm.end!=null?(Math.round(lm.end*10)/10)+' days projected':S.ledger.balance!=null&&Number.isFinite(Number(S.ledger.balance))?S.ledger.balance+' days recorded':'Add your balance';
+ h+='<button class="btn c1-leave-link" data-act="open-leave"><span>Leave: '+esc(leaveText)+'</span><svg class="c1-leave-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></button>';
  h+='<section class="c1-next"><div class="c1-next-head"><h2>Next actions</h2>'+ (next.some(function(i){return i.critical;})?'<span class="c1-critical-legend"><svg class="c1-critical-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 14 8 8 14 2 8Z" fill="none" stroke="currentColor"/></svg><span class="c6-legend-text">Critical</span></span>':'')+'</div><div class="rows c1-rows">'+(next.map(c1ActionRow).join('')||'<p class="empty">'+(xs.length?'Your remaining actions are waiting on others.':'No open actions.')+'</p><button class="btn" data-act="today-filter" data-f="'+(xs.length?'waiting':'all')+'">View plan</button>')+'</div></section>';
  h+='<div class="c1-counts" aria-label="Full plan lists">'+[['late','Late',late],['crit','Critical',critical],['undated','Needs a date',undated]].map(function(x){return '<button class="btn c6-count-target'+(!x[2]?' c1-zero':'')+'" data-act="today-filter" data-f="'+x[0]+'"><span class="c6-pill'+(x[0]==='late'&&x[2]?' late':'')+'">'+x[1]+' <span'+(x[0]==='late'&&x[2]?' class="c1-late-count"':'')+'>'+x[2]+'</span></span></button>';}).join('')+'</div><div id="c1Health"></div>'+crisisLine()+coachCard()+c1AskCard();return h;
 }
@@ -2085,7 +2089,7 @@ function legacyRenderLines(){
   return h;
 }
 
-function c1Disclosure(title,html){var t=document.createElement('template');t.innerHTML=html;var heading=t.content.querySelector('h2');if(heading&&(heading.textContent.trim().toLowerCase()===title.toLowerCase()||(title==='Add item'&&heading.textContent.trim()==='Add an item')))heading.remove();html=t.innerHTML;return '<details class="c1-disclosure"><summary>'+esc(title)+'</summary><div>'+html+'</div></details>';}
+function c1Disclosure(title,html,open){var t=document.createElement('template');t.innerHTML=html;var heading=t.content.querySelector('h2');if(heading&&(heading.textContent.trim().toLowerCase()===title.toLowerCase()||(title==='Add item'&&heading.textContent.trim()==='Add an item')))heading.remove();html=t.innerHTML;return '<details class="c1-disclosure"'+(open?' open':'')+'><summary>'+esc(title)+'</summary><div>'+html+'</div></details>';}
 function c1Extract(html,predicate){var t=document.createElement('template');t.innerHTML=html;return Array.from(t.content.querySelectorAll('section.panel')).find(function(n){return predicate(n);});}
 function c1ViewLoes(){return Array.from(new Map(S.loes.concat(S.seeded&&!S.reset?seedFor(flagsFor(S.profile)).loes:[]).map(function(l){return [l.id,l];})).values()).sort(function(a,b){return a.n-b.n;});}
 function renderLines(){var filters=[['all','All'],['open','Open'],['done','Done'],['late','Late'],['crit','Critical'],['undated','Needs a date'],['waiting','Waiting']],f=UI.filter||'all';
@@ -2112,9 +2116,9 @@ function k1ObserveTimeline(){if(K1_TIMELINE_RESIZE)K1_TIMELINE_RESIZE.disconnect
 
 try{var savedTimelineMode=localStorage.getItem('ssb.timelineMode');if(['timeline','list'].includes(savedTimelineMode))UI.timelineMode=savedTimelineMode;}catch(e){}
 function k1RenderTimeline(){var mode=UI.timelineMode||(matchMedia('(max-width:599px)').matches?'list':'timeline'),h='<div class="filters c6-segmented k1-view-control" role="group" aria-label="Timeline view">'+[['timeline','Timeline'],['list','List']].map(function(x){return '<button data-act="timeline-mode" data-mode="'+x[0]+'" aria-pressed="'+(mode===x[0])+'">'+x[1]+'</button>';}).join('')+'</div>';
- if(mode==='list')return h+renderDates();if(!boardReady())return h+'<section class="panel"><h2>Add your date</h2><p>Add your date to put your plan on a calendar.</p><button class="btn" data-act="profile">Add your date</button></section>';return c1TimelinePanel(h);}
+ if(mode==='list')return h+renderDates();if(!boardReady())return h+'<section class="panel"><h2>Add your date</h2><p>Add your date to put your plan on a calendar.</p><button class="btn" data-act="profile">Add your date</button></section><section class="c1-leave-section" id="c1Leave"><h2>Leave</h2>'+renderLeave()+'</section>';return c1TimelinePanel(h);}
 function renderDates(){var h='<p class="c1-intro">Your deadlines, planning targets, and confirmed events.</p><div class="ctl"><button class="btn" data-act="dates-section" data-section="c1Leave">Leave</button>'+(canEdit()?'<button class="btn" data-act="profile">Edit your date</button>':'')+'<button class="btn" data-act="dates-past" aria-pressed="'+!!UI.showPast+'">Past</button></div>';
- if(!boardReady())return h+'<section class="panel"><h2>Add your date</h2><p>Add your date to put your plan on a calendar.</p><button class="btn" data-act="profile">Add your date</button></section>';
+ if(!boardReady())return h+'<section class="panel"><h2>Add your date</h2><p>Add your date to put your plan on a calendar.</p><button class="btn" data-act="profile">Add your date</button></section><section class="c1-leave-section" id="c1Leave"><h2>Leave</h2>'+renderLeave()+'</section>';
  var events=itemsArr().map(function(i){var w=winOf(i),d=w?w.from:dueOf(i),end=w?w.to:d;return {item:i,date:d,end:end};}).filter(function(x){return x.date!=null&&Number.isFinite(x.date)&&(UI.showPast||x.end>=today());}).sort(function(a,b){var ap=a.end<today(),bp=b.end<today();return ap-bp||a.date-b.date||c1SeedOrder(a.item)-c1SeedOrder(b.item);});var previous='';
  if(!events.length)h+='<p class="empty">No upcoming dated items. Needs a date in Plan lists the remaining items.</p>';
  events.forEach(function(x){var d=new Date(x.date),key=(x.end<today()?'Past: ':'')+MONL[d.getUTCMonth()]+' '+d.getUTCFullYear();if(key!==previous){if(previous)h+='</div></section>';h+='<section class="c1-month"><h2>'+key+'</h2><div class="rows">';previous=key;}h+=itemRow(x.item);});if(previous)h+='</div></section>';
@@ -2124,7 +2128,7 @@ function renderDates(){var h='<p class="c1-intro">Your deadlines, planning targe
 function renderLeave(){var html=legacyRenderLeave(),t=document.createElement('template');t.innerHTML=html;var ledger=Array.from(t.content.querySelectorAll('section.panel')).find(function(n){return n.querySelector('h2')?.textContent==='Ledger';}),blocks=Array.from(t.content.querySelectorAll('section.panel')).find(function(n){return n.querySelector('h2')?.textContent==='Leave blocks';});
  var rules=ledger&&ledger.querySelector('.rules'),ruleHtml=rules?rules.outerHTML:'';if(rules)rules.remove();var grid=t.content.querySelector('.grid2');if(grid)grid.remove();
  var forecast=Array.from(t.content.children).map(function(n){return n.outerHTML;}).join('').replace('Monthly burn','Leave by month');
- return (ledgerProblem()?'<p role="alert" class="banner">'+esc(ledgerProblem())+'</p>':S.ledger.balance==null?'<p>'+(canEdit()?'Add your leave balance and its date from your latest LES.':'No saved leave balance. Ask the board owner to record the LES balance and its date.')+'</p>':'')+'<div class="c1-ledger">'+(ledger?ledger.outerHTML:'')+(blocks?blocks.outerHTML:'')+'</div>'+c1Disclosure('Leave forecast and charts',forecast)+c1Disclosure('Leave rules',ruleHtml);
+ return (boardReady()&&ledgerProblem()?'<p role="alert" class="banner">'+esc(ledgerProblem())+'</p>':S.ledger.balance==null?'<p>'+(canEdit()?'Add your leave balance and its date from your latest LES.':'No saved leave balance. Ask the board owner to record the LES balance and its date.')+'</p>':'')+(boardReady()&&S.ledger.balance!=null?c1Disclosure('Leave forecast and charts',forecast,true):!boardReady()?'<p class="c1-intro">The leave chart needs a leave balance, its balance date, and your separation date. You can save your balance in the ledger now.</p>':'')+'<div class="c1-ledger">'+(ledger?ledger.outerHTML:'')+(blocks?blocks.outerHTML:'')+'</div>'+(boardReady()&&S.ledger.balance==null?c1Disclosure('Leave forecast and charts',forecast):'')+c1Disclosure('Leave rules',ruleHtml);
 }
 function renderVA(){var old=legacyRenderVA(),conditions=c1Extract(old,function(n){return n.querySelector('h2')?.textContent==='Your conditions';}),guide=c1Extract(old,function(n){return n.querySelector('h2')?.textContent==='How people lose disability value';}),fi=S.items['va-file'],w=fi&&boardReady()?winOf(fi):null,target=fi&&boardReady()?dueOf(fi):null;
  var h='<p class="c1-intro">Prepare your VA claim with a VSO.</p><section class="panel c1-claim-dates"><h2>Benefits Delivery at Discharge (BDD) dates</h2><p>'+esc(bddConfirmed()?'Confirmed BDD filing window':'Projected BDD filing window')+'</p><p>'+(w?'Window opens: '+esc(mil(w.from))+'<br>Window closes: '+esc(mil(w.to)):'BDD dates need confirmation.')+'</p><p class="muted">'+(bddConfirmed()?'Last active-duty day and these endpoints are recorded as confirmed.':'Ask IPAC to confirm your last active-duty day and VA or your VSO to confirm both endpoints before filing.')+'</p><h3>Filing target</h3><p>'+(target!=null?esc(mil(target)):'Confirm with your VSO.')+'</p><p class="muted">Filing target is a planning choice.</p><button class="btn" data-act="copy" data-v="'+esc(bddConfirmationRequest())+'">Copy BDD confirmation request</button></section>'+(conditions?conditions.outerHTML:'')+'<section class="c1-claim-steps"><h2>Claim steps</h2><div class="rows">'+VA_ORDER.map(function(id){return S.items[id]?itemRow(S.items[id]):'';}).join('')+'</div></section>';
@@ -2214,7 +2218,7 @@ function c1RenderProject(){var h='<p class="c1-intro">In the Claude app, tap Pro
 }
 
 function legacyRenderLeave(){
-  var c = ctx(), L = S.ledger, lm = leaveModel(c), h = "";
+  var c = ctx(), L = S.ledger, lm = boardReady()?leaveModel(c):null, h = "";
   if (lm && lm.end != null) {
     var endv = Math.round(lm.end * 10) / 10, cls = Math.abs(endv) <= 0.5 ? "good" : (endv < 0 ? "bad" : "warn");
     h += '<div class="kpis"><div class="kpi ' + cls + '"><div class="v">' + endv + '</div><div class="k">Projected balance at separation</div></div><div class="kpi"><div class="v">' + (Math.round(lm.accrued*10)/10) + '</div><div class="k">Accrues ' + mil(lm.start) + " to " + mil(lm.eas) + "</div></div>" +
@@ -2228,7 +2232,7 @@ function legacyRenderLeave(){
   } else {
     h += '<section class="panel"><h2>Leave ledger</h2><p class="muted" style="margin-top:6px">Enter the balance and date from your latest LES in the ledger form on this tab to start the leave model. The chart will show your projected leave balance through separation once you enter them.</p></section>';
   }
-  var warns = leaveWarnings(c);
+  var warns = boardReady()?leaveWarnings(c):[];
   if (warns.length) h += '<section class="panel" style="margin-top:14px"><div class="phead"><h2>Conflicts</h2></div><div class="alerts">' + warns.map(function(w){ return '<div class="alert" data-k="' + w.k + '"><p>' + esc(w.t) + "</p></div>"; }).join("") + "</div></section>";
   h += '<div class="grid2" style="margin-top:14px"><section class="panel"><div class="phead"><h2>Leave blocks</h2><span class="label">' + S.blocks.length + '</span></div><div id="blocks">' +
     (S.blocks.length ? S.blocks.slice().sort(function(a,b){ return (a.start||"").localeCompare(b.start||""); }).map(blockRow).join("") : '<p class="empty">No blocks yet.</p>') + "</div>";
@@ -2241,7 +2245,7 @@ function legacyRenderLeave(){
   h += "</section></div>";
   return h;
 }
-function blockWarnings(b){return leaveWarnings().filter(function(w){return w.t.includes(mil(parseD(b.start)))||w.t.includes(mil(parseD(b.end)))||w.t.includes(b.id);});}
+function blockWarnings(b){if(!boardReady())return [];return leaveWarnings().filter(function(w){return w.t.includes(mil(parseD(b.start)))||w.t.includes(mil(parseD(b.end)))||w.t.includes(b.id);});}
 function blockRow(b){
   var h = '<div class="blk"><div><p style="font-weight:600">' + esc(mil(parseD(b.start))) + " to " + esc(mil(parseD(b.end))) + ' <span class="dim mono" style="font-size:12px">' + blockDays(b) + " days</span></p><p class=\"meta\"><span>" + esc(blockLabel(b)) + "</span>" + (b.away ? "<span>Travel</span>" : "") + (b.note ? "<span>" + esc(b.note) + "</span>" : "") + "</p></div>";
   if (canEdit()) {
@@ -2507,7 +2511,7 @@ function render(){
   UI.disclosures=UI.disclosures||{};v.querySelectorAll('details.c1-disclosure').forEach(function(d){UI.disclosures[(UI.renderedTab||UI.tab)+'|'+d.querySelector('summary').textContent.trim()]=d.open;});
   v.innerHTML = UI.tab === "brief" ? renderBrief() : UI.tab === "timeline" ? k1RenderTimeline() : UI.tab === "lines" ? renderLines() : UI.tab === "leave" ? renderLeave() : UI.tab === "va" ? renderVA() : UI.tab === "people" ? c1RenderContacts() : UI.tab === "sources" ? c1RenderSources() : UI.tab === "settings" ? c1RenderSettings() : UI.tab === "coach" ? coachPanel() : UI.tab === "project" ? c1RenderProject() : UI.tab === "talk" ? "" : renderBrief();
   if(TEL.owner&&TEL.loaded){if(UI.tab==='settings')v.insertAdjacentHTML('beforeend',telControlHtml());if(UI.tab==='brief'&&el('k1Framing').hidden)v.insertAdjacentHTML('afterbegin',telQuestionHtml()||telSetupRecommendHtml());}
-  v.querySelectorAll('details.c1-disclosure').forEach(function(d){var key=UI.tab+'|'+d.querySelector('summary').textContent.trim();if(key in UI.disclosures)d.open=UI.disclosures[key];});UI.renderedTab=UI.tab;
+  v.querySelectorAll('details.c1-disclosure').forEach(function(d){var key=UI.tab+'|'+d.querySelector('summary').textContent.trim();if(UI.openLeaveForecast&&d.querySelector('summary').textContent.trim()==='Leave forecast and charts'){d.open=true;UI.disclosures[key]=true;}else if(key in UI.disclosures)d.open=UI.disclosures[key];});UI.openLeaveForecast=false;UI.renderedTab=UI.tab;
   var filters=v.querySelector('.k1-plan-filters');if(filters){filters.scrollLeft=filterScroll;var selected=filters.querySelector('[aria-pressed=true]');if(selected){var fr=filters.getBoundingClientRect(),sr=selected.getBoundingClientRect();if(sr.left<fr.left)filters.scrollLeft-=fr.left-sr.left;else if(sr.right>fr.right)filters.scrollLeft+=sr.right-fr.right;}}
   c1UpdateSettingsState();
   k1ObserveTimeline();
@@ -2549,7 +2553,7 @@ document.addEventListener("keydown", function(ev){
 });
 document.addEventListener("click", function(ev){
   var b = ev.target.closest("[data-act]"); if(!b){var row=ev.target.closest(".c1-row");if(row&&!ev.target.closest(".card"))c1ToggleCard(row.dataset.id);return;} var a = b.getAttribute("data-act"), id = b.getAttribute("data-id");
-  if (a === "claude-setup") { copyText("Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.cjs (SHA-256 88f05a85766ffae6618292535156f22fca31d811b8c3ae68307e736b89d6a40a) and https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.py (SHA-256 70cd6d5e61bfbabce4aeba8e3bbb5d7c6109db8993f2221684fdaf35fa07ee74), then follow the setup guide they verify.", b); return; }
+  if (a === "claude-setup") { copyText("Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.14.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify.", b); return; }
   if (a === "register-board") { UI.tab='settings';render();return; }
   if (a === "claude-copy") { copyText(b.getAttribute("data-message") === "weekly" ? WEEKLY_MESSAGE : UPDATE_MESSAGE, b); return; }
   if (DB && WRITE_ACTS.indexOf(a) >= 0 && !editGuard()) return;
@@ -2630,10 +2634,12 @@ document.addEventListener("click", function(ev){
   if (a === "ledger-save") {
     var bal = parseFloat(el("lg-bal").value), asof = el("lg-asof").value, sl = el("lg-sla").value, ex = el("lg-sla-exp").value;
     if (!Number.isFinite(bal) || !asof || !Number.isFinite(parseD(asof)) || iso(parseD(asof)) !== asof) { toast("Enter a balance and a valid date."); return; }
-    if (parseD(asof) > today() || parseD(asof) > lastActiveDay(ctx())) { toast("Your balance date must be on or before today and your last active-duty day."); return; }
+    if (parseD(asof) > today() || (boardReady() && parseD(asof) > lastActiveDay(ctx()))) { toast("Your balance date must be on or before today and your last active-duty day."); return; }
     var sla = sl === "" ? null : {days:Number(sl),expires:ex || null};
     if (sla && (!Number.isFinite(sla.days) || sla.days < 0 || sla.days > 60 || (sla.days > 0 && (!ex || iso(parseD(ex)) !== ex)))) { toast("Ask IPAC for SLA excess days, up to 60, and a valid expiration date. Enter 0 if none."); return; }
+    var priorLeave=boardReady()?leaveModel():null,hadForecast=!!(priorLeave&&priorLeave.end!=null);
     S.ledger.balance = bal; S.ledger.asOf = asof; S.ledger.sla = sla; S.ledger.note = "";
+    var nextLeave=boardReady()?leaveModel():null;if(!hadForecast&&nextLeave&&nextLeave.end!=null)UI.openLeaveForecast=true;
     render(); write("meta/ledger", "set", S.ledger).then(function(ok){ if (ok) toast("Balance saved."); }); return;
   }
   if (a === "blk-add") {if(Object.values(C1_CREATED).includes('nb-'))return; var st = el("nb-start").value, len = Number(el("nb-len").value); if (!st || !Number.isFinite(parseD(st)) || iso(parseD(st))!==st || !Number.isSafeInteger(len) || len<1 || !Number.isFinite(addDays(parseD(st),len-1))) { toast("Enter a valid start date and a whole number of days, at least 1."); return; }
@@ -2823,7 +2829,7 @@ function subscribe(){
   DB.collection("inbox").onSnapshot(function(snap){if(C1_DEMO)return;mark("inbox",snap); S.inbox = toList(snap); render(); }, errd);
 }
 /* ---------- Muster Out: profile, setup, seeding ---------- */
-var VERSION = "0.2.13";
+var VERSION = "0.2.14";
 var GRADES = [["o5","O-5 and above","officer","cat3"],["o14","O-1 to O-4","officer","cat2"],["cwo45","CWO4 to CWO5","officer","cat3"],["wo13","WO to CWO3","officer","cat2"],["e89","E-8 to E-9","enlisted","cat3"],["e67","E-6 to E-7","enlisted","cat2"],["e15","E-1 to E-5","enlisted","cat1"]];
 var CAP = { cat1: 120, cat2: 90, cat3: 90 };
 function gradeRow(g){ return GRADES.find(function(x){ return x[0] === g; }) || GRADES[0]; }

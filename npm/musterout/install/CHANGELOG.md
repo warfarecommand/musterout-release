@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.2.14 (2026-10-16)
+- Setup, updates and weekly checks work inside Claude chat by checking a downloaded copy of the npm package against the same publisher signature and file hashes.
+- Leave is one tap from Today on every board, and the leave chart opens as soon as you save your first balance.
+
 ## 0.2.13 (2026-10-16)
 - Setup and updates check Muster Out's publisher signature before installing, and weekly checks file only signed notices.
 - Help lines are plain numbers you can copy, stuck updates finish on their own, and enlisted retirees get the right MMSR-2 desk.
