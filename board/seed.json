@@ -5506,15 +5506,30 @@
   },
   {
    "id": "c-mmsr2-r",
-   "name": "MMSR-2 office",
-   "role": "Separations and retirements",
+   "name": "MMSR-2 officer retirements",
+   "role": "Officer separations and retirements",
    "org": "HQMC",
    "phone": "703-784-9324",
    "email": "smb.manpower.mmsr2o@usmc.mil",
    "loe": "sep",
-   "note": "Requests outside the window or needing a waiver, by encrypted email.",
+   "note": "Confirm your retirement request with IPAC and the officer desk.",
    "when": [
-    "retire"
+    "retire",
+    "officer"
+   ]
+  },
+  {
+   "id": "c-mmsr2-re",
+   "name": "MMSR-2 enlisted retirements",
+   "role": "Enlisted retirements and FMCR",
+   "org": "HQMC",
+   "phone": "703-784-9322",
+   "email": "smb_manpower_mmsr2e@usmc.mil",
+   "loe": "sep",
+   "note": "MARADMIN 365/26 para 4.e lists this desk. Confirm your retirement or FMCR request with IPAC.",
+   "when": [
+    "retire",
+    "enlisted"
    ]
   },
   {

@@ -1,0 +1,21 @@
+MUSTER OUT | Setup help 3 of 3
+
+What your coach can do now
+
+Redact sensitive identifiers, turn off model training, then add a file in the Project.
+1. Before uploads, turn off Help improve Claude in Settings, Privacy. Use web settings if the phone labels differ.
+2. Redact SSNs and other sensitive identifiers. Add a resume or record to the Project, then ask a question. The coach should cite filename and page.
+
+Open What your coach knows on the board. Review, edit, or delete an approved saved fact.
+1. Ask the coach to save one short durable fact. Review the exact sentence before agreeing.
+2. If your installed board has What your coach knows, open it and review the fact. Edit or delete it there. If missing or a write fails, the coach must say it was not saved.
+
+Calendar is optional. Connect it on a computer if the phone path is missing, then authorize reading. Review any proposed calendar change separately. All advice is a draft to check with the named office or advisor.
+
+View with pictures: https://warfarecommand.com/musterout/coach/
+Open setup steps: https://warfarecommand.com/musterout/#setup
+You requested Setup help and confirmed this address. Up to three setup emails per address, ever. No open or click tracking.
+I'm set up, stop these: {{STOP_SETUP_URL}}
+Email preferences: {{PREFS_URL}}
+Unsubscribe from everything: {{ALERT_UNSUBSCRIBE_URL}}
+Warfare Command. Unofficial; not affiliated with the Department of Defense or the Marine Corps. Advice is a draft for your review.

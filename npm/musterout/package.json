@@ -1,9 +1,13 @@
 {
   "name": "musterout",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "description": "Signed Muster Out board releases",
   "files": [
-    "release.js"
+    "release.js",
+    "install.json",
+    "install/",
+    "verify.cjs",
+    "verify.py"
   ],
   "license": "MIT",
   "repository": {

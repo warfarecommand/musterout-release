@@ -1,0 +1,159 @@
+SOURCE: https://www.marines.mil/News/Messages/Messages-Display/Article/4047837/
+R 292115Z JAN 25
+MARADMIN 045/25
+MSGID/GENADMIN/CMC WASHINGTON DC MRA RA//
+SUBJ/RESERVE COMMISSIONING PROCESS FOR OFFICERS TRANSITIONING FROM 
+THE ACTIVE COMPONENT TO THE RESERVE COMPONENT//
+REF/A/MSGID: CONST/17SEP1787//
+REF/B/MSGID: EXO/28SEP2004//
+REF/C/MSGID: CFR/USC/7JAN2011//
+REF/D/MSGID: DOC/DOD/26MAR2015//
+REF/E/MSGID: CFR/USC/23DEC2016//
+REF/F/MSGID: DOC/DOD/30NOV2011//
+REF/G/MSGID: DOC/MMSR/7AUG2015//
+REF/H/MSGID: DOC/CMC/14JUL2000//
+REF/I/MSGID: DOC/CMC/15JUN2007//
+NARR/REF A IS ARTICLE II, SECTION II, CLAUSE II, OF THE U.S. 
+CONSTITUTION.  REF B IS EXECUTIVE ORDER 13358, ASSIGNMENT OF 
+FUNCTIONS RELATING TO CERTAIN APPOINTMENTS, PROMOTIONS, AND 
+COMMISSIONS IN THE ARMED FORCES.  REF C IS 10 USC 12203, COMMISSIONED
+OFFICERS: APPOINTMENT, HOW MADE; TERM.  REF D IS DEPARTMENT OF 
+DEFENSE INSTRUCTION 1310.02, ORIGINAL APPOINTMENT OF OFFICERS.  
+REF E IS 10 USC 651, MEMBERS, REQUIRED SERVICE.  REF F IS DOD 
+7000.14R THE DOD FINANCIAL MANAGEMENT REGULATION.  REF G IS MARINE
+CORPS ORDER 1900.16, THE SEPARATION AND RETIREMENT MANUAL.  REF H
+IS MARINE CORPS ORDER P1070.12K, THE MARINE CORPS INDIVIDUAL RECORDS
+ADMINISTRATION MANUAL.  REF I IS MARINE CORPS ORDER 5000.14D, MARINE
+CORPS ADMINISTRATIVE PROCEDURES.//
+POC/[personal contact removed]; office line: (703) 432-9590; office mailbox: RAM-1(AT)USMC. MIL
+GENTEXT/REMARKS/
+1.  Purpose.  This MARADMIN provides a consolidated source of 
+information and guidance for officers transitioning from the Active 
+Component (AC) to the Reserve Component (RC).  Additionally, it 
+provides amplifying guidance for the creation and processing of the 
+NAVMC 763.
+2.  Background.  In accordance with reference (a), the President 
+shall have the power to appoint officers of the United States.  
+Reference (b) delegates the appointment of armed forces officers to 
+the Secretary of Defense.  References (c) and (d) state that officers
+on the Active-Duty List (ADL) will have a Regular appointment and all 
+officers on the Reserve Active-Status List (RASL) will have a Reserve
+appointment.  The ADL contains all AC officers and the RASL contains 
+all RC officers.  Reserve appointments for officers transitioning 
+from the AC to the RC require a minimum of four months from the date 
+received at Headquarters Marine Corps (HQMC) for approval.  In cases 
+where the officer was subject to adversity this timeline is increased.
+3.  Process
+3.a.  Transferring after initial obligation
+3.a.1.  Regardless of commissioning source, an AC officer’s initial 
+contract in the Marine Corps is for a period of eight years.  The 
+first portion of the eight-year obligation is typically performed in 
+the AC.  If an officer separates from the AC before their military 
+service obligation of eight-years is completed, they will be 
+transferred to the RC to complete the required service obligation in 
+accordance with reference (e).  An officer can view their end of 
+obligated service (EOS) date within their Basic Individual Record 
+within the Marine Online website.  CMC(RA) will identify and submit 
+qualified officers for a Reserve commission via the Secretary of 
+Defense.
+3.a.2.  Officers who have prior enlisted service may be beyond their 
+EOS date upon end of active service (EAS) during their initial AC 
+officer contract.  If an officer in this scenario separates at their 
+EAS and desires to transfer to the RC, they must ensure their 
+separations code in block 26 of their DD-214 indicates this intent.  
+CMC(RA) will identify and submit such officers for a Reserve 
+commission via the Secretary of Defense automatically.  No further 
+action is required on behalf of the officer.
+3.b.  Transferring after career designation
+3.b.1.  Officers who have accepted career designation, completed all 
+AC obligations, and desire to transfer to the RC must request to 
+resign their AC commission in accordance with chapter five of 
+reference (e).  Once the resignation has been approved and an EAS is
+populated in the resigning officer’s record, CMC(RA) will submit for
+a Reserve commission via the Secretary of Defense.  
+3.b.2.  AC officers who submit for consideration on an Active Reserve
+Accession Board will be submitted for a Reserve commission by CMC(RA). 
+3.b.3.  Officers with special circumstances who request to separate 
+from the AC and transfer to the RC inside of the four-month window, 
+outlined in reference (g), must immediately notify the Reserve 
+Affairs Officer Appointment Manager via RAM-1(at)usmc.mil to 
+determine if the request is viable.
+4.  Notification
+4.a.  RA does not directly notify individual officers who are 
+approved for a Reserve commission.  Approval is reflected in the 
+planned separations code within Marine Corps Total Force System 
+(MCTFS).
+4.b.  RA will notify any officer who requested to transition to the 
+RC but is deemed ineligible due to substantiated adversity in 
+accordance with reference (g).
+5.  Acceptance of a Reserve Commission  
+5.a.  Per reference (h), the acceptance of a Reserve commission is 
+documented on an Appointment Acceptance and Record (NAVMC 763).  It 
+is the single proof source legal document maintained within an 
+officer’s Official Military Personnel File (OMPF).  The NAVMC 763 
+serves as evidence of the legal basis by which both commissioned and 
+warrant officers discharge their sworn duties and provides the 
+foundation for validating an officer's retirement eligibility and 
+entitlements.
+5.b.  Unit administration or the section handling the records of a 
+separating officer must produce an updated NAVMC 763 correlating to 
+officers’ MCTFS record.  This updated NAVMC 763 must be issued to the
+separating officer before their separation takes place.  The 
+separating officer is responsible for obtaining a signature from an 
+Administering Officer who is higher in grade than the separating 
+officer.  After obtaining the signature, the officer must return the 
+completed NAVMC 763 to the issuing section.  The issuing section must 
+upload the completed NAVMC 763 to the officer’s Official Military 
+Personnel File (OMPF).  The IPAC will be responsible for ensuring the 
+DD-214, NAVMC 763, and all records related to the officer’s 
+separation are accurately updated and stored in their OMPF. If an 
+IPAC is unavailable, the reporting unit will take responsibility for 
+updating and properly storing the DD-214, NAVMC 763, and all 
+separation-related records in the officer’s OMPF.
+5.c.  Approval for a Reserve commission is reflected within the 
+planned separation code within MCTFS.
+5.d.  Guidance on how to properly complete the NAVMC 763 for officers 
+transferring from the AC to the RC is as follows:
+5.d.1.  Items 1, 2, 3, 4, 5, 5a, 5b, 6, 7, 9, 9a, 10, 11, 13, 14, 
+14a, 15, 15a, and 17 shall coincide with the officer's current status 
+and current data within MCTFS using Marine Corps database codes in 
+the manpower codes lookup guide at https: (slash)(slash) 
+www2.manpower.usmc.mil/lookups/lookups/lookups.action.  Note all item 
+dates shall be in the following format (MM DD YYYY).
+5.d.2.  Items 8, 8a, 8b, 12, 12a, 16, and 16a will be "N/A".
+5.d.3.  Items 18 and 18a are the component and code the officer is 
+transferring to ("USMCR" for 18 and "K7" for 18a). 
+5.d.4.  Item 19 is "N" (not assigned immediately to active duty). 
+5.d.5.  Item 20 is "8A" for transfer from the AC to the RC (EAS or 
+resignation) or "8I" for Captains twice passed over for promotion.
+5.d.6.  Item 20a is "12203".
+5.d.7.  Item 20b is "TRANSITIONAL".  There is not a specific program 
+for this section when transferring from the AC to the RC. 
+Transitional is appropriate.
+5.d.8.  Item 21 shall contain all prior service to include the end 
+date of the current component place in column (d) which must 
+correspond with the date entered on block 12b from the individual's 
+DD-214 release from active-duty date, prior to switching to the new 
+component listed in item 18.  "(not creditable for pay purposes)" 
+shall be typed across the (a), (b), and (c) columns, above the 
+required item information, for each component period of military 
+service that is not creditable for computation of basic pay in 
+accordance with reference (f).  The "EFF DATE" below item 21 is the
+day that the component change is to take effect.  This should be the 
+day after the officer's EAS, which shall be the day after last entry 
+in column 21d and block 12b from the officer's DD-214.
+5.d.9.  Item 22 shall be signed by the applicable officer.  Fill in 
+as "subscribed and duly sworn to before me at (location) this (number 
+date) day of (month and year)".  Example "subscribed and duly sworn 
+to before me at [unit name removed], VA this 10th day of November 1775".
+5.e.  Distribution of the completed NAVMC 763 is an essential part of
+the officer's record and must be uploaded by the separating section 
+into the officers OMPF by visiting https:(slash)(slash) 
+www4.manpower.usmc.mil/orma/#/then you can access the Records 
+Management Application(O-RMA).
+6.  Training.  Instructional training can be found at https:(slash)
+(slash) www.marinenet.usmc.mil/mvs/v.aspx?Id=6350B3B28CE6
+7.  Command and Signal.  The point of contact for Reserve commission
+ questions can be directed to RAM-1(at)usmc.mil.
+8.  This MARADMIN cancels MARADMIN’s 356/12, 356/12 and 369/17.
+9.  Release authorized by [personal name removed], Deputy

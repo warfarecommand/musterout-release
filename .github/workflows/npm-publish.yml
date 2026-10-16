@@ -59,7 +59,7 @@ jobs:
           const pkg = JSON.parse(fs.readFileSync('npm/musterout/package.json'));
           const config = JSON.parse(fs.readFileSync('config.json'));
           assert.equal(pkg.name, 'musterout'); assert.equal(pkg.license, 'MIT'); assert(!pkg.scripts);
-          assert.deepEqual(pkg.files, ['release.js']);
+          assert.deepEqual(pkg.files, ['release.js','install.json','install/','verify.cjs','verify.py']);
           assert.equal(pkg.repository.url, 'https://github.com/warfarecommand/musterout-release.git');
           assert.equal(process.env.RELEASE_TAG, 'v' + e.version);
           assert.equal(pkg.version, e.version); assert.equal(config.version, e.version); assert.equal(config.pack, e.pack);
@@ -90,6 +90,31 @@ jobs:
           const prefix = '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>' + reset + '</style></head><body>';
           assert(payload.html.startsWith(prefix) && payload.html.endsWith('</body></html>'));
           assert(html.subarray(Buffer.byteLength(prefix), -14).equals(fs.readFileSync('board/board.html')), 'Fragment differs');
+          assert.equal(createHash('sha256').update(fs.readFileSync('npm/musterout/verify.cjs')).digest('hex'), '88f05a85766ffae6618292535156f22fca31d811b8c3ae68307e736b89d6a40a', 'Frozen verifier differs');
+          assert.equal(createHash('sha256').update(fs.readFileSync('npm/musterout/verify.py')).digest('hex'), '70cd6d5e61bfbabce4aeba8e3bbb5d7c6109db8993f2221684fdaf35fa07ee74', 'Frozen verifier differs');
+          const {createRequire} = await import('node:module');
+          const protocol = createRequire(import.meta.url)(process.cwd() + '/npm/musterout/verify.cjs');
+          protocol.preflight();
+          assert.equal(canonical(roots), canonical({release_keys:protocol.ROOTS.release,feed_keys:protocol.ROOTS.feed}));
+          const installRaw = fs.readFileSync('npm/musterout/install.json');
+          const install = protocol.install(installRaw, e.version, e.pack);
+          const product = Object.fromEntries(Object.keys(install.manifest.files).map(p => {
+            let current = 'npm/musterout/install';
+            assert(!fs.lstatSync(current).isSymbolicLink());
+            for (const part of p.split('/')) { current += '/' + part; assert(!fs.lstatSync(current).isSymbolicLink()); }
+            return [p,fs.readFileSync(current)];
+          }));
+          protocol.package_check(installRaw, fs.readFileSync('npm/musterout/release.js'), e.version, product, e.pack);
+          assert(Buffer.from(payload.html).equals(product['board/board.publish.html']));
+          const {spawnSync} = await import('node:child_process');
+          const python = spawnSync('python3',['-B','npm/musterout/verify.py','preflight'],{encoding:'utf8'});
+          assert.equal(python.status,0, 'Python verifier preflight failed');
+          const inventory = spawnSync('npm',['pack','--dry-run','--ignore-scripts','--offline','--json'],{cwd:'npm/musterout',encoding:'utf8'});
+          assert.equal(inventory.status,0, 'Cannot inspect package');
+          const packed = JSON.parse(inventory.stdout)[0].files.map(f=>f.path).sort();
+          const expected = ['README.md','LICENSE','package.json','release.js','install.json','verify.cjs','verify.py',...Object.keys(install.manifest.files).map(p=>'install/'+p)].sort();
+          assert.deepEqual(packed,expected, 'Unreviewed or missing package file');
+          console.log('Verified signed install and all exact package files ' + e.version);
           console.log('Verified signed release ' + e.version);
           VERIFY
       - name: Install npm with staged publishing

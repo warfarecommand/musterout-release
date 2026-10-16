@@ -358,14 +358,14 @@
         if (code === 'UPDATE_VERIFY_FAILED') s.actions.append(button('Get help',help));
         s.actions.append(button(code === 'SNOOZE_SAVE_FAILED' ? 'Continue':'Close',s.cancel));
       } else if (status === 'idle' && lastConfirmed) { s.heading.textContent = 'Updated to ' + lastConfirmed.to + '.'; s.cancel = () => closeSheet(s,true); s.actions.append(button('Continue',s.cancel,true));
-      } else { s.heading.textContent = 'Updates'; paragraph(s.body,status === 'checking' ? 'Checking for an update...' : o.updates ? 'No verified update ready.' : MESSAGES['artifact.absent']); s.cancel = () => closeSheet(s,true); s.actions.append(button('Copy update message',() => copyMessage('update')),button('Close',s.cancel)); }
+      } else { s.heading.textContent = 'Updates'; paragraph(s.body,status === 'checking' ? 'Checking for an update...' : o.updates ? (update.upToDate ? 'No newer verified release was found.' : 'The release check did not finish. Your saved plan is kept.') : MESSAGES['artifact.absent']); s.cancel = () => closeSheet(s,true); s.actions.append(button('Copy update message',() => copyMessage('update')),button('Close',s.cancel)); }
       s.close.hidden = false;
     }
     function openUpdates() { if (updateSheet) { updateSheet.heading.focus({preventScroll:true}); return; } updateSheet = sheet('Updates',null); renderUpdate(); }
     function normalizeUpdateCode(code) {
-      if (['migration_unverified','install_unverified','journal_changed'].includes(code)) return 'UPDATE_VERIFY_FAILED';
+      if (['migration_unverified','install_unverified','journal_changed','legacy_pending'].includes(code)) return 'UPDATE_VERIFY_FAILED';
       if (['hooks_missing','worker_unavailable'].includes(code)) return 'artifact.absent';
-      if (['invalid_message','signature','hash','expired','replay','product','kind','key','check_failed'].includes(code)) return 'UPDATE_UNTRUSTED';
+      if (['invalid_message','signature','hash','expired','replay','product','kind','key','check_failed','wrong_pack','mirror_conflict'].includes(code)) return 'UPDATE_UNTRUSTED';
       return code && (code.includes('.') || /^[A-Z]/.test(code)) ? code : 'artifact.' + (code || 'upstream_error');
     }
     function setUpdate(state) {
@@ -461,8 +461,6 @@
         const queue = button('Send report',async () => {
           const hadFocus = document.activeElement === queue; queue.disabled = true;
           if (hadFocus) s.heading.focus({preventScroll:true});
-          let tab = null;
-          try { tab = window.open('about:blank','_blank'); if (tab) tab.opener = null; } catch (_) {}
           try {
             if (!o.db || o.canWrite === false || !reportValid(payload)) throw {code:'REPORT_VALIDATION_FAILED'};
             const ref = o.db.doc('outbox/' + payload.id), existing = await ref.get();
@@ -474,13 +472,11 @@
             const encoded = btoa(String.fromCharCode(...new TextEncoder().encode(bytes))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
             const url = 'https://musterout.warfarecommand.com/report/#r=' + encoded;
             reportDrafts.clear(); emit('report-queued');
-            let opened = false;
-            try { if (tab && !tab.closed) { tab.location.replace(url); opened = true; } } catch (_) {}
-            status.textContent = opened ? 'Report opened. Tap Send on the report page.' : 'Report saved. Open the report page to send it.';
+            status.textContent = 'Send it from the report page';
             const link = node('a','Open report page','mot-button'); link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
-            s.body.querySelector('.mot-report-link')?.remove(); link.classList.add('mot-report-link'); s.body.append(link);
+            s.actions.querySelector('.mot-report-link')?.remove(); link.classList.add('mot-report-link','mot-primary'); queue.remove(); s.actions.prepend(link,copy);
             await refreshSettings();
-          } catch (e) { try { tab?.close(); } catch (_) {} recordError('report','queue',e.code || e.name); status.textContent = e.code === 'REPORT_VALIDATION_FAILED' ? MESSAGES.REPORT_VALIDATION_FAILED : MESSAGES.REPORT_QUEUE_FAILED; queue.disabled = false; }
+          } catch (e) { recordError('report','queue',e.code || e.name); status.textContent = e.code === 'REPORT_VALIDATION_FAILED' ? MESSAGES.REPORT_VALIDATION_FAILED : MESSAGES.REPORT_QUEUE_FAILED; queue.disabled = false; }
         },true);
         queue.disabled = !o.db || o.canWrite === false || !reportValid(payload); s.actions.append(queue);
         if (!reportValid(payload)) paragraph(s.body,'Report needs an install id, path, and grade group before sending. Copy details or check Troubleshooting.');

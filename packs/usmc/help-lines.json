@@ -1,0 +1,78 @@
+[
+  {
+    "ref": "Veterans Crisis Line",
+    "phone": "988",
+    "instructions": "then press 1",
+    "text": "838255",
+    "url": "https://www.veteranscrisisline.net/",
+    "verified_at": "2026-10-16T02:26:02Z",
+    "verified": true
+  },
+  {
+    "ref": "Emergency assistance (U.S.)",
+    "phone": "911",
+    "url": "https://www.911.gov/calling-911/",
+    "verified_at": "2026-10-16T02:26:02Z",
+    "verified": true
+  },
+  {
+    "ref": "VA benefits line",
+    "phone": "800-827-1000",
+    "url": "https://www.va.gov/family-and-caregiver-benefits/",
+    "verified_at": "2026-10-16T02:48:12Z",
+    "verified": true
+  },
+  {
+    "ref": "DFAS retired pay",
+    "phone": "800-321-1080",
+    "url": "https://corpweb1.dfas.mil/askDFAS/faqView.do?faq.faqId=7931&pgModId=2",
+    "verified_at": "2026-10-16T02:48:12Z",
+    "verified": true
+  },
+  {
+    "ref": "Humana Military CHCBP",
+    "phone": "800-444-5445",
+    "url": "https://www.tricare.mil/Plans/SpecialPrograms/CHCBP",
+    "verified_at": "2026-10-16T02:48:12Z",
+    "verified": true
+  },
+  {
+    "ref": "VFW Pre-Discharge",
+    "phone": "202-543-2239",
+    "url": "https://www.vfw.org/assistance/va-claims-separation-benefits/pre-discharge-locations-and-contacts",
+    "verified_at": "2026-10-16T02:48:12Z",
+    "verified": true
+  },
+  {
+    "ref": "Military OneSource",
+    "phone": "800-342-9647",
+    "url": "https://www.militaryonesource.mil/contact-us/",
+    "verified_at": "2026-10-16T06:18:32Z",
+    "verified": true,
+    "note": "24/7 support for transitioning service members and families.",
+    "eligibility_source": {
+      "url": "https://www.militaryonesource.mil/transition-retirement/veterans/",
+      "fetched_at": "2026-10-16T06:18:33Z"
+    },
+    "fetched_at": "2026-10-16T06:18:32Z"
+  },
+  {
+    "ref": "Vet Center Call Center",
+    "phone": "877-927-8387",
+    "url": "https://www.va.gov/health-care/health-needs-conditions/mental-health/",
+    "verified_at": "2026-10-16T06:18:36Z",
+    "verified": true,
+    "note": "24/7 support from fellow combat veterans.",
+    "fetched_at": "2026-10-16T06:18:36Z"
+  },
+  {
+    "ref": "MMSR-2 enlisted retirements",
+    "phone": "703-784-9322",
+    "email": "smb_manpower_mmsr2e@usmc.mil",
+    "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4573434/fy27-staff-noncommissioned-officer-promotion-board-schedule-and-policies/",
+    "verified": false,
+    "verified_at": "2026-10-16T06:18:38Z",
+    "fetch_status": 403,
+    "note": "MARADMIN 365/26 para 4.e confirms number and mailbox in official indexed text; live origin fetch blocked."
+  }
+]

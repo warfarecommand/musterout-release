@@ -1,17 +1,9 @@
 # Muster Out releases
 
-This public repository holds the files for installing and updating Muster Out in any Claude chat, including Claude Code and the desktop Code tab. It contains release files; development takes place separately.
+Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.cjs (SHA-256 88f05a85766ffae6618292535156f22fca31d811b8c3ae68307e736b89d6a40a) and https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.py (SHA-256 70cd6d5e61bfbabce4aeba8e3bbb5d7c6109db8993f2221684fdaf35fa07ee74), then follow the setup guide they verify.
 
-Paste this message into your Claude chat:
+Run the Muster Out weekly check. Use the signed feed. Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.cjs (SHA-256 88f05a85766ffae6618292535156f22fca31d811b8c3ae68307e736b89d6a40a) and https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.py (SHA-256 70cd6d5e61bfbabce4aeba8e3bbb5d7c6109db8993f2221684fdaf35fa07ee74), then follow the setup guide they verify.
 
-```text
-Set up Muster Out for me. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/SETUP.md and follow it.
-```
+Update Muster Out. Keep my existing board at the same address. Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.cjs (SHA-256 88f05a85766ffae6618292535156f22fca31d811b8c3ae68307e736b89d6a40a) and https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.py (SHA-256 70cd6d5e61bfbabce4aeba8e3bbb5d7c6109db8993f2221684fdaf35fa07ee74), then follow the setup guide they verify.
 
-For notices, send: "Run the Muster Out weekly check. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/WEEKLY.md and follow it."
-
-For a new release, send: "Update Muster Out. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/UPDATE.md and follow it." The board shows both under Talk to Claude.
-
-[Visit Muster Out](https://musterout.warfarecommand.com) for coverage and setup. Developers can clone this repository for a folder install. Folder updates verify each changed file against release.json and keep my/.
-
-Muster Out is published by Warfare Command under the [MIT license](LICENSE).
+Use the independently received pins before running a verifier. Old main URLs remain compatibility entries. Confirmed updates use exact signed packages and keep the same board address. Refresh saved Project instructions separately.

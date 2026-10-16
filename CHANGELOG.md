@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.2.13 (2026-10-16)
+- Setup and updates check Muster Out's publisher signature before installing, and weekly checks file only signed notices.
+- Help lines are plain numbers you can copy, stuck updates finish on their own, and enlisted retirees get the right MMSR-2 desk.
+
 ## 0.2.12 (2026-10-15)
 - Export brief: turn your plan into a short PowerPoint for your command or a mentor, with a timeline, key milestones and decisions. Private details stay off unless you add them.
 - Saving the file needs one update through Claude. Until then, the brief sheet lets you copy the brief text.

@@ -49,6 +49,7 @@
   }
   function stamp(value) {
     if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z$/.test(value) || !Number.isFinite(Date.parse(value))) fail('invalid_envelope');
+    if (new Date(Date.parse(value)).toISOString() !== (value.length === 20 ? value.slice(0,-1) + '.000Z' : value) || value.startsWith('0000-')) fail('invalid_envelope');
     return Date.parse(value);
   }
   async function signed(key, signature, message) {
@@ -57,7 +58,7 @@
       if (!await crypto.subtle.verify('Ed25519', imported, bytes64(signature, 64), enc.encode(canonical(message)))) fail('bad_signature');
     } catch (_) { fail('bad_signature'); }
   }
-  async function verifyEnvelope(e, signature, payload, options) {
+  async function verifySignedEnvelope(e, signature, options) {
     options = options || {};
     var kind = options.kind;
     if (kind !== 'release' && kind !== 'feed') fail('wrong_kind');
@@ -65,6 +66,7 @@
     if (e.product !== 'Muster Out') fail('wrong_product');
     if (e.kind !== kind) fail('wrong_kind');
     if (typeof e.pack !== 'string' || !e.pack || typeof e.key_id !== 'string' || !e.key_id || !/^[a-f0-9]{64}$/.test(e.sha256) || !Number.isSafeInteger(e.size) || e.size < 1 || e.size > MAX_BYTES) fail('invalid_envelope');
+    if (options.pack && e.pack !== options.pack) fail('wrong_pack');
     stamp(e.created);
     if (kind === 'release') {
       semver(e.version);
@@ -83,6 +85,12 @@
     }
     if (!trusted.has(e.key_id)) fail('untrusted_key');
     await signed(trusted.get(e.key_id), signature, e);
+    return e;
+  }
+  async function verifyEnvelope(e, signature, payload, options) {
+    options = options || {};
+    var kind = options.kind;
+    await verifySignedEnvelope(e, signature, options);
     if (typeof payload !== 'string' || payload.length > MAX_BYTES) fail('too_large');
     var bytes = enc.encode(payload);
     if (bytes.length !== e.size) fail('size_mismatch');
@@ -129,12 +137,15 @@
     });
   }
   async function loadVerified(options, validate) {
-    var kind = options.kind, path = kind === 'release' ? 'musterout@latest/release.js' : 'musterout-feed@latest/feed.js';
+    var kind = options.kind;
+    if (options.exactVersion && !/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(options.exactVersion)) fail('invalid_version');
+    var path = kind === 'release' ? 'musterout@' + (options.exactVersion || 'latest') + '/release.js' : 'musterout-feed@latest/feed.js';
     // Each CDN has its own worker, first-message limit and 20 s deadline.
     // No board state or identifiers are sent to either worker.
     var results = await Promise.allSettled(['https://unpkg.com/', 'https://cdn.jsdelivr.net/npm/'].map(async function (host) {
       var value = await loadWorker(host + path, kind);
       await verifyEnvelope(value.envelope, value.signature, kind === 'release' ? value.html : canonical(value.data), options);
+      if (options.exactVersion && value.envelope.version !== options.exactVersion) fail('wrong_version');
       if (validate) validate(value);
       return value;
     }));
@@ -142,6 +153,7 @@
     for (var result of results) {
       if (result.status !== 'fulfilled') continue;
       var value = result.value, e = value.envelope;
+      if (best && (kind === 'release' ? e.version === best.envelope.version : e.seq === best.envelope.seq) && (kind === 'release' ? canonical(e) !== canonical(best.envelope) : e.sha256 !== best.envelope.sha256 || e.size !== best.envelope.size || e.pack !== best.envelope.pack || e.created !== best.envelope.created || e.expires !== best.envelope.expires)) fail('mirror_conflict');
       if (!best || (kind === 'release' ? compare(e.version, best.envelope.version) > 0 : e.seq > best.envelope.seq || e.seq === best.envelope.seq && stamp(e.created) > stamp(best.envelope.created))) best = value;
     }
     // A CDN that verified a release no newer than this board means the board is current.
@@ -151,7 +163,7 @@
   function create(options) {
     options = options || {};
     var config = options.config || global.MusterOutUpdateConfig || {}, state, candidate = null, checkTask = null, applyTask = null, readyTask = null, listeners = new Set();
-    var db = options.db, correctionPending = false, justUpdated = null;
+    var db = options.db, correctionPending = false, justUpdated = null, pendingVersion = null;
     if (typeof options.onState === 'function') listeners.add(options.onState);
     function report(status, values) {
       state = Object.freeze(Object.assign({status:status, correctionPending:correctionPending, justUpdated:justUpdated}, values || {}));
@@ -166,17 +178,46 @@
     function snoozed(version) {
       try { var until = Number(localStorage.getItem('mo.update.snooze.' + version)); return Number.isFinite(until) && until > Date.now() && until <= Date.now() + 86400000; } catch (_) { return false; }
     }
+    async function pinnedJournal() {
+      if (!db) return null;
+      var snap = await db.doc('meta/update').get(), j = snap.exists ? snap.data() : null;
+      if (!j || Object.prototype.hasOwnProperty.call(j,'stage') || !j.state) return null;
+      if (!j.target) { if (j.trust_schema !== undefined) fail('journal_changed'); return null; }
+      if (j.trust_schema !== 1 || !j.target || j.target.package !== 'musterout' || j.target.version !== j.to || j.target.pack !== config.pack || canonical(j.target.mirrors) !== canonical(['https://cdn.jsdelivr.net/npm/musterout@','https://unpkg.com/musterout@'])) fail('journal_changed');
+      if (!['publishing','failed','complete'].includes(j.state) || compare(j.to,j.from) <= 0) fail('journal_changed');
+      stamp(j.at);
+      exact(j.target, ['package','version','pack','mirrors','release']);
+      exact(j.target.release, ['envelope','signature']);
+      var e = j.target.release.envelope;
+      if (e.version !== j.to || e.pack !== config.pack) fail('journal_changed');
+      await verifySignedEnvelope(e, j.target.release.signature, Object.assign({}, config, {kind:'release'}));
+      return j;
+    }
+    async function resumePinned() {
+      var raw = db ? await db.doc('meta/update').get() : null, legacy = raw && raw.exists ? raw.data() : null;
+      if (legacy && !Object.prototype.hasOwnProperty.call(legacy,'stage') && legacy.state && legacy.state !== 'complete') {pendingVersion=legacy.to; if (!legacy.target && legacy.to !== config.version) fail('legacy_pending');}
+      var j = await pinnedJournal();
+      if (!j || j.state === 'complete' || j.to === config.version) return false;
+      if (j.from !== config.version || compare(j.to, config.version) <= 0) fail('journal_changed');
+      var value = await loadVerified(Object.assign({}, config, {kind:'release', currentVersion:config.version, exactVersion:j.to}));
+      if (canonical(value.envelope) !== canonical(j.target.release.envelope) || value.signature !== j.target.release.signature) fail('journal_changed');
+      candidate = value;
+      report('available', info());
+      return true;
+    }
     function checkForUpdate() {
       if (applyTask || state.status === 'applying') return Promise.resolve(state);
       if (checkTask) return checkTask;
       report('checking');
       checkTask = (async function () {
         try {
+          if (await resumePinned()) return state;
           var value = await loadVerified(Object.assign({}, config, {kind:'release', currentVersion:config.version}));
           if (!candidate || compare(value.envelope.version, candidate.envelope.version) > 0) candidate = value;
           correctionPending = candidate.envelope.correction;
           return report(snoozed(candidate.envelope.version) ? 'snoozed' : 'available', info());
         } catch (error) {
+          if (pendingVersion) return failed(error);
           // A failed network check never hides an already verified correction.
           if (candidate) return report(snoozed(candidate.envelope.version) ? 'snoozed' : 'available', info());
           return error && error.code === 'not_newer' ? report('idle', {upToDate:true}) : report('idle', {quietCode:error.code || 'check_failed'});
@@ -206,7 +247,7 @@
     function failed(error) {
       var code = error.code || 'update_failed';
       var readOnly = ['not_writer','not_granted','not_declared','capability_disabled','capability_removed'].includes(code);
-      return report('failed', {code:code, message:readOnly ? 'This view is read-only. Open your board as an editor to update.' : code === 'conflict' ? 'Another page update won. Reopen your board before updating.' : code === 'too_large' ? 'This update is too large. Use the pasted update message.' : 'The update did not finish. Your saved plan is still available.'});
+      return report('failed', {code:code, message:pendingVersion ? 'I could not verify the release you already approved. Your update is still pending, and your saved plan is kept. I will not switch versions without your approval.' : readOnly ? 'This view is read-only. Open your board as an editor to update.' : code === 'conflict' ? 'Another page update won. Reopen your board before updating.' : code === 'too_large' ? 'This update is too large. Use the pasted update message.' : 'The update did not finish. Your saved plan is still available.'});
     }
     function applyUpdate() {
       if (applyTask) return applyTask;
@@ -218,10 +259,19 @@
           await requireWriter(); hooks();
           var artifact = await capability('artifact');
           if (!artifact || typeof artifact.publish !== 'function') fail('not_granted');
+          var installedBefore = await db.doc('meta/install').get();
+          if (installedBefore.exists && installedBefore.data().version && compare(installedBefore.data().version, target.envelope.version) >= 0) fail('not_newer');
           await options.drainPendingWrites();
           await options.persistDrafts();
-          journal = {from:config.version, to:target.envelope.version, at:new Date().toISOString(), state:'publishing'};
+          var existing = await db.doc('meta/update').get(), prior = existing.exists ? existing.data() : null;
+          if (prior && prior.state !== 'complete' && (prior.stage || !prior.target || prior.from !== config.version || prior.to !== target.envelope.version || canonical(prior.target.release.envelope) !== canonical(target.envelope))) fail('journal_changed');
+          journal = {from:config.version, to:target.envelope.version, at:prior && prior.to === target.envelope.version ? prior.at : new Date().toISOString(), state:'publishing', trust_schema:1,
+            target:{package:'musterout', version:target.envelope.version, pack:target.envelope.pack, mirrors:['https://cdn.jsdelivr.net/npm/musterout@','https://unpkg.com/musterout@'], release:{envelope:target.envelope,signature:target.signature}}};
           await db.doc('meta/update').set(journal);
+          var saved = await db.doc('meta/update').get();
+          if (!saved.exists || canonical(saved.data()) !== canonical(journal)) fail('journal_changed');
+          var latestInstall = await db.doc('meta/install').get();
+          if (latestInstall.exists && latestInstall.data().version && compare(latestInstall.data().version,target.envelope.version) >= 0) fail('not_newer');
           report('applying', {phase:'publishing'});
           for (var attempt = 0; attempt < 2; attempt++) {
             try { await artifact.publish(target.html); break; }
@@ -243,30 +293,51 @@
     async function finishInstall() {
       if (!db) return false;
       var snap = await db.doc('meta/update').get(), journal = snap.exists ? snap.data() : null;
-      if (!journal || journal.state !== 'publishing' || journal.to !== config.version) return false;
+      // Chat owns stage journals. A page journal can lag behind the running release.
+      if (journal && Object.prototype.hasOwnProperty.call(journal,'stage')) return false;
+      var pending = journal && ['publishing','failed'].includes(journal.state);
+      if (journal && journal.state !== 'complete' && !pending) return false;
+      if (pending && (journal.state === 'failed' && !journal.target || compare(journal.to, config.version) > 0)) return false;
+      if (!pending) {
+        // Setup owns its own completion and install fields. Do not race it.
+        if ((await db.doc('meta/setup').get()).exists) return false;
+        var prior = await db.doc('meta/install').get();
+        if (!prior.exists || !prior.data().version || compare(prior.data().version, config.version) >= 0) return false;
+      }
       try {
-        await requireWriter(); hooks();
-        report('applying', {phase:'migrating'});
-        await options.runMigration();
-        report('applying', {phase:'verifying'});
-        if (await options.verifyMigration() !== true) fail('migration_unverified');
+        if (pending && (journal.target || journal.trust_schema !== undefined)) { if (!await pinnedJournal()) fail('journal_changed'); }
+        hooks();
+        // Quiet metadata repair requires an already verified plan. Automatic
+        // migration remains responsible for unfinished work without a page journal.
+        if (!pending && await options.verifyMigration() !== true) return false;
+        await requireWriter();
+        if (pending) {
+          report('applying', {phase:'migrating'});
+          await options.runMigration();
+          report('applying', {phase:'verifying'});
+          if (await options.verifyMigration() !== true) fail('migration_unverified');
+        }
+        var freshJournal = await db.doc('meta/update').get();
+        if (canonical(freshJournal.exists ? freshJournal.data() : null) !== canonical(journal)) fail('journal_changed');
         var installRef = db.doc('meta/install'), installed = await installRef.get();
+        if (installed.exists && installed.data().version && compare(installed.data().version,config.version) > 0) fail('not_newer');
         await installRef.set(Object.assign({}, installed.exists ? installed.data() : {}, {version:config.version}));
         installed = await installRef.get();
         if (!installed.exists || installed.data().version !== config.version) fail('install_unverified');
+        if (!pending) return false;
         var updateRef = db.doc('meta/update');
         var current = await updateRef.get();
-        if (!current.exists || current.data().to !== journal.to || current.data().at !== journal.at || current.data().state !== 'publishing') fail('journal_changed');
+        if (!current.exists || Object.prototype.hasOwnProperty.call(current.data(),'stage') || canonical(current.data().target || null) !== canonical(journal.target || null) || current.data().trust_schema !== journal.trust_schema || current.data().to !== journal.to || current.data().at !== journal.at || current.data().state !== journal.state) fail('journal_changed');
         await updateRef.set(Object.assign({}, journal, {state:'complete'}));
         var completed = await updateRef.get();
-        if (!completed.exists || completed.data().state !== 'complete' || completed.data().to !== config.version) fail('install_unverified');
-        justUpdated = {from:journal.from, to:journal.to}; correctionPending = false;
+        if (!completed.exists || completed.data().state !== 'complete' || canonical(completed.data()) !== canonical(Object.assign({}, journal, {state:'complete'}))) fail('install_unverified');
+        justUpdated = {from:journal.from, to:config.version}; correctionPending = false;
         report('done'); return true;
-      } catch (error) { failed(error); return true; }
+      } catch (error) { if (!pending) return false; failed(error); return true; }
     }
     function ready() {
       if (!readyTask) readyTask = (async function () {
-        try { if (await finishInstall()) return state; } catch (error) { return failed(error); }
+        try { if (await finishInstall()) return state; if (await resumePinned()) return state; } catch (error) { return failed(error); }
         return checkForUpdate();
       })();
       return readyTask;

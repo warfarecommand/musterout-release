@@ -231,6 +231,8 @@ def seed_fingerprints(root=here.parent):
                     url=cite.get("url"), before=damaged, after=quote))
     # Content updates also run on boards already at this product version.
     revision_content = dict(items=result["versions"]["current"], claimQuoteRepairs=result["claimQuoteRepairs"])
+    # This exact-default correction must also reach already-current boards.
+    revision_content["enlistedRetirementDesk"] = next((c for c in current.get("contacts", []) if c.get("id") == "c-mmsr2-re"), None)
     result["revision"] = hashlib.sha256(canonical(revision_content).encode()).hexdigest()
     result["version"] = config["version"]
     # Budget raised from 100 KB to 150 KB for 0.2.0 (label and brief changed every current hash),
@@ -244,6 +246,8 @@ def seed_fingerprints(root=here.parent):
 
 def embed(template, seed, fingerprints, root=here.parent):
     escape = lambda value: canonical(value).replace("</", "<\\/")
+    if "/*HELP_LINES*/" in template:
+        template = template.replace("/*HELP_LINES*/", escape(json.loads((root / "packs/usmc/help-lines.json").read_text())))
     if "/*COACH_SETUP*/" in template:
         project = (root / "PROJECT.md").read_text(encoding="utf-8")
         block = re.search(r"## Instructions to paste\s+```text\n(.*?)\n```", project, re.S)
@@ -258,7 +262,10 @@ def embed(template, seed, fingerprints, root=here.parent):
         title = re.search(r"^# (.+)$", text, re.M)
         if not title or "## Paste this" not in text:
             raise SystemExit(f"workflow lacks title or prompt: {file}")
-        workflows.append({"file": file.name, "title": title[1], "text": text})
+        prompt = re.search(r"## Paste this\s+```text\n(.*?)\n```", text, re.S)
+        if not prompt or not prompt[1].strip():
+            raise SystemExit(f"workflow lacks a plain text prompt: {file}")
+        workflows.append({"file": file.name, "title": title[1], "text": prompt[1].strip()})
     if "/*WORKFLOWS*/" in template:
         if len(workflows) != 10:
             raise SystemExit("expected ten starter workflow prompts")

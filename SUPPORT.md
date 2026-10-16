@@ -41,15 +41,15 @@ Open [claude.ai in a browser](https://claude.ai) and paste the setup message to 
 Use a personal phone or computer to open [claude.ai](https://claude.ai), then paste the setup message.
 
 ## Set up your board
-If your path is covered, send this one message in any Claude chat: the Claude app on a phone, claude.ai, or the desktop app, including Claude Code and the desktop Code tab. Muster Out works on Claude Free.
+If your path is covered, send this one message in a Claude chat that can run the security check: the Claude app on a phone, claude.ai, or the desktop app, including Claude Code and the desktop Code tab. Muster Out works on Claude Free.
 
 ```
-Set up Muster Out for me. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/SETUP.md and follow it.
+Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.cjs (SHA-256 88f05a85766ffae6618292535156f22fca31d811b8c3ae68307e736b89d6a40a) and https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.py (SHA-256 70cd6d5e61bfbabce4aeba8e3bbb5d7c6109db8993f2221684fdaf35fa07ee74), then follow the setup guide they verify.
 ```
 
 Claude checks the release files, asks you to tap Publish for your private board, and says "Open your board." You answer the setup cards on the board. If you do not have a date yet, use the undated plan and add your date later. If the phone app cannot open the board, use claude.ai in your phone browser. The [welcome page](https://musterout.warfarecommand.com/#setup) has a Copy button for the message.
 
-Claude Code and desktop Code tab users paste the same setup message. Developers who want a folder install can clone [the public release repository](https://github.com/warfarecommand/musterout-release). Folder updates verify each changed file against `release.json` and keep `my/`.
+Claude Code and desktop Code tab users paste the same setup message. Developers who want a folder install can clone [the public release repository](https://github.com/warfarecommand/musterout-release). Folder updates authenticate the signed install manifest and exact-version package and keep `my/`.
 
 ## Keep it current
 Your board shows the weekly and update messages under Talk to Claude, each with a Copy button.
@@ -57,13 +57,13 @@ Your board shows the weekly and update messages under Talk to Claude, each with 
 Weekly message:
 
 ```
-Run the Muster Out weekly check. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/WEEKLY.md and follow it.
+Run the Muster Out weekly check. Use the signed feed. Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.cjs (SHA-256 88f05a85766ffae6618292535156f22fca31d811b8c3ae68307e736b89d6a40a) and https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.py (SHA-256 70cd6d5e61bfbabce4aeba8e3bbb5d7c6109db8993f2221684fdaf35fa07ee74), then follow the setup guide they verify.
 ```
 
 Update message:
 
 ```
-Update Muster Out. Read https://raw.githubusercontent.com/warfarecommand/musterout-release/main/UPDATE.md and follow it.
+Update Muster Out. Keep my existing board at the same address. Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.cjs (SHA-256 88f05a85766ffae6618292535156f22fca31d811b8c3ae68307e736b89d6a40a) and https://cdn.jsdelivr.net/npm/musterout@0.2.13/verify.py (SHA-256 70cd6d5e61bfbabce4aeba8e3bbb5d7c6109db8993f2221684fdaf35fa07ee74), then follow the setup guide they verify.
 ```
 
 - **Weekly check.** During setup, Claude offers a Monday check if the chat supports recurring tasks. Confirm your timezone and time. If scheduling is unavailable or you skip it, send the weekly message any week. The check files possible matches from the sources actually covered for your path and lines of effort. It also checks for new versions. The board shows watch status itself once the signed feed reaches it. Missing coverage or a failed check is never a clean result. More > Watch coverage names each source, checked window, last success and any failed attempt. MARADMIN Watch checks MARADMIN, ALMAR, ALNAV and orders by title; it does not read every order in full.
@@ -137,7 +137,7 @@ Watch notices are possible matches until reviewed. Saving one does not establish
 
 Report a problem is available on every screen, including an empty board. Copy diagnostic works without board data or Claude. It copies version, pack, screen, capability states and a bounded in-memory list of error classes. It excludes notes, records, values and stack traces. You can paste it into your own Claude chat to review a known repair. Copy changes is different: it may contain your draft, so keep it in your own account.
 
-The report starts with structured fields and optional details. Keep names, service dates, board links and record details out of the text. If you request a rewrite, Claude uses only those entered details. Review the final payload again after any edit. Manual Copy payload is available before the learning channel ships. Queue report appears only after that channel passes its gate; Queue approves transmission of exactly the shown bytes. Queued does not mean Sent.
+The report starts with structured fields and optional details. Keep names, service dates, board links and record details out of the text. If you request a rewrite, Claude uses only those entered details. Review the final payload again after any edit. Copy details is available before and after approval. Send report approves exactly the shown bytes. The board saves and verifies that payload, then says "Send it from the report page" with Open report page and Copy details in the sheet. The board never posts. The page link carries the frozen bytes in its fragment, never a query string. Queued and opening the page do not mean Sent. Only a matching server receipt proves receipt; keep the queue until chat verifies it.
 
 If chat cannot send or cannot confirm acknowledgment, open [the report page](https://musterout.warfarecommand.com/report/), paste the payload, review it and tap Send. The link carries no payload. Keep the same report id when retrying. Only a matching success receipt proves it was received. Bring that receipt back to Claude before clearing the queued report. If copying fails, select and copy the displayed text yourself; keep the sheet open until you have it.
 
@@ -155,3 +155,9 @@ Reports and counts have separate consent. Counts start off and require a filled 
 ## Project help
 
 Use [PROJECT.md](PROJECT.md) after your first useful board. It includes the full instructions, uploads and optional connector guidance. A Project uses your own Claude account and records; its drafts still need verification. If Claude cannot read the board, upload a reviewed snapshot with its capture time. Finish setup on a computer if the phone path is unavailable. The starter workflows are on your board under More, then Project, each with a Copy button. Each one names the evidence and the confirming office for its draft.
+
+## Security check and pending updates
+
+Use the current pinned setup message from the Muster Out site. Code execution is required for setup and chat/folder verification. WebFetch alone cannot run the check. If unavailable, setup stops; existing boards keep working and Update now uses their installed verifier. Do not install a runtime or bypass a network refusal. Failed feed verification keeps the last good check and its date; it does not mean zero matches.
+
+A pending update keeps the exact release already approved. Do not clear its recovery record or switch to latest. If publication is uncertain, inspect the same address before any further publish. Complete an already published target's verified migration and bookkeeping; never roll back over a partial migration. A legacy unsigned journal needs an exactly matching signed archive or reviewed recovery. Refresh old saved Project instructions separately from the page update.

@@ -1,0 +1,93 @@
+# Separation glossary
+
+One entry per line. Citations identify support in the copied regulations and supplemental texts. Unresolved definitions name the office that can confirm them. TRS means either the seminar or health plan.
+
+- EAS: End of active service is the date a Marine's active service ends (MARADMIN 045/25, 3.a.2).
+- ECC: End of current contract is the end date used to limit how much leave a Marine can earn before separation (MCO 1900.16 CH-3, 1010.2.e).
+- TRP: The Transition Readiness Program sets mandatory transition gates (MCO 1700.31A, enclosure (2), chapter 5, paragraph 3.a-e). Confirm with: installation TRP office and UTC.
+- TAP: The Transition Assistance Program prepares service members for civilian life. The VA course is part of its curriculum (VA guide v6.1, introduction, lines 511-514).
+- IC: Individualized Initial Counseling must be completed no later than 365 days before EAS and before pre-separation counseling. Retiree IC may begin during the 24-month period preceding anticipated retirement (MCO 1700.31A, enclosure (2), chapter 8, paragraphs 2 and 4.a). Confirm with: installation TRP office and UTC.
+- Capstone: The TRP review follows TRS workshops, precedes Commander's Verification and must be complete no later than 120 days before EAS (MCO 1700.31A, enclosure (2), chapter 12, paragraph 1.b-c). Confirm with: installation TRP office and UTC.
+- DD 2648: The official TRP record documents IC, pre-separation counseling, TRS workshops and Capstone; it becomes a non-editable PDF once signed by the commander or designee (MCO 1700.31A, enclosure (2), chapters 8.10, 9.6, 10.6 and 12.1.g/2.f). Confirm with: TRP office and UTC.
+- DD-214: DD Form 214 records release or discharge from active duty (MCO 1900.16 CH-3, Appendix B).
+- IPAC: The Installation Personnel Administration Center handles personnel records and separation administration (NAVMC 1700.2B, enclosure (2), 9.b(8); MARADMIN 045/25, 5.b).
+- MCTFS: The Marine Corps Total Force System is the personnel system that records separation actions and planned separation codes (MARADMIN 045/25, 4.a).
+- Unit diary: A unit diary is the reporting method used to enter personnel actions into MCTFS (MCO 1900.16 CH-3, 5003.2).
+- Page 11: Page 11 is the service record page on which resignation counseling and the Reserve commission choice are recorded (MCO 1900.16 CH-3, 5003.1).
+- MMSR-2: MMSR-2 is the HQMC office addressed for the retirement and resignation requests described in the manual (MCO 1900.16 CH-3, 2004.1 and 5003.4).
+- MMEA: Manpower Management Enlisted Assignments is the enlisted assignment organization formerly responsible for DAP management (MARADMIN 454/26, 2.c).
+- MMOA: Manpower Management Officer Assignments is the officer assignment office included when retirement requires cancellation of PCS orders (MCO 1900.16 CH-3, 2003.1.d(1)(c)).
+- RAM-1: RAM-1 is the Reserve Affairs office contact for Reserve commissioning questions (MARADMIN 045/25, 3.b.3 and 7).
+- RAC-3: Reserve Affairs Careers Retention is the section that manages DAP (MARADMIN 454/26, 2.c and POC block).
+- DAP: The Direct Affiliation Program provides qualified Active Component Marines a transition to an SMCR or IMA billet without a break in service (MARADMIN 454/26, 2.a).
+- SMCR: The Selected Marine Corps Reserve is a Reserve component in which DAP Marines can affiliate with a drilling unit (MARADMIN 454/26, 2.a).
+- IMA: An Individual Mobilization Augmentee fills a Reserve billet through an IMA detachment (MARADMIN 454/26, 2.a and reference (H)).
+- IRR: The Individual Ready Reserve is a Ready Reserve category distinct from the SMCR and IMA affiliations offered through DAP (MARADMIN 454/26, 2.a and 6.b).
+- NAVMC 763: The Appointment Acceptance and Record documents an officer's acceptance of a Reserve commission (MARADMIN 045/25, 5.a).
+- SkillBridge: SkillBridge provides job training and employment experience to help a Marine enter civilian employment (NAVMC 1700.2B, 2).
+- SkillBridge Category I: The interim category assigns E1-E5 a maximum of 120 days, subject to the unresolved differences with NAVMC 1700.2B (MARADMIN 280/24, 3.a; NAVMC 1700.2B, 4 and 7).
+- SkillBridge Category II: The interim category assigns E6-E7, WO-CWO3, and O1-O4 a maximum of 90 days, subject to the unresolved differences with NAVMC 1700.2B (MARADMIN 280/24, 3.a; NAVMC 1700.2B, 4 and 7).
+- SkillBridge Category III: The interim category assigns E8-E9, CWO4-CWO5, and O5 and above a maximum of 90 days, subject to the unresolved differences with NAVMC 1700.2B (MARADMIN 280/24, 3.a; NAVMC 1700.2B, 4 and 7).
+- PTAD: Permissive Temporary Additional Duty is an authorized administrative absence for specified purposes (MARADMIN 625/24, 5).
+- S-PTAD: SkillBridge PTAD is the administrative absence status used for approved SkillBridge participation (NAVMC 1700.2B, enclosure (2), 7 and 9).
+- Transition PTAD: Transition PTAD is administrative absence for eligible house hunting, job hunting, or relocation activities (MCO 1050.3J, chapter 5, 1.c(11)).
+- Terminal leave: Terminal leave is accrued leave approved at the commander's discretion after separation requirements are complete (MCO 1900.16 CH-3, 1010.2).
+- Advance leave: Advance leave uses leave not yet earned and is limited to the lesser of 45 days or the amount earnable during remaining active duty (MCO 1050.3J, chapter 2, 6).
+- Excess leave: Excess leave is leave beyond what can be earned and results in no entitlement to pay and allowances (MCO 1900.16 CH-3, 1010.2.e).
+- SLA: Special Leave Accrual permits retention of leave beyond the ordinary carryover limit under specified conditions (MCO 1050.3J, chapter 2, paragraph 9).
+- BDD: Benefits Delivery at Discharge is the VA pre-discharge disability claim program described in the guide, with a 180-to-90-day filing window (VA guide v6.1, Module 3, p. 72).
+- SHPE: The Separation History and Physical Examination is the separation medical evaluation named in the manual (MCO 1900.16 CH-3, 1011.2).
+- SHA: The Separation Health Assessment is the DoD health assessment program named in the manual's references (MCO 1900.16 CH-3, Appendix M, reference (ah)).
+- VSO: Veterans Service Organizations help veterans, families and survivors understand benefits and file claims. Chartered VSOs provide these services free (VA guide v6.1, Module 3, p. 80, lines 4013-4018).
+- 21-22: VA Form 21-22 appoints a recognized VSO as your representative for VA claim issues (VA guide v6.1, Module 3, p. 82, lines 4104-4109).
+- 21-526EZ: VA Form 21-526-EZ is the VA disability claim form named in the guide (VA guide v6.1, Module 3, line 3769).
+- C&P exam: A compensation and pension exam may be scheduled for a standard claim or one converted from an FDC (VA guide v6.1, Module 3, p. 72, lines 3674-3681).
+- PACT Act: The law expands VA health care and benefits for veterans exposed to toxic substances (VA guide v6.1, Module 3, lines 3403-3413).
+- ILER: Definition not established by the copied pack; confirm with the military medical/exposure office.
+- TAMP: The Transitional Assistance Management Program provides the 180 days of premium-free transitional health care described for qualifying Selected Reserve affiliation without a break in service (MARADMIN 454/26, 3.a).
+- TRS (seminar): The Transition Readiness Seminar is the transition training named in SkillBridge eligibility procedures (NAVMC 1700.2B, enclosure (2), 3.c).
+- TRS (health plan): TRICARE Reserve Select is the health plan eligible Selected Reserve Marines may enroll in after TAMP (MARADMIN 454/26, 3.a).
+- CHCBP: Definition not established by the copied pack; confirm with the TRICARE benefits office.
+- FEDVIP: Definition not established by the copied pack; confirm with the TRICARE benefits office.
+- SBP: The Survivor Benefit Plan provides elected survivor coverage associated with military retirement (MCO 1900.16 CH-3, 1406).
+- DD 2656: DD Form 2656 is the retirement election form used to establish retired pay information and SBP choices (MCO 1900.16 CH-3, 1406.1).
+- DFAS: The Defense Finance and Accounting Service maintains retired Marine pay accounts (MCO 1900.16 CH-3, 1404.1).
+- myPay: myPay is the DFAS account system used to adjust retired pay allotments and withholding (MCO 1900.16 CH-3, 1404.2).
+- VGLI: Veterans' Group Life Insurance is the insurance option to which eligible separating Marines can convert SGLI (MCO 1900.16 CH-3, 1101.3.a).
+- SGLI: Servicemembers' Group Life Insurance is the service member life insurance identified in separation counseling (MCO 1900.16 CH-3, 1101.3).
+- TEB: Transfer of Education Benefits permits transfer of earned Post-9/11 GI Bill benefits to a spouse or children. The guide says the full service obligation must be completed or the transfer is disqualified (VA guide v6.1, Module 4, lines 4613-4621).
+- GI Bill: The GI Bill provides education benefits, including benefits whose transfer may be maintained through qualifying Reserve affiliation (MARADMIN 454/26, reference (C) and 3.b).
+- VR&E: Veteran Readiness and Employment may help when a service-connected disability limits or prevents work (VA guide v6.1, Module 4, lines 5340-5343).
+- AC: The Active Component is the component from which Marines transition under DAP (MARADMIN 454/26, 2.a).
+- RC: The Reserve Component is the component to which DAP and Reserve commissioning support transition (MARADMIN 045/25, 1).
+- HQMC: Headquarters Marine Corps receives and processes the Reserve appointment requests discussed in the commissioning message (MARADMIN 045/25, 2).
+- CMC: The Commandant of the Marine Corps is the authority identified for approval and release actions in officer resignations (MCO 1900.16 CH-3, 5002.1 and 5005.1).
+- CO: The commanding officer exercises the leave discretion described in the manual (MCO 1900.16 CH-3, 1010.2).
+- OIC: An officer in charge may hold SkillBridge approval authority as described in the NAVMC (NAVMC 1700.2B, 4.a(1)).
+- OMPF: The Official Military Personnel File holds the completed NAVMC 763 and separation records (MARADMIN 045/25, 5.a-b).
+- ESR: The electronic service record contains the page 11 resignation counseling entry (MCO 1900.16 CH-3, 5003.1).
+- EDFR: The electronic diary feedback report tells the reporting unit when a resignation request is received or approved (MCO 1900.16 CH-3, 5003.3).
+- TTC: A type transaction code identifies the personnel action and Reserve commission choice reported in a unit diary (MCO 1900.16 CH-3, 5003.2).
+- PDD: The planned detachment date accompanies a unit diary separation request when leave is requested (MCO 1900.16 CH-3, 1010.2.d).
+- PCS: Permanent Change of Station orders direct a move to another duty station and can affect resignation eligibility (MCO 1900.16 CH-3, 5002.3.a).
+- PDS: A permanent duty station is the assigned duty location used to define local leave boundaries (MARADMIN 625/24, 3.c).
+- CONUS: The continental United States is the location category used for the 20-day transition PTAD rule (MCO 1050.3J, chapter 5, 1.c(11)(b)).
+- OCONUS: Outside the continental United States is the location category used for the 30-day transition PTAD rule (MCO 1050.3J, chapter 5, 1.c(11)(c)).
+- FMCR: The Fleet Marine Corps Reserve is the status to which eligible enlisted Marines may transfer under chapter 7 (MCO 1900.16 CH-3, 7005.1).
+- MSO: A military service obligation is the required service period that can continue after active duty (MCO 1900.16 CH-3, 5004.1.a).
+- EOS: End of obligated service is the date an officer can check in the Basic Individual Record to determine remaining obligation (MARADMIN 045/25, 3.a.1).
+- NCMIS: The Navy College Management Information System is the SkillBridge system of record named in the interim guidance (MARADMIN 280/24, 4.c).
+- STR: A Service Treatment Record includes military and civilian medical and dental documentation needed for separation record processing (MCO 1900.16 CH-3, 1101.7.b).
+- MEB: A medical evaluation board evaluates a Marine's medical condition for disability processing (MCO 1900.16 CH-3, 1011.2 and chapter 8).
+- PEB: The Physical Evaluation Board makes disability findings that can affect separation or retirement (MCO 1900.16 CH-3, 8201.2).
+- IDES: The Integrated Disability Evaluation System is the disability process named in special SkillBridge eligibility guidance (MARADMIN 280/24, 4.b).
+- UCMJ: The Uniform Code of Military Justice continues to apply during SkillBridge participation (MARADMIN 280/24, 3.b).
+- BIC: A billet identification code identifies the Reserve position for which DAP assignment is approved (MARADMIN 454/26, reference (I) and 6.c).
+- TFRS: The Total Force Retention System provides available Reserve incentive and service obligation information (MARADMIN 454/26, 4.c).
+- MOU: A memorandum of understanding is the agreement a DoD SkillBridge internship partner must have (NAVMC 1700.2B, 11).
+- MPLP: The Military Parental Leave Program provides parental leave subject to the limits and separation restrictions described in the leave message (MARADMIN 625/24, 4 and 5.d).
+
+- Intent to file: VA notification that sets a potential effective date; the completed claim must be filed within 1 year of that actual intent date (VA intent to file guidance, "What's an intent to file?" and "How long do I have to file my claim after I notify VA of my intent?"). Confirm with: VA benefits office or accredited VSO.
+- Class IV dental: Any needed VA dental care for a qualifying 100 percent service-connected rating or individual unemployability at the 100 percent rate. Permanence is not required; temporary ratings are excluded (VA dental care eligibility, Class IV statements). Confirm with: VA dental clinic eligibility office.
+- CHAMPVA: VA family health benefits for qualifying dependents or survivors; anyone eligible for TRICARE is excluded (VA CHAMPVA benefits, Eligibility for CHAMPVA). Confirm with: VA CHAMPVA eligibility office and DEERS/TRICARE benefits office.
+- Final HHG move: Household goods shipment after separation, retirement or FMCR. Entitlement, destination and time limit depend on the orders and applicable JTR category; storage has a separate limit (JTR, 1 OCT 2026, 052012.A/C and 052013.A/B, Table 5-52). Confirm with: installation DMO/TMO.
