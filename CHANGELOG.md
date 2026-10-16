@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.2.12 (2026-10-15)
+- Export brief: turn your plan into a short PowerPoint for your command or a mentor, with a timeline, key milestones and decisions. Private details stay off unless you add them.
+- Saving the file needs one update through Claude. Until then, the brief sheet lets you copy the brief text.
+
 ## 0.2.11 (2026-10-15)
 - A tighter, cleaner board on every screen: compact header, two-line rows, one spacing scale, and an update status you can see with a clear success or retry.
 - Setup now asks once to count installs and usage. Counts never include your plan, notes, dates or questions, and you can stop or delete them in Settings.

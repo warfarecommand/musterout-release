@@ -267,7 +267,12 @@ def embed(template, seed, fingerprints, root=here.parent):
     libraries += "<script>" + (root / "supabase/functions/_shared/telemetry_contract.js").read_text() + "</script>\n"
     telemetry_config = json.loads((root / "config.json").read_text()).get("telemetry", {})
     template = template.replace("/*TEL_JS*/", (root / "board/telemetry.js").read_text()).replace("/*TEL_CONFIG*/", escape(telemetry_config))
-    return libraries + embed_trust(embed_updates(template.replace("/*SEED*/", escape(seed)).replace("/*SEED_FINGERPRINTS*/", escape(pack_fingerprints(fingerprints))), root), root)
+    title = re.match(r"<title>[^<]*</title>\n?", template)
+    if not title:
+        raise SystemExit("template must start with its <title>")
+    template = template[title.end():]
+    # The gallery reads the name from the first 8 KB only, so the title leads.
+    return title[0].rstrip("\n") + "\n" + libraries + embed_trust(embed_updates(template.replace("/*SEED*/", escape(seed)).replace("/*SEED_FINGERPRINTS*/", escape(pack_fingerprints(fingerprints))), root), root)
 
 def build_page():
     seed = json.loads((here / "seed.json").read_text())
