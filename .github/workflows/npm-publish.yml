@@ -58,8 +58,8 @@ jobs:
           assert.equal(e.product, 'Muster Out'); assert.equal(e.kind, 'release');
           const pkg = JSON.parse(fs.readFileSync('npm/musterout/package.json'));
           const config = JSON.parse(fs.readFileSync('config.json'));
-          assert.equal(pkg.name, 'musterout'); assert.equal(pkg.license, 'MIT'); assert(!pkg.scripts);
-          assert.deepEqual(pkg.files, ['release.js','install.json','install/','verify.cjs','verify.py']);
+          assert.equal(pkg.name, 'musterout'); assert.equal(pkg.license, 'SEE LICENSE IN LICENSE'); assert(!pkg.scripts);
+          assert.deepEqual(pkg.files, ['release.js','install.json','install/','verify.cjs','verify.py','LICENSE','NOTICE.md']);
           assert.equal(pkg.repository.url, 'https://github.com/warfarecommand/musterout-release.git');
           assert.equal(process.env.RELEASE_TAG, 'v' + e.version);
           assert.equal(pkg.version, e.version); assert.equal(config.version, e.version); assert.equal(config.pack, e.pack);
@@ -105,6 +105,7 @@ jobs:
             return [p,fs.readFileSync(current)];
           }));
           protocol.package_check(installRaw, fs.readFileSync('npm/musterout/release.js'), e.version, product, e.pack);
+          for (const legal of ['LICENSE','NOTICE.md']) assert(fs.readFileSync('npm/musterout/'+legal).equals(product[legal]), 'Package legal notice differs: '+legal);
           assert(Buffer.from(payload.html).equals(product['board/board.publish.html']));
           const {spawnSync} = await import('node:child_process');
           const python = spawnSync('python3',['-B','npm/musterout/verify.py','preflight'],{encoding:'utf8'});
@@ -112,7 +113,7 @@ jobs:
           const inventory = spawnSync('npm',['pack','--dry-run','--ignore-scripts','--offline','--json'],{cwd:'npm/musterout',encoding:'utf8'});
           assert.equal(inventory.status,0, 'Cannot inspect package');
           const packed = JSON.parse(inventory.stdout)[0].files.map(f=>f.path).sort();
-          const expected = ['README.md','LICENSE','package.json','release.js','install.json','verify.cjs','verify.py',...Object.keys(install.manifest.files).map(p=>'install/'+p)].sort();
+          const expected = ['README.md','LICENSE','NOTICE.md','package.json','release.js','install.json','verify.cjs','verify.py',...Object.keys(install.manifest.files).map(p=>'install/'+p)].sort();
           assert.deepEqual(packed,expected, 'Unreviewed or missing package file');
           console.log('Verified signed install and all exact package files ' + e.version);
           console.log('Verified signed release ' + e.version);

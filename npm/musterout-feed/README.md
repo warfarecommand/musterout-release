@@ -6,4 +6,4 @@ The protected release workflow copies verified feed/v2/feed.js into this package
 
 Repository: https://github.com/warfarecommand/musterout-release
 
-License: MIT.
+License: [Warfare Command Individual Use License 1.0](LICENSE).

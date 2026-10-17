@@ -1,4 +1,5 @@
 import './registration_v3.js';
+import {rg3NetworkHash} from './rg3_network.ts';
 const contract = (globalThis as any).MusterOutRG3;
 export async function telemetryV3(req: Request, raw: string, deps: {env:(name:string)=>string|undefined;db:any;now?:()=>number}, json:(status:number,body:unknown)=>Response):Promise<Response>{
  if(req.method!=='POST')return json(405,{ok:false,error:'method'});
@@ -13,9 +14,10 @@ export async function telemetryV3(req: Request, raw: string, deps: {env:(name:st
  const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('musterout-rg3:'+record.board_key));
  const hash=Array.from(new Uint8Array(digest),x=>x.toString(16).padStart(2,'0')).join('');
  const payload={...record};delete payload.board_key;
- // No proxy/IP header is trusted by this deployment. Unknown sources are
- // quarantined. Admission uses fixed global state and the bounded key registry.
- const result=await deps.db.rpc('rg3_ingest',{p_key_hash:hash,p_record:payload});
+ // No header is trusted by default. Configured networks use a daily HMAC of
+ // an IPv4 /24 or IPv6 /56. Never persist raw addresses or link networks to keys.
+ const network=await rg3NetworkHash(req,deps.env,now);
+ const result=await deps.db.rpc('rg3_ingest',{p_key_hash:hash,p_record:payload,p_network_hash:network});
  if(result.error||!result.data||typeof result.data.status!=='string')return json(503,{ok:false,error:'unavailable'});
  const status=result.data.status;
  if(['recorded','duplicate','deleted'].includes(status))return json(200,{ok:true,status});

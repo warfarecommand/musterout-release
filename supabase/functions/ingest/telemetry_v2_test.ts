@@ -51,6 +51,17 @@ Deno.test('v2 bounded nested counters and optional answers contain only approved
  for(const group of ['tab_opens','done_by_category','errors'])for(const key of Object.keys(b[group]))for(const bad of [true,-1,10001,1.2,'1',null]){let x=structuredClone(b);x[group][key]=bad;assert(!T.bucket(x));}
  for(let score=-1;score<=11;score++){let r={...install(),kind:'recommend'};for(const k of Object.keys(r))if(!['schema_version','kind','product','record_id','install_id','version'].includes(k))delete (r as any)[k];Object.assign(r,{context:'setup',week_index:0,score});equal(T.record(r),score>=0&&score<=10);}
 });
+Deno.test('v2 recommendation stages accept first impression, after use, and old clients separately',async()=>{
+ const common={schema_version:2,kind:'recommend',product:'musterout',record_id:'5'.repeat(32),install_id:'2'.repeat(32),version:'0.2.15'};
+ for(const [context,week] of [['setup',0],['after_use',0],['after_use',1],['after_use',104],['week4',4],['week4',104]] as const){
+  const record={...common,context,week_index:week,score:0},request={schema_version:2,records:[record],access:{capability:'4'.repeat(64)}},f=fixture();
+  equal((await f.send(request)).status,200);equal(T.canonical(f.calls[0].args.p_records[0].record),T.canonical(record));await T.verify(await (await f.send(request)).json(),request,{test:pub});
+ }
+ for(const patch of [{context:'first_impression'},{context:'unknown'},{context:'week4',week_index:0},{context:'setup',week_index:1},{week_index:-1},{week_index:105},{week_index:1.5},{week_index:'0'},{score:11},{score:-1},{score:0.5},{score:null},{score:true},{score:'9'},{stage:'after_use'},{opened_days:['2026-10-15']}]){
+  const f=fixture(),record={...common,context:'after_use',week_index:0,score:10,...patch};equal((await f.send({schema_version:2,records:[record],access:{capability:'4'.repeat(64)}})).status,400);equal(f.calls.length,0);
+ }
+ const f=fixture();equal((await f.send({schema_version:2,records:[install(),{...common,context:'after_use',week_index:0,score:10}],access:{registration_nonce:'3'.repeat(64)}})).status,400);equal(f.calls.length,0);
+});
 Deno.test('v2 delete signed receipt authenticates the complete 14-class receipt',async()=>{
  const f=fixture(),r={schema_version:2,kind:'delete',install_id:'2'.repeat(32),access:{capability:'4'.repeat(64)}};
  const response=await f.send(r),data=await response.json();equal(response.status,200);equal(f.calls[0].name,'telemetry_delete_install');await T.verifyDelete(data,r,{test:pub});

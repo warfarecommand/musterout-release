@@ -1,6 +1,6 @@
 {
   "product": "Muster Out",
-  "version": "0.2.15",
+  "version": "0.2.16",
   "pack": "usmc-2026.10",
   "release_url": "https://musterout.warfarecommand.com/release.json",
   "watch_feed": "https://watch.warfarecommand.com/feed/latest.json",
@@ -26,7 +26,7 @@
     "licenseAcknowledgmentVersion": null,
     "licenseAcknowledgmentUrl": null,
     "licenseAcknowledgmentSha256": null,
-    "registrationV3Enabled": false,
+    "registrationV3Enabled": true,
     "registrationV3UsageEnabled": false
   }
 }

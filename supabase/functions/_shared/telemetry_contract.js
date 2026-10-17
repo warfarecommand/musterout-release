@@ -36,7 +36,8 @@
   if(r.kind==='usage')return exact(['trigger','weeks_active','late_count','buckets'])&&member(r.trigger,['update','weekly'])&&integer(r.weeks_active,0,105)&&integer(r.late_count)&&Array.isArray(r.buckets)&&r.buckets.length<=26&&r.buckets.every(bucket)&&new Set(r.buckets.map(b=>b.bucket_id)).size===r.buckets.length;
   if(r.kind==='outcome')return exact(['week_index',...OUTCOMES])&&integer(r.week_index,0,104)&&OUTCOMES.every(k=>r[k]===null||typeof r[k]==='boolean');
   if(r.kind==='hosted_demand')return exact(['week_index','would_use','pay_monthly'])&&integer(r.week_index,4,104)&&member(r.would_use,['yes','no','unsure'])&&member(r.pay_monthly,['zero','under_5','5_to_9','10_to_19','20_to_29','30_or_more','unsure']);
-  if(r.kind==='recommend')return exact(['context','week_index','score'])&&integer(r.score,0,10)&&((r.context==='setup'&&r.week_index===0)||(r.context==='week4'&&integer(r.week_index,4,104)));
+  // setup is the first impression; week4 remains the legacy pricing-survey score.
+  if(r.kind==='recommend')return exact(['context','week_index','score'])&&integer(r.score,0,10)&&((r.context==='setup'&&r.week_index===0)||(r.context==='after_use'&&integer(r.week_index,0,104))||(r.context==='week4'&&integer(r.week_index,4,104)));
   return false;
  }
  function envelope(v){

@@ -36,11 +36,11 @@ supabase functions deploy digest --project-ref vfozrzohrdrbohjqkghk --no-verify-
 supabase functions deploy ingest --project-ref vfozrzohrdrbohjqkghk --no-verify-jwt
 ```
 
-Read back ACTIVE status and `verify_jwt=false` for each function. Verify website preflights for `https://warfarecommand.com`, `https://www.warfarecommand.com`, and `https://musterout.warfarecommand.com`. Publish the reviewed static pages through the supervisor's site procedure and verify `/alerts/confirmed/`, `/alerts/expired/`, `/alerts/unsubscribed/`, and `/alerts/preferences/`.
+Read back ACTIVE status and `verify_jwt=false` for each function. Verify website preflights for `https://warfarecommand.com`, `https://www.warfarecommand.com`, and `https://musterout.warfarecommand.com`. Publish the reviewed static pages through the supervisor's site procedure and verify `/alerts/confirmed/`, `/alerts/expired/`, `/alerts/unsubscribed/`, and `/alerts/preferences/`. For the MTN-68 repair, publish `/alerts/action/`, `/assets/email-action.js`, `/assets/email-action.css`, and the reviewed `_headers` before deploying the alerts handler. Old emailed URLs redirect to this first-party page with the token in its fragment. GET and reload do not call the database or mail provider; its single button sends a POST. Keep `form-action` blocked and permit the existing first-party script and Supabase `connect-src`.
 
 Public digest dry requests must return exactly `{"ok":true}` with no counts. Supply `x-ops-key` from private process tooling to obtain a detailed dry report. The header must match `DIGEST_OPS_KEY` exactly. An incorrect key or unset secret returns the same public result. Do not print or record the header value. Dry mode must create no receipts, token hashes, or mail.
 
-Use an explicitly owner-authorized test address for live mail verification. Check source-specific confirmation choices, HTML and text content, one welcome, four preferences, weekly-add, body unsubscribe, and provider POST unsubscribe. Repeated signup within ten minutes sends nothing; confirmed signup sends no new confirmation. Verify the daily and weekly confirmation caps with isolated supervisor test data rather than unsolicited inbox traffic. Old confirmation links redirect to `/alerts/expired/` without a welcome. Preference and unsubscribe links remain usable after seven days.
+Use an explicitly owner-authorized test address for live mail verification. Check source-specific confirmation choices, HTML and text content, one welcome, four preferences, weekly-add, body unsubscribe, and provider POST unsubscribe. Preview each link before pressing its button and verify unchanged consent, signup existence, token hashes, and receipt counts. Weekly enrollment consumes its link atomically; replay cannot reverse a later opt-out. Confirmation replay and tokens older than seven days fail. Recent footer links remain valid according to their existing retention rules; deleted and evicted footer authorizations cannot change a new signup. Provider one-click POST must return 200 without a redirect, cookies, authentication, or a second confirmation. Verify the delivered DKIM signature covers List-Unsubscribe and List-Unsubscribe-Post, as required by [RFC 8058](https://www.rfc-editor.org/rfc/rfc8058). Repeated signup within ten minutes sends nothing; confirmed signup sends no new confirmation. Verify the daily and weekly confirmation caps with isolated supervisor test data rather than unsolicited inbox traffic. An expired confirmation POST returns 404 to the JSON button client, or redirects a navigation client to `/alerts/expired/`, without a welcome. GET itself does not look up token expiry. Preference and unsubscribe links remain usable after seven days.
 
 Confirmation fallback is allowed only for an explicit 4xx template rejection naming a missing or unpublished template or invalid variables. Server, quota, and network failures record an `unknown` receipt and send no second email. Review those receipts against provider history before any recovery. [Resend's error reference](https://resend.com/docs/api-reference/errors) describes the HTTP and error-type conventions.
 
@@ -83,10 +83,12 @@ order by campaign, state;
 
 ## Local checks
 
-All HTTP in the suites is mocked. Run each from its function directory:
+All HTTP in the suites is mocked. The focused browser integration is `supabase/functions/_test/email_action_check.mjs`; set EMAIL_STAGE to a `docs/_deploy.sh --stage-only` output and EMAIL_OUTPUT to the evidence folder. It verifies the actual handler GET response and follows its location in an offline browser with all requests intercepted. Run each from its function directory:
 
 ```sh
 node --experimental-strip-types /Users/joelsartain/dev/musterout/_cook/audit/deno_shim_run.mjs "$PWD/index_test.ts"
 ```
 
 Run alerts, digest, and ingest after every change. SQL application, live delivery, deployed secrets, tracking settings, and cron execution require supervisor verification.
+
+The browser review page marks human unsubscribe POSTs with `review=1`, which requires the Muster Out Origin. A nonmatching or evicted token returns 404 in that mode instead of claiming removal. Direct provider URL POSTs retain idempotent 200, even with an application/json Accept header. The action page bounds both response headers and body reads to 15 seconds, then restores the button and explains that the result may already have been saved. It never retries automatically.

@@ -86,7 +86,7 @@ export function verifyFeed(root = '.', env = process.env) {
   }
   assert(Date.parse(e.created) <= Date.now() && Date.parse(e.expires) > Date.now(), 'Future or expired feed');
   const pkg = JSON.parse(read('npm/musterout-feed/package.json'));
-  assert.equal(pkg.name,'musterout-feed'); assert.equal(pkg.license,'MIT'); assert.deepEqual(pkg.files,['feed.js']);
+  assert.equal(pkg.name,'musterout-feed'); assert.equal(pkg.license,'SEE LICENSE IN LICENSE'); assert.deepEqual(pkg.files,['feed.js','LICENSE','NOTICE.md']);
   assert.equal(pkg.repository.url,'https://github.com/warfarecommand/musterout-release.git');
   for (const field of ['scripts','dependencies','devDependencies','optionalDependencies','peerDependencies','bundledDependencies']) assert(!pkg[field],field);
   return {seq:e.seq, source, pkg};

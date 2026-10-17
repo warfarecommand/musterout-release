@@ -1,9 +1,87 @@
-MIT License
+# Warfare Command Individual Use License 1.0
 
-Copyright (c) 2026 Muster Out contributors
+Copyright 2026 Warfare Command. All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+## Acceptance
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+To receive rights under this license, you must agree to its terms. The limits on who may copy the Work, for what purpose, and on distribution and derivative works are conditions of the copyright grant. Copying outside those limits is not licensed by this document.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+## Definitions
+
+**Licensor** means Warfare Command.
+
+**Work** means the code, content, designs, and documentation that Licensor expressly offers under this license. It may include Muster Out, Leader's Notebook, MARADMIN Watch, FITREP Desk, and warfarecommand.com site content. Separately licensed material remains under its own terms.
+
+**Individual** means a natural person acting for themselves. **You** means that Individual. An entity does not become an Individual by acting through an employee, officer, owner, agent, or contractor.
+
+**Organization** means any entity or organized group other than an Individual acting for themselves. This includes governments at every level; their agencies, armed services, commands, units, and instrumentalities; the United States Marine Corps; nonappropriated fund instrumentalities, including MCCS; contractors and subcontractors; nonprofits; schools; associations; companies; and sole proprietorships acting as businesses.
+
+**Your Organization** includes an Organization you work for and any Organization that controls it, is controlled by it, or is under common control with it. **Control** means ownership of substantially all assets or the power to direct management and policies through voting, contract, or otherwise. Control may be direct or indirect.
+
+## Individual Use
+
+**Personal and professional use**, called **Individual Use**, means your voluntary use for your own personal activities or your own work. You must choose the Work on your own initiative. Copies must stay on devices and accounts you personally own or subscribe to and control, including your own AI account, subject to the setup, completed-output, and GitHub permissions below.
+
+Individual Use includes a leader using the Work to prepare their own work for the Marines they personally lead. Employment, pay for your regular duties, and an Organization's incidental benefit from that work do not alone make this Organizational Use. This exception does not permit copies made to fulfill an Organization's software requirement or deployment.
+
+Copies made to prepare, perform, or deliver services that you or an Organization sells or supplies to a client are Organizational Use, whether the client pays you directly or pays an Organization, and whether you are paid a salary, wages, or a fee. This includes copies made by a contractor employee to perform a customer contract. Your independent personal study, career planning, or preparation of your own employment records may still qualify as Individual Use. An Organization's provision of services does not by itself exclude unrelated Individual Use. A military leader's independent preparation of their own work for Marines they personally lead is not client-service delivery merely because the leader receives government pay.
+
+Copies made for use required, directed, procured, funded, reimbursed, deployed, hosted, or integrated by an Organization are outside Individual Use, subject to the express provider and completed-output permissions in this license. An account or device owned or administered by an Organization is outside Individual Use. A personally selected hosting or AI provider's necessary processing is permitted only under the setup exception below.
+
+You may tell others about the Work and link to Licensor's official source. Each person must independently choose their own Individual Use. A requirement or direction from a leader, unit, employer, or contractor is Organizational Use even if each person installs a separate copy on a personal account.
+
+A recommendation is not independent selection if use of the Work is made a condition of completing an assigned task, participating in a program, receiving an evaluation, or obtaining a benefit, or if personnel are otherwise expected to install it as part of a unit or employer deployment. A leader may require an output without requiring this Work as the means of preparing it.
+
+## Copyright License and Setup Exception
+
+Licensor grants you a free, worldwide, nonexclusive copyright license to download, copy, install, run, and privately display or perform the Work solely for Individual Use. No distribution or derivative works are licensed except the setup copies and adaptations and completed outputs expressly permitted here and the separate GitHub rights below.
+
+You may make the copies needed to fetch official files by raw URL, verify hashes, install them on your own devices, load them into your own AI account, and keep private backups. You may transmit the Work to a provider solely to store or process your permitted Individual Use in your personal account. Licensor directly permits that provider to make the copies technically necessary for that storage and processing, subject to those limits. This is not a sublicense from you. Neither you nor the provider receives permission for independent reuse, model training, shared access, organizational deployment, or resale. Use a provider and account configuration that do not require you to grant those additional rights in the Work. This paragraph does not alter separate permissions Licensor has itself granted to a provider, including the separate GitHub permissions preserved below.
+
+You may enter your own data and change settings or fill designated fields through the Work's intended setup and operation. This limited exception permits resulting setup adaptations. Apart from the completed-output permission below, it does not permit editing other code, instructions, designs, or content, or making other derivative works, even privately.
+
+## Completed Outputs
+
+You may prepare, reproduce, adapt, submit, and share completed outputs produced through permitted Individual Use, including outputs for Marines you personally lead. This permission includes portions of the Work that its intended operation incorporates into a completed output. It does not permit sharing source code, reusable instructions, an unfilled reusable template, or other material that allows the recipient to install, operate, or reuse the Work itself. Recipients, including Organizations, may receive, retain, and use those completed outputs for their intended purpose. Receiving, retaining, or using a completed output under this permission does not license the recipient to use the Work itself. No rights in your own data or independently created material are assigned to Licensor.
+
+## No Redistribution or Organizational Copies
+
+Except for the setup, completed-output, and GitHub exceptions, you may not distribute, publish, share, sublicense, sell, or otherwise supply modified or unmodified copies of the Work or its protected portions to anyone. A separate paid written license from Licensor is required for Organizational Use.
+
+**Organizational Use** means copying or other acts requiring copyright permission by, for, or at the direction of an Organization, except the Individual Use, provider copies, and completed outputs expressly permitted above. It includes copies made to use, deploy, host, distribute, mandate, integrate, rebrand, resell, or perform client-service delivery. Copies made to satisfy an Organization's requirement to use the Work, or as part of its deployment of the Work, are outside the grant. An Organization's requirement to complete a task or produce a document does not alone make an individual's independent selection and use of the Work Organizational Use. Integration means placing the Work itself in an Organization's product, shared system, or prescribed software workflow. Receiving a permitted output prepared by an individual is not integration of the Work. These distinctions do not override the exclusion for client-service delivery.
+
+## GitHub Rights
+
+This license does not restrict separate rights Licensor grants under GitHub's applicable terms for public repositories, including viewing and forking within the service. A fork does not grant additional rights under this license to run, redistribute, modify, or deploy the Work outside those separate rights. Organizations do not receive Individual Use rights by forking.
+
+## Patent License and Defense
+
+For Individual Use only, Licensor grants a license under patent claims it can license, now or later, that would be infringed by the permitted use. If you assert in writing that the Work infringes or contributes to infringement of a patent, this patent license ends immediately. A claim by Your Organization ends any patent permission for work on its behalf. This paragraph grants no permission for Organizational Use. The patent termination has no cure period.
+
+## Fair Use and No Other Rights
+
+This license does not limit fair use or other rights you have independently under applicable law. It does not revoke any earlier MIT license or alter another party's license. It grants no right to sublicense or transfer your license. Licensor may license the Work to others on different terms. No other rights are implied.
+
+## Trademarks
+
+No trademark license is granted. Licensor reserves MUSTER OUT, WARFARE COMMAND, LEADER'S NOTEBOOK, MARADMIN WATCH, and FITREP DESK. Preserve notices on permitted copies. See TRADEMARKS.md for accurate references to the products. Rebranding does not create permission to copy or distribute the Work.
+
+## Government Use and Commercial Licenses
+
+The software and its documentation are offered as commercial computer software and commercial computer software documentation. Government Organizational Use requires a separate paid written commercial license consistent with [FAR 12.212](https://www.acquisition.gov/far/12.212) and [DFARS 227.7202-3](https://www.acquisition.gov/dfars/227.7202-3-rights-commercial-computer-software-or-commercial-computer-software-documentation.), as applicable. Government rights must be specified in that contract license or addendum. This individual license grants no rights to a government agency or unit to install, run, or deploy the Work itself. The completed-output permission still applies. Separate GitHub and statutory rights remain unaffected. An employee's personal acknowledgment does not bind the government. No government indemnity is required here.
+
+For commercial terms, contact feedback@warfarecommand.com. See COMMERCIAL.md.
+
+## Violations and Termination
+
+On Licensor's first written notice identifying a violation of this license, your licenses under this document continue for 32 days after you receive the notice, but only for acts within the grant. They continue afterward only if you fully comply and take practical steps to correct the identified past violations within that period. Otherwise they terminate at its end. After you complete that first cure, a new violation terminates your licenses under this document immediately. Earlier conduct disclosed or discovered during the first cure period does not alone count as a new violation. The separate immediate patent-termination provision remains effective. After termination, stop acts requiring this license and delete copies held only under it.
+
+During a cure period, only acts within the grant are licensed. Cure does not authorize past copying outside the grant. An Organization never receives a license or a free trial through this cure provision. Separate MIT, GitHub, and statutory rights remain unaffected.
+
+## No Warranty or Liability
+
+**To the extent applicable law permits, the Work is provided as is, without warranties or conditions of any kind, including merchantability, fitness for a particular purpose, and noninfringement. To that same extent, Licensor is not liable for damages arising from the Work, its use, or these terms under any kind of legal claim. Liability that cannot lawfully be excluded remains unaffected.**
+
+## Governing Law and Venue
+
+For private parties, Nevada law governs these terms except where controlling federal law applies. Claims under these terms must be brought in a court of competent jurisdiction in Nevada, subject to mandatory law. Any federal government agreement and claims involving the United States remain subject to applicable federal law and statutory jurisdiction. This clause neither binds the United States nor waives sovereign immunity.

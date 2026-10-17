@@ -1,6 +1,9 @@
-# Contributing
+# Contributions and Bug Reports
 
-- A date is wrong, or a regulation changed: open an issue with the template. Name the item id, the paragraph you read, and the source link.
-- A new path or service: start from `packs/_template/`. A pack ships with the regulation text, a seed whose every item cites that text, a glossary, and a reviewer who knows the service and signs the pack's `REVIEW.md`.
-- Pull requests to `CLAUDE.md`, the skills, the board page, or a pack need one reviewer. Tagged releases are cut from reviewed commits only.
-- Style: plain words, short sentences, short hyphens only (no em or en dashes), no emoji, mil dates. Nothing personal in the repo: no names, units, phone numbers, or addresses beyond public office lines in a regulation.
+Warfare Command, does not accept outside contributions without a signed contributor agreement assigning the relevant rights to Licensor.
+
+This applies to code, documentation, designs, content, patches, and other material intended for inclusion in a product or the site. Contact feedback@warfarecommand.com before submitting such material. An agreement must be signed before a contribution is accepted or incorporated. A pull request, issue post, or repository license alone does not establish the required assignment.
+
+Bug reports and problem descriptions are welcome. Explain what happened, what you expected, and how to reproduce the problem. Do not include a proposed patch or replacement product content without the signed agreement. Do not submit material you lack authority to assign.
+
+If unsolicited contribution material arrives, it will not be merged or incorporated unless the required agreement is completed. Reporting a bug does not grant product access or any commercial license.

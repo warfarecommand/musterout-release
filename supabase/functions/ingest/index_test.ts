@@ -370,3 +370,10 @@ Deno.test("legacy telemetry address hash is domain separated from subscriber has
  const raw=new TextEncoder().encode("test-salt"+"192.0.2.1"),old=Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256",raw))).slice(0,12).map(b=>b.toString(16).padStart(2,"0")).join("");
  assert(f.tables.setup_pings[0].ip_hash!==old);
 });
+
+Deno.test("legacy delete GET cannot mutate even rate counters", async () => {
+  const f = fixture(); await f.send(install);
+  const before = JSON.stringify(f.tables);
+  const response = await f.handler(new Request("https://endpoint.invalid/ingest?kind=delete&id=" + install.install_id));
+  equal(response.status, 405); equal(JSON.stringify(f.tables), before);
+});

@@ -332,27 +332,54 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
     const bodyCap = u.searchParams.has("prefs") ? 1024 : 8192;
     if (Number(req.headers.get("content-length")) > bodyCap) return json(413, { ok: false, error: "too_large" });
     try {
+      // Old email URLs remain usable. Landing on one never reads or writes a row.
+      // Render on the site so the Supabase gateway need not serve HTML.
+      const landing = (params: Record<string, string>) => new Response(null, { status: 303, headers: { Location: `${SITE}/alerts/action/#${new URLSearchParams(params)}`, "Cache-Control": "no-store", "Referrer-Policy": "no-referrer" } });
+      const completed = (page: string) => req.headers.get("accept") === "application/json" ? success() : redirect(page);
+      const failed = () => req.headers.get("accept") === "application/json" ? json(404, { ok: false, error: "expired" }) : redirect("expired");
       const stop = u.searchParams.get("stop_setup");
       if (stop !== null) {
         if (!["GET", "POST"].includes(req.method)) return json(405, { ok: false, error: "method" });
         if (!tokenOk(stop)) return json(404, { ok: false, error: "expired" });
+        if (req.method === "GET") return landing({ stop_setup: stop });
+        if (origin && origin !== SITE) return json(403, { ok: false, error: "origin" });
         const db = database(deps.env, deps.fetch), auth = footerAuth(await hash(stop));
-        const row = (await db.rows("alert_signups", "GET", { ...auth, select: "id" }))[0];
-        if (!row) return json(404, { ok: false, error: "expired" });
-        if (req.method === "GET") return new Response(`<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Stop setup help</title><h1>Stop setup help</h1><p>This stops setup emails only. Your other choices stay.</p><form method="post" action="${ENDPOINT}?stop_setup=${stop}"><button type="submit">I am set up, stop these</button></form></html>`, { headers: { "content-type": "text/html; charset=utf-8", "Cache-Control": "no-store", "Referrer-Policy": "no-referrer", "Content-Security-Policy": "default-src 'none'; form-action " + ENDPOINT + "; frame-ancestors 'none'" } });
-        await db.rows("alert_signups", "PATCH", auth, { setup: false });
-        return new Response("Setup help stopped. Your other email choices stay.", { headers: { "content-type": "text/plain", "Cache-Control": "no-store" } });
+        const rows = await db.rows("alert_signups", "PATCH", auth, { setup: false });
+        if (!rows.length) return json(404, { ok: false, error: "expired" });
+        return success();
       }
       const unsubscribe = u.searchParams.get("unsubscribe");
-      if (unsubscribe !== null && (req.method === "GET" || req.method === "POST")) {
-        if (tokenOk(unsubscribe)) await database(deps.env, deps.fetch).rows("alert_signups", "DELETE", footerAuth(await hash(unsubscribe)));
-        return req.method === "POST" ? success() : redirect("unsubscribed");
+      if (unsubscribe !== null) {
+        if (!["GET", "POST"].includes(req.method)) return json(405, { ok: false, error: "method" });
+        if (req.method === "GET") return tokenOk(unsubscribe) ? landing({ unsubscribe }) : redirect("expired");
+        // RFC 8058 mail-client POSTs need no browser Origin, cookies, or redirect.
+        if (origin && origin !== SITE) return json(403, { ok: false, error: "origin" });
+        const reviewed = u.searchParams.get("review") === "1";
+        if (reviewed && origin !== SITE) return json(403, { ok: false, error: "origin" });
+        const rows = tokenOk(unsubscribe) ? await database(deps.env, deps.fetch).rows("alert_signups", "DELETE", footerAuth(await hash(unsubscribe))) : [];
+        // A browser must not claim removal when an expired link matched nothing.
+        // Mail providers keep the RFC 8058 idempotent 200 response.
+        if (!rows.length && reviewed) return json(404, { ok: false, error: "expired" });
+        return success();
       }
       const prefs = u.searchParams.get("prefs");
       if (prefs !== null) {
         if (req.method !== "GET" && req.method !== "POST") return json(405, { ok: false, error: "method" });
         if (!tokenOk(prefs)) return json(404, { ok: false, error: "expired" });
         if (req.method === "POST" && origin !== SITE) return json(403, { ok: false, error: "origin" });
+        if (u.searchParams.get("weekly") === "1") {
+          if (req.method === "GET") return landing({ prefs, weekly: "1" });
+          const raw = await readBody(req.body, 1024, deps.bodyDeadlineMs);
+          let change;
+          try { change = JSON.parse(raw); } catch { return json(400, { ok: false, error: "bad_json" }); }
+          if (!change || typeof change !== "object" || Array.isArray(change) || Object.keys(change).length !== 1 || change.weekly !== true) return json(400, { ok: false, error: "bad_input" });
+          const db = database(deps.env, deps.fetch), digest = await hash(prefs);
+          const row = (await db.rows("alert_signups", "GET", { unsubscribe_hashes: `cs.{${digest}}`, status: "eq.confirmed", select: ROW_FIELDS }))[0];
+          if (!row) return json(404, { ok: false, error: "expired" });
+          // Consume this enrollment link atomically. A replay cannot undo a later opt-out.
+          const rows = await db.rows("alert_signups", "PATCH", { id: `eq.${row.id}`, status: "eq.confirmed", unsubscribe_hashes: `eq.{${row.unsubscribe_hashes.join(",")}}` }, { weekly: true, unsubscribe_hashes: row.unsubscribe_hashes.filter(h => h !== digest) });
+          return rows.length ? success() : json(409, { ok: false, error: "retry" });
+        }
         let changes;
         if (req.method === "POST") {
           const raw = await readBody(req.body, 1024, deps.bodyDeadlineMs);
@@ -372,15 +399,15 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
           if (changes.setup === true && row.setup !== true) return json(409, { ok: false, error: "opt_in_required" });
           row = (await db.rows("alert_signups", "PATCH", { ...auth, status: "eq.confirmed" }, { ...(changes.setup === undefined ? {} : { setup: changes.setup }), corrections: changes.corrections, monthly: changes.monthly, weekly: changes.weekly, lessons: changes.lessons }))[0];
           if (!row) return json(404, { ok: false, error: "expired" });
-        } else if (u.searchParams.get("weekly") === "1") {
-          if (row.status === "confirmed") await db.rows("alert_signups", "PATCH", { ...auth, status: "eq.confirmed" }, { weekly: true });
-          return new Response(null, { status: 303, headers: { Location: `${SITE}/alerts/preferences/?prefs=${prefs}`, "Cache-Control": "no-store", "Referrer-Policy": "no-referrer" } });
         }
         return json(200, { ok: true, email: row.email, status: row.status, corrections: row.corrections, monthly: row.monthly, weekly: row.weekly, lessons: row.lessons, ...(row.setup === undefined ? {} : { setup: row.setup }) });
       }
       const confirm = u.searchParams.get("confirm");
-      if (confirm !== null && req.method === "GET") {
-        if (!tokenOk(confirm)) return redirect("expired");
+      if (confirm !== null) {
+        if (!["GET", "POST"].includes(req.method)) return json(405, { ok: false, error: "method" });
+        if (!tokenOk(confirm)) return failed();
+        if (req.method === "GET") return landing({ confirm });
+        if (origin && origin !== SITE) return json(403, { ok: false, error: "origin" });
         const db = database(deps.env, deps.fetch);
         const now = deps.now?.() ?? Date.now(), confirmed_at = new Date(now).toISOString();
         // Keep expiry in the atomic update predicate for every token format.
@@ -389,10 +416,10 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
         const current = setup.length ? setup : await db.rows("alert_signups", "PATCH", { confirm_hash: `eq.${await streamConfirmHash(confirm)}`, ...pending }, { status: "confirmed", confirm_hash: STREAM_CONSENT, confirmed_at });
         const platform = current.length ? current : await db.rows("alert_signups", "PATCH", { confirm_hash: `eq.${await platformConfirmHash(confirm)}`, ...pending }, { status: "confirmed", confirm_hash: PLATFORM_CONSENT, confirmed_at });
         const rows = platform.length ? platform : await db.rows("alert_signups", "PATCH", { confirm_hash: `eq.${await hash(confirm)}`, ...pending }, { status: "confirmed", confirm_hash: null, confirmed_at });
-        if (!rows.length) return redirect("expired");
+        if (!rows.length) return failed();
         // Confirmation is permanent even if the welcome provider is unavailable.
         try { if (rows[0].setup) await sendSetup(deps, false, rows[0].id); else await sendWelcome(rows[0], deps); } catch { /* The durable receipt retains the attempt. */ }
-        return redirect("confirmed");
+        return completed("confirmed");
       }
       if (req.method !== "POST") return json(405, { ok: false, error: "method" });
       if (!ORIGINS.includes(origin)) return json(403, { ok: false, error: "origin" });

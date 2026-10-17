@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.2.16 (2026-10-17)
+- Setup asks for consent once, checks any date in the past before you save it, and shows exactly which date to fix if your leave plan cannot save.
+- New boards register with one tap after the plan loads, and links in Muster Out emails open a page with one clear button.
+
 ## 0.2.15 (2026-10-16)
 - The VA rating math now combines both arms and both legs correctly, and intake keeps your place when you use a keyboard.
 - Public files leave out internal provider data, and the security page lists exactly what deleting your records removes.

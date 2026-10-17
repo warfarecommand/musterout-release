@@ -3,6 +3,8 @@ import { readMessage, sendAlert } from "./send_alert.ts";
 
 const assert = (ok: unknown, message = "Assertion failed") => { if (!ok) throw new Error(message); };
 const equal = (a: unknown, b: unknown) => assert(JSON.stringify(a) === JSON.stringify(b), `${JSON.stringify(a)} differs from ${JSON.stringify(b)}`);
+// A deliberate action after opening an email review page.
+const postLink = (url: string) => new Request(url, { method: "POST", body: url.includes("unsubscribe=") ? "List-Unsubscribe=One-Click" : "" });
 type Stored = Record<string, unknown>;
 
 // All HTTP is mocked, including PostgREST filters, conflict handling, and CAS.
@@ -202,7 +204,7 @@ Deno.test("IP limit survives deleting the signup", async () => {
   const f = fixture();
   for (let n = 0; n < 3; n++) {
     await f.subscribe(`marine${n}@example.com`);
-    await f.handler(new Request(`${ENDPOINT}?unsubscribe=${f.links().unsubscribe}`));
+    await f.handler(postLink(`${ENDPOINT}?unsubscribe=${f.links().unsubscribe}`));
   }
   equal(f.tables.alert_signups.length, 0);
   equal((await f.subscribe()).status, 429);
@@ -211,7 +213,7 @@ Deno.test("IP limit survives deleting the signup", async () => {
 Deno.test("deleting a signup does not reset the address confirmation cooldown", async () => {
   const f = fixture();
   await f.subscribe();
-  await f.handler(new Request(`${ENDPOINT}?unsubscribe=${f.links().unsubscribe}`));
+  await f.handler(postLink(`${ENDPOINT}?unsubscribe=${f.links().unsubscribe}`));
   equal(f.tables.alert_signups.length, 0);
   equal((await f.subscribe("marine@example.com", "", "192.0.2.2")).status, 200);
   equal(f.mail().length, 1);
@@ -232,7 +234,7 @@ Deno.test("one confirmation per address per ten minutes, including concurrent re
   f.advance(1);
   await f.subscribe("marine@example.com", "", "192.0.2.100");
   equal(f.mail().length, 2);
-  equal((await f.handler(new Request(`${ENDPOINT}?confirm=${first.confirm}`))).headers.get("location"), `${SITE}/alerts/expired/`);
+  equal((await f.handler(postLink(`${ENDPOINT}?confirm=${first.confirm}`))).headers.get("location"), `${SITE}/alerts/expired/`);
   assert((f.tables.alert_signups[0].unsubscribe_hashes as string[]).includes(await hash(first.unsubscribe)));
 });
 
@@ -240,7 +242,7 @@ Deno.test("daily confirmation cap survives deletion and rotating IPs with the sa
   const f = fixture();
   for (let n = 0; n < 4; n++) {
     equal(await (await f.subscribe("MARINE@example.com", "", `192.0.2.${n}`)).json(), { ok: true });
-    if (n < 3) await f.handler(new Request(`${ENDPOINT}?unsubscribe=${f.links().unsubscribe}`));
+    if (n < 3) await f.handler(postLink(`${ENDPOINT}?unsubscribe=${f.links().unsubscribe}`));
     f.advance(600000);
   }
   equal(f.mail().length, 3); equal(f.tables.alert_signups.length, 0);
@@ -253,7 +255,7 @@ Deno.test("weekly confirmation cap survives deletion after daily slots reopen", 
   for (let n = 0; n < 6; n++) {
     if (n === 3) f.advance(86400000);
     equal(await (await f.subscribe("marine@example.com", "", `192.0.2.${n}`)).json(), { ok: true });
-    if (n < 5) await f.handler(new Request(`${ENDPOINT}?unsubscribe=${f.links().unsubscribe}`));
+    if (n < 5) await f.handler(postLink(`${ENDPOINT}?unsubscribe=${f.links().unsubscribe}`));
     f.advance(600000);
   }
   equal(f.mail().length, 5); equal(f.tables.alert_signups.length, 0);
@@ -267,15 +269,15 @@ Deno.test("confirmation expiry applies to all token formats at seven days; priva
     const { PLATFORM_SCOPE } = await import("./index.ts");
     if (format !== "current") r.confirm_hash = await hash(format === "platform" ? PLATFORM_SCOPE + ":" + links.confirm : links.confirm);
     f.advance(age);
-    const response = await f.handler(new Request(`${ENDPOINT}?confirm=${links.confirm}`));
+    const response = await f.handler(postLink(`${ENDPOINT}?confirm=${links.confirm}`));
     equal(response.headers.get("location"), `${SITE}/alerts/${age > 7 * 86400000 ? "expired" : "confirmed"}/`);
     equal(f.mail().length, age > 7 * 86400000 ? 1 : 2);
     f.advance(365 * 86400000);
     equal((await f.handler(new Request(`${ENDPOINT}?prefs=${links.prefs}`))).status, 200);
-    await f.handler(new Request(`${ENDPOINT}?unsubscribe=${links.unsubscribe}`)); equal(f.tables.alert_signups.length, 0);
+    await f.handler(postLink(`${ENDPOINT}?unsubscribe=${links.unsubscribe}`)); equal(f.tables.alert_signups.length, 0);
   }
   const f = fixture(); await f.subscribe(); f.tables.alert_signups[0].last_sent_at = null;
-  equal((await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`))).headers.get("location"), `${SITE}/alerts/expired/`);
+  equal((await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`))).headers.get("location"), `${SITE}/alerts/expired/`);
   equal(f.mail().length, 1);
 });
 
@@ -296,35 +298,35 @@ Deno.test("confirm consumes the token and confirmed subscribers get the same res
   const f = fixture();
   const initial = await (await f.subscribe()).json();
   const link = `${ENDPOINT}?confirm=${f.links().confirm}`;
-  const response = await f.handler(new Request(link));
+  const response = await f.handler(postLink(link));
   equal(response.status, 303);
   equal(response.headers.get("location"), `${SITE}/alerts/confirmed/`);
   equal(f.tables.alert_signups[0].status, "confirmed");
   equal(f.tables.alert_signups[0].confirm_hash, "consent:campaign-streams:v2");
   assert(f.tables.alert_signups[0].confirmed_at);
-  equal((await f.handler(new Request(link))).headers.get("location"), `${SITE}/alerts/expired/`);
-  equal((await f.handler(new Request(`${ENDPOINT}?confirm=${token()}`))).headers.get("location"), `${SITE}/alerts/expired/`);
+  equal((await f.handler(postLink(link))).headers.get("location"), `${SITE}/alerts/expired/`);
+  equal((await f.handler(postLink(`${ENDPOINT}?confirm=${token()}`))).headers.get("location"), `${SITE}/alerts/expired/`);
   f.advance(600001);
   equal(await (await f.subscribe()).json(), initial);
   equal(f.mail().length, 2);
 });
 
-Deno.test("unsubscribe accepts any recent hash, works with one-click POST, and is idempotent", async () => {
-  for (const method of ["GET", "POST"]) {
-    const f = fixture();
-    await f.subscribe();
-    const older = f.links().unsubscribe;
-    f.advance(600000);
-    await f.subscribe();
-    const link = `${ENDPOINT}?unsubscribe=${older}`;
-    for (let n = 0; n < 2; n++) {
-      const response = await f.handler(new Request(link, { method, ...(method === "POST" ? { body: "List-Unsubscribe=One-Click" } : {}) }));
-      equal(response.status, method === "POST" ? 200 : 303);
-      if (method === "GET") equal(response.headers.get("location"), `${SITE}/alerts/unsubscribed/`);
-      equal(f.tables.alert_signups.length, 0);
-    }
-    equal((await f.handler(new Request(`${ENDPOINT}?unsubscribe=${token()}`))).status, 303);
+Deno.test("unsubscribe GET is passive; RFC 8058 POST accepts recent hashes and is idempotent", async () => {
+  const f = fixture(); await f.subscribe();
+  const older = f.links().unsubscribe;
+  f.advance(600000); await f.subscribe();
+  const link = `${ENDPOINT}?unsubscribe=${older}`;
+  const before = JSON.stringify(f.tables), calls = f.calls.length;
+  const preview = await f.handler(new Request(link));
+  equal(preview.status, 303);
+  equal(preview.headers.get("location"), `${SITE}/alerts/action/#unsubscribe=${older}`);
+  equal(JSON.stringify(f.tables), before); equal(f.calls.length, calls);
+  for (let n = 0; n < 2; n++) {
+    const response = await f.handler(postLink(link));
+    equal(response.status, 200); equal(response.headers.get("location"), null);
+    equal(f.tables.alert_signups.length, 0);
   }
+  equal((await f.handler(postLink(`${ENDPOINT}?unsubscribe=${token()}`))).status, 200);
 });
 
 Deno.test("delivery and database failures stay visible without exposing details", async () => {
@@ -535,12 +537,12 @@ Deno.test("source-specific stream defaults require the new confirmation; old lin
   const f=fixture();await f.handler(request({kind:"subscribe",email:"marine@example.com",source}));const vars=(f.mail()[0].body as any).template.variables,r=f.tables.alert_signups[0];
   equal(r.corrections,source==="musterout"||source==="register");equal(r.monthly,true);equal(r.weekly,false);equal(r.lessons,source==="ai101");
   assert(vars.CONSENT_SCOPE.includes("Warfare Command Monthly"));equal(vars.CONSENT_SCOPE.includes("Muster Out corrections"),r.corrections);equal(vars.CONSENT_SCOPE.includes("New lessons"),r.lessons);
-  await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));equal(r.confirm_hash,"consent:campaign-streams:v2");
+  await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`));equal(r.confirm_hash,"consent:campaign-streams:v2");
   const before=JSON.stringify(f.tables.alert_signups);await f.handler(request({kind:"subscribe",email:"marine@example.com",source:"ai101"}));equal(JSON.stringify(f.tables.alert_signups),before);
  }
  for(const platform of [false,true]){
   const f=fixture(),raw=token();const {PLATFORM_SCOPE}=await import("./index.ts");f.tables.alert_signups.push(row("old",{status:"pending",monthly:false,corrections:true,lessons:false,last_sent_at:new Date(f.deps.now()).toISOString(),confirm_hash:await hash(platform?PLATFORM_SCOPE+":"+raw:raw)}));
-  await f.handler(new Request(`${ENDPOINT}?confirm=${raw}`));equal(f.tables.alert_signups[0].status,"confirmed");equal(f.tables.alert_signups[0].monthly,false);equal(f.tables.alert_signups[0].lessons,false);equal(f.tables.alert_signups[0].corrections,true);
+  await f.handler(postLink(`${ENDPOINT}?confirm=${raw}`));equal(f.tables.alert_signups[0].status,"confirmed");equal(f.tables.alert_signups[0].monthly,false);equal(f.tables.alert_signups[0].lessons,false);equal(f.tables.alert_signups[0].corrections,true);
  }
 });
 
@@ -600,19 +602,19 @@ Deno.test("an inline fallback failure ends the attempt and retains its uncertain
 });
 Deno.test("welcome runs once per address including concurrent confirms and a later resubscription", async () => {
   const f=fixture();await f.subscribe();const link=`${ENDPOINT}?confirm=${f.links().confirm}`;
-  const responses=await Promise.all([f.handler(new Request(link)),f.handler(new Request(link))]);
+  const responses=await Promise.all([f.handler(postLink(link)),f.handler(postLink(link))]);
   equal(responses.filter(r=>r.headers.get("location")===`${SITE}/alerts/confirmed/`).length,1);
   const welcome=f.mail().filter(c=>(c.body as any).template?.id==="welcome");equal(welcome.length,1);
   const variables=(welcome[0].body as any).template.variables;
   assert(variables.PREFS_URL && variables.WEEKLY_ON_URL && variables.ALERT_UNSUBSCRIBE_URL);
   equal(f.tables.email_delivery_receipts.find(r=>r.campaign==="welcome:v1")?.state,"accepted");
-  await f.handler(new Request(variables.ALERT_UNSUBSCRIBE_URL));f.advance(2*86400000);
-  await f.subscribe();await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));
+  await f.handler(postLink(variables.ALERT_UNSUBSCRIBE_URL));f.advance(2*86400000);
+  await f.subscribe();await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`));
   equal(f.mail().filter(c=>(c.body as any).template?.id==="welcome").length,1);
 });
 Deno.test("welcome failure preserves successful confirmation and records the attempt", async () => {
   const f=fixture();await f.subscribe();f.mailStatus(500);
-  equal((await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`))).headers.get("location"),`${SITE}/alerts/confirmed/`);
+  equal((await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`))).headers.get("location"),`${SITE}/alerts/confirmed/`);
   equal(f.tables.alert_signups[0].status,"confirmed");equal(f.tables.email_delivery_receipts.find(r=>r.campaign==="welcome:v1")?.state,"unknown");
 });
 Deno.test("preferences require a private token and strict booleans; pending addresses cannot opt in", async () => {
@@ -621,21 +623,26 @@ Deno.test("preferences require a private token and strict booleans; pending addr
   const pending=await(await f.handler(new Request(link))).json();equal(pending.status,"pending");equal(pending.weekly,false);equal(pending.monthly,true);
   const post=(body:unknown,origin=SITE)=>f.handler(new Request(link,{method:"POST",headers:{origin},body:JSON.stringify(body)}));
   equal((await post({corrections:false,monthly:false,weekly:true,lessons:true})).status,409);
-  await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));
+  await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`));
   equal((await post({corrections:false,monthly:false,weekly:true,lessons:true},"https://other.invalid")).status,403);
   for(const body of [{weekly:"true",monthly:false},{weekly:true},{weekly:true,monthly:false,status:"confirmed"},null,[]])equal((await post(body)).status,400);
   const changed=await(await post({corrections:false,monthly:false,weekly:true,lessons:true})).json();equal(changed.weekly,true);equal(changed.monthly,false);equal(changed.email,"marine@example.com");
   equal((await f.handler(new Request(link))).headers.get("cache-control"),"no-store");
   equal((await post({unsubscribe:true})).status,200);equal(f.tables.alert_signups.length,0);equal((await f.handler(new Request(link))).status,404);
 });
-Deno.test("weekly-add link opts in once and redirects to preferences with the same private authorizer", async () => {
-  const f=fixture();await f.subscribe();await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));
+Deno.test("weekly-add GET is passive and POST consumes the enrollment authorizer", async () => {
+  const f=fixture();await f.subscribe();await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`));
   const welcome=f.mail().find(c=>(c.body as any).template?.id==="welcome")?.body as any;
   const url=welcome.template.variables.WEEKLY_ON_URL;
   const raw=new URL(url).searchParams.get("prefs");
-  for(let i=0;i<2;i++)equal((await f.handler(new Request(url))).headers.get("location"),`${SITE}/alerts/preferences/?prefs=${raw}`);
+  const before = JSON.stringify(f.tables), calls = f.calls.length;
+  equal((await f.handler(new Request(url))).headers.get("location"),`${SITE}/alerts/action/#prefs=${raw}&weekly=1`);
+  equal(JSON.stringify(f.tables), before); equal(f.calls.length, calls);
+  const submit=()=>f.handler(new Request(url,{method:"POST",headers:{origin:SITE},body:JSON.stringify({weekly:true})}));
+  equal((await submit()).status,200);
+  equal((await submit()).status,404);
   equal(f.tables.alert_signups[0].weekly,true);
-  assert((f.tables.alert_signups[0].unsubscribe_hashes as string[]).includes(await hash(raw)));
+  assert(!(f.tables.alert_signups[0].unsubscribe_hashes as string[]).includes(await hash(raw)));
   assert(!JSON.stringify(f.tables).includes(raw));
 });
 
@@ -726,7 +733,7 @@ Deno.test("alerts accepts complete JSON at the byte cap including split UTF-8", 
 
 
 const coachSignup = (f: ReturnType<typeof fixture>, extra: Stored = {}) => f.handler(request({kind: "subscribe", source: "coach", email: "marine@example.com", setup: true, ...extra}));
-const confirmCoach = async (f: ReturnType<typeof fixture>) => { f.values.SETUP_EMAIL_ENABLED = "true"; equal((await coachSignup(f)).status,200); return f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`)); };
+const confirmCoach = async (f: ReturnType<typeof fixture>) => { f.values.SETUP_EMAIL_ENABLED = "true"; equal((await coachSignup(f)).status,200); return f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`)); };
 const setupMail = (f: ReturnType<typeof fixture>) => f.mail().filter(c => c.url.pathname === "/emails/batch").flatMap(c => c.body as any[]).filter(m => /^setup-/.test(m.template.id));
 
 Deno.test("setup requires enabled explicit unchecked-by-default opt-in and rejects telemetry fields",async()=>{
@@ -741,7 +748,7 @@ Deno.test("setup confirmation scope is narrow and setup-1 replaces welcome",asyn
   const r=f.tables.alert_signups[0], vars=(f.mail()[0].body as any).template.variables;
   equal([r.corrections,r.monthly,r.weekly,r.lessons,r.setup],[false,false,false,false,true]);
   assert(String(vars.CONSENT_SCOPE).includes("up to three emails")); equal(setupMail(f).length,0);
-  equal((await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`))).status,303);
+  equal((await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`))).status,303);
   equal(r.confirm_hash,SETUP_CONSENT); equal(setupMail(f).map(m=>m.template.id),["setup-1"]);
   assert(!f.mail().some(c=>(c.body as any).template?.id==="welcome"));
   const claims=f.tables.email_setup_claims; equal(claims.length,1);equal(claims[0].state,"accepted");
@@ -760,7 +767,7 @@ Deno.test("setup sends at 0, 20 and 44 hours with lifetime cap after deletion an
 Deno.test("late setup cron spaces catchup instead of sending three at once",async()=>{
   const f=fixture();f.values.SETUP_EMAIL_ENABLED="true";await coachSignup(f);
   // Confirm while globally paused, then enable much later.
-  f.values.SETUP_EMAIL_ENABLED="false";await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));
+  f.values.SETUP_EMAIL_ENABLED="false";await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`));
   f.advance(50*3600000);f.values.SETUP_EMAIL_ENABLED="true";await sendSetup(f.deps,false);
   equal(setupMail(f).map(m=>m.template.id),["setup-1"]);
   f.advance(20*3600000);await sendSetup(f.deps,false);equal(setupMail(f).length,2);
@@ -768,7 +775,7 @@ Deno.test("late setup cron spaces catchup instead of sending three at once",asyn
 });
 Deno.test("setup dry run makes no claims, tokens or mail and concurrent crons send once",async()=>{
   const f=fixture();f.values.SETUP_EMAIL_ENABLED="true";await coachSignup(f);
-  f.values.SETUP_EMAIL_ENABLED="false";await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));f.values.SETUP_EMAIL_ENABLED="true";
+  f.values.SETUP_EMAIL_ENABLED="false";await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`));f.values.SETUP_EMAIL_ENABLED="true";
   const snapshot=JSON.stringify(f.tables), mails=f.mail().length;
   const dry=await sendSetup(f.deps);equal(dry[0].eligible,1);equal(JSON.stringify(f.tables),snapshot);equal(f.mail().length,mails);
   await Promise.all([sendSetup(f.deps,false),sendSetup(f.deps,false)]);equal(setupMail(f).length,1);equal(f.tables.email_setup_claims.length,1);
@@ -776,7 +783,7 @@ Deno.test("setup dry run makes no claims, tokens or mail and concurrent crons se
 Deno.test("setup stop page GET does not opt out; POST stops setup only and expired tokens fail",async()=>{
   const f=fixture();await confirmCoach(f);const r=f.tables.alert_signups[0];r.monthly=true;
   const stop=setupMail(f)[0].template.variables.STOP_SETUP_URL;
-  equal((await f.handler(new Request(stop))).status,200);equal(r.setup,true);
+  equal((await f.handler(new Request(stop))).status,303);equal(r.setup,true);
   const raw=new URL(stop).searchParams.get("stop_setup")!;
   assert((r.setup_token_hashes as string[]).includes(await hash(raw)));assert(!JSON.stringify(f.tables).includes(raw));
   equal((await f.handler(new Request(stop,{method:"POST"}))).status,200);equal(r.setup,false);equal(r.monthly,true);
@@ -787,7 +794,7 @@ Deno.test("setup errors remain visible, consume lifetime slot and block later st
   for(const mode of ["reject","throw","ambiguous"]){
     const f=fixture();f.values.SETUP_EMAIL_ENABLED="true";await coachSignup(f);
     if(mode==="reject")f.mailStatus(500);else if(mode==="throw")f.throwMail();else f.badMail();
-    await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));
+    await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`));
     equal(f.tables.alert_signups[0].status,"confirmed");equal(f.tables.email_setup_claims[0].state,"unknown");
     const before=f.mail().length;f.advance(48*3600000);await sendSetup(f.deps,false);equal(f.mail().length,before);equal(f.tables.email_setup_claims.length,1);
   }
@@ -811,12 +818,12 @@ Deno.test("legacy preference saves preserve setup, fifth choice can stop but can
   equal((await update({...choices,setup:true})).status,409);
 });
 Deno.test("confirmed signup cannot change choices or add setup through source spoofing",async()=>{
-  const f=fixture();await f.subscribe();await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));f.values.SETUP_EMAIL_ENABLED="true";
+  const f=fixture();await f.subscribe();await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`));f.values.SETUP_EMAIL_ENABLED="true";
   const saved=JSON.stringify(f.tables.alert_signups),before=f.mail().length;
   equal((await coachSignup(f)).status,200);equal(JSON.stringify(f.tables.alert_signups),saved);equal(f.mail().length,before);equal(setupMail(f).length,0);
 });
 Deno.test("setup rereads consent before provider send and refuses arbitrary campaigns",async()=>{
-  const f=fixture();f.values.SETUP_EMAIL_ENABLED="true";await coachSignup(f);f.values.SETUP_EMAIL_ENABLED="false";await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));f.values.SETUP_EMAIL_ENABLED="true";
+  const f=fixture();f.values.SETUP_EMAIL_ENABLED="true";await coachSignup(f);f.values.SETUP_EMAIL_ENABLED="false";await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`));f.values.SETUP_EMAIL_ENABLED="true";
   const net:typeof fetch=async(input,init)=>{if(String(input).includes("alert_signups?")&&init?.method==="PATCH"&&String(init.body).includes("setup_token_hashes"))f.tables.alert_signups[0].setup=false;return f.deps.fetch(input,init);};
   await sendSetup({...f.deps,fetch:net},false);equal(setupMail(f).length,0);equal(f.tables.email_setup_claims[0].state,"skipped");
   let refused=false;try{await sendTemplates("setup-1","setup-1:v2",{}, {setup:"eq.true"},f.deps,"setup");}catch{refused=true;}assert(refused);
@@ -834,7 +841,7 @@ Deno.test("setup sender refuses legacy or missing consent receipts even with set
 Deno.test("proven setup provider rejection stays failed and never retries or advances", async () => {
   const f = fixture(); f.values.SETUP_EMAIL_ENABLED = "true"; await coachSignup(f);
   f.mailStatus(400);
-  await f.handler(new Request(`${ENDPOINT}?confirm=${f.links().confirm}`));
+  await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`));
   equal(f.tables.email_setup_claims[0].state, "failed");
   const before = f.mail().length; f.advance(48 * 3600000);
   await sendSetup(f.deps, false);
@@ -886,7 +893,7 @@ Deno.test("every setup stop control survives all stages, rotation and prior stop
   for (const message of setupMail(f)) {
     const url = message.template.variables.STOP_SETUP_URL;
     const before = f.tables.alert_signups[0].setup;
-    equal((await f.handler(new Request(url))).status, 200);
+    equal((await f.handler(new Request(url))).status, 303);
     equal(f.tables.alert_signups[0].setup, before);
     equal((await f.handler(new Request(url, { method: "POST" }))).status, 200);
     equal(f.tables.alert_signups[0].setup, false); equal(f.tables.alert_signups[0].corrections, true);
@@ -902,4 +909,94 @@ Deno.test("setup footer retention fails closed for missing schema or a fourth se
     assert(refused);
   }
   equal(setupMail(f).length, 3);
+});
+
+Deno.test("all email action previews are passive with no database or provider calls", async () => {
+  const f = fixture(); await f.subscribe();
+  const links = f.links();
+  const urls = [`${ENDPOINT}?confirm=${links.confirm}`, `${ENDPOINT}?unsubscribe=${links.unsubscribe}`, `${ENDPOINT}?prefs=${links.prefs}&weekly=1`, `${ENDPOINT}?stop_setup=${links.unsubscribe}`];
+  const before = JSON.stringify(f.tables), calls = f.calls.length;
+  for (const url of urls) {
+    for (let n = 0; n < 2; n++) {
+      const response = await f.handler(new Request(url));
+      equal(response.status, 303);
+      assert(response.headers.get("location")!.startsWith(`${SITE}/alerts/action/#`));
+      equal(response.headers.get("cache-control"), "no-store");
+      equal(response.headers.get("referrer-policy"), "no-referrer");
+    }
+    equal((await f.handler(new Request(url, { method: "HEAD" }))).status, 405);
+    equal((await f.handler(new Request(url, { method: "PUT" }))).status, 405);
+  }
+  equal(JSON.stringify(f.tables), before); equal(f.calls.length, calls);
+});
+
+Deno.test("JSON button confirmation succeeds once; expired or replaced tokens cannot confirm", async () => {
+  const f = fixture(); await f.subscribe();
+  const url = `${ENDPOINT}?confirm=${f.links().confirm}`;
+  const click = () => f.handler(new Request(url, { method: "POST", headers: { origin: SITE, accept: "application/json" } }));
+  equal(await (await click()).json(), { ok: true });
+  const after = JSON.stringify(f.tables), calls = f.calls.length;
+  equal((await click()).status, 404); equal(JSON.stringify(f.tables), after);
+  equal(f.mail().length, 2);
+  for (const mode of ["expired", "replaced"]) {
+    const g = fixture(); await g.subscribe(); const raw = g.links().confirm;
+    if (mode === "expired") g.advance(7 * 86400000 + 1);
+    else { g.advance(600000); await g.subscribe(); }
+    const before = JSON.stringify(g.tables), mails = g.mail().length;
+    equal((await g.handler(new Request(`${ENDPOINT}?confirm=${raw}`, { method: "POST", headers: { accept: "application/json" } }))).status, 404);
+    equal(JSON.stringify(g.tables), before); equal(g.mail().length, mails);
+  }
+  assert(f.calls.length > calls); // Replays check the atomic predicate, never send again.
+});
+
+Deno.test("weekly link replay cannot reverse a later opt-out; concurrent clicks enroll once", async () => {
+  const f = fixture(); await f.subscribe(); await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`));
+  const welcome = (f.mail().find(c => (c.body as any).template?.id === "welcome")!.body as any).template.variables;
+  const click = () => f.handler(new Request(welcome.WEEKLY_ON_URL, { method: "POST", headers: { origin: SITE }, body: '{ "weekly": true }' }));
+  const replies = await Promise.all([click(), click()]);
+  equal(replies.filter(r => r.status === 200).length, 1);
+  assert(replies.some(r => [404,409].includes(r.status)));
+  f.tables.alert_signups[0].weekly = false;
+  const before = JSON.stringify(f.tables);
+  equal((await click()).status, 404); equal(JSON.stringify(f.tables), before);
+  const g = fixture(); await g.subscribe();
+  const url = `${ENDPOINT}?prefs=${g.links().prefs}&weekly=1`;
+  equal((await g.handler(new Request(url, { method: "POST", headers: { origin: SITE }, body: '{"weekly":true}' }))).status, 404);
+});
+
+Deno.test("evicted footer tokens and foreign-origin POSTs leave the signup intact", async () => {
+  const f = fixture(); await f.subscribe(); const old = f.links();
+  await f.handler(postLink(`${ENDPOINT}?confirm=${old.confirm}`));
+  const weekly = (f.mail().find(c => (c.body as any).template?.id === "welcome")!.body as any).template.variables.WEEKLY_ON_URL;
+  const before = JSON.stringify(f.tables), calls = f.calls.length;
+  for (const url of [`${ENDPOINT}?confirm=${old.confirm}`, `${ENDPOINT}?unsubscribe=${old.unsubscribe}`, `${ENDPOINT}?stop_setup=${old.unsubscribe}`, weekly]) {
+    equal((await f.handler(new Request(url, { method: "POST", headers: { origin: "https://other.invalid" }, body: '{"weekly":true}' }))).status, 403);
+  }
+  equal(JSON.stringify(f.tables), before); equal(f.calls.length, calls);
+  for (let n = 0; n < 4; n++) await freshLinks(database(f.deps.env, f.deps.fetch), String(f.tables.alert_signups[0].id));
+  const rotated = JSON.stringify(f.tables);
+  equal((await f.handler(new Request(`${ENDPOINT}?stop_setup=${old.unsubscribe}`, { method: "POST" }))).status, 404);
+  equal((await f.handler(new Request(weekly, { method: "POST", headers: { origin: SITE }, body: '{"weekly":true}' }))).status, 404);
+  equal((await f.handler(postLink(`${ENDPOINT}?unsubscribe=${old.unsubscribe}`))).status, 200);
+  equal(JSON.stringify(f.tables), rotated);
+});
+
+Deno.test("human unsubscribe reports an expired link honestly while provider retries remain idempotent", async () => {
+  const f = fixture(); await f.subscribe(); const old = f.links().unsubscribe;
+  await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`));
+  for (let n = 0; n < 4; n++) await freshLinks(database(f.deps.env, f.deps.fetch), String(f.tables.alert_signups[0].id));
+  const url = `${ENDPOINT}?unsubscribe=${old}`, before = JSON.stringify(f.tables);
+  const browser = () => f.handler(new Request(url + "&review=1", { method: "POST", headers: { origin: SITE, accept: "application/json" }, body: "List-Unsubscribe=One-Click" }));
+  equal((await browser()).status, 404); equal(JSON.stringify(f.tables), before);
+  equal((await f.handler(postLink(url))).status, 200); equal(JSON.stringify(f.tables), before);
+  equal((await f.handler(new Request(url, { method: "POST", headers: { accept: "application/json" }, body: "List-Unsubscribe=One-Click" }))).status, 200);
+  equal((await f.handler(new Request(url + "&review=1", { method: "POST" }))).status, 403);
+  const current = (f.tables.alert_signups[0].unsubscribe_hashes as string[])[0];
+  // The raw old token cannot be guessed from the stored current hash.
+  assert(current !== old);
+  const g = fixture(); await g.subscribe(); const valid = `${ENDPOINT}?unsubscribe=${g.links().unsubscribe}`;
+  const click = () => g.handler(new Request(valid + "&review=1", { method: "POST", headers: { origin: SITE, accept: "application/json" }, body: "List-Unsubscribe=One-Click" }));
+  equal((await click()).status, 200); equal(g.tables.alert_signups.length, 0);
+  equal((await click()).status, 404); equal(g.tables.alert_signups.length, 0);
+  equal((await g.handler(postLink(valid))).status, 200);
 });

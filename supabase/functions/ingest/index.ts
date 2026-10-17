@@ -66,6 +66,8 @@ export function createHandler(deps: { env: (name: string) => string | undefined;
     catch { return json(400, { ok: false, error: "bad_json" }); }
   } else return json(405, { ok: false, error: "method" });
 
+  if (body.kind === "delete" && req.method !== "POST") return json(405, { ok: false, error: "method" });
+
   if (body.schema_version === 3) return await telemetryV3(req, rawBody, deps, json);
 
   if (body.kind === "enroll" || ["schema_version", "records", "access"].some(k => Object.hasOwn(body, k))) return await telemetryV2(req, rawBody, deps, json);
@@ -82,7 +84,7 @@ export function createHandler(deps: { env: (name: string) => string | undefined;
 
   // Learning reports are POST-only and never accept URL-carried data.
   if (body.kind === "feedback" || body.kind === "usage" || body.kind === "delete") {
-    if (body.kind !== "delete" && req.method !== "POST") return json(400, { ok: false, error: "bad_input" });
+    if (req.method !== "POST") return json(400, { ok: false, error: "bad_input" });
     const ceiling = body.kind === "feedback" ? 5 : body.kind === "usage" ? 10 : 5;
     const { data: hits, error } = await db.rpc("ingest_rate_hit", { p_ip_hash: `learn:${body.kind}:${ip}`, p_minute: minute });
     if (error || !Number.isInteger(hits) || hits < 1) return json(503, { ok: false, error: "unavailable" });

@@ -60,7 +60,7 @@ def stage_package(destination, install_raw, release_raw, product=None):
     if destination.is_symlink() or destination.exists():
         raise ValueError('package_destination_must_be_new')
     destination.mkdir(mode=0o700, parents=True)
-    for name in ['package.json','LICENSE','README.md','verify.cjs','verify.py']:
+    for name in ['package.json','LICENSE','NOTICE.md','README.md','verify.cjs','verify.py']:
         (destination/name).write_bytes((ROOT/'npm/musterout'/name).read_bytes())
     for name, raw in [('install.json',install_raw),('release.js',release_raw)]:
         (destination/name).write_bytes(raw)

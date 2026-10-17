@@ -723,7 +723,6 @@ select{appearance:none;box-sizing:border-box;background-image:linear-gradient(45
 .crisis-line a, .reference-card a, .vso a{display:inline-flex}
 .workflow-text{white-space:pre-wrap;overflow-wrap:anywhere;user-select:text;background:var(--fill)}
 /*TRUST_CSS*/
-/* Board geometry uses the canonical WC Design v2 block; legacy names below are aliases only. */
 :root{
  --amber:var(--amber-ink);--green:var(--green-ink);--blue:var(--blue-ink);--sb-band:var(--amber-fill);--grid:var(--sep);
  --good-ink:var(--green-ink);--good-tint:var(--green-fill);--warn-ink:var(--amber-ink);--warn-tint:var(--amber-fill);--on-red:var(--on-accent);--err:var(--accent-ink);
@@ -747,7 +746,6 @@ body{margin:0;font:400 var(--text-md)/var(--lh-body) var(--sans)}
 #app .meta,#app .date .e,.c1-cite-name,.contact .ln{font:400 var(--text-xs)/var(--lh-meta) var(--mono);letter-spacing:0}
 @keyframes c6-check{from{transform:scale(.85)}to{transform:scale(1)}}
 @keyframes c6-sheet{from{transform:translateY(var(--s-8))}to{transform:translateY(0)}}
-/* Header: brand and stamp share a bottom edge; help occupies the row above the stamp. */
 #app .top{display:grid;grid-template-columns:minmax(0,1fr) auto var(--target);gap:var(--s-2);margin:0 0 var(--s-2);padding:0;align-items:center}
 #app .top>div:first-child{display:block;grid-column:1;grid-row:1;min-width:0;min-height:0}
 #app .product-mark,#app .product-mark svg{width:var(--brand-width);min-width:var(--brand-width);max-width:none;padding:0;height:auto}
@@ -773,7 +771,6 @@ body{margin:0;font:400 var(--text-md)/var(--lh-body) var(--sans)}
 #app .bigcap{font:600 var(--text-md)/var(--lh-body) var(--sans);padding:0;letter-spacing:0}
 #app .c6-hero-basis{display:block;margin-top:var(--s-1);font:400 var(--text-xs)/var(--lh-meta) var(--mono)}
 .c6-basis-label::before{padding:0 var(--s-1)}
-/* Shared reading rhythm and grouped surfaces. */
 .grid2,.stack{gap:var(--s-4);align-items:start}.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
 .panel,.c1-ask,.c1-intake{padding:var(--s-4);border-radius:var(--radius-md)}
 .panel+.panel{margin-top:var(--s-4)}.panel .panel{padding:0;border-radius:0}
@@ -788,7 +785,6 @@ body{margin:0;font:400 var(--text-md)/var(--lh-body) var(--sans)}
 .c1-group summary{display:flex;align-items:center;justify-content:space-between;gap:var(--s-2);min-height:var(--row-height);padding:var(--s-2) var(--s-4);font:600 var(--text-md)/var(--lh-body) var(--sans)}
 .c1-group-count{font:400 var(--text-xs)/var(--lh-meta) var(--mono)}.bar i{height:100%}.bar{height:var(--s-1);border-radius:var(--radius-full)}.c1-group .bar{margin:0 var(--s-4)}
 .ttl{width:100%;min-width:var(--target);min-height:var(--target);padding:0;gap:var(--s-1)}.ttl .t{font:500 var(--text-md)/var(--lh-body) var(--sans)}
-/* Every item row shares one inset, target, title, metadata and chevron. */
 #app .c1-row,.c1-dialog .c1-row{display:grid;grid-template-columns:var(--target) minmax(0,1fr);align-items:center;min-height:var(--row-height);padding:var(--s-1) var(--s-3) var(--s-1) var(--s-1);gap:0 var(--s-1);position:relative}
 #app .c1-row+.c1-row::before{left:calc(var(--target) + var(--s-2));right:var(--s-4);height:var(--hairline);top:0}
 .c1-row .ttl{position:relative;display:grid;align-content:center;gap:var(--s-1);min-width:0;min-height:var(--target);padding:var(--s-1) var(--s-6) var(--s-1) 0;width:100%}
@@ -805,7 +801,6 @@ body{margin:0;font:400 var(--text-md)/var(--lh-body) var(--sans)}
 .card.c1-card{grid-column:1/-1;display:grid;gap:var(--s-3);margin:var(--s-2) 0 0;padding:var(--s-4);border-radius:var(--radius-sm)}
 .c1-card .why,.c1-full-title{font:400 var(--text-md)/var(--lh-body) var(--sans)}.c1-card-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-2);align-items:stretch}
 .c1-card-actions .btn{height:100%;padding:var(--s-2);font-size:var(--text-sm)}
-/* Controls share height and grow together when a row wraps its labels. */
 .btn,.copy,.linkbtn,.cite,.k1-undo{min-width:var(--target);min-height:var(--target);border-radius:var(--radius-sm);padding:var(--s-3) var(--s-4);font:600 var(--text-md)/var(--lh-body) var(--sans);letter-spacing:0}
 .ctl{display:flex;flex-wrap:wrap;gap:var(--s-2);align-items:stretch}.ctl>.btn,.ctl>.copy,.ctl>select{height:auto;align-self:stretch;display:inline-flex;align-items:center;justify-content:center}
 .c1-counts .btn{padding:var(--s-2) 0;font-size:var(--text-sm)}
@@ -832,14 +827,12 @@ label.field:has(#c1ClearOther){min-height:var(--target)}label.field:has(#c1Clear
 input[type=checkbox]:checked::after{width:var(--s-3);height:calc(var(--s-2) - var(--stroke));left:var(--s-1);top:calc(var(--s-1) + var(--stroke))}
 .form>button[data-act=add-item],.condition-help{grid-column:1/-1;width:100%}
 .c1-editor-save,.c1-draft-conflict{margin-top:var(--s-3)}
-/* Today and Ask. */
 #app .c1-ask{margin-top:var(--s-6);padding:var(--s-4)}.c1-ask h2{margin-bottom:var(--s-1)}.c1-ask .field{margin-top:var(--s-3)}.c1-ask .ctl{margin:var(--s-2) 0 var(--s-3)}
 .c1-starters{display:grid;grid-template-columns:1fr;gap:var(--s-2);margin:var(--s-3) 0 0}.c1-starters .btn{font-size:var(--text-sm);padding:var(--s-3);text-align:left}
 .c1-project-line{margin:var(--s-3) 0!important}.c1-project-line .linkbtn{display:inline-flex;align-items:center;font-size:var(--text-sm);padding:0}
 .answer{padding:var(--s-3);margin-top:var(--s-3);border-radius:var(--radius-sm);font-size:var(--text-md)}.answer.md p,.answer.md ul{margin:0 0 var(--s-3)}.answer.md ul{padding-left:var(--s-5)}.answer.md li{margin:0 0 var(--s-2)}
 .coach-fact,.coach-checkin,.coach-turn{padding:var(--s-3) 0}.coach-turn h3{font-size:var(--text-sm)}.coach-card ol{padding-left:var(--s-5)}.coach-card li{margin-bottom:var(--s-2)}
 .c1-add-date{display:flex;align-items:center;justify-content:space-between;gap:var(--s-2);margin-bottom:var(--s-4);font-size:var(--text-sm)}
-/* Plan, Dates, Claim and supporting views. */
 .c1-disclosure{margin:var(--s-6) 0 0;padding-top:var(--s-2)}.c1-disclosure>summary,details>summary{display:flex;align-items:center;gap:var(--s-2);min-width:var(--target);min-height:var(--target);padding:var(--s-2) 0;font:500 var(--text-md)/var(--lh-body) var(--sans)}
 .c1-disclosure:not([open])+.c1-disclosure{margin-top:0;padding-top:0}
 .c1-disclosure>summary::after{margin-left:auto;flex:none}.c1-disclosure>div{margin-top:var(--s-2);min-width:0}.c1-disclosure p{margin-bottom:var(--s-3)!important}
@@ -880,7 +873,6 @@ input[type=checkbox]:checked::after{width:var(--s-3);height:calc(var(--s-2) - va
 .c1-update-row.c1-update-fading{opacity:0;transition:opacity .2s}.c1-update-row[data-state=failed]{border-color:var(--red-ink)}
 @keyframes c1-update-spin{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.c1-update-row .c1-update-icon{animation:none!important}.c1-update-row.c1-update-fading{transition:none}}
-/* Navigation, drawers and sheets. */
 #app nav.tabs{position:fixed;inset:auto 0 0;width:100%;height:auto;min-height:calc(var(--nav-height) + env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:auto;align-content:normal;gap:0;margin:0;padding:var(--s-2) var(--s-2) calc(var(--s-2) + env(safe-area-inset-bottom,0px));border-radius:0}
 #app nav.tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--s-1);min-width:var(--target);min-height:var(--target);height:auto;padding:var(--s-1);font:600 var(--text-xs)/var(--lh-tight) var(--sans);letter-spacing:0;border-radius:var(--radius-sm)}
 #app nav.tabs svg{width:var(--icon);height:var(--icon);flex:none}#app nav.tabs span{white-space:nowrap}
@@ -896,7 +888,6 @@ input[type=checkbox]:checked::after{width:var(--s-3);height:calc(var(--s-2) - va
 .c1-menu{gap:0;border-radius:var(--radius-md)}.c1-menu button{min-height:var(--row-height);width:100%;padding:var(--s-3) var(--s-8) var(--s-3) var(--s-4);font:500 var(--text-md)/var(--lh-body) var(--sans);border-radius:0}.c1-menu button+button::before{left:var(--s-4);right:var(--s-4);top:0;height:var(--hairline)}.c1-menu button::after{right:var(--s-5)}
 .c1-report-end{margin-top:var(--s-4)}.c1-report-end .mot-button{width:100%}
 .toast{left:var(--s-4);right:var(--s-4);margin-inline:auto;transform:none;bottom:calc(var(--k1-nav-height,var(--nav-height)) + var(--s-4));width:max-content;max-width:calc(100vw - var(--s-8));display:flex;align-items:center;gap:var(--s-3);padding:var(--s-2) var(--s-4);border-radius:var(--radius-sm);font:600 var(--text-sm)/var(--lh-body) var(--sans)}.k1-undo{flex:none;padding:0 var(--s-2);white-space:nowrap}
-/* Trust components inherit geometry here without changing their behavior or source module. */
 .mot-root,.mot-overlay{font:400 var(--text-md)/var(--lh-body) var(--sans)}.mot-root p,.mot-overlay p{margin:0 0 var(--s-2)}
 .mot-root h3,.mot-overlay h3{font:600 var(--text-md)/var(--lh-body) var(--sans);margin:0 0 var(--s-3)}
 .mot-button{min-width:var(--target);min-height:var(--target);padding:var(--s-3) var(--s-4);border-radius:var(--radius-sm);font:600 var(--text-md)/var(--lh-body) var(--sans)}
@@ -916,7 +907,6 @@ input[type=checkbox]:checked::after{width:var(--s-3);height:calc(var(--s-2) - va
 .mot-include{gap:var(--s-2);min-height:var(--target);padding:var(--s-2) 0;margin-bottom:var(--s-3)}.mot-include input{width:var(--icon);height:var(--icon);flex-basis:var(--icon)}
 .mot-sheet dt{margin-top:var(--s-2)}.mot-sheet dd{margin:0 0 var(--s-2)}.mot-sheet>.mot-sheet-report{padding:var(--s-3) var(--s-4);min-height:var(--target)}.mot-report-link{margin-top:var(--s-3)}
 @media(min-width:900px){.mot-overlay{display:flex;align-items:center;padding:var(--s-6)}.mot-sheet{max-height:calc(100dvh - var(--target));border-radius:var(--radius-lg)}}
-/* Static legacy markup spacing is neutralized here. Dynamic chart and lane dimensions remain measured. */
 #app [style*="margin-top"],#app [style*="margin-bottom"]{margin-block:var(--s-3)!important}#app [style*="font-size"]{font-size:var(--text-sm)!important;line-height:var(--lh-body)}
 @media(min-width:600px){.c1-starters{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:899px){.grid2{grid-template-columns:minmax(0,1fr)}.c1-critical-legend .c6-legend-text{position:absolute;width:var(--hairline);height:var(--hairline);padding:0;margin:calc(-1 * var(--hairline));overflow:hidden;clip-path:inset(50%);white-space:nowrap}}
@@ -955,7 +945,6 @@ html[data-large-text] .panel:has(#nc-name)>.phead{flex-direction:column;align-it
 html[data-large-text] .wi{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s-2)}html[data-large-text] .wi>span:nth-child(3n + 1){grid-column:1/-1}html[data-large-text] .wi>span{min-width:0;overflow-wrap:anywhere}
 html[data-large-text] .k3-timeline-controls>.filters{flex-basis:100%}html[data-large-text] .tl{grid-template-columns:minmax(var(--lane-width),45%) minmax(0,1fr)}
 @media(min-width:900px){html[data-large-text] #app nav.tabs{grid-template-columns:1fr}}
-/* BRIEF1 uses the existing sheet, type and spacing scale. */
 .brief-controls{display:grid;gap:var(--s-3)}
 .brief-controls .field{margin:0}
 .brief-controls fieldset{border:0;margin:0;padding:0}
@@ -985,7 +974,13 @@ html[data-large-text] .brief-actions{max-height:32dvh;overflow-y:auto;overscroll
 .brief-action-buttons button{flex:1 1 9em;overflow-wrap:normal;word-break:normal}
 
 
-/* RG3 follows the existing DESIGN1 geometry scale. */
+.c1-past-date{padding:var(--s-3);border:1px solid var(--line);border-radius:var(--s-2)}
+.c1-month-scroll{max-width:100%;overflow-x:auto}
+.c1-month-table{width:100%;border-collapse:collapse;font-size:var(--text-xs);font-variant-numeric:tabular-nums}
+.c1-month-table th,.c1-month-table td{padding:var(--s-2) var(--s-1);text-align:right;white-space:nowrap;border-bottom:1px solid var(--line)}
+.c1-month-table th:first-child{text-align:left}
+.c1-month-table abbr{text-decoration:none}
+.c1-leave-months>p{font-size:var(--text-xs);margin:0 0 var(--s-2)}
 #rg3-card{min-height:100svh;background:var(--bg);color:var(--ink);padding:var(--s-4);padding-top:max(var(--s-6),env(safe-area-inset-top));padding-bottom:max(var(--s-6),env(safe-area-inset-bottom));box-sizing:border-box}
 .rg3-content{display:grid;gap:var(--s-4);max-width:var(--sheet-width);margin:auto;font:400 var(--text-md)/var(--lh-body) var(--sans)}
 .rg3-content h1{font:600 var(--text-xl)/var(--lh-tight) var(--sans);margin:0}
@@ -994,7 +989,6 @@ html[data-large-text] .brief-actions{max-height:32dvh;overflow-y:auto;overscroll
 .rg3-content summary,.rg3-settings summary{display:flex;align-items:center;min-height:var(--target);cursor:pointer}
 .rg3-settings{display:grid;gap:var(--s-3)}
 
-/* TEL1 uses the DESIGN1 scale for prompts, private controls, and receipts. */
 .tel-private{display:grid;gap:var(--s-3);min-width:0}
 .tel-private h2,.tel-private h3,.tel-private p,.tel-private .field{margin:0}
 .tel-private>h2+p{margin-top:0!important}
@@ -1096,8 +1090,8 @@ else { var c1Media = matchMedia("(prefers-color-scheme: dark)"); var c1ApplyThem
 }
 var SEED = JSON.parse(document.getElementById("seed").textContent);
 var DAY = 86400000;
-var UPDATE_MESSAGE = "Update Muster Out. Keep my existing board at the same address. Check https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.15.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the update guide they verify.";
-var WEEKLY_MESSAGE = "Run the Muster Out weekly check. Use the signed feed. Check https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.15.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the weekly guide they verify.";
+var UPDATE_MESSAGE = "Update Muster Out. Keep my existing board at the same address. Check https://cdn.jsdelivr.net/npm/musterout@0.2.16/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.16/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.16.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the update guide they verify.";
+var WEEKLY_MESSAGE = "Run the Muster Out weekly check. Use the signed feed. Check https://cdn.jsdelivr.net/npm/musterout@0.2.16/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.16/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.16.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the weekly guide they verify.";
 var MON = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 var MONL = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 var DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -1105,7 +1099,6 @@ var HOLIDAYS = {};
 var TABS = [["coach","What your coach knows"],["brief","Brief"],["timeline","Timeline"],["lines","Lines of effort"],["leave","Leave"],["va","VA Claim"],["people","Contacts and sources"]];
 var STATUS = [["open","Open"],["doing","In progress"],["waiting","Waiting on others"],["done","Done"],["na","Not needed"]];
 
-/* ---------- state ---------- */
 function clone(o){ return JSON.parse(JSON.stringify(o)); }
 /* MUSTEROUT_PATCHED: the embedded seed carries every path; `when` tags pick the records for one profile */
 var SEED_ALL = SEED, DEFAULT_FLAGS = ["resign","officer","reserve","sb","cat3","notretire"];
@@ -1381,7 +1374,7 @@ function write(path,op,data,gen,onSaved){if(coachPath(path))return Promise.resol
  function failed(code){if(UI.localDraftSaved===false)code='DRAFT_STORAGE_FAILED';C1_FAILED[path]=true;UI.saveStatus='failed';if(el('saveHeader'))el('saveHeader').hidden=false;if(C1_TRUST)C1_TRUST.setSave({status:'failed',code:code||'unavailable',operation:op,retry:async function(){if(!await write(path,op,payload,gen,onSaved))throw {code:'unavailable'};}});return false;}
  delete C1_WRITE_ERRORS[path];var task=c1CheckDraftWrite(path).then(function(){return legacyWrite(path,op,payload,gen,true);}).catch(function(e){C1_WRITE_ERRORS[path]=e;return false;}).then(async function(ok){if(!ok){if(C1_WRITE_ERRORS[path]?.code==='conflict')c1RestoreDrafts(UI.c1Dialog?UI.c1Dialog.overlay:el('view'));return failed(C1_WRITE_ERRORS[path]?.code||(gen!==GEN||S.reset?'fenced':'unavailable'));}try{var ref=DB.doc(path);if(typeof ref.get!=='function')throw {code:'unavailable'};var snap=await ref.get();if(snap.metadata?.fromCache||snap.metadata?.hasPendingWrites)throw {code:'unavailable'};if(op==='delete'?snap.exists:(!snap.exists||(op==='set'?canonicalSeed(payload)!==canonicalSeed(snap.data()):!c1Subset(payload,snap.data()))))throw {code:'conflict'};delete C1_FAILED[path];C1_SAVED[path]=op==='delete'?null:clone(snap.data());c1ClearDraftPath(path,op==='delete');c1ClearCreation(path);if(!Object.keys(C1_FAILED).length&&C1_PENDING.size<=1){var dirty=Object.keys(C1_DRAFTS).some(function(k){return k!=='askq';}),status=dirty?(UI.localDraftSaved===false?'failed':'unsaved'):'saved';if(C1_TRUST)C1_TRUST.setSave(status==='failed'?{status:status,code:'DRAFT_STORAGE_FAILED'}:{status:status});if(el('saveHeader')&&UI.tab==='brief')el('saveHeader').hidden=status==='saved';UI.saveStatus=status;}if(onSaved)onSaved();return true;}catch(e){return failed(e.code);}}).finally(function(){C1_PENDING.delete(task);});C1_PENDING.add(task);return task;
 }
-async function c1DrainPendingWrites(){await TEL.chain;if(UI.localDraftSaved===false)throw {code:'draft_failed'};C1_UPDATE_FROZEN=true;if(UI.c1Dialog&&document.activeElement.matches('textarea,input,select'))document.activeElement.blur();for(var i=0;i<20;i++){var pending=Array.from(C1_PENDING).concat(Object.values(queues));await Promise.all(pending);if(C1_PENDING.size===0)break;}if(coachPrivatePending())throw {code:'pending_writes'};if(C1_PENDING.size||Object.keys(C1_FAILED).length)throw {code:'pending_writes'};if(UI.setupBusy||UI.intakeBusy||UI.migrationBusy||UI.dateBusy)throw {code:'pending_writes'};}
+async function c1DrainPendingWrites(){C1_UPDATE_FROZEN=true;await TEL.chain;if(UI.localDraftSaved===false)throw {code:'draft_failed'};if(UI.c1Dialog&&document.activeElement.matches('textarea,input,select'))document.activeElement.blur();for(var i=0;i<20;i++){var pending=Array.from(C1_PENDING).concat(Object.values(queues));await Promise.all(pending);if(C1_PENDING.size===0)break;}if(coachPrivatePending())throw {code:'pending_writes'};if(C1_PENDING.size||Object.keys(C1_FAILED).length)throw {code:'pending_writes'};if(UI.setupBusy||UI.intakeBusy||UI.migrationBusy||UI.dateBusy)throw {code:'pending_writes'};}
 async function c1PersistDrafts(){if(C1_DEMO||!canEdit())throw {code:'not_writer'};if(telPrivatePending()||coachPrivatePending()||!c1CleanAskDrafts())throw {code:'private_draft_pending'};var legacy=await coachLegacyRows(coachContext());if(legacy.length){COACH_LEGACY_DRAFTS=new Set(legacy);render();throw {code:'private_draft_pending'};}document.querySelectorAll('input,textarea,select').forEach(function(n){if(n===document.activeElement)c1CaptureDraft(n);});var record={version:1,writer:C1_DRAFT_WRITER,fields:c1PublicDrafts(C1_DRAFTS),at:nowIso()};try{localStorage.setItem('mo.drafts.'+location.pathname,JSON.stringify(C1_DRAFTS));}catch(e){throw {code:'draft_failed'};}var ref=DB.doc('meta/drafts-'+C1_DRAFT_WRITER);if(C1_DEMO||!canEdit())throw {code:'not_writer'};await ref.set(record);var read=await ref.get();if(!read.exists||canonicalSeed(read.data())!==canonicalSeed(record))throw {code:'draft_failed'};}
 async function c1VerifyMigration(){if(SEED_MIGRATION_TASK)await SEED_MIGRATION_TASK;var checks=await Promise.all(['meta/seeded','meta/migration','meta/reset','meta/profile','meta/settings'].map(function(k){return DB.doc(k).get();}));if(checks.some(function(s){return s.metadata?.fromCache||s.metadata?.hasPendingWrites;})||checks[2].exists)return false;if(!checks[0].exists)return c1Undated()&&checks[3].exists&&checks[4].exists&&!checks[4].data().eas;
  var marker=checks[0].data();if(marker.version!==VERSION||marker.revision!==fingerprintData().revision||marker.pack!==PACK||(marker.profileKey&&marker.profileKey!==keyOf(checks[3].exists?checks[3].data():{},checks[4].exists?checks[4].data():{})))return false;
@@ -1406,7 +1399,6 @@ async function k1Complete(id){var it=S.items[id];if(!it||!editGuard()||K1_COMPLE
 async function k1Undo(id){if(!K1_UNDO||K1_UNDO.id!==id||!editGuard()||K1_COMPLETING[id])return;var prior=K1_UNDO,it=S.items[id];if(!it||it.status!=='done')return;K1_COMPLETING[id]=true;it.status=prior.status;it.doneOn=prior.doneOn;it.updated=nowIso();render();try{await write('items/'+id,'update',{status:it.status,doneOn:it.doneOn,updated:it.updated},null,function(){K1_UNDO=null;toast('Completion undone');});}finally{delete K1_COMPLETING[id];}}
 function newId(p){ return p + "-" + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 
-/* ---------- helpers ---------- */
 function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(ch){ return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[ch]; }); }
 function el(id){ return document.getElementById(id); }
 function safeUrl(u){ return /^https:\/\//i.test(String(u || "")) ? u : "#"; }
@@ -1427,7 +1419,6 @@ function selectFallback(txt){
   field.focus(); field.select();
 }
 
-/* ---------- chips ---------- */
 function dueChip(it, c){
   c = c || ctx(); var eas = c.eas, t;
   if (it.kind === "window") { var w = winOf(it, c);
@@ -1455,7 +1446,6 @@ function i1FromEnteredDate(rule, depth){
 function i1Planned(it){return boardReady()&&S.profile.dateBasis!=='approved'&&[it.due].concat(it.window?[it.window.from,it.window.to]:[]).some(function(r){return resolve(r,ctx())!=null&&i1FromEnteredDate(r);});}
 function i1DateLabel(it){return i1Planned(it)?'From planned date':'';}
 
-/* ---------- item row + card ---------- */
 function itemRow(it, opts){return c1ActionRow(it);}
 function itemCard(it){var brief=it.brief||((it.why||'').match(/^.*?[.!?](?:\s|$)/)||[it.why||''])[0],basis=dateBasis(it);
  return '<div class="card c1-card" id="card-'+esc(it.id)+'">'+(brief?'<p class="why">'+esc(brief)+'</p>':'')+'<p class="muted c1-card-meta">'+esc(displayOwner(it.owner)||'Owner not set')+' · '+basis+'</p>'+(i1Planned(it)?'<p class="muted c1-card-meta">From planned date</p>':'')+(!boardReady()?'<p class="muted c1-card-meta">'+esc(c1OffsetDetail(it))+'</p>':'')+'<div class="ctl c1-card-actions"><button class="btn pri" data-act="toggle" data-id="'+esc(it.id)+'"'+(!canEdit()||!boardReady()||it.kind==='marker'?' disabled':'')+'>'+(it.status==='done'?'Reopen':'Mark done')+'</button><button class="btn" data-act="item-drawer" data-id="'+esc(it.id)+'">Steps and source</button></div></div>';
@@ -1479,7 +1469,6 @@ function c1ToggleCard(id,forceClose){var was=!!UI.open[id],ids=Array.from(new Se
  if(!matchMedia('(prefers-reduced-motion: reduce)').matches)ids.forEach(function(k){var row=document.querySelector('.row[data-id="'+k+'"]');if(!row||heights[k]==null)return;var after=row.getBoundingClientRect().height;var a=row.animate([{height:heights[k]+'px',overflow:'hidden'},{height:after+'px',overflow:'hidden'}],{duration:200,easing:'cubic-bezier(.2,0,0,1)'});C1_CARD_ANIMS.push(a);});
 }
 
-/* ---------- header, hero, strip ---------- */
 function newerVersion(latest, current){
   var valid = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
   if (typeof latest !== "string" || typeof current !== "string" || !valid.test(latest) || !valid.test(current)) return false;
@@ -1532,7 +1521,7 @@ function prepareRegistration(){
     return fields;
   }).catch(function(){ UI.registrationFailed = true; }).finally(function(){ UI.registrationBusy = false; renderRegistration(); });
 }
-function renderRegistration(){var banner=el('registrationBanner');banner.hidden=true;banner.textContent='';if(!rg3Mode()&&TEL.loaded&&TEL.owner&&!C1_DEMO&&telConsentOk(TEL.consent)&&!TEL.access?.capability&&(boardReady()||c1Undated())){banner.hidden=false;banner.innerHTML='<p>Registration pending. Your plan is ready.</p><button class="btn" data-act="tel-enroll" aria-label="Retry registration">Retry</button>';}}
+function renderRegistration(){var banner=el('registrationBanner');banner.hidden=true;banner.textContent='';if(!c1BuildingPlan()&&!rg3Mode()&&TEL.loaded&&TEL.owner&&!C1_DEMO&&telConsentOk(TEL.consent)&&!TEL.access?.capability&&(TEL.access?.registration_nonce||TEL.outbox.some(function(x){return x.value.status==='pending'&&x.value.request?.records?.some(function(r){return r.kind==='install';});}))&&(boardReady()||c1Undated())){banner.hidden=false;banner.innerHTML='<p>Registration pending. Your plan is ready.</p><button class="btn" data-act="tel-enroll" aria-label="Retry registration">Retry</button>';}}
 function registerBoardTapped(){return false;}
 function renderRelease(){
   var banner = el("releaseBanner"), release = S.release;
@@ -1572,7 +1561,6 @@ function legacyRenderTop(){
   el("foot").innerHTML += '<span class="disclaimer">' + DISCLAIMER + '</span>';
 }
 
-/* C1 view shell. Legacy summary calculations remain available in Plan. */
 var C1_NAV = [["brief","Today"],["lines","Plan"],["timeline","Timeline"],["va","VA Claim"]];
 var C1_CORRECTION=null,C1_CORRECTION_OBSERVER=null,C1_SAVE_SLOTS={}, C1_TRUST = null, C1_TRUST_KEY = "", updates = null, C1_FEED = null;
 function c1Screen(){ return ({brief:"today",lines:"plan",timeline:"dates",leave:"dates",va:"claim"})[UI.tab] || "more"; }
@@ -1584,7 +1572,7 @@ function c1Trust(){
   if(C1_TRUST && C1_TRUST_KEY===key){C1_TRUST.setContext({screen:c1Screen(),path:S.profile.path||null,grade:S.profile.grade||null});C1_TRUST.setWatch(C1_FEED||c1LegacyWatch());if(C1_FEED_ERROR)C1_TRUST.setWatch({code:C1_FEED_ERROR});return C1_TRUST;}
   if(C1_TRUST)C1_TRUST.destroy();C1_TRUST_KEY=key;
   ["trustHeader","saveHeader","trustToday","trustSettings"].forEach(function(k){el(k).replaceChildren();});
-  C1_TRUST=window.MusterOutTrust.create({version:VERSION,pack:PACK,screen:c1Screen(),path:S.profile.path||null,grade:S.profile.grade||null,installId:id||null,db:DB,sample:SAMPLE,updates:updates,learningEnabled:false,onReportLink:function(){rg3Decorate();},onErrorCount:function(component){telCount('error',({db:'save',draft:'storage',sample:'sample',permissions:'permission',update:'update',feed:'feed'})[component]||'other');},canWrite:canEdit(),copyChanges:c1Recovery,updateMessage:UPDATE_MESSAGE,weeklyMessage:WEEKLY_MESSAGE,setupMessage:"Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.15.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify."});
+  C1_TRUST=window.MusterOutTrust.create({version:VERSION,pack:PACK,screen:c1Screen(),path:S.profile.path||null,grade:S.profile.grade||null,installId:id||null,db:DB,sample:SAMPLE,updates:updates,learningEnabled:false,onReportLink:function(){rg3Decorate();},onErrorCount:function(component){telCount('error',({db:'save',draft:'storage',sample:'sample',permissions:'permission',update:'update',feed:'feed'})[component]||'other');},canWrite:canEdit(),copyChanges:c1Recovery,updateMessage:UPDATE_MESSAGE,weeklyMessage:WEEKLY_MESSAGE,setupMessage:"Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.16/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.16/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.16.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify."});
   if(!C1_CORRECTION_OBSERVER){C1_CORRECTION_OBSERVER=new MutationObserver(function(records){if(!records.some(function(r){return r.addedNodes.length||Array.from(r.removedNodes).some(function(n){return n.classList?.contains('mot-watch-line');});}))return;var banner=el("trustToday").querySelector(".mot-warning");C1_CORRECTION.replaceChildren();if(banner)C1_CORRECTION.appendChild(banner);});C1_CORRECTION_OBSERVER.observe(el("trustToday"),{childList:true});}
   C1_TRUST.mountHeader(el("trustHeader"));C1_TRUST.mountSave(el("saveHeader"));C1_TRUST.mountToday(el("trustToday"));C1_TRUST.mountSettings(el("trustSettings"));
   Object.values(C1_SAVE_SLOTS).forEach(function(n){C1_TRUST.mountSave(n);});C1_TRUST.setWatch(C1_FEED||c1LegacyWatch());if(C1_FEED_ERROR)C1_TRUST.setWatch({code:C1_FEED_ERROR});return C1_TRUST;
@@ -1615,7 +1603,19 @@ function renderTop(){
 }
 function c1Go(tab){telCount('tab',({brief:'today',lines:'plan',timeline:'dates',va:'claim',settings:'more'})[tab]||'more');if(tab==='dates')tab='timeline';if(document.activeElement?.matches('input,textarea,select')){c1CaptureDraft(document.activeElement);document.activeElement.blur();}if(tab!=='settings')UI.setup=null;UI.tab=tab;UI.open={};try{localStorage.setItem('ssb.tab',tab);}catch(e){}if(history.replaceState)history.replaceState(null,'','#'+tab);render();window.scrollTo(0,0);var target=el('tabs').querySelector('[data-tab="'+tab+'"]')||el('who');if(target===el('who'))target.tabIndex=-1;target.focus({preventScroll:true});}
 window.addEventListener('hashchange',function(){var tab=location.hash.slice(1);if(tab==='dates'||TABS.some(function(x){return x[0]===tab;}))c1Go(tab);});
+function c1PastDateInput(scope){return el(scope==='intake'?'c1IntakeDate':scope==='date'?'i1-date':'su-date');}
+function c1ConfirmPastDate(date,scope){
+ if(!date||parseD(date)>=today()||UI.pastDateAccepted===scope+'|'+date)return true;
+ var input=c1PastDateInput(scope);if(!input)return false;
+ var next=new Date(parseD(date));next.setUTCFullYear(new Date(today()).getUTCFullYear()+1);if(next.getUTCMonth()!==new Date(parseD(date)).getUTCMonth())next.setUTCDate(0);
+ el('c1PastDate')?.remove();var box=document.createElement('div');box.id='c1PastDate';box.className='c1-past-date';box.setAttribute('role','group');box.setAttribute('aria-label','Confirm past date');
+ box.innerHTML='<p>That date has already passed. Did you mean '+esc(mil(next.getTime()))+'?</p><div class="ctl"><button class="btn pri" data-act="past-date-use" data-scope="'+scope+'" data-date="'+esc(date)+'">Use as entered</button><button class="btn" data-act="past-date-change" data-scope="'+scope+'">Change</button></div>';
+ input.closest('label').after(box);box.querySelector('button').focus();return false;
+}
+function c1LedgerDateError(asof){if(parseD(asof)>today())return "Your balance date can't be after today.";if(boardReady()&&parseD(asof)>lastActiveDay(ctx()))return 'Your balance date is after your last active-duty day, '+mil(lastActiveDay(ctx()))+'. Check your date at the top of the board.';return '';}
+function c1ShowLedgerError(message){var box=el('c1LedgerError');if(!box){box=document.createElement('div');box.id='c1LedgerError';box.setAttribute('role','alert');el('lg-asof').closest('section').append(box);}box.innerHTML='<p>'+esc(message)+'</p>'+(message.includes('last active-duty day')?'<button class="btn" data-act="date-edit">Edit your date</button>':'');}
 function i1EditDate(){
+ UI.pastDateAccepted=null;
  var title=isRetire()?'Retirement or FMCR date':S.profile.path==='resign'?'Resignation date':'EAS date';
  var modal=c1Dialog('Edit your date','<label class="field"><span>'+title+'</span><input id="i1-date" type="date" value="'+esc(S.settings.eas||'')+'"'+(!canEdit()?' disabled':'')+'></label><label class="field"><span>Date status</span><select id="i1-basis"'+(!canEdit()?' disabled':'')+'>'+[['planned','Planned'],['approved','Approved'],['','Not sure']].map(function(x){return '<option value="'+x[0]+'"'+(x[0]===(S.profile.dateBasis||'')?' selected':'')+'>'+x[1]+'</option>';}).join('')+'</select></label><p>Dates counted from this date move when you save. Dates you set on individual items stay fixed.</p><button class="btn pri" data-act="date-save"'+(!canEdit()?' disabled':'')+'>Save</button><p id="i1-date-status" role="status">'+(!canEdit()?'Read only':'')+'</p>');
  c1EditorSaves(modal);c1RestoreDrafts(modal);modal.querySelector('#i1-date').focus();
@@ -1624,6 +1624,7 @@ async function i1SaveDate(){
  if(UI.dateBusy||!editGuard())return;var date=el('i1-date').value,basis=el('i1-basis').value,status=el('i1-date-status');
  if(!/^\d{4}-\d{2}-\d{2}$/.test(date)||iso(parseD(date))!==date){status.textContent='Enter a valid date.';return;}
  if(S.settings.sbEnd&&parseD(S.settings.sbEnd)>=parseD(date)){status.textContent='Your date must be after SkillBridge ends.';return;}
+ if(!c1ConfirmPastDate(date,'date'))return;
  var button=null;UI.dateBusy=true;
  try{
   status.textContent='Saving...';button=document.querySelector('[data-act="date-save"]');button.disabled=true;
@@ -1656,7 +1657,6 @@ function crisisLine(){var more=HELP_LINES.filter(function(r){return ['Military O
 function c1More(){var rows=[['coach','What your coach knows'],['people','Contacts'],['sources','Sources and documents'],['coverage','Policy update checks'],['settings','Settings'],['talk','Talk to Claude'],['project','Open your Project']];c1Dialog('More','<div class="c1-menu">'+(S.canWrite===true&&!S.readOnly?'<button data-act="brief-open">Export brief</button>':'')+rows.map(function(x){return '<button data-act="more-destination" data-tab="'+x[0]+'">'+x[1]+'</button>';}).join('')+'</div>'+crisisLine());}
 document.addEventListener('keydown',function(e){var d=UI.c1Dialog;if(!d||document.activeElement.closest('.mot-overlay'))return;if(e.key==='Escape'){e.preventDefault();c1Close(true);return;}if(e.key==='Tab'){var nodes=Array.from(d.overlay.querySelectorAll('button,a[href],input,select,textarea,summary,[tabindex="0"]')).filter(function(n){return !n.disabled&&n.getClientRects().length;});var first=nodes[0],last=nodes[nodes.length-1];if(e.shiftKey&&(document.activeElement===first||document.activeElement===el('c1DialogTitle'))){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
 
-/* BRIEF1: explicit local export. Read-only adapter, editable OOXML, no telemetry. */
 var BRIEF = null, BRIEF_EPOCH = 0;
 var BRIEF_SECTIONS = [['timeline','Timeline'],['absence','Absence windows'],['impact','Turnover and coverage'],['decisions','Decisions and signatures'],['goals','Goals and post-service path']];
 var BRIEF_PRIVATE = [['identity','Name and profile details'],['custom','Personal plan items'],['medical','Medical details'],['va','VA claim details'],['finance','Finances'],['family','Family details'],['notes','Private notes'],['coach','Coach chat text'],['private','Items marked private']];
@@ -1894,7 +1894,6 @@ async function briefSave(){var b=BRIEF;if(!b||b.busy||!b.downloads||!briefReady(
 }
 async function briefCopy(button){var b=BRIEF;if(!b||!briefReady())return;try{var user=await window.claude?.use?.('user');if(await user?.isOwner?.()!==true)throw {code:'not_owner'};}catch(e){if(b===BRIEF){b.owner=false;briefRefresh();b.overlay.querySelector('#briefStatus').textContent='Open your own board to export a brief.';}return;}if(b!==BRIEF||!b.overlay.isConnected||!briefReady())return;await copyText(briefFull(briefModel(b.audience,b.options)),button);if(b===BRIEF)b.overlay.querySelector('#briefStatus').textContent='Brief text ready to copy.';}
 
-/* ---------- brief ---------- */
 function alertsList(){
   var c = ctx(), t = today(), out = [];
   var late = itemsArr().filter(function(i){ return i.critical && lateOf(i); });
@@ -2013,7 +2012,6 @@ function whatIfBody(){
   return h;
 }
 
-/* ---------- timeline ---------- */
 function renderTimeline(){
   var h = '<div class="filters c6-segmented" role="group" aria-label="Range"><button data-act="range" data-r="eas" aria-pressed="' + (UI.range === "eas") + '">Now to EAS</button><button data-act="range" data-r="full" aria-pressed="' + (UI.range === "full") + '">Full range</button></div>';
   if (itemsArr().filter(function(i){ return dueOf(i) != null; }).length < 3) h += '<p class="empty">Your dates appear here as you give plan items dates.</p>';
@@ -2082,7 +2080,6 @@ function timelineSvg(labelHeights){
   return s + "</svg>";
 }
 
-/* ---------- lines of effort ---------- */
 function legacyRenderLines(){
   var f = UI.filter, fl = [["all","All"],["open","Open"],["crit","Critical"],["waiting","Waiting"],["q","Questions"],["done","Done"]];
   var h = '<div class="filters" role="group" aria-label="Filter">' + fl.map(function(x){ return '<button data-act="filter" data-f="' + x[0] + '" aria-pressed="' + (f === x[0]) + '">' + x[1] + "</button>"; }).join("") + "</div>";
@@ -2137,8 +2134,9 @@ function renderDates(){var h='<p class="c1-intro">Your deadlines, planning targe
 }
 function renderLeave(){var html=legacyRenderLeave(),t=document.createElement('template');t.innerHTML=html;var ledger=Array.from(t.content.querySelectorAll('section.panel')).find(function(n){return n.querySelector('h2')?.textContent==='Ledger';}),blocks=Array.from(t.content.querySelectorAll('section.panel')).find(function(n){return n.querySelector('h2')?.textContent==='Leave blocks';});
  var rules=ledger&&ledger.querySelector('.rules'),ruleHtml=rules?rules.outerHTML:'';if(rules)rules.remove();var grid=t.content.querySelector('.grid2');if(grid)grid.remove();
+ var months=t.content.querySelector('.c1-leave-months'),monthHtml=months?months.outerHTML:'';if(months)months.remove();
  var forecast=Array.from(t.content.children).map(function(n){return n.outerHTML;}).join('').replace('Monthly burn','Leave by month');
- return (boardReady()&&ledgerProblem()?'<p role="alert" class="banner">'+esc(ledgerProblem())+'</p>':S.ledger.balance==null?'<p>'+(canEdit()?'Add your leave balance and its date from your latest LES.':'No saved leave balance. Ask the board owner to record the LES balance and its date.')+'</p>':'')+(boardReady()&&S.ledger.balance!=null?c1Disclosure('Leave forecast and charts',forecast,true):!boardReady()?'<p class="c1-intro">The leave chart needs a leave balance, its balance date, and your separation date. You can save your balance in the ledger now.</p>':'')+'<div class="c1-ledger">'+(ledger?ledger.outerHTML:'')+(blocks?blocks.outerHTML:'')+'</div>'+(boardReady()&&S.ledger.balance==null?c1Disclosure('Leave forecast and charts',forecast):'')+c1Disclosure('Leave rules',ruleHtml);
+ return (boardReady()&&ledgerProblem()?'<p role="alert" class="banner">'+esc(ledgerProblem())+'</p>':S.ledger.balance==null?'<p>'+(canEdit()?'Add your leave balance and its date from your latest LES.':'No saved leave balance. Ask the board owner to record the LES balance and its date.')+'</p>':'')+(boardReady()&&S.ledger.balance!=null?c1Disclosure('Leave forecast and charts',forecast,true):!boardReady()?'<p class="c1-intro">The leave chart needs a leave balance, its balance date, and your separation date. You can save your balance in the ledger now.</p>':'')+'<div class="c1-ledger">'+(ledger?ledger.outerHTML:'')+(blocks?blocks.outerHTML:'')+'</div>'+(boardReady()&&S.ledger.balance==null?c1Disclosure('Leave forecast and charts',forecast):'')+(monthHtml?c1Disclosure('Leave by month',monthHtml):'')+c1Disclosure('Leave rules',ruleHtml);
 }
 function renderVA(){var old=legacyRenderVA(),conditions=c1Extract(old,function(n){return n.querySelector('h2')?.textContent==='Your conditions';}),guide=c1Extract(old,function(n){return n.querySelector('h2')?.textContent==='How people lose disability value';}),fi=S.items['va-file'],w=fi&&boardReady()?winOf(fi):null,target=fi&&boardReady()?dueOf(fi):null;
  var h='<p class="c1-intro">Prepare your VA claim with a VSO.</p><section class="panel c1-claim-dates"><h2>Benefits Delivery at Discharge (BDD) dates</h2><p>'+esc(bddConfirmed()?'Confirmed BDD filing window':'Projected BDD filing window')+'</p><p>'+(w?'Window opens: '+esc(mil(w.from))+'<br>Window closes: '+esc(mil(w.to)):'BDD dates need confirmation.')+'</p><p class="muted">'+(bddConfirmed()?'Last active-duty day and these endpoints are recorded as confirmed.':'Ask IPAC to confirm your last active-duty day and VA or your VSO to confirm both endpoints before filing.')+'</p><h3>Filing target</h3><p>'+(target!=null?esc(mil(target)):'Confirm with your VSO.')+'</p><p class="muted">Filing target is a planning choice.</p><button class="btn" data-act="copy" data-v="'+esc(bddConfirmationRequest())+'">Copy BDD confirmation request</button></section>'+(conditions?conditions.outerHTML:'')+'<section class="c1-claim-steps"><h2>Claim steps</h2><div class="rows">'+VA_ORDER.map(function(id){return S.items[id]?itemRow(S.items[id]):'';}).join('')+'</div></section>';
@@ -2236,7 +2234,7 @@ function legacyRenderLeave(){
     h += '<section class="panel chart" style="margin-top:14px"><div class="phead"><h2>Balance from ' + esc(long(lm.start)) + " to " + esc(long(lm.eas)) + "</h2></div>" + leaveChart(lm, c) + "</section>";
     var mr = monthly(c), om = {}, officeLeft = 0;
     officeMonths(c).forEach(function(r){ om[r.k] = r.n; officeLeft += r.n; });
-    if (mr.length) h += '<section class="panel"><h2>Leave by month</h2><p>'+officeLeft+' office days left before your last active-duty day</p>'+ttable([['month','Month'],['appr','Approved days'],['plan','Planned days'],['acc','Accrued days'],['balance','Balance at month end'],['office','In office days']],mr.map(function(r){return {month:MONL[r.k%12]+' '+Math.floor(r.k/12),appr:r.appr,plan:r.plan,acc:Math.round(r.acc*10)/10,balance:Math.round(r.end*10)/10,office:om[r.k]};}))+'</section>';
+    if (mr.length) h += '<section class="c1-leave-months"><h2>Leave by month</h2><p>'+officeLeft+' office days before your last active-duty day</p><div class="c1-month-scroll"><table class="c1-month-table" aria-label="Monthly leave days and running balance"><thead><tr><th scope="col">Month</th><th scope="col"><abbr title="Approved days">Appr</abbr></th><th scope="col"><abbr title="Planned days">Plan</abbr></th><th scope="col"><abbr title="Accrued days">Accr</abbr></th><th scope="col">Balance</th><th scope="col"><abbr title="In office days">Office</abbr></th></tr></thead><tbody>'+mr.map(function(r){return '<tr><th scope="row">'+MON[r.k%12]+' '+String(Math.floor(r.k/12)).slice(-2)+'</th><td>'+r.appr+'</td><td>'+r.plan+'</td><td>'+Math.round(r.acc*10)/10+'</td><td>'+Math.round(r.end*10)/10+'</td><td>'+om[r.k]+'</td></tr>';}).join('')+'</tbody></table></div></section>';
   } else if (ledgerProblem(c) || (lm && lm.cautions.length)) {
     h += '<section class="panel"><h2>Leave projection pending</h2><p class="muted">' + esc(ledgerProblem(c) || lm.cautions.join(" ")) + "</p></section>";
   } else {
@@ -2291,7 +2289,6 @@ function leaveChart(lm, c){
   return s + "</svg>";
 }
 
-/* ---------- VA ---------- */
 var VA_ORDER = ["va-vso","va-shpe","va-records","va-conditions","va-sickcall","va-hearing","va-exposure","va-bh","va-reserve","va-file","va-parta","va-exams","va-add","va-sha","va-decision","va-health","va-drill","va-dental","va-net"];
 function legacyRenderVA(){
   var h = claimKpis(), conds = condsSorted();
@@ -2427,7 +2424,6 @@ function renderExposure(){
     ttable([["location","Where and when"],["hazards","Documented hazards"],["presumptive","Presumptive"],["action","Before EAS"]], d.rows) +
     (d.notes && d.notes.length ? '<ul class="rules" style="margin-top:10px">' + d.notes.map(function(n){ return '<li><span class="muted">' + esc(n) + "</span></li>"; }).join("") + "</ul>" : "") + "</section>";
 }
-/* ---------- people ---------- */
 var REFS = [
   ["MARADMIN 175/24", "Resignation requests 6 to 18 months before the date", "https://www.marines.mil/News/Messages/Messages-Display/Article/3739611/"],
   ["MCO 1900.16 CH-3, chapter 5", "Officer resignation process, page 11 entry, Figure 5-1 letter, NAVMC 763", "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf"],
@@ -2462,7 +2458,6 @@ function contactRow(x){
   return h + "</div>";
 }
 
-/* ---------- render ---------- */
 var pending = false;
 function typing(){ var a = document.activeElement; return a && (a.tagName === "TEXTAREA" || (a.tagName === "INPUT" && /text|number|url|date/.test(a.type))) && (el("view").contains(a) || el("banner").contains(a) || (UI.c1Dialog && UI.c1Dialog.overlay.contains(a))); }
 var DISCLAIMER = "Warfare Command is unofficial and not affiliated with the Department of Defense or the Marine Corps. Nothing here is legal, financial, or medical advice.";
@@ -2511,9 +2506,13 @@ function render(){
   if(C1_CORRECTION?.isConnected)el("c1SaveParking").appendChild(C1_CORRECTION);
   if(el("saveHeader"))document.querySelector(".top").appendChild(el("saveHeader"));
   migrateCancellations();
-  c1UndatedView();c1StartUpdates();c1StartFeed();c1LoadRemoteDrafts();c1ResumeCompletion();
-  if(UI.building){el('app').classList.add('c1-today');document.querySelector('.product-mark').hidden=false;el('who').textContent='Your board';['stamp','hero','stats','loeStrip','talkToClaude','registrationBanner','releaseBanner','k1Framing','trustToday'].forEach(function(id){el(id).hidden=true;});c1Nav();c1Trust();el('banner').innerHTML=k1Building(UI.seedProgress);el('view').replaceChildren();return;}
+  c1UndatedView();c1StartUpdates();c1StartFeed();c1LoadRemoteDrafts();c1FollowAgreement();c1ResumeCompletion();
+  // Snapshot state still advances during migration; repaint the full plan once it finishes.
+  // Rebuilding every card for each journal/item write can delay its verified readbacks.
+  if(UI.migrationBusy&&S.migration?.state==='running'&&!S.reset&&!UI.seedError){el('banner').innerHTML='<p class="banner" role="status">Updating your plan. Your saved work stays here.</p>';return;}
+  if(c1BuildingPlan()){el('app').classList.add('c1-today');document.querySelector('.product-mark').hidden=false;el('who').textContent='Your board';['stamp','hero','stats','loeStrip','talkToClaude','registrationBanner','releaseBanner','k1Framing','trustToday'].forEach(function(id){el(id).hidden=true;});c1Nav();c1Trust();el('banner').innerHTML=k1Building(UI.seedProgress);el('view').replaceChildren();return;}
   if(TEL.loaded&&telGuard()&&S.install?.install_id&&telConsentOk(TEL.consent)&&!TEL.opened){TEL.opened=true;telCount('opens');}
+  telObserveOpen();
   if(TEL.enrolling&&(boardReady()||c1Undated())){el('k1Framing').hidden=true;el('view').innerHTML=TEL.loaded&&TEL.owner?telPendingHtml():'<section class="panel"><h2>Setup is pending</h2><p>The board owner must confirm the install record to finish setup.</p></section>';el('banner').innerHTML='';['stamp','hero','stats','loeStrip','tabs','registrationBanner'].forEach(function(id){el(id).hidden=true;});return;}
   if (!boardReady()&&!c1Undated()) {
     ["stamp","hero","stats","loeStrip","tabs","talkToClaude","registrationBanner","releaseBanner"].forEach(function(id){ el(id).hidden = true; });
@@ -2545,8 +2544,9 @@ function render(){
   var filterScroll=v.querySelector('.k1-plan-filters')?.scrollLeft||0;
   var x = window.scrollX, y = window.scrollY, tls = el("tlScroll") ? el("tlScroll").scrollLeft : null;
   UI.disclosures=UI.disclosures||{};v.querySelectorAll('details.c1-disclosure').forEach(function(d){UI.disclosures[(UI.renderedTab||UI.tab)+'|'+d.querySelector('summary').textContent.trim()]=d.open;});
+  var telPromptSafe=telSurveySafe();
   v.innerHTML = UI.tab === "brief" ? renderBrief() : UI.tab === "timeline" ? k1RenderTimeline() : UI.tab === "lines" ? renderLines() : UI.tab === "leave" ? renderLeave() : UI.tab === "va" ? renderVA() : UI.tab === "people" ? c1RenderContacts() : UI.tab === "sources" ? c1RenderSources() : UI.tab === "settings" ? c1RenderSettings() : UI.tab === "coach" ? coachPanel() : UI.tab === "project" ? c1RenderProject() : UI.tab === "talk" ? "" : renderBrief();
-  if(TEL.owner&&TEL.loaded){if(UI.tab==='settings')v.insertAdjacentHTML('beforeend',telControlHtml());if(UI.tab==='brief'&&el('k1Framing').hidden)v.insertAdjacentHTML('afterbegin',telQuestionHtml()||telSetupRecommendHtml());}
+  if(TEL.owner&&TEL.loaded){if(UI.tab==='settings')v.insertAdjacentHTML('beforeend',telControlHtml());if(telPromptSafe&&UI.tab==='brief'&&el('k1Framing').hidden)v.insertAdjacentHTML('afterbegin',telSetupRecommendHtml()||telQuestionHtml());}
   v.querySelectorAll('details.c1-disclosure').forEach(function(d){var key=UI.tab+'|'+d.querySelector('summary').textContent.trim();if(UI.openLeaveForecast&&d.querySelector('summary').textContent.trim()==='Leave forecast and charts'){d.open=true;UI.disclosures[key]=true;}else if(key in UI.disclosures)d.open=UI.disclosures[key];});UI.openLeaveForecast=false;UI.renderedTab=UI.tab;
   var filters=v.querySelector('.k1-plan-filters');if(filters){filters.scrollLeft=filterScroll;var selected=filters.querySelector('[aria-pressed=true]');if(selected){var fr=filters.getBoundingClientRect(),sr=selected.getBoundingClientRect();if(sr.left<fr.left)filters.scrollLeft-=fr.left-sr.left;else if(sr.right>fr.right)filters.scrollLeft+=sr.right-fr.right;}}
   c1UpdateSettingsState();
@@ -2567,7 +2567,6 @@ document.addEventListener("focusout", function(){ setTimeout(function(){ if (pen
 
 /*TEL_JS*/
 /*RG3_JS*/
-/* ---------- events ---------- */
 document.addEventListener("keydown", function(ev){
   if(ev.key==="Escape"&&!UI.c1Dialog){var card=ev.target.closest(".card");if(card){var row=card.closest(".row");if(row){ev.preventDefault();c1ToggleCard(row.dataset.id,true);return;}}}
   var b = ev.target.closest("[data-act]"); if (!b) return;
@@ -2585,7 +2584,7 @@ document.addEventListener("keydown", function(ev){
 });
 document.addEventListener("click", function(ev){
   var b = ev.target.closest("[data-act]"); if(!b){var row=ev.target.closest(".c1-row");if(row&&!ev.target.closest(".card"))c1ToggleCard(row.dataset.id);return;} var a = b.getAttribute("data-act"), id = b.getAttribute("data-id");
-  if (a === "claude-setup") { copyText("Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.15.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify.", b); return; }
+  if (a === "claude-setup") { copyText("Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.16/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.16/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.16.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify.", b); return; }
   if (a === "register-board") { UI.tab='settings';render();return; }
   if (a === "claude-copy") { copyText(b.getAttribute("data-message") === "weekly" ? WEEKLY_MESSAGE : UPDATE_MESSAGE, b); return; }
   if (DB && WRITE_ACTS.indexOf(a) >= 0 && !editGuard()) return;
@@ -2618,6 +2617,8 @@ document.addEventListener("click", function(ev){
   if (a === "setup-open") { UI.setup = "new"; UI.setupHidden = false; render(); return; }
   if (a === "setup-skip") { UI.setup = null; UI.setupHidden = true; el("banner").innerHTML = ""; render(); return; }
   if (a === "setup-cancel") { UI.setup = null; el("banner").innerHTML = ""; render(); return; }
+  if(a==='past-date-change'){el('c1PastDate')?.remove();UI.pastDateAccepted=null;c1PastDateInput(b.dataset.scope)?.focus();return;}
+  if(a==='past-date-use'){var scope=b.dataset.scope,input=c1PastDateInput(scope);if(!input||input.value!==b.dataset.date){el('c1PastDate')?.remove();input?.focus();return;}UI.pastDateAccepted=scope+'|'+input.value;el('c1PastDate')?.remove();if(scope==='intake')document.querySelector('[data-act=intake-next]').click();else if(scope==='date')i1SaveDate();else applySetup(scope==='setup-edit'?'edit':'new');return;}
   if (a === "date-edit") { i1EditDate(); return; }
   if (a === "date-save") { i1SaveDate(); return; }
   if (a === "profile") { UI.setup = "edit"; el("banner").innerHTML = ""; render(); window.scrollTo(0, 0); return; }
@@ -2627,7 +2628,7 @@ document.addEventListener("click", function(ev){
   if(a === "intake-choice"){var d=c1IntakeDraft();d[b.dataset.field]=b.dataset.value;if(d.path==='retire')d.reserveChoice='no';c1SaveLocalIntake();render();return;}
   if(a === "intake-no-date"){var d=c1IntakeDraft();d.noDate=!d.noDate;if(d.noDate)d.date=null;c1SaveLocalIntake();render();return;}
   if(a === "intake-back"){UI.intake.step=Math.max(1,UI.intake.step-1);render();return;}
-  if(a === "intake-next"){if(C1_UPDATE_FROZEN||UI.intakeBusy||UI.setupBusy)return;var d=c1IntakeDraft();if(d.step===1&&!d.path){UI.intakeError='Choose your path.';render();return;}if(d.step===2){if(!rg3Mode()&&!TC.BASES.includes(d.base)){UI.intakeError='Choose your installation or base group.';render();return;}d.date=el('c1IntakeDate').value||null;if(!d.grade||(!d.noDate&&(!d.date||iso(parseD(d.date))!==d.date))){UI.intakeError=!d.grade?'Choose your grade group.':'Enter a valid date or choose I do not have a date yet.';render();return;}if(!d.noDate&&!d.dateBasis){UI.intakeError='Choose Planned, Approved, or Not sure.';render();document.querySelector('[data-field="dateBasis"]')?.focus();return;}if(d.path==='resign'&&gradeRow(d.grade)[2]==='enlisted'){UI.intakeError='Resigning a regular commission is an officer path. Choose Separating at EAS or Retiring.';render();return;}}if(d.step===3){if(!d.reserveChoice||!d.sbChoice){UI.intakeError='Choose an answer or Not sure.';render();return;}c1OpenPlan();return;}UI.intakeError='';d.step++;UI.intakeBusy=true;c1ConfirmIntake().then(function(){UI.intakeBusy=false;render();},function(e){UI.intakeBusy=false;d.step--;UI.intakeError=e.code==='conflict'?'Your answers changed on another device. Reload before continuing.':e.code==='nolock'?LOCK_LINE:'Could not save. Your answers are still here.';render();});return;}
+  if(a === "intake-next"){if(C1_UPDATE_FROZEN||UI.intakeBusy||UI.setupBusy)return;var d=c1IntakeDraft();if(d.step===1&&!d.path){UI.intakeError='Choose your path.';render();return;}if(d.step===2){if(!rg3Mode()&&!TC.BASES.includes(d.base)){UI.intakeError='Choose your installation or base group.';render();return;}d.date=el('c1IntakeDate').value||null;if(!d.grade||(!d.noDate&&(!d.date||iso(parseD(d.date))!==d.date))){UI.intakeError=!d.grade?'Choose your grade group.':'Enter a valid date or choose I do not have a date yet.';render();return;}if(!d.noDate&&!d.dateBasis){UI.intakeError='Choose Planned, Approved, or Not sure.';render();document.querySelector('[data-field="dateBasis"]')?.focus();return;}if(d.path==='resign'&&gradeRow(d.grade)[2]==='enlisted'){UI.intakeError='Resigning a regular commission is an officer path. Choose Separating at EAS or Retiring.';render();return;}if(!d.noDate&&!c1ConfirmPastDate(d.date,'intake'))return;}if(d.step===3){if(!d.reserveChoice||!d.sbChoice){UI.intakeError='Choose an answer or Not sure.';render();return;}c1OpenPlan();return;}UI.intakeError='';d.step++;UI.intakeBusy=true;c1ConfirmIntake().then(function(){UI.intakeBusy=false;render();},function(e){UI.intakeBusy=false;d.step--;UI.intakeError=e.code==='conflict'?'Your answers changed on another device. Reload before continuing.':e.code==='nolock'?LOCK_LINE:'Could not save. Your answers are still here.';render();});return;}
   if (a === "setup-save") { applySetup(b.getAttribute("data-mode") || "new"); return; }
   if (a === "goitem") {c1Close(false);if(S.items[id]){UI.groups=UI.groups||{};UI.groups[S.items[id].loe]=true;}UI.tab = "lines"; UI.open[id] = true; UI.filter = "all"; render(); var row = document.querySelector('.row[data-id="' + id + '"]'); if (row) row.scrollIntoView({ block: "center" }); return; }
   if(a === "leave-conflicts"){var forecast=Array.from(document.querySelectorAll("details")).find(function(d){return d.firstElementChild?.textContent==="Leave forecast and charts";});if(forecast){forecast.open=true;var conflict=Array.from(forecast.querySelectorAll("section")).find(function(n){return n.querySelector("h2")?.textContent==="Conflicts";});(conflict||forecast).scrollIntoView({block:"start"});}return;}
@@ -2666,7 +2667,7 @@ document.addEventListener("click", function(ev){
   if (a === "ledger-save") {
     var bal = parseFloat(el("lg-bal").value), asof = el("lg-asof").value, sl = el("lg-sla").value, ex = el("lg-sla-exp").value;
     if (!Number.isFinite(bal) || !asof || !Number.isFinite(parseD(asof)) || iso(parseD(asof)) !== asof) { toast("Enter a balance and a valid date."); return; }
-    if (parseD(asof) > today() || (boardReady() && parseD(asof) > lastActiveDay(ctx()))) { toast("Your balance date must be on or before today and your last active-duty day."); return; }
+    var dateError=c1LedgerDateError(asof);if(dateError){c1ShowLedgerError(dateError);return;}el('c1LedgerError')?.remove();
     var sla = sl === "" ? null : {days:Number(sl),expires:ex || null};
     if (sla && (!Number.isFinite(sla.days) || sla.days < 0 || sla.days > 60 || (sla.days > 0 && (!ex || iso(parseD(ex)) !== ex)))) { toast("Ask IPAC for SLA excess days, up to 60, and a valid expiration date. Enter 0 if none."); return; }
     var priorLeave=boardReady()?leaveModel():null,hadForecast=!!(priorLeave&&priorLeave.end!=null);
@@ -2727,7 +2728,6 @@ document.addEventListener("change", function(ev){
   if (a === "cond-status") { var cd = S.conditions.find(function(x){ return x.id === id; }); if (!cd) return; cd.status = b.value; cd.updated = nowIso(); render(); write("conditions/" + id, "update", { status: cd.status, updated: cd.updated }); return; }
 });
 
-/* ---------- ask Claude ---------- */
 function boardBrief(){
   /* MUSTEROUT_R3A: every item carries its basis and doneOn so Claude can name the three kinds of date */
   if(!boardReady())return "Undated plan. No service date has been provided. Items have relative timing only.\n"+itemsArr().map(function(i){return i.id+": "+i.title+" | "+c1Offset(i)+" | "+i.status+" | "+(i.why||"");}).join("\n");
@@ -2786,7 +2786,6 @@ async function ask(){
 }
 function c1AskText(){var clear=document.querySelector('[data-act="coach-clear"]');if(clear)clear.disabled=UI.askBusy||!!COACH_THREAD_RUN||COACH_CLEAR_BUSY;if(el('coachThread'))el('coachThread').innerHTML=coachThreadHtml();var save=document.querySelector('[data-act="coach-save-answer"]');if(save)save.hidden=!UI.askAnswer||UI.askBusy;if(el('askOut')){el('askOut').innerHTML=askHtml(UI.askAnswer);el('askOut').hidden=!UI.askAnswer;}if(el('askNote'))el('askNote').textContent=UI.askNote||'';var copy=document.querySelector('[data-act="ask-copy-answer"]');if(copy)copy.hidden=!UI.askAnswer;}
 
-/* ---------- live data ---------- */
 function toList(snap){ return snap.docs.map(function(d){ var o = clone(d.data() || {}); o.id = o.id || d.id; return o; }); }
 /* MUSTEROUT_R2A: first definitive snapshot of every document and collection the seeder reads; seeding waits for all of them */
 var LOADED = {}, NEED = ["profile", "settings", "seeded", "seeding", "reset", "items", "loes", "contacts", "claim"];
@@ -2803,7 +2802,7 @@ function liveSettings(data){ var s = Object.assign({eas:null, sbStart:null, sbEn
 function fenceUp(){
   COACH.epoch++;UI.askToken=(UI.askToken||0)+1;UI.askBusy=false;COACH.loaded=false;COACH.status=null;COACH.statusState='loading';COACH.thread=[];COACH.facts=[];COACH.checkins=[];COACH_SESSION=[];COACH_THREAD_STARTED=false;COACH_DRAFT='';coachResetLocal();if(UI.askCtl)UI.askCtl.abort();UI.askAnswer='';
   c1Close(false);UI.drawerItem=null;
-  GEN++; UI.dropSeedView = true;
+  c1StopSeedWait(); GEN++; UI.dropSeedView = true;
   UI.open = {}; UI.setup = null; UI.editContact = null; UI.whatIf = 0; UI.sel = null; UI.seedError = null;
   var a = document.activeElement; if (a && a !== document.body && typeof a.blur === "function") a.blur();
   S.items = {}; S.loes = []; S.contacts = []; S.claim = {};
@@ -2830,8 +2829,29 @@ function recheckAfterReset(){
     render(); maybeAutoSeed();
   }, function(){ UI.resetCheck = false; UI.seedHalt = true; UI.seedError = "The board could not re-read its profile after the reset. Reload the page."; render(); });
 }
+// Publication can open the side panel before chat saves the private agreement.
+// Follow definitive consent only after the existing owner/rule checks permit it.
+var C1_AGREEMENT_SUB=false,C1_SETUP_RULES=false,C1_AGREEMENT_SEQ=0;
+function c1FollowAgreement(){
+ if(!DB||C1_DEMO||!TEL.loaded||!TEL.owner||rg3Mode())return;
+ if(!TEL.rules&&C1_SETUP_RULES){TEL.loaded=false;telLoad();return;}
+ if(!TEL.rules||C1_AGREEMENT_SUB)return;
+ C1_AGREEMENT_SUB=true;
+ DB.doc('meta/telemetry_consent').onSnapshot(function(d){
+  if(!TEL.owner||!telDef(d))return;
+  var consent=d.exists?clone(d.data()):null,seq=++C1_AGREEMENT_SEQ;
+  if(!telConsentOk(consent)){if(canonicalSeed(TEL.consent)!==canonicalSeed(consent)){TEL.consent=consent;if(!C1_DEMO)render();}return;}
+  // A local save may emit before its mandatory readback fails. Never bypass that fence.
+  if(TEL.consentSaving||TEL.consentBlocked)return;
+  telGet('meta/telemetry_consent').then(function(readback){
+   if(seq!==C1_AGREEMENT_SEQ||!TEL.owner||!TEL.rules||C1_DEMO||TEL.consentSaving||TEL.consentBlocked)return;
+   if(canonicalSeed(readback)!==canonicalSeed(consent)){TEL.consent=null;TEL.message='Could not verify your saved agreement. Reload to try again.';render();return;}
+   if(canonicalSeed(TEL.consent)!==canonicalSeed(readback)){TEL.consent=readback;render();}
+  }).catch(function(){if(seq===C1_AGREEMENT_SEQ){TEL.consent=null;TEL.message='Could not check your saved agreement. Reload to try again.';if(!C1_DEMO)render();}});
+ },function(){TEL.consent=null;TEL.message='Could not check your saved agreement. Reload to try again.';if(!C1_DEMO)render();});
+}
 function subscribe(){
-  if(!C1_INTAKE_READ){C1_INTAKE_READ=true;DB.doc('meta/setup').onSnapshot(function(d){if(C1_DEMO)return;if(telDef(d)&&(d.exists||!TEL.localCompleting))TEL.pending=d.exists;var remote=d.exists?d.data().intake:null;if(!UI.intakeLocalSaved){UI.intakeRemote=canonicalSeed(remote||null);if(remote){UI.intake=clone(remote);UI.intakeConfirmed=true;render();}}});}
+  if(!C1_INTAKE_READ){C1_INTAKE_READ=true;DB.doc('meta/setup').onSnapshot(function(d){if(C1_DEMO)return;if(telDef(d)){C1_SETUP_RULES=!!(d.exists&&d.data().telemetry_rules_verified===true);c1FollowAgreement();}if(telDef(d)&&(d.exists||!TEL.localCompleting))TEL.pending=d.exists;if(telDef(d)&&!d.exists&&UI.seedWaiting&&S.install?.completed){c1StopSeedWait();render();}var remote=d.exists?d.data().intake:null;if(!UI.intakeLocalSaved){UI.intakeRemote=canonicalSeed(remote||null);if(remote){UI.intake=clone(remote);UI.intakeConfirmed=true;render();}}});}
 
   var errd = function(e){ if (e && e.code === "revoked") { DB = null; S.readOnly = true; render(); } };
   DB.doc("meta/settings").onSnapshot(function(d){if(C1_DEMO)return; mark("settings", d); S.settings = liveSettings(d.exists ? d.data() : null); render(); maybeAutoSeed(); }, errd);
@@ -2839,14 +2859,14 @@ function subscribe(){
   DB.doc("meta/profile").onSnapshot(function(d){if(C1_DEMO)return; mark("profile", d); S.profile = d.exists ? clone(d.data()) : {}; render(); maybeAutoSeed(); }, errd);
   DB.doc("meta/watch").onSnapshot(function(d){if(C1_DEMO)return; S.watch = d.exists ? clone(d.data()) : null; render(); }, errd);
   DB.doc("meta/watch_error").onSnapshot(function(d){if(C1_DEMO)return; S.watchError = d.exists ? clone(d.data()) : null; render(); }, errd);
-  DB.doc("meta/install").onSnapshot(function(d){if(C1_DEMO)return; if (!definitive(d)) return; S.installLoaded = true; S.install = d.exists ? clone(d.data() || {}) : null; renderRegistration(); }, errd);
+  DB.doc("meta/install").onSnapshot(function(d){if(C1_DEMO)return; if (!definitive(d)) return; S.installLoaded = true; S.install = d.exists ? clone(d.data() || {}) : null; if(UI.seedWaiting)render();else renderRegistration(); }, errd);
   DB.doc("meta/release").onSnapshot(function(d){if(C1_DEMO)return; S.release = d.exists ? clone(d.data()) : null; render(); }, errd);
   DB.doc("meta/migration").onSnapshot(function(d){if(C1_DEMO)return; S.migration = d.exists ? clone(d.data()) : null; render(); if(S.migration?.state === "running")maybeAutoSeed(); }, errd);
   DB.doc("meta/reset").onSnapshot(function(d){if(C1_DEMO)return; mark("reset", d); var was = !!S.reset; S.reset = d.exists ? clone(d.data() || {}) : null;
     if (S.reset && !was) fenceUp();
     if (!S.reset && was) {recheckAfterReset();coachLoad();}
     render(); maybeAutoSeed(); }, errd);
-  DB.doc("meta/seeded").onSnapshot(function(d){if(C1_DEMO)return; mark("seeded", d); var had = !!S.seeded; S.seeded = d.exists ? clone(d.data()) : null; if (S.seeded) UI.seedError = null; else if (had) fenceUp(); render(); maybeAutoSeed(); }, errd);
+  DB.doc("meta/seeded").onSnapshot(function(d){if(C1_DEMO)return; mark("seeded", d); var had = !!S.seeded; S.seeded = d.exists ? clone(d.data()) : null; if (S.seeded) { UI.seedError = null; if(!UI.seedWaiting&&UI.seedRetry){clearTimeout(UI.seedRetry);UI.seedRetry=null;} } else if (had) fenceUp(); render(); maybeAutoSeed(); }, errd);
   DB.doc("meta/seeding").onSnapshot(function(d){if(C1_DEMO)return; mark("seeding", d); S.seeding = d.exists ? clone(d.data()) : null; render(); maybeAutoSeed(); }, errd);
   DB.collection("items").onSnapshot(function(snap){if(C1_DEMO)return;
     mark("items", snap); S.dbIds.items = idSet(snap); LIVE.items = toList(snap);
@@ -2861,7 +2881,7 @@ function subscribe(){
   DB.collection("inbox").onSnapshot(function(snap){if(C1_DEMO)return;mark("inbox",snap); S.inbox = toList(snap); render(); }, errd);
 }
 /* ---------- Muster Out: profile, setup, seeding ---------- */
-var VERSION = "0.2.15";
+var VERSION = "0.2.16";
 var GRADES = [["o5","O-5 and above","officer","cat3"],["o14","O-1 to O-4","officer","cat2"],["cwo45","CWO4 to CWO5","officer","cat3"],["wo13","WO to CWO3","officer","cat2"],["e89","E-8 to E-9","enlisted","cat3"],["e67","E-6 to E-7","enlisted","cat2"],["e15","E-1 to E-5","enlisted","cat1"]];
 var CAP = { cat1: 120, cat2: 90, cat3: 90 };
 function gradeRow(g){ return GRADES.find(function(x){ return x[0] === g; }) || GRADES[0]; }
@@ -3331,15 +3351,30 @@ document.addEventListener("click", function(ev){
   var acceptId=b.getAttribute('data-id');var prepare=Promise.resolve();if(UI.migrationReview?.includes(acceptId))prepare=DB.doc('meta/migration').get().then(function(d){if(!d.exists)throw {code:'incomplete'};var record=d.data();record.review=Array.from(new Set((record.review||[]).concat([acceptId])));return DB.doc('meta/migration').set(record);});prepare.then(function(){return runSeedMigration(acceptId);}).then(function(){UI.migrationReview=(UI.migrationReview||[]).filter(function(id){return id!==acceptId;});}).then(function(){ UI.migrationBusy = false; render(); }, migrationFailed);
 });
 
+// A second owner view follows snapshots. The existing timed retry resumes only
+// after the seed lease and claim permit it; it never bypasses runSeed's guards.
+function c1StopSeedWait(){UI.seedWaiting=false;if(UI.seedRetry){clearTimeout(UI.seedRetry);UI.seedRetry=null;}}
+function c1WaitForSeed(e){
+ if(!e||e.code!=="busy"||!TEL.owner||!canEdit()||S.seeding&&(S.seeding.by===SEED_ID||S.seeding.profileKey!==liveKey()))return false;
+ UI.seedWaiting=true;UI.seedError=null;
+ if(!UI.seedRetry)UI.seedRetry=setTimeout(function(){UI.seedRetry=null;UI.seedWaiting=false;UI.seedError=null;render();maybeAutoSeed();},60000);
+ return true;
+}
+function c1BuildingPlan(){
+ if(UI.building)return true;
+ if(!DB||C1_DEMO||S.reset||!boardReady()||UI.seedHalt||UI.seedError)return false;
+ return !!(UI.autoSeeding||!S.seeded&&(!loadedAll()||S.seeding||UI.seedWaiting||canEdit()&&S.dbEmpty));
+}
 function maybeAutoSeed(){
   if (!seedNeeded()) { maybeMigrateSeed(); return; }
   UI.setupBusy = true; UI.autoSeeding = true; UI.seedProgress=null; render();
   var planSet = S.settings.planSet && S.settings.planSet !== "SETUP" ? S.settings.planSet : iso(today());
   runSeed(S.profile, S.settings, planSet, c1SeedProgress)
-    .then(function(total){return c1FinishInstall().then(function(){ UI.setupBusy = false; UI.autoSeeding = false; S.dbEmpty = false; el("banner").innerHTML = ""; toast("Board ready. " + total + " records written."); render(); });})
+    .then(function(total){return c1FinishInstall().then(function(){ UI.setupBusy = false; UI.autoSeeding = false; c1StopSeedWait(); S.dbEmpty = false; el("banner").innerHTML = ""; toast("Board ready. " + total + " records written."); render(); });})
     .catch(function(e){
       UI.setupBusy = false; UI.autoSeeding = false; el("banner").innerHTML = "";
       if(e&&e.code==="telemetry_pending"){UI.seedError=null;render();return;}
+      if(c1WaitForSeed(e)){render();return;}
       UI.seedErrorOwner="seed"; UI.seedError = e && e.code === "reset" ? null : seedFailText(e);
       if (e && (e.code === "mixed" || e.code === "nolock")) UI.seedHalt = true;
       if (e && e.code === "busy") UI.seedRetry = setTimeout(function(){ UI.seedRetry = null; UI.seedError = null; render(); maybeAutoSeed(); }, 60000);
@@ -3356,10 +3391,10 @@ function legacyAckPlan(profile, settings){
 }
 function c1SeedComplete(){return !!(S.seeded && S.seeded.profileKey === liveKey());}
 function c1SeedProgress(n,total){UI.seedProgress={n:n,total:total};if(!c1SeedComplete())setBanner('');}
-function k1Building(progress){return '<section class="panel k1-building" role="status" aria-live="polite"><h2>Building your board</h2><progress'+(progress?' value="'+progress.n+'" max="'+progress.total+'"':'')+' aria-label="Building your board"></progress><p>Your plan opens here when it is ready.</p>'+(progress?'<p class="muted" id="su-prog">'+progress.n+' of '+progress.total+'</p>':'')+'</section>';}
+function k1Building(progress){return '<section class="panel k1-building" role="status" aria-live="polite"><h2>Building your plan</h2><progress'+(progress?' value="'+progress.n+'" max="'+progress.total+'"':'')+' aria-label="Building your plan"></progress><p>Your plan opens here when it is ready.</p>'+(progress?'<p class="muted" id="su-prog">'+progress.n+' of '+progress.total+'</p>':'')+'</section>';}
 function k1RenderFraming(){var show=UI.tab==='brief'&&K1_UI.framingPending&&!K1_UI.framingDismissed&&!C1_DEMO&&!UI.building;el('k1Framing').hidden=!show;el('k1Framing').innerHTML=show?'<section class="panel k1-framing"><p>Here is your plan so far. Add details to sharpen it.</p><div class="ctl"><button class="btn pri" data-act="framing-details">Add details</button><button class="btn" data-act="framing-dismiss">Dismiss</button></div></section>':'';}
 function setBanner(b){
-  if(UI.building){el('banner').innerHTML=k1Building(UI.seedProgress);return;}
+  if(c1BuildingPlan()){el('banner').innerHTML=k1Building(UI.seedProgress);return;}
   var complete=c1SeedComplete(),own=S.seeding && S.seeding.by===SEED_ID;
   if(complete){if(UI.seedErrorOwner!=="migration")UI.seedError=null;UI.seedProgress=null;}
   if(!complete && ((own && !UI.seedError) || UI.autoSeeding || (UI.setupBusy && boardReady()))){var progress=UI.seedProgress;if(!progress){var plan=seedDocs(S.profile,S.settings.planSet||iso(today()));progress={n:plan.docs.filter(function(x){return hasDoc(x[0]);}).length,total:plan.docs.length};}el('banner').innerHTML=k1Building(progress);return;}
@@ -3388,7 +3423,7 @@ async function c1ConfirmIntake(){if(C1_UPDATE_FROZEN)throw {code:'pending_writes
 }
 function c1Choices(field,values,current){return '<div class="c1-choices'+(field==='grade'?' c1-grade-choices':'')+'">'+values.map(function(x){return '<button class="btn" data-act="intake-choice" data-field="'+field+'" data-value="'+esc(x[0])+'" aria-pressed="'+(current===x[0])+'">'+esc(x[1])+'</button>';}).join('')+'</div>';}
 function c1IntakeUncertain(d){var names=[];if(d.path!=='retire'&&d.reserveChoice==='unknown')names.push('Join the Reserves (Direct Affiliation Program)');if(d.sbChoice==='unknown')names.push('SkillBridge');return names.length?'<p class="muted">'+names.join(' and ')+' not set. Related items appear if you choose Yes later.</p>':'';}
-function setupForm(mode){if(mode==='edit')return legacySetupForm(mode);if(DB&&S.readOnly)return '<section class="panel" id="setupForm"><h2>This view is read-only.</h2><p>Open your board from the account that owns it to save your plan.</p><div class="ctl"><button class="btn" data-act="setup-demo">Try a demo</button><button class="btn" data-act="claude-setup">Copy setup message</button></div></section>';if(!C1_DEMO&&!rg3Mode()&&!telConsentOk(TEL.consent))return telAgreementHtml();var d=c1IntakeDraft(),step=d.step||1,h='<section class="panel c1-intake" id="setupForm" data-intake-step="'+step+'" aria-labelledby="c1IntakeTitle"><p class="muted c1-card-meta">'+step+' of 3</p>';
+function setupForm(mode){if(mode==='edit')return legacySetupForm(mode);if(DB&&S.readOnly)return '<section class="panel" id="setupForm"><h2>This view is read-only.</h2><p>Open your board from the account that owns it to save your plan.</p><div class="ctl"><button class="btn" data-act="setup-demo">Try a demo</button><button class="btn" data-act="claude-setup">Copy setup message</button></div></section>';if(!C1_DEMO&&!TEL.loaded&&(DB||window.claude?.use&&S.dbState==='init'))return '<section class="panel" id="setupForm" role="status">'+(TEL.message?'<h2>Setup needs another check</h2><p>Could not check your saved agreement. Reload to try again.</p>':'<h2>Checking setup</h2><p>Checking your saved agreement.</p>')+'</section>';if(!C1_DEMO&&!rg3Mode()&&!telConsentOk(TEL.consent))return telAgreementHtml();var d=c1IntakeDraft(),step=d.step||1,h='<section class="panel c1-intake" id="setupForm" data-intake-step="'+step+'" aria-labelledby="c1IntakeTitle"><p class="muted c1-card-meta">'+step+' of 3</p>';
  if(d.path==='other')return '<section class="panel" id="setupForm"><h2>This board does not cover your situation.</h2><p>A plan here could look complete and be wrong for you.</p><ul><li>Medical separation or disability retirement: contact your PEBLO or Wounded Warrior Regiment.</li><li>Involuntary separation: contact IPAC and legal assistance.</li><li>Guard or Reserve retirement with nonregular pay: contact your unit Career Planner and Reserve Affairs.</li><li>Another service: contact your service personnel office.</li></ul><a class="c1-source-link" href="https://musterout.warfarecommand.com/support/" target="_blank" rel="noopener">Open setup help</a><button class="btn" data-act="intake-other-back">Change my answer</button></section>';
  if(step===1)h+='<h2 id="c1IntakeTitle">Which of these is you?</h2><p>Give me what you can for now. You can change any of this later from the board.</p>'+c1Choices('path',[['eas','Separating at EAS'],['resign','Resigning a regular commission'],['retire','Retiring from active duty'],['other','Something else']],d.path);
  if(step===2)h+='<h2 id="c1IntakeTitle">Your date and grade</h2><label class="field"><span>What date are you planning?</span><input id="c1IntakeDate" type="date" value="'+esc(d.date||'')+'"'+(d.noDate?' disabled':'')+'></label><button class="btn" data-act="intake-no-date" aria-pressed="'+!!d.noDate+'">I do not have a date yet</button>'+(d.noDate?'<p class="muted">Date not set</p>':'<p>Date status</p>'+c1Choices('dateBasis',[['planned','Planned'],['approved','Approved'],['unknown','Not sure']],d.dateBasis))+'<p>Grade group</p>'+c1Choices('grade',[['e15','E-1 to E-5'],['e67','E-6 to E-7'],['e89','E-8 to E-9'],['o14','O-1 to O-4'],['o5','O-5 and above'],['wo13','WO to CWO3'],['cwo45','CWO4 to CWO5']],d.grade)+(rg3Mode()?'':'<p>Installation or base group</p><p>Choose the group for your installation or base. Do not enter your unit or address.</p>'+c1Choices('base',TC.BASES.map(function(x,n){return [x,TC.BASE_LABELS[n]];}),d.base));
@@ -3398,7 +3433,7 @@ function setupForm(mode){if(mode==='edit')return legacySetupForm(mode);if(DB&&S.
  if(UI.intakeLocalSaved&&!UI.intakeConfirmed)h+='<p class="muted c1-card-meta">Unsaved. Your draft is saved on this device.</p>';if((UI.intakeError||UI.seedError)&&telConsentOk(TEL.consent))h+='<button class="btn" data-act="tel-failure">Record unfinished setup step</button><div id="telLink"></div>'+telReceiptHtml();return h+'</section>';
 }
 var C1_COMPLETION_TRIED=false;
-function c1ResumeCompletion(){if(C1_COMPLETION_TRIED||!DB||!canEdit()||!loadedAll()||UI.setupBusy||UI.migrationBusy||C1_DEMO||(!S.seeded&&!c1Undated()))return;C1_COMPLETION_TRIED=true;(async function(){try{var setup=await DB.doc('meta/setup').get();if(!setup.exists)return;var update=await DB.doc('meta/update').get();if(update.exists&&update.data().state!=='complete')return;await c1FinishInstall();render();}catch(e){if(e&&e.code==='telemetry_pending'){render();return;}UI.completionError=true;toast('Setup verification did not finish. Your saved plan is still here. Reload to check again.');if(C1_TRUST)C1_TRUST.recordError('setup','verify',e.code||'other');}})();}
+function c1ResumeCompletion(){if(C1_COMPLETION_TRIED||!DB||!canEdit()||!loadedAll()||UI.setupBusy||UI.migrationBusy||UI.seedWaiting||C1_DEMO||(!S.seeded&&!c1Undated()))return;C1_COMPLETION_TRIED=true;(async function(){try{var setup=await DB.doc('meta/setup').get();if(!setup.exists)return;var update=await DB.doc('meta/update').get();if(update.exists&&update.data().state!=='complete')return;await c1FinishInstall();render();}catch(e){if(e&&e.code==='telemetry_pending'){render();return;}UI.completionError=true;toast('Setup verification did not finish. Your saved plan is still here. Reload to check again.');if(C1_TRUST)C1_TRUST.recordError('setup','verify',e.code||'other');}})();}
 var C1_COMPLETION_RUN=null;
 async function c1FinishInstall(){if(C1_COMPLETION_RUN)return C1_COMPLETION_RUN;C1_COMPLETION_RUN=c1WriteInstallCompletion();try{return await C1_COMPLETION_RUN;}finally{C1_COMPLETION_RUN=null;}}
 async function c1WriteInstallCompletion(){TEL.localCompleting=true;TEL.localComplete=false;try{if(!DB||!canEdit()||C1_DEMO)return;var reads=await Promise.all(['meta/seeded','meta/install','meta/setup'].map(function(k){return DB.doc(k).get();}));
@@ -3410,13 +3445,13 @@ async function c1WriteInstallCompletion(){TEL.localCompleting=true;TEL.localComp
  var install=reads[1].exists?clone(reads[1].data()):{},setup=reads[2].exists?reads[2].data():{};install.version=VERSION;install.pack=PACK;install.install_id=install.install_id||(TC.id(TEL.state.install_id)?TEL.state.install_id:randomInstallId());install.created=install.created||setup.created||nowIso();install.channel=install.channel||setup.channel||'chat';install.completed=nowIso();if(rg3Mode())install.registration_schema='rg2-v3';
  await DB.doc('meta/install').set(install);var check=await DB.doc('meta/install').get();if(!telDef(check)||!check.exists||canonicalSeed(check.data())!==canonicalSeed(install))throw {code:'incomplete',detail:'install readback'};if(rg3Mode()&&TEL.loaded)try{await rg3Patch(function(s){if(s.first_completed_at)return null;s.first_completed_at=install.completed;return s;});}catch(e){RG3.halted=true;}await DB.doc('meta/setup').delete();var cleared=await DB.doc('meta/setup').get();if(!telDef(cleared)||cleared.exists)throw {code:'incomplete',detail:'setup readback'};TEL.pending=false;TEL.localComplete=true;S.install=install;S.installLoaded=true;if(setup.intake){K1_UI.framingPending=true;k1SaveUI();}try{localStorage.removeItem(c1IntakeKey());}catch(e){}UI.intake=null;
 }finally{TEL.localCompleting=false;}}
-async function c1OpenPlan(){if(C1_UPDATE_FROZEN)return;var d=c1IntakeDraft();try{await telAcceptIntake(d);}catch(e){TEL.message=e.message||'Agree to counts before continuing.';render();return;}var profile=Object.assign({},S.profile,{path:d.path,grade:d.grade,dateBasis:!d.noDate&&['planned','approved'].includes(d.dateBasis)?d.dateBasis:null,reserve:d.path!=='retire'&&d.reserveChoice==='yes',reserveChoice:d.path==='retire'?'no':d.reserveChoice,sb:d.sbChoice==='yes',sbChoice:d.sbChoice,demo:false,name:S.profile.name||null,years:S.profile.years??null,home:S.profile.home||null,base:S.profile.base||null,family:S.profile.family||null,version:VERSION,updated:nowIso()}),settings=Object.assign({},S.settings,{eas:d.noDate?null:d.date,sbStart:null,sbEnd:null,planSet:S.settings.planSet||iso(today())});
+async function c1OpenPlan(){if(C1_UPDATE_FROZEN)return;var d=c1IntakeDraft();if(!d.noDate&&d.date&&parseD(d.date)<today()&&UI.pastDateAccepted!=='intake|'+d.date){d.step=2;render();c1ConfirmPastDate(d.date,'intake');return;}try{await telAcceptIntake(d);}catch(e){TEL.message=e.message||'Agree to counts before continuing.';render();return;}var profile=Object.assign({},S.profile,{path:d.path,grade:d.grade,dateBasis:!d.noDate&&['planned','approved'].includes(d.dateBasis)?d.dateBasis:null,reserve:d.path!=='retire'&&d.reserveChoice==='yes',reserveChoice:d.path==='retire'?'no':d.reserveChoice,sb:d.sbChoice==='yes',sbChoice:d.sbChoice,demo:false,name:S.profile.name||null,years:S.profile.years??null,home:S.profile.home||null,base:S.profile.base||null,family:S.profile.family||null,version:VERSION,updated:nowIso()}),settings=Object.assign({},S.settings,{eas:d.noDate?null:d.date,sbStart:null,sbEnd:null,planSet:S.settings.planSet||iso(today())});
  delete settings.placeholder;UI.building=true;UI.setupBusy=true;UI.seedProgress=null;UI.intakeError='';render();
  try{if(DB){if(!canEdit())throw {code:'not_writer'};await c1ConfirmIntake();if(UI.planMode==='rebuild')await c1ResetStore();if(!await write('meta/profile','set',profile)||!await write('meta/settings','set',settings))throw {code:'incomplete'};var ledgerRead=await DB.doc('meta/ledger').get();if(!ledgerRead.exists&&!await write('meta/ledger','set',S.ledger))throw {code:'incomplete'};}S.profile=profile;S.settings=settings;if(!S.seeded){S.items={};S.loes=[];}
   if(settings.eas){if(DB&&S.seeded)await ackPlan(profile,settings);else if(DB)await runSeed(profile,settings,settings.planSet,c1SeedProgress);else{var seed=seedDocs(profile,settings.planSet).seed;seed.items.forEach(function(i){var x=clone(i);if(x.due?.date==='SETUP')x.due={date:settings.planSet};S.items[x.id]=x;});S.loes=seed.loes;S.contacts=seed.contacts;S.claim=seed.claim||{};}}
   else c1UndatedView();if(DB)await c1FinishInstall();else{localStorage.setItem('mo.plan',JSON.stringify({profile:S.profile,settings:S.settings,items:S.items,loes:S.loes,contacts:S.contacts,ledger:S.ledger,blocks:S.blocks,conditions:S.conditions,claim:S.claim,links:S.links,inbox:S.inbox}));UI.intake=null;}
   UI.building=false;K1_UI.framingPending=true;k1SaveUI();UI.setupBusy=false;UI.setup=null;UI.setupHidden=true;UI.tab='brief';UI.intakeError='';UI.planMode=null;render();toast(settings.eas?'Your board is ready to use.':'Your plan is in order. Dates will appear when you add yours.');
- }catch(e){UI.building=false;UI.setupBusy=false;el('banner').innerHTML='';if(e&&e.code==='telemetry_pending'){UI.intakeError='';UI.seedError=null;render();return;}UI.intakeError=e.code==='conflict'?'Your answers changed on another device. Reload before continuing.':e.code==='not_writer'?'This board cannot save right now. Check that you are signed in to the account that owns it.':'Could not save. Your answers are still here.';render();}
+ }catch(e){UI.building=false;UI.setupBusy=false;el('banner').innerHTML='';if(c1WaitForSeed(e)){render();return;}if(e&&e.code==='telemetry_pending'){UI.intakeError='';UI.seedError=null;render();return;}if(boardReady()&&!S.seeded){UI.seedErrorOwner='seed';UI.seedError=seedFailText(e);if(e&&(e.code==='mixed'||e.code==='nolock'))UI.seedHalt=true;}UI.intakeError=e.code==='conflict'?'Your answers changed on another device. Reload before continuing.':e.code==='not_writer'?'This board cannot save right now. Check that you are signed in to the account that owns it.':'Could not save. Your answers are still here.';render();}
 }
 function c1StartDemo(){if(C1_DEMO)return;UI.askToken=(UI.askToken||0)+1;if(UI.askCtl)UI.askCtl.abort();UI.askBusy=false;UI.askAnswer='';C1_DEMO_BACKUP={state:clone(S),db:DB,setup:UI.setup,intake:clone(c1IntakeDraft()),coachSession:COACH_SESSION,coachDraft:COACH_DRAFT,coachStarted:COACH_THREAD_STARTED,coachLocal:clone(COACH_LOCAL_TURNS),coachSeq:COACH_LOCAL_SEQ,coachHistory:COACH_HISTORY_READY,coachSaveAfter:COACH_SAVE_AFTER_HISTORY,coachViewCleared:COACH_VIEW_CLEARED};COACH.epoch++;COACH_SESSION=[];COACH_DRAFT='';COACH_THREAD_STARTED=false;COACH_LOCAL_TURNS=[];COACH_HISTORY_READY=false;COACH_SAVE_AFTER_HISTORY=false;COACH_VIEW_CLEARED=false;C1_DEMO=true;DB=null;
  var d=addDays(today(),400),profile={name:'Demo Marine',path:'eas',grade:'e67',reserve:true,sb:true,years:8,home:'Hometown',base:'Your base',family:'Married, two children',demo:true,dateBasis:'planned'},settings={eas:iso(d),sbStart:iso(addDays(d,-90)),sbEnd:iso(addDays(d,-2)),planSet:iso(today())},seed=seedDocs(profile,settings.planSet).seed;
@@ -3503,6 +3538,7 @@ function seedDocs(profile, planSet){
 function applySetup(mode){
   if (DB && !editGuard()) return;
   var r = readSetup(mode); if (!r) return;
+  if(!c1ConfirmPastDate(r.settings.eas,'setup-'+mode))return;
   if (!DB) {
     var sd = seedDocs(r.profile, r.settings.planSet).seed;
     S.profile = r.profile; S.settings = r.settings; S.ledger = r.ledger; S.items = mode==="edit"?S.items:{};sd.items.forEach(function(i){ var x = clone(i); if (x.due && x.due.date === "SETUP") x.due = { date: r.settings.planSet }; if(!S.items[x.id])S.items[x.id] = x; }); S.loes = sd.loes;if(mode!=="edit"){S.contacts = sd.contacts; S.claim = sd.claim || {};}

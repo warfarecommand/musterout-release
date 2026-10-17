@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "Signed Muster Out regulation feed data",
   "files": [
-    "feed.js"
+    "feed.js",
+    "LICENSE",
+    "NOTICE.md"
   ],
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "repository": {
     "type": "git",
     "url": "https://github.com/warfarecommand/musterout-release.git"

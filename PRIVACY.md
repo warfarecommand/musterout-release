@@ -37,8 +37,8 @@ Every schema-2 record has a fixed product/schema, installed version, random inst
 | Install | Broad device type and Claude surface, setup route, EAS/resign/retire path, broad grade group, EAS month and year or Not set, required installation/base group, verified setup steps, bounded failure/error classes |
 | Usage requested by update or weekly chat | Observed weeks active, tab-open counts, verified done transitions by public category, late count, Ask question count only, bounded error-class counts |
 | Progress milestones | TRS done, SkillBridge participation, VA claim filed before separation, separation counseling done: Yes, No, or unknown only |
-| Optional week-4 answers | Would use without a Claude subscription: Yes, No, Not sure; a fixed monthly USD price group; optional 0 to 10 recommend score |
-| Optional setup answer | A 0 to 10 recommend score, with Skip |
+| Optional week-4 answers | Would use without a Claude subscription: Yes, No, Not sure; a fixed monthly USD price group. Older boards may also send a legacy week-4 recommend score. |
+| Optional recommend answers | A 0 to 10 score labeled as first impression (`setup`) or after use (`after_use`), with Skip for each. The second ask follows opens on three separate local days. Those local dates stay on your board. Each stage is asked once; Skip finishes that stage without sending a score. |
 
 No name, email, account id, unit, precise location, board URL, full service date, plan text, notes, custom category, Ask question/answer, coach fact, medical record, stack trace, or arbitrary text is accepted into these counts. Installation/base group is one of US West, US Central, US East, Hawaii, Japan, Other overseas, Other US location, or Not on an installation. It is not geolocation or an exact installation inventory. Full dates stay on your board. The observable install date is the server's first completed receipt, which can be later than your first attempt. Later activity uses elapsed weeks, not personal dates.
 
