@@ -2,6 +2,7 @@
 // POST JSON {kind: "ping" | "intent" | "install" | "feedback" | "usage" | "delete", ...}; GET ?kind=ping&service=&path=&grade=&version=&id=
 // Validates shape and size, rate limits by hashed IP (20 a minute plus learning kind caps), inserts with the service role.
 // No reads are served here. Deploy with --no-verify-jwt; the anon key alone cannot touch the tables.
+import { telemetryV3 } from "../_shared/telemetry_v3.ts";
 import { telemetryV2 } from "../_shared/telemetry_v2.ts";
 import { BodyReadError, readBody } from "../_shared/body.ts";
 
@@ -64,6 +65,8 @@ export function createHandler(deps: { env: (name: string) => string | undefined;
     try { body = JSON.parse(text); if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("shape"); }
     catch { return json(400, { ok: false, error: "bad_json" }); }
   } else return json(405, { ok: false, error: "method" });
+
+  if (body.schema_version === 3) return await telemetryV3(req, rawBody, deps, json);
 
   if (body.kind === "enroll" || ["schema_version", "records", "access"].some(k => Object.hasOwn(body, k))) return await telemetryV2(req, rawBody, deps, json);
 

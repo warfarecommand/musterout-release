@@ -475,6 +475,7 @@
             status.textContent = 'Send it from the report page';
             const link = node('a','Open report page','mot-button'); link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
             s.actions.querySelector('.mot-report-link')?.remove(); link.classList.add('mot-report-link','mot-primary'); queue.remove(); s.actions.prepend(link,copy);
+            o.onReportLink?.(link);
             await refreshSettings();
           } catch (e) { recordError('report','queue',e.code || e.name); status.textContent = e.code === 'REPORT_VALIDATION_FAILED' ? MESSAGES.REPORT_VALIDATION_FAILED : MESSAGES.REPORT_QUEUE_FAILED; queue.disabled = false; }
         },true);

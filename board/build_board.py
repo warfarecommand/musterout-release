@@ -272,7 +272,9 @@ def embed(template, seed, fingerprints, root=here.parent):
         template = template.replace("/*WORKFLOWS*/", escape(workflows))
     libraries = "<script>" + (root / "board/fingerprints.js").read_text() + "</script>\n"
     libraries += "<script>" + (root / "supabase/functions/_shared/telemetry_contract.js").read_text() + "</script>\n"
+    libraries += "<script>" + (root / "supabase/functions/_shared/registration_v3.js").read_text() + "</script>\n"
     telemetry_config = json.loads((root / "config.json").read_text()).get("telemetry", {})
+    template = template.replace("/*RG3_JS*/", (root / "board/registration_v3.js").read_text())
     template = template.replace("/*TEL_JS*/", (root / "board/telemetry.js").read_text()).replace("/*TEL_CONFIG*/", escape(telemetry_config))
     title = re.match(r"<title>[^<]*</title>\n?", template)
     if not title:
@@ -310,6 +312,7 @@ def build_page():
         if r.returncode: sys.exit("script does not parse:\n" + r.stderr)
     contract = (here.parent / "supabase/functions/_shared/telemetry_contract.js").read_text()
     (here.parent / "docs/assets/telemetry_contract.js").write_text(contract)
+    (here.parent / "docs/assets/registration_v3.js").write_text((here.parent / "supabase/functions/_shared/registration_v3.js").read_text())
     telemetry_config = json.loads((here.parent / "config.json").read_text()).get("telemetry", {})
     (here.parent / "docs/assets/telemetry_config.js").write_text("window.MusterOutTelemetryConfig=" + canonical(telemetry_config) + ";\n")
     (here / "board.html").write_bytes(out.encode())

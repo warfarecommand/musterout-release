@@ -984,6 +984,16 @@ html[data-large-text] .brief-actions{max-height:32dvh;overflow-y:auto;overscroll
 .brief-action-buttons{display:flex;gap:var(--s-2);flex-wrap:wrap}
 .brief-action-buttons button{flex:1 1 9em;overflow-wrap:normal;word-break:normal}
 
+
+/* RG3 follows the existing DESIGN1 geometry scale. */
+#rg3-card{min-height:100svh;background:var(--bg);color:var(--ink);padding:var(--s-4);padding-top:max(var(--s-6),env(safe-area-inset-top));padding-bottom:max(var(--s-6),env(safe-area-inset-bottom));box-sizing:border-box}
+.rg3-content{display:grid;gap:var(--s-4);max-width:var(--sheet-width);margin:auto;font:400 var(--text-md)/var(--lh-body) var(--sans)}
+.rg3-content h1{font:600 var(--text-xl)/var(--lh-tight) var(--sans);margin:0}
+.rg3-content p,.rg3-settings p{margin:0}
+.rg3-content .btn,.rg3-settings .btn{white-space:normal;min-height:var(--target);min-width:var(--target)}
+.rg3-content summary,.rg3-settings summary{display:flex;align-items:center;min-height:var(--target);cursor:pointer}
+.rg3-settings{display:grid;gap:var(--s-3)}
+
 /* TEL1 uses the DESIGN1 scale for prompts, private controls, and receipts. */
 .tel-private{display:grid;gap:var(--s-3);min-width:0}
 .tel-private h2,.tel-private h3,.tel-private p,.tel-private .field{margin:0}
@@ -1086,8 +1096,8 @@ else { var c1Media = matchMedia("(prefers-color-scheme: dark)"); var c1ApplyThem
 }
 var SEED = JSON.parse(document.getElementById("seed").textContent);
 var DAY = 86400000;
-var UPDATE_MESSAGE = "Update Muster Out. Keep my existing board at the same address. Check https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.14.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the update guide they verify.";
-var WEEKLY_MESSAGE = "Run the Muster Out weekly check. Use the signed feed. Check https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.14.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the weekly guide they verify.";
+var UPDATE_MESSAGE = "Update Muster Out. Keep my existing board at the same address. Check https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.15.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the update guide they verify.";
+var WEEKLY_MESSAGE = "Run the Muster Out weekly check. Use the signed feed. Check https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.15.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the weekly guide they verify.";
 var MON = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
 var MONL = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 var DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
@@ -1522,7 +1532,7 @@ function prepareRegistration(){
     return fields;
   }).catch(function(){ UI.registrationFailed = true; }).finally(function(){ UI.registrationBusy = false; renderRegistration(); });
 }
-function renderRegistration(){var banner=el('registrationBanner');banner.hidden=true;banner.textContent='';if(TEL.loaded&&TEL.owner&&!C1_DEMO&&telConsentOk(TEL.consent)&&!TEL.access?.capability&&(boardReady()||c1Undated())){banner.hidden=false;banner.innerHTML='<p>Registration pending. Your plan is ready.</p><button class="btn" data-act="tel-enroll" aria-label="Retry registration">Retry</button>';}}
+function renderRegistration(){var banner=el('registrationBanner');banner.hidden=true;banner.textContent='';if(!rg3Mode()&&TEL.loaded&&TEL.owner&&!C1_DEMO&&telConsentOk(TEL.consent)&&!TEL.access?.capability&&(boardReady()||c1Undated())){banner.hidden=false;banner.innerHTML='<p>Registration pending. Your plan is ready.</p><button class="btn" data-act="tel-enroll" aria-label="Retry registration">Retry</button>';}}
 function registerBoardTapped(){return false;}
 function renderRelease(){
   var banner = el("releaseBanner"), release = S.release;
@@ -1574,7 +1584,7 @@ function c1Trust(){
   if(C1_TRUST && C1_TRUST_KEY===key){C1_TRUST.setContext({screen:c1Screen(),path:S.profile.path||null,grade:S.profile.grade||null});C1_TRUST.setWatch(C1_FEED||c1LegacyWatch());if(C1_FEED_ERROR)C1_TRUST.setWatch({code:C1_FEED_ERROR});return C1_TRUST;}
   if(C1_TRUST)C1_TRUST.destroy();C1_TRUST_KEY=key;
   ["trustHeader","saveHeader","trustToday","trustSettings"].forEach(function(k){el(k).replaceChildren();});
-  C1_TRUST=window.MusterOutTrust.create({version:VERSION,pack:PACK,screen:c1Screen(),path:S.profile.path||null,grade:S.profile.grade||null,installId:id||null,db:DB,sample:SAMPLE,updates:updates,learningEnabled:false,onErrorCount:function(component){telCount('error',({db:'save',draft:'storage',sample:'sample',permissions:'permission',update:'update',feed:'feed'})[component]||'other');},canWrite:canEdit(),copyChanges:c1Recovery,updateMessage:UPDATE_MESSAGE,weeklyMessage:WEEKLY_MESSAGE,setupMessage:"Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.14.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify."});
+  C1_TRUST=window.MusterOutTrust.create({version:VERSION,pack:PACK,screen:c1Screen(),path:S.profile.path||null,grade:S.profile.grade||null,installId:id||null,db:DB,sample:SAMPLE,updates:updates,learningEnabled:false,onReportLink:function(){rg3Decorate();},onErrorCount:function(component){telCount('error',({db:'save',draft:'storage',sample:'sample',permissions:'permission',update:'update',feed:'feed'})[component]||'other');},canWrite:canEdit(),copyChanges:c1Recovery,updateMessage:UPDATE_MESSAGE,weeklyMessage:WEEKLY_MESSAGE,setupMessage:"Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.15.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify."});
   if(!C1_CORRECTION_OBSERVER){C1_CORRECTION_OBSERVER=new MutationObserver(function(records){if(!records.some(function(r){return r.addedNodes.length||Array.from(r.removedNodes).some(function(n){return n.classList?.contains('mot-watch-line');});}))return;var banner=el("trustToday").querySelector(".mot-warning");C1_CORRECTION.replaceChildren();if(banner)C1_CORRECTION.appendChild(banner);});C1_CORRECTION_OBSERVER.observe(el("trustToday"),{childList:true});}
   C1_TRUST.mountHeader(el("trustHeader"));C1_TRUST.mountSave(el("saveHeader"));C1_TRUST.mountToday(el("trustToday"));C1_TRUST.mountSettings(el("trustSettings"));
   Object.values(C1_SAVE_SLOTS).forEach(function(n){C1_TRUST.mountSave(n);});C1_TRUST.setWatch(C1_FEED||c1LegacyWatch());if(C1_FEED_ERROR)C1_TRUST.setWatch({code:C1_FEED_ERROR});return C1_TRUST;
@@ -2350,17 +2360,26 @@ function condCard(x){
 }
 function comb(vs){ var c = 0; vs.slice().sort(function(a, b){ return b - a; }).forEach(function(v){ c = Math.round(c + v * (100 - c) / 100); }); return c; }
 function vaMath(rows){
-  var on = rows.filter(function(r){ return r.v > 0; }), used = [], parts = [], notes = [];
-  [["LUE","RUE","arms"],["LLE","RLE","legs"]].forEach(function(p){
-    var g = on.filter(function(r){ return r.limb === p[0] || r.limb === p[1]; });
-    if (g.some(function(r){ return r.limb === p[0]; }) && g.some(function(r){ return r.limb === p[1]; })) {
-      var c = comb(g.map(function(r){ return r.v; })), bf = Math.round(c * 1.1);
-      parts.push(bf); used = used.concat(g); notes.push("Bilateral factor on both " + p[2] + ": " + c + " becomes " + bf);
+  var on = rows.filter(function(r){ return r.v > 0; });
+  /* 38 CFR 4.26: pool both arms and/or both legs and add 10%; 4.26(d): drop any bilateral ratings from the pool when that is more favorable. */
+  var LIMB = { LUE: "arms", RUE: "arms", LLE: "legs", RLE: "legs" }, SIDE = { LUE: "L", RUE: "R", LLE: "L", RLE: "R" };
+  function evaluate(pool){
+    var pairs = ["arms", "legs"].filter(function(k){ return pool.some(function(r){ return LIMB[r.limb] === k && SIDE[r.limb] === "L"; }) && pool.some(function(r){ return LIMB[r.limb] === k && SIDE[r.limb] === "R"; }); });
+    var bil = pool.filter(function(r){ return pairs.indexOf(LIMB[r.limb]) >= 0; }), parts = [], note = "";
+    if (bil.length) { var c = comb(bil.map(function(r){ return r.v; })), bf = Math.round(c * 1.1); parts.push(bf); note = "Bilateral factor on both " + pairs.join(" and both ") + ": " + c + " becomes " + bf; }
+    on.forEach(function(r){ if (bil.indexOf(r) < 0) parts.push(r.v); });
+    return { total: comb(parts), note: note, size: bil.length };
+  }
+  var eligible = on.filter(function(r){ return LIMB[r.limb]; }), best = evaluate(eligible), full = best;
+  if (eligible.length && eligible.length <= 12) {
+    for (var mask = 0; mask < (1 << eligible.length) - 1; mask++) {
+      var pool = eligible.filter(function(r, i){ return mask & (1 << i); }), trial = evaluate(pool);
+      if (trial.total > best.total) best = trial;
     }
-  });
-  on.forEach(function(r){ if (used.indexOf(r) < 0) parts.push(r.v); });
-  var total = comb(parts);
-  return { total: total, rated: Math.min(100, Math.floor((total + 5) / 10) * 10), notes: notes };
+  }
+  var notes = best.note ? [best.note] : [];
+  if (best !== full) notes.push("Leaving " + (best.size ? "some limb ratings" : "every limb rating") + " out of the bilateral factor gives a higher result here, so that applies (38 CFR 4.26(d))");
+  return { total: best.total, rated: Math.min(100, Math.floor((best.total + 5) / 10) * 10), notes: notes };
 }
 function renderCalc(){
   var conds = condsSorted(); if (!conds.length) return "";
@@ -2468,6 +2487,26 @@ function migrateCancellations(){
     }, function(){ delete UI.cancelMigration[b.id]; toast("The cancellation status could not be saved. It remains charged until canceled in MOL."); });
   });
 }
+function c1CaptureFocus(){
+  var active = document.activeElement, focus = null;
+  if (active && active !== document.body && (active.id || active.hasAttribute("data-act"))) {
+    var attrs = {};
+    Array.prototype.forEach.call(active.attributes, function(at){ if (at.name === "id" || (at.name.indexOf("data-") === 0 && at.name !== "data-s")) attrs[at.name] = at.value; });
+    var matches = function(e){ return e.tagName === active.tagName && Object.keys(attrs).every(function(k){ return e.getAttribute(k) === attrs[k]; }); };
+    var peers = Array.prototype.filter.call(document.querySelectorAll("[id], [data-act]"), matches);
+    focus = { matches: matches, index: peers.indexOf(active), start: active.selectionStart, end: active.selectionEnd, direction: active.selectionDirection };
+  }
+  return focus;
+}
+function c1RestoreFocus(focus){
+  if (focus) {
+    var next = Array.prototype.filter.call(document.querySelectorAll("[id], [data-act]"), focus.matches)[focus.index];
+    if (next) {
+      next.focus({ preventScroll: true });
+      if (focus.start != null && typeof next.setSelectionRange === "function") next.setSelectionRange(focus.start, focus.end, focus.direction);
+    }
+  }
+}
 function render(){
   if(C1_CORRECTION?.isConnected)el("c1SaveParking").appendChild(C1_CORRECTION);
   if(el("saveHeader"))document.querySelector(".top").appendChild(el("saveHeader"));
@@ -2479,12 +2518,16 @@ function render(){
   if (!boardReady()&&!c1Undated()) {
     ["stamp","hero","stats","loeStrip","tabs","talkToClaude","registrationBanner","releaseBanner"].forEach(function(id){ el(id).hidden = true; });
     el("who").textContent = "Your board";
+    var intakeFocus=c1CaptureFocus(),intakeStep=el("setupForm")?.dataset.intakeStep;
     el("view").innerHTML = setupForm("new"); /* old setup opener retained in the editor */
     /* el("view").innerHTML = '<p>Your board is not set up yet. Open the setup chat to finish your path, date, and grade.</p><button class="btn pri" data-act="' + (DB && S.readOnly ? "claude-setup" : "setup-open") + '" style="margin-top:12px">' + (DB && S.readOnly ? "Copy setup message" : "Open setup") + '</button>'; */
     el("foot").innerHTML = crisisLine()+'<p>'+esc(DISCLAIMER)+'</p>';
     c1Nav();c1Trust();if(DB&&!S.readOnly&&!UI.saveStatus)el("saveHeader").hidden=true;
     if (UI.setup) { if (!el("setupForm")) el("banner").innerHTML = setupForm("new"); }
     else el("banner").innerHTML = "";
+    var intakeForm=el("setupForm");
+    if(intakeForm&&intakeStep!==intakeForm.dataset.intakeStep){var heading=intakeForm.querySelector("h2");if(heading){heading.tabIndex=-1;heading.focus();}}
+    else c1RestoreFocus(intakeFocus);
     return;
   }
   ["stamp","hero","stats","loeStrip","tabs","talkToClaude"].forEach(function(id){ el(id).hidden = false; });
@@ -2496,14 +2539,7 @@ function render(){
   if (typing()) { pending = true; return; }
   pending = false;
   Object.values(C1_SAVE_SLOTS).forEach(function(n){if(n.isConnected&&!n.closest('.c1-overlay'))el('c1SaveParking').appendChild(n);});
-  var active = document.activeElement, focus = null;
-  if (active && active !== document.body && (active.id || active.hasAttribute("data-act"))) {
-    var attrs = {};
-    Array.prototype.forEach.call(active.attributes, function(at){ if (at.name === "id" || (at.name.indexOf("data-") === 0 && at.name !== "data-s")) attrs[at.name] = at.value; });
-    var matches = function(e){ return e.tagName === active.tagName && Object.keys(attrs).every(function(k){ return e.getAttribute(k) === attrs[k]; }); };
-    var peers = Array.prototype.filter.call(document.querySelectorAll("[id], [data-act]"), matches);
-    focus = { matches: matches, index: peers.indexOf(active), start: active.selectionStart, end: active.selectionEnd, direction: active.selectionDirection };
-  }
+  var focus = c1CaptureFocus();
   renderTop();k1RenderFraming();
   var v = el("view"), keep = el("askOut") ? { out: el("askOut").textContent, hid: el("askOut").hidden, q: el("askq") && el("askq").value } : null;
   var filterScroll=v.querySelector('.k1-plan-filters')?.scrollLeft||0;
@@ -2520,21 +2556,17 @@ function render(){
     if (tls != null) el("tlScroll").scrollLeft = tls;
     else { var bounds=k1TimelineBounds(ctx()),from=bounds.from;var ppdW=el("tlScroll").scrollWidth;if(UI.range==="full")el("tlScroll").scrollLeft=Math.max(0,(today()-from)/(bounds.to-from)*ppdW-40); }
   }
-  if (focus) {
-    var next = Array.prototype.filter.call(document.querySelectorAll("[id], [data-act]"), focus.matches)[focus.index];
-    if (next) {
-      next.focus({ preventScroll: true });
-      if (focus.start != null && typeof next.setSelectionRange === "function") next.setSelectionRange(focus.start, focus.end, focus.direction);
-    }
-  }
+  c1RestoreFocus(focus);
   if(UI.tab==="brief"&&el("c1Health")){if(S.readOnly)el("view").appendChild(el("saveHeader"));else el("c1Health").appendChild(el("saveHeader"));el("c1Health").appendChild(C1_CORRECTION);}else document.querySelector(".top").appendChild(el("saveHeader"));
   document.querySelector('.top').appendChild(el('trustHeader'));
   c1RestoreDrafts(v);c1SelectLabels(v);c1EditorSaves(v);if(el("setupForm")){c1RestoreDrafts(el("setupForm"));c1SelectLabels(el("setupForm"));c1EditorSaves(el("setupForm"));}
   window.scrollTo(x, y);
+  rg3AfterRender();rg3Decorate();
 }
 document.addEventListener("focusout", function(){ setTimeout(function(){ if (pending && !typing()) render(); }, 0); });
 
 /*TEL_JS*/
+/*RG3_JS*/
 /* ---------- events ---------- */
 document.addEventListener("keydown", function(ev){
   if(ev.key==="Escape"&&!UI.c1Dialog){var card=ev.target.closest(".card");if(card){var row=card.closest(".row");if(row){ev.preventDefault();c1ToggleCard(row.dataset.id,true);return;}}}
@@ -2553,7 +2585,7 @@ document.addEventListener("keydown", function(ev){
 });
 document.addEventListener("click", function(ev){
   var b = ev.target.closest("[data-act]"); if(!b){var row=ev.target.closest(".c1-row");if(row&&!ev.target.closest(".card"))c1ToggleCard(row.dataset.id);return;} var a = b.getAttribute("data-act"), id = b.getAttribute("data-id");
-  if (a === "claude-setup") { copyText("Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.14.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify.", b); return; }
+  if (a === "claude-setup") { copyText("Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.15.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify.", b); return; }
   if (a === "register-board") { UI.tab='settings';render();return; }
   if (a === "claude-copy") { copyText(b.getAttribute("data-message") === "weekly" ? WEEKLY_MESSAGE : UPDATE_MESSAGE, b); return; }
   if (DB && WRITE_ACTS.indexOf(a) >= 0 && !editGuard()) return;
@@ -2595,7 +2627,7 @@ document.addEventListener("click", function(ev){
   if(a === "intake-choice"){var d=c1IntakeDraft();d[b.dataset.field]=b.dataset.value;if(d.path==='retire')d.reserveChoice='no';c1SaveLocalIntake();render();return;}
   if(a === "intake-no-date"){var d=c1IntakeDraft();d.noDate=!d.noDate;if(d.noDate)d.date=null;c1SaveLocalIntake();render();return;}
   if(a === "intake-back"){UI.intake.step=Math.max(1,UI.intake.step-1);render();return;}
-  if(a === "intake-next"){if(C1_UPDATE_FROZEN||UI.intakeBusy||UI.setupBusy)return;var d=c1IntakeDraft();if(d.step===1&&!d.path){UI.intakeError='Choose your path.';render();return;}if(d.step===2){if(!TC.BASES.includes(d.base)){UI.intakeError='Choose your installation or base group.';render();return;}d.date=el('c1IntakeDate').value||null;if(!d.grade||(!d.noDate&&(!d.date||iso(parseD(d.date))!==d.date))){UI.intakeError=!d.grade?'Choose your grade group.':'Enter a valid date or choose I do not have a date yet.';render();return;}if(!d.noDate&&!d.dateBasis){UI.intakeError='Choose Planned, Approved, or Not sure.';render();document.querySelector('[data-field="dateBasis"]')?.focus();return;}if(d.path==='resign'&&gradeRow(d.grade)[2]==='enlisted'){UI.intakeError='Resigning a regular commission is an officer path. Choose Separating at EAS or Retiring.';render();return;}}if(d.step===3){if(!d.reserveChoice||!d.sbChoice){UI.intakeError='Choose an answer or Not sure.';render();return;}c1OpenPlan();return;}UI.intakeError='';d.step++;UI.intakeBusy=true;c1ConfirmIntake().then(function(){UI.intakeBusy=false;render();},function(e){UI.intakeBusy=false;d.step--;UI.intakeError=e.code==='conflict'?'Your answers changed on another device. Reload before continuing.':e.code==='nolock'?LOCK_LINE:'Could not save. Your answers are still here.';render();});return;}
+  if(a === "intake-next"){if(C1_UPDATE_FROZEN||UI.intakeBusy||UI.setupBusy)return;var d=c1IntakeDraft();if(d.step===1&&!d.path){UI.intakeError='Choose your path.';render();return;}if(d.step===2){if(!rg3Mode()&&!TC.BASES.includes(d.base)){UI.intakeError='Choose your installation or base group.';render();return;}d.date=el('c1IntakeDate').value||null;if(!d.grade||(!d.noDate&&(!d.date||iso(parseD(d.date))!==d.date))){UI.intakeError=!d.grade?'Choose your grade group.':'Enter a valid date or choose I do not have a date yet.';render();return;}if(!d.noDate&&!d.dateBasis){UI.intakeError='Choose Planned, Approved, or Not sure.';render();document.querySelector('[data-field="dateBasis"]')?.focus();return;}if(d.path==='resign'&&gradeRow(d.grade)[2]==='enlisted'){UI.intakeError='Resigning a regular commission is an officer path. Choose Separating at EAS or Retiring.';render();return;}}if(d.step===3){if(!d.reserveChoice||!d.sbChoice){UI.intakeError='Choose an answer or Not sure.';render();return;}c1OpenPlan();return;}UI.intakeError='';d.step++;UI.intakeBusy=true;c1ConfirmIntake().then(function(){UI.intakeBusy=false;render();},function(e){UI.intakeBusy=false;d.step--;UI.intakeError=e.code==='conflict'?'Your answers changed on another device. Reload before continuing.':e.code==='nolock'?LOCK_LINE:'Could not save. Your answers are still here.';render();});return;}
   if (a === "setup-save") { applySetup(b.getAttribute("data-mode") || "new"); return; }
   if (a === "goitem") {c1Close(false);if(S.items[id]){UI.groups=UI.groups||{};UI.groups[S.items[id].loe]=true;}UI.tab = "lines"; UI.open[id] = true; UI.filter = "all"; render(); var row = document.querySelector('.row[data-id="' + id + '"]'); if (row) row.scrollIntoView({ block: "center" }); return; }
   if(a === "leave-conflicts"){var forecast=Array.from(document.querySelectorAll("details")).find(function(d){return d.firstElementChild?.textContent==="Leave forecast and charts";});if(forecast){forecast.open=true;var conflict=Array.from(forecast.querySelectorAll("section")).find(function(n){return n.querySelector("h2")?.textContent==="Conflicts";});(conflict||forecast).scrollIntoView({block:"start"});}return;}
@@ -2829,7 +2861,7 @@ function subscribe(){
   DB.collection("inbox").onSnapshot(function(snap){if(C1_DEMO)return;mark("inbox",snap); S.inbox = toList(snap); render(); }, errd);
 }
 /* ---------- Muster Out: profile, setup, seeding ---------- */
-var VERSION = "0.2.14";
+var VERSION = "0.2.15";
 var GRADES = [["o5","O-5 and above","officer","cat3"],["o14","O-1 to O-4","officer","cat2"],["cwo45","CWO4 to CWO5","officer","cat3"],["wo13","WO to CWO3","officer","cat2"],["e89","E-8 to E-9","enlisted","cat3"],["e67","E-6 to E-7","enlisted","cat2"],["e15","E-1 to E-5","enlisted","cat1"]];
 var CAP = { cat1: 120, cat2: 90, cat3: 90 };
 function gradeRow(g){ return GRADES.find(function(x){ return x[0] === g; }) || GRADES[0]; }
@@ -3356,10 +3388,10 @@ async function c1ConfirmIntake(){if(C1_UPDATE_FROZEN)throw {code:'pending_writes
 }
 function c1Choices(field,values,current){return '<div class="c1-choices'+(field==='grade'?' c1-grade-choices':'')+'">'+values.map(function(x){return '<button class="btn" data-act="intake-choice" data-field="'+field+'" data-value="'+esc(x[0])+'" aria-pressed="'+(current===x[0])+'">'+esc(x[1])+'</button>';}).join('')+'</div>';}
 function c1IntakeUncertain(d){var names=[];if(d.path!=='retire'&&d.reserveChoice==='unknown')names.push('Join the Reserves (Direct Affiliation Program)');if(d.sbChoice==='unknown')names.push('SkillBridge');return names.length?'<p class="muted">'+names.join(' and ')+' not set. Related items appear if you choose Yes later.</p>':'';}
-function setupForm(mode){if(mode==='edit')return legacySetupForm(mode);if(DB&&S.readOnly)return '<section class="panel" id="setupForm"><h2>This view is read-only.</h2><p>Open your board from the account that owns it to save your plan.</p><div class="ctl"><button class="btn" data-act="setup-demo">Try a demo</button><button class="btn" data-act="claude-setup">Copy setup message</button></div></section>';if(!C1_DEMO&&!telConsentOk(TEL.consent))return telAgreementHtml();var d=c1IntakeDraft(),step=d.step||1,h='<section class="panel c1-intake" id="setupForm" aria-labelledby="c1IntakeTitle"><p class="muted c1-card-meta">'+step+' of 3</p>';
+function setupForm(mode){if(mode==='edit')return legacySetupForm(mode);if(DB&&S.readOnly)return '<section class="panel" id="setupForm"><h2>This view is read-only.</h2><p>Open your board from the account that owns it to save your plan.</p><div class="ctl"><button class="btn" data-act="setup-demo">Try a demo</button><button class="btn" data-act="claude-setup">Copy setup message</button></div></section>';if(!C1_DEMO&&!rg3Mode()&&!telConsentOk(TEL.consent))return telAgreementHtml();var d=c1IntakeDraft(),step=d.step||1,h='<section class="panel c1-intake" id="setupForm" data-intake-step="'+step+'" aria-labelledby="c1IntakeTitle"><p class="muted c1-card-meta">'+step+' of 3</p>';
  if(d.path==='other')return '<section class="panel" id="setupForm"><h2>This board does not cover your situation.</h2><p>A plan here could look complete and be wrong for you.</p><ul><li>Medical separation or disability retirement: contact your PEBLO or Wounded Warrior Regiment.</li><li>Involuntary separation: contact IPAC and legal assistance.</li><li>Guard or Reserve retirement with nonregular pay: contact your unit Career Planner and Reserve Affairs.</li><li>Another service: contact your service personnel office.</li></ul><a class="c1-source-link" href="https://musterout.warfarecommand.com/support/" target="_blank" rel="noopener">Open setup help</a><button class="btn" data-act="intake-other-back">Change my answer</button></section>';
  if(step===1)h+='<h2 id="c1IntakeTitle">Which of these is you?</h2><p>Give me what you can for now. You can change any of this later from the board.</p>'+c1Choices('path',[['eas','Separating at EAS'],['resign','Resigning a regular commission'],['retire','Retiring from active duty'],['other','Something else']],d.path);
- if(step===2)h+='<h2 id="c1IntakeTitle">Your date and grade</h2><label class="field"><span>What date are you planning?</span><input id="c1IntakeDate" type="date" value="'+esc(d.date||'')+'"'+(d.noDate?' disabled':'')+'></label><button class="btn" data-act="intake-no-date" aria-pressed="'+!!d.noDate+'">I do not have a date yet</button>'+(d.noDate?'<p class="muted">Date not set</p>':'<p>Date status</p>'+c1Choices('dateBasis',[['planned','Planned'],['approved','Approved'],['unknown','Not sure']],d.dateBasis))+'<p>Grade group</p>'+c1Choices('grade',[['e15','E-1 to E-5'],['e67','E-6 to E-7'],['e89','E-8 to E-9'],['o14','O-1 to O-4'],['o5','O-5 and above'],['wo13','WO to CWO3'],['cwo45','CWO4 to CWO5']],d.grade)+'<p>Installation or base group</p><p>Choose the group for your installation or base. Do not enter your unit or address.</p>'+c1Choices('base',TC.BASES.map(function(x,n){return [x,TC.BASE_LABELS[n]];}),d.base);
+ if(step===2)h+='<h2 id="c1IntakeTitle">Your date and grade</h2><label class="field"><span>What date are you planning?</span><input id="c1IntakeDate" type="date" value="'+esc(d.date||'')+'"'+(d.noDate?' disabled':'')+'></label><button class="btn" data-act="intake-no-date" aria-pressed="'+!!d.noDate+'">I do not have a date yet</button>'+(d.noDate?'<p class="muted">Date not set</p>':'<p>Date status</p>'+c1Choices('dateBasis',[['planned','Planned'],['approved','Approved'],['unknown','Not sure']],d.dateBasis))+'<p>Grade group</p>'+c1Choices('grade',[['e15','E-1 to E-5'],['e67','E-6 to E-7'],['e89','E-8 to E-9'],['o14','O-1 to O-4'],['o5','O-5 and above'],['wo13','WO to CWO3'],['cwo45','CWO4 to CWO5']],d.grade)+(rg3Mode()?'':'<p>Installation or base group</p><p>Choose the group for your installation or base. Do not enter your unit or address.</p>'+c1Choices('base',TC.BASES.map(function(x,n){return [x,TC.BASE_LABELS[n]];}),d.base));
  if(step===3)h+='<h2 id="c1IntakeTitle">Two options for your plan</h2>'+(d.path==='retire'?'<p>The Direct Affiliation Program does not apply to this retirement plan.</p>':'<p>Join the Reserves (Direct Affiliation Program)</p>'+c1Choices('reserveChoice',[['yes','Yes'],['no','No'],['unknown','Not sure']],d.reserveChoice))+'<p>SkillBridge?</p>'+c1Choices('sbChoice',[['yes','Yes'],['no','No'],['unknown','Not sure']],d.sbChoice)+c1IntakeUncertain(d);
  h+='<p id="su-prog" role="status" aria-live="polite">'+esc(UI.intakeError||'')+'</p><div class="ctl">'+(step>1?'<button class="btn" data-act="intake-back">Back</button>':'')+'<button class="btn pri" data-act="intake-next"'+(UI.intakeBusy||UI.setupBusy?' disabled':'')+'> '+(step===3?'Open my plan':'Continue')+'</button></div>';
  if(step===1)h+='<button class="btn" data-act="setup-demo">Try a demo</button><details class="c1-disclosure"><summary>Saving your board</summary><p>Muster Out works on Claude Free and saves your progress on your board. Claude Pro at $20 a month gives more room for long coach chats. Muster Out adds no charge.</p></details>';
@@ -3372,10 +3404,11 @@ async function c1FinishInstall(){if(C1_COMPLETION_RUN)return C1_COMPLETION_RUN;C
 async function c1WriteInstallCompletion(){TEL.localCompleting=true;TEL.localComplete=false;try{if(!DB||!canEdit()||C1_DEMO)return;var reads=await Promise.all(['meta/seeded','meta/install','meta/setup'].map(function(k){return DB.doc(k).get();}));
  if(!reads.every(telDef))throw {code:"unavailable"};
  if(reads[2].exists)TEL.pending=true;
+ if((reads[2].exists&&reads[2].data().telemetry_schema==='rg2-v3')||(reads[1].exists&&reads[1].data().registration_schema==='rg2-v3'))RG3.mode=true;
  await telFinishGuard(reads);
  if(boardReady()&&(!reads[0].exists||!await c1VerifyMigration()))throw {code:'incomplete',detail:'seed readback'};
- var install=reads[1].exists?clone(reads[1].data()):{},setup=reads[2].exists?reads[2].data():{};install.version=VERSION;install.pack=PACK;install.install_id=install.install_id||(TC.id(TEL.state.install_id)?TEL.state.install_id:randomInstallId());install.created=install.created||setup.created||nowIso();install.channel=install.channel||setup.channel||'chat';install.completed=nowIso();
- await DB.doc('meta/install').set(install);var check=await DB.doc('meta/install').get();if(!telDef(check)||!check.exists||canonicalSeed(check.data())!==canonicalSeed(install))throw {code:'incomplete',detail:'install readback'};await DB.doc('meta/setup').delete();var cleared=await DB.doc('meta/setup').get();if(!telDef(cleared)||cleared.exists)throw {code:'incomplete',detail:'setup readback'};TEL.pending=false;TEL.localComplete=true;S.install=install;S.installLoaded=true;if(setup.intake){K1_UI.framingPending=true;k1SaveUI();}try{localStorage.removeItem(c1IntakeKey());}catch(e){}UI.intake=null;
+ var install=reads[1].exists?clone(reads[1].data()):{},setup=reads[2].exists?reads[2].data():{};install.version=VERSION;install.pack=PACK;install.install_id=install.install_id||(TC.id(TEL.state.install_id)?TEL.state.install_id:randomInstallId());install.created=install.created||setup.created||nowIso();install.channel=install.channel||setup.channel||'chat';install.completed=nowIso();if(rg3Mode())install.registration_schema='rg2-v3';
+ await DB.doc('meta/install').set(install);var check=await DB.doc('meta/install').get();if(!telDef(check)||!check.exists||canonicalSeed(check.data())!==canonicalSeed(install))throw {code:'incomplete',detail:'install readback'};if(rg3Mode()&&TEL.loaded)try{await rg3Patch(function(s){if(s.first_completed_at)return null;s.first_completed_at=install.completed;return s;});}catch(e){RG3.halted=true;}await DB.doc('meta/setup').delete();var cleared=await DB.doc('meta/setup').get();if(!telDef(cleared)||cleared.exists)throw {code:'incomplete',detail:'setup readback'};TEL.pending=false;TEL.localComplete=true;S.install=install;S.installLoaded=true;if(setup.intake){K1_UI.framingPending=true;k1SaveUI();}try{localStorage.removeItem(c1IntakeKey());}catch(e){}UI.intake=null;
 }finally{TEL.localCompleting=false;}}
 async function c1OpenPlan(){if(C1_UPDATE_FROZEN)return;var d=c1IntakeDraft();try{await telAcceptIntake(d);}catch(e){TEL.message=e.message||'Agree to counts before continuing.';render();return;}var profile=Object.assign({},S.profile,{path:d.path,grade:d.grade,dateBasis:!d.noDate&&['planned','approved'].includes(d.dateBasis)?d.dateBasis:null,reserve:d.path!=='retire'&&d.reserveChoice==='yes',reserveChoice:d.path==='retire'?'no':d.reserveChoice,sb:d.sbChoice==='yes',sbChoice:d.sbChoice,demo:false,name:S.profile.name||null,years:S.profile.years??null,home:S.profile.home||null,base:S.profile.base||null,family:S.profile.family||null,version:VERSION,updated:nowIso()}),settings=Object.assign({},S.settings,{eas:d.noDate?null:d.date,sbStart:null,sbEnd:null,planSet:S.settings.planSet||iso(today())});
  delete settings.placeholder;UI.building=true;UI.setupBusy=true;UI.seedProgress=null;UI.intakeError='';render();

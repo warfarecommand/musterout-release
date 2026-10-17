@@ -1,6 +1,10 @@
 <!-- Reader: Marines using Muster Out. Effect: understand the next step and the records the project holds. -->
 # What Muster Out covers
 
+<!-- RG3 conditional routing. The default false flag preserves all legacy paths below. -->
+When authenticated `config.json` has `telemetry.registrationV3Enabled:true`, only new personally owned boards explicitly set up under SETUP.md's v3 agreement use one-tap registration at `https://musterout.warfarecommand.com/r/`. An existing private `meta/telemetry_state.rg3` remains v3 even after rollback. Never run TEL1 enrollment, code/receipt return, surveys, weekly/update count preparation or automatic migration for those boards. Show the plan first, retain the frozen key, and use Settings for a quiet retry or withdrawal. The browser receiver auto-POSTs registration and alone confirms acceptance. Stop counts preserves the plan; deletion retains a disclosed one-way revocation hash. Later optional counts cover opens and done actions only, require separate consent and activation, and remain off. Legacy boards and flag-off new setups follow the unchanged procedures below. Rollback preserves v3 withdrawal and keys and never substitutes a TEL1 gate.
+
+
 Pack usmc-2026.10 covers the situations in the first table. For the situations in the second table, the assistant names the office to call first and builds no plan. Covered items name the office that confirms your eligibility, dates and any detail left to that office.
 
 ## Covered paths
@@ -44,7 +48,7 @@ Use a personal phone or computer to open [claude.ai](https://claude.ai), then pa
 If your path is covered, send this one message in a Claude chat that can run the security check: the Claude app on a phone, claude.ai, or the desktop app, including Claude Code and the desktop Code tab. Muster Out works on Claude Free.
 
 ```
-Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.14.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify.
+Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.15.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify.
 ```
 
 Claude checks the release files, asks you to tap Publish for your private board, and says "Open your board." You answer the setup cards on the board. If you do not have a date yet, use the undated plan and add your date later. If the phone app cannot open the board, use claude.ai in your phone browser. The [welcome page](https://musterout.warfarecommand.com/#setup) has a Copy button for the message.
@@ -57,13 +61,13 @@ Your board shows the weekly and update messages under Talk to Claude, each with 
 Weekly message:
 
 ```
-Run the Muster Out weekly check. Use the signed feed. Check https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.14.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the weekly guide they verify.
+Run the Muster Out weekly check. Use the signed feed. Check https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.15.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the weekly guide they verify.
 ```
 
 Update message:
 
 ```
-Update Muster Out. Keep my existing board at the same address. Check https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.14/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.14.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the update guide they verify.
+Update Muster Out. Keep my existing board at the same address. Check https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.15/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.15.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the update guide they verify.
 ```
 
 - **Weekly check.** During setup, Claude offers a Monday check if the chat supports recurring tasks. Confirm your timezone and time. If scheduling is unavailable or you skip it, send the weekly message any week. The check files possible matches from the sources actually covered for your path and lines of effort. It also checks for new versions. The board shows watch status itself once the signed feed reaches it. Missing coverage or a failed check is never a clean result. More > Watch coverage names each source, checked window, last success and any failed attempt. MARADMIN Watch checks MARADMIN, ALMAR, ALNAV and orders by title; it does not read every order in full.

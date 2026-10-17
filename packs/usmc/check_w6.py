@@ -4,7 +4,9 @@ import copy
 import itertools
 import json
 import re
+import os
 import subprocess
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -86,9 +88,10 @@ const DAY = 86400000;
 const parseD = s => s ? Date.parse(s + 'T00:00:00Z') : null;
 const addDays = (t, n) => t + n * DAY;
 const addMonths = (t,n) => {const d=new Date(t),y=d.getUTCFullYear(),m=d.getUTCMonth()+n;return Date.UTC(y,m,Math.min(d.getUTCDate(),new Date(Date.UTC(y,m+1,0)).getUTCDate()));};
-const S = {items: JSON.parse(process.argv[1]),profile:{path:'eas'}};
+const INPUT = JSON.parse(require('node:fs').readFileSync(0, 'utf8'));
+const S = {items: INPUT.items,profile:{path:'eas'}};
 """ + resolver.group() + """
-const gates = JSON.parse(process.argv[2]);
+const gates = INPUT.gates;
 const c = {eas: parseD('2027-10-01')};
 for (const end of ['2027-09-30', '2028-03-01', '2028-09-30']) {
   S.items['va-service-end'].due = {date: end};
@@ -119,8 +122,14 @@ S.items['va-service-end'].due=null;
 assert.equal(resolve(S.items['fam-hhg-entitlement'].due,c),null);
 
 """
-    result = subprocess.run(['node', '-e', script, json.dumps(copy.deepcopy(ITEMS)), json.dumps(GATES)],
-                            text=True, capture_output=True)
+    # Script and data go through a file and stdin: Linux caps argv size (E2BIG on hosted CI).
+    with tempfile.NamedTemporaryFile('w', suffix='.cjs', delete=False) as handle:
+        handle.write(script)
+    try:
+        result = subprocess.run(['node', handle.name], input=json.dumps({'items': copy.deepcopy(ITEMS), 'gates': GATES}),
+                                text=True, capture_output=True)
+    finally:
+        os.unlink(handle.name)
     require(result.returncode == 0, result.stderr)
     for filename in ('README.md', 'REVIEW.md', 'faq-eas.md', 'faq-retire.md', 'faq-resign.md', 'glossary.md'):
         text = (PACK / filename).read_text()

@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.2.15 (2026-10-16)
+- The VA rating math now combines both arms and both legs correctly, and intake keeps your place when you use a keyboard.
+- Public files leave out internal provider data, and the security page lists exactly what deleting your records removes.
+
 ## 0.2.14 (2026-10-16)
 - Setup, updates and weekly checks work inside Claude chat by checking a downloaded copy of the npm package against the same publisher signature and file hashes.
 - Leave is one tap from Today on every board, and the leave chart opens as soon as you save your first balance.
