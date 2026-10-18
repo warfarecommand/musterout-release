@@ -1,5 +1,10 @@
 # Release notes
 
+## 0.2.17 (2026-10-18)
+
+- Registration now appears when your plan is ready, with a link in Settings if you need it.
+- Today is easier to reach on iPad, and stopping counts now asks you to confirm.
+
 ## 0.2.16 (2026-10-17)
 - Setup asks for consent once, checks any date in the past before you save it, and shows exactly which date to fix if your leave plan cannot save.
 - New boards register with one tap after the plan loads, and links in Muster Out emails open a page with one clear button.
