@@ -1,17 +1,18 @@
 /* Registration never sends from the board. Only native first-party anchors. */
 var R3=window.MusterOutRG3;
-var RG3={mode:false,eligible:false,busy:false,load:TEL_CONFIG.registrationV3Enabled===true?R3.random():null,firstFrame:0,visibleMs:0,lastTick:0,wasIdle:false,framePending:false,confirmation:null,opened:false,dismissed:false,card:null,tapped:false,message:'',halted:false,bucket:null};
+var RG3={mode:false,eligible:false,busy:false,load:TEL_CONFIG.registrationV3Enabled===true?R3.random():null,firstFrame:0,visibleMs:0,lastTick:0,wasIdle:false,framePending:false,confirmation:null,opened:false,dismissed:false,card:null,tapped:false,message:'',halted:false,ready:false,stopping:false,pendingOffer:null,observing:false,observeEpoch:0,unsubscribe:null,retryTimer:null,retryDelay:1000,loadRetryTimer:null,loadRetryDelay:1000,bucket:null};
 function rg3Mode(){return RG3.mode;}
 function rg3Enabled(){return TEL_CONFIG.registrationV3Enabled===true;}
 function rg3Agreement(s){return s?.schema===3&&s.agreement_version==='rg2-v3'&&Number.isFinite(Date.parse(s.agreement_accepted_at))&&telLicenseReady()&&(TEL_CONFIG.licenseAcknowledgmentRequired!==true||s.license?.agreed===true&&s.license.version===TEL_CONFIG.licenseAcknowledgmentVersion&&s.license.terms_sha256===TEL_CONFIG.licenseAcknowledgmentSha256);}
 function rg3Writable(){return RG3.eligible&&telGuard();}
-function rg3Active(s){return rg3Enabled()&&rg3Writable()&&rg3Agreement(s)&&s.enabled===true&&!s.withdrawn&&!RG3.halted;}
+function rg3Active(s){return rg3Enabled()&&rg3Writable()&&rg3Agreement(s)&&s?.enabled===true&&s.withdrawn!==true&&!RG3.halted&&!RG3.stopping&&RG3.ready;}
 async function rg3Load(setup,state){
  RG3.mode=!!state?.rg3||setup?.telemetry_schema==='rg2-v3'||S.install?.registration_schema==='rg2-v3';
  if(!RG3.mode)return false;
  TEL.state=state||{};TEL.pending=!!setup;TEL.localComplete=!setup&&!!S.install;TEL.enrolling=false;
  RG3.eligible=TEL.owner&&TEL.rules&&(state?.rg3?.personal_owner_verified===true||setup?.personal_owner_verified===true);
- TEL.loaded=true;rg3Observe();render();return true;
+ RG3.loadRetryDelay=1000;if(RG3.loadRetryTimer){clearTimeout(RG3.loadRetryTimer);RG3.loadRetryTimer=null;}
+ RG3.ready=!!state?.rg3;RG3.halted=state?.rg3?.withdrawn===true||state?.rg3?.enabled===false;TEL.loaded=true;rg3Observe();render();return true;
 }
 function rg3Idle(){return !S.seeding&&!UI.seedWaiting&&!c1BuildingPlan()&&!document.hidden&&!document.prerendering&&UI.tab==='brief'&&!UI.setup&&!UI.intake&&!UI.c1Dialog&&!document.querySelector('.mot-overlay,.c1-overlay')&&!UI.askBusy&&!typing()&&!UI.setupBusy&&!UI.intakeBusy&&!UI.dateBusy&&!UI.migrationBusy&&!UI.autoSeeding&&!UI.building&&!C1_UPDATE_FROZEN&&!C1_PENDING.size&&!Object.keys(queues).length&&!Object.keys(C1_FAILED).length&&!Object.keys(C1_DRAFTS).length;}
 async function rg3Patch(work,withdrawal){return telMutate(async function(){var user=await window.claude.use('user');if(await user?.isOwner?.()!==true){RG3.eligible=false;throw Error('Registration needs its owner.');}if(!rg3Writable())throw Error('Private registration storage is unavailable.');var state=await telGet('meta/telemetry_state')||{};var current=state.rg3;if(!current||(!withdrawal&&!rg3Agreement(current)))throw Error('Registration agreement is unavailable.');var next=await work(clone(current));if(!next)return null;if(await user?.isOwner?.()!==true)throw Error('Registration owner changed.');await telSet('meta/telemetry_state',{...state,rg3:next});TEL.state={...state,rg3:next};if(UI.tab==='settings')rg3RefreshPrivacy();return next;});}
@@ -34,7 +35,7 @@ async function rg3PrepareManual(){
   if(!await c1VerifyMigration())return;
   var saved=await rg3Patch(function(s){if(!rg3Active(s)||s.registration)return null;if(!s.board_key)rg3Freeze(s);return s;});
   if(saved&&UI.tab==='settings')render();
- }catch(e){RG3.message='Registration link unavailable. Your plan is ready.';}
+ }catch(e){rg3Unavailable();rg3Retry();}
  finally{RG3.busy=false;}
 }
 function rg3Deferred(){return UI.autoSeeding||UI.building||UI.migrationBusy||UI.setupBusy||UI.intakeBusy||UI.dateBusy||S.seeding||C1_UPDATE_FROZEN;}
@@ -45,7 +46,7 @@ async function rg3Tick(){
  RG3.lastTick=tick;RG3.wasIdle=idle;
  if(!RG3.firstFrame||UI.tab==='settings'){rg3AfterRender();return;}
  if(RG3.busy||!idle)return;
- if(TEL.state.rg3.gate_offered||RG3.dismissed){if(!RG3.opened){RG3.opened=true;rg3Count('opens');}return;}
+ if(TEL.state.rg3.gate_offered||RG3.dismissed){if(RG3.pendingOffer&&!RG3.dismissed){var pending=RG3.pendingOffer;RG3.pendingOffer=null;if(R3.canonical(pending)===R3.canonical(TEL.state.rg3.registration))rg3Show(pending);}if(!RG3.opened){RG3.opened=true;rg3Count('opens');}return;}
  if(TEL.state.rg3.first_value_load===RG3.load&&RG3.visibleMs<60000)return;
  RG3.busy=true;
  try{
@@ -62,9 +63,11 @@ async function rg3Tick(){
    if(!R3.valid(s.registration)||s.board_key!==s.registration.board_key||!rg3Fragment(s.registration))return null;
    s.gate_offered=true;show=true;return s;
   });
-  if(show&&state&&rg3Idle()&&rg3Active(state))rg3Show(state.registration);
+  // A verified offer may finish saving after Today stops being idle. Keep it
+  // only in this load; a committed or uncertain offer never rearms on reload.
+  if(show&&state){RG3.pendingOffer=state.registration;if(rg3Idle()&&rg3Active(state)){RG3.pendingOffer=null;rg3Show(state.registration);}}
   if(!RG3.opened){RG3.opened=true;rg3Count('opens');}
- }catch(e){if(!rg3Deferred()){RG3.halted=true;RG3.message='Registration is unavailable. Your plan is ready.';}}
+ }catch(e){if(!rg3Deferred()){rg3Unavailable();rg3Retry();}}
  finally{RG3.busy=false;}
 }
 function rg3Fragment(record){try{return R3.encode(record);}catch(_){return null;}}
@@ -75,14 +78,14 @@ function rg3Show(record){
  RG3.card=section;var app=el('app');app.inert=true;app.hidden=true;document.body.append(section);el('rg3-title').focus();
 }
 function rg3Dismiss(){if(RG3.card){RG3.dismissed=true;RG3.card.remove();RG3.card=null;el('app').hidden=false;el('app').inert=false;var heading=el('who');heading.tabIndex=-1;heading.focus({preventScroll:true});}}
-function rg3Settings(){if(!rg3Writable())return '';var s=TEL.state.rg3||{},stopped=RG3.halted||s.withdrawn||!s.enabled;return '<section class="panel rg3-settings"><h2>Board registration</h2><p>'+(stopped?(s.withdrawn?'Counts stopped. Your plan is ready.':'Counts paused in this view. Your plan is ready.'):(s.tap_observed||RG3.tapped)?'Registration step complete.':s.gate_offered?'Registration was offered. Your plan is ready.':'Your plan is ready. Registration follows your first view.')+'</p>'+((s.tap_observed||RG3.tapped)&&!stopped?'<p>The result is shown in your browser.</p>':'')+(rg3Active(s)&&s.registration&&!rg3Fragment(s.registration)?'<p>Registration link unavailable. Your plan is ready.</p>':'')+(rg3Active(s)&&s.registration?rg3Link(s.registration,(s.tap_observed||RG3.tapped)?'Send registration again':'Register this board',(s.tap_observed||RG3.tapped)?'rg3-resend':'rg3-tap'):'')+rg3UsageSettings(s)+'<p role="status">'+esc(RG3.message)+'</p><details><summary>Privacy</summary>'+rg3Confirmation()+(!s.withdrawn?'<button class="btn" data-act="rg3-stop">Stop counts</button>':'')+(RG3.eligible&&s.board_key?'<button class="btn" data-act="rg3-delete">Delete received counts</button>':'')+'<p>'+RG3_AGREEMENT.join('</p><p>')+'</p></details></section>';}
+function rg3Settings(){if(!rg3Writable())return '';var s=TEL.state.rg3||{},stopped=RG3.halted||RG3.stopping||!RG3.ready||s.withdrawn||!s.enabled;return '<section class="panel rg3-settings"><h2>Board registration</h2><p>'+(stopped?(s.withdrawn?'Counts stopped. Your plan is ready.':'Counts paused in this view. Your plan is ready.'):(s.tap_observed||RG3.tapped)?'Registration page opened. Check the result there.':'Your plan is ready.')+'</p>'+(rg3Active(s)&&s.registration&&!rg3Fragment(s.registration)?'<p>Registration link unavailable. Your plan is ready.</p>':'')+(rg3Active(s)&&s.registration?rg3Link(s.registration,(s.tap_observed||RG3.tapped)?'Send registration again':'Register this board',(s.tap_observed||RG3.tapped)?'rg3-resend':'rg3-tap'):'')+rg3UsageSettings(s)+'<p role="status">'+esc(RG3.message)+'</p><details class="c1-disclosure"><summary>Privacy</summary>'+rg3Confirmation()+(!s.withdrawn?'<button class="btn" data-act="rg3-stop">Stop counts</button>':'')+(RG3.eligible&&s.board_key?'<button class="btn" data-act="rg3-delete">Delete received counts</button>':'')+'<p>'+RG3_AGREEMENT.join('</p><p>').replace(' Do you agree?','')+'</p></details></section>';}
 function rg3Confirmation(){
  if(!RG3.confirmation)return '';
  var deletion=RG3.confirmation==='delete';
  return '<div role="group" aria-label="Confirm privacy change"><p>'+(deletion?'Stop future counts and request deletion of received counts for this board. Deletion completes only after your browser confirms it. A one-way key hash remains to prevent old links from restoring records.':'Stop future counts for this board on all devices after the change saves. This does not delete counts already received. Previously copied or in-flight links cannot be recalled.')+' This cannot be undone. Your saved plan stays usable.</p><button class="btn" data-act="rg3-confirm-'+RG3.confirmation+'">'+(deletion?'Stop counts and review deletion':'Confirm stop counts')+'</button><button class="btn" data-act="rg3-cancel">Cancel</button></div>';
 }
 function rg3RefreshPrivacy(){var panel=document.querySelector('.rg3-settings'),opened=panel?.querySelector('details')?.open;if(panel){panel.outerHTML=rg3Settings();var details=document.querySelector('.rg3-settings details');if(details)details.open=opened;}}
-async function rg3Stop(){RG3.halted=true;rg3Dismiss();rg3ClearDecorated();document.querySelectorAll('a[data-act^="rg3-"]').forEach(function(a){a.removeAttribute('href');});try{await rg3Patch(function(s){s.enabled=false;s.usage_enabled=false;s.withdrawn=true;s.gate_offered=true;s.usage_buckets=[];return s;},true);RG3.message='Counts stopped. Previously copied or in-flight links cannot be recalled.';}catch(e){RG3.message='Counts paused in this view. Stopping on other devices is not confirmed. Try Stop counts again.';}render();return TEL.state.rg3?.withdrawn===true;}
+async function rg3Stop(){RG3.stopping=true;RG3.pendingOffer=null;rg3Dismiss();rg3ClearDecorated();document.querySelectorAll('a[data-act^="rg3-"]').forEach(function(a){a.removeAttribute('href');});try{await rg3Patch(function(s){s.enabled=false;s.usage_enabled=false;s.withdrawn=true;s.gate_offered=true;s.usage_buckets=[];return s;},true);RG3.message='Counts stopped. Previously copied or in-flight links cannot be recalled.';}catch(e){RG3.message='Counts paused in this view. Stopping on other devices is not confirmed. Try Stop counts again.';}render();return TEL.state.rg3?.withdrawn===true;}
 async function rg3Count(kind){
  if(!rg3Mode()||TEL_CONFIG.registrationV3UsageEnabled!==true||!['opens','done'].includes(kind))return false;
  try{await rg3Patch(function(s){if(!rg3Active(s)||s.usage_enabled!==true||s.usage_agreement_version!=='rg3-usage-1'||!s.first_value_at)return null;var now=Date.now(),week=Math.floor((now-Date.parse(s.first_value_at))/604800000);if(week<0||week>104)return null;var rows=(s.usage_buckets||[]).filter(x=>x.created_at+180*86400000>now);var row=rows.find(x=>x.bucket.bucket_id===RG3.bucket&&x.bucket.week_index===week&&x.bucket.revision<10000);if(!row){RG3.bucket=R3.random();row={created_at:now,bucket:{bucket_id:RG3.bucket,week_index:week,revision:0,opens:0,done_actions:0}};rows.push(row);}row.bucket.revision++;var key=kind==='done'?'done_actions':'opens';row.bucket[key]=Math.min(10000,row.bucket[key]+1);if(rows.length>512){rows=rows.slice(-512);s.usage_overflow=true;}s.usage_buckets=rows;return s;});return true;}catch(e){return false;}
@@ -98,6 +101,7 @@ if(rg3Enabled()){
 }
 document.addEventListener('click',function(e){if(!rg3Mode())return;var a=e.target.closest('[data-act^="rg3-"]');if(!a)return;
   if(a.dataset.act==='rg3-tap'||a.dataset.act==='rg3-resend'){
+   if(!rg3Active(TEL.state.rg3)){e.preventDefault();return;}
    // Keep the native anchor mounted until its default action has dispatched.
    RG3.tapped=true;RG3.dismissed=true;setTimeout(rg3Dismiss,0);
    rg3Patch(function(s){if(!rg3Active(s))return null;s.tap_observed=true;s.gate_offered=true;return s;}).catch(function(){});return;
@@ -125,13 +129,51 @@ async function rg3Decorate(){
 }
 document.addEventListener('click',function(e){var a=e.target.closest('[data-rg3-decorated]');if(a)rg3Patch(function(s){if(!rg3Active(s))return null;s.usage_cursor=Number(a.dataset.rg3Cursor)||0;return s;}).catch(function(){});if(e.target.closest('[data-act="rg3-usage"]'))rg3Patch(function(s){if(!rg3Active(s)||TEL_CONFIG.registrationV3UsageEnabled!==true)return null;s.usage_enabled=!s.usage_enabled;s.usage_agreement_version='rg3-usage-1';s.usage_accepted_at=nowIso();if(!s.usage_enabled){s.usage_buckets=[];rg3ClearDecorated();}return s;}).then(render).catch(function(){RG3.message='The count choice was not confirmed.';render();});});
 
+// Initial agreement reads can fail before v3 mode or its listener is attached.
+function rg3RetryLoad(){
+ if(RG3.loadRetryTimer||TEL.loaded)return;
+ var delay=RG3.loadRetryDelay;RG3.loadRetryDelay=Math.min(30000,delay*2);
+ RG3.loadRetryTimer=setTimeout(function(){RG3.loadRetryTimer=null;telLoad();},delay);
+}
+// Transient transport/storage failures suppress links without withdrawing consent.
+function rg3Unavailable(){
+ RG3.ready=false;RG3.wasIdle=false;RG3.message='Registration is unavailable. Your plan is ready.';
+ rg3ClearDecorated();document.querySelectorAll('a[data-act="rg3-tap"],a[data-act="rg3-resend"]').forEach(a=>a.removeAttribute('href'));rg3Dismiss();rg3RefreshPrivacy();
+}
+function rg3Retry(){
+ if(!rg3Mode()||!RG3.eligible||RG3.retryTimer)return;
+ var delay=RG3.retryDelay;RG3.retryDelay=Math.min(30000,delay*2);
+ RG3.retryTimer=setTimeout(async function(){
+  RG3.retryTimer=null;rg3Observe();
+  try{rg3ApplySnapshot(await DB.doc('meta/telemetry_state').get());}
+  catch(e){rg3Unavailable();rg3Retry();}
+ },delay);
+}
 function rg3ApplySnapshot(snap){
  if(!rg3Mode()||!RG3.eligible)return;
- if(!telDef(snap)||!snap.exists||!snap.data()?.rg3){RG3.halted=true;rg3ClearDecorated();document.querySelectorAll('a[data-act="rg3-tap"],a[data-act="rg3-resend"]').forEach(a=>a.removeAttribute('href'));rg3Dismiss();return;}
- var hadRegistration=!!TEL.state.rg3?.registration;TEL.state=snap.data();var s=TEL.state.rg3;
- if(!hadRegistration&&s.registration&&UI.tab==='settings')rg3RefreshPrivacy();
+ if(!telDef(snap)||!snap.exists||!snap.data()?.rg3){rg3Unavailable();rg3Retry();return;}
+ TEL.state=snap.data();var s=TEL.state.rg3;
+ RG3.ready=true;if(s.withdrawn===true||s.enabled===false)RG3.halted=true;
+ RG3.retryDelay=1000;if(RG3.retryTimer){clearTimeout(RG3.retryTimer);RG3.retryTimer=null;}
+ if(RG3.message==='Registration is unavailable. Your plan is ready.'||RG3.message==='Registration link unavailable. Your plan is ready.')RG3.message='';
  if(s.usage_enabled!==true)rg3ClearDecorated();
- if(s.withdrawn||s.enabled!==true){RG3.halted=true;rg3ClearDecorated();document.querySelectorAll('a[data-act="rg3-tap"],a[data-act="rg3-resend"]').forEach(a=>a.removeAttribute('href'));rg3Dismiss();var panel=document.querySelector('.rg3-settings');if(panel&&!typing())panel.outerHTML=rg3Settings();}
+ if(RG3.halted||RG3.stopping){RG3.pendingOffer=null;rg3ClearDecorated();document.querySelectorAll('a[data-act="rg3-tap"],a[data-act="rg3-resend"]').forEach(a=>a.removeAttribute('href'));rg3Dismiss();}
+ rg3RefreshPrivacy();rg3AfterRender();
 }
-function rg3Observe(){if(!RG3.eligible||RG3.observing||typeof DB.doc('meta/telemetry_state').onSnapshot!=='function')return;RG3.observing=true;DB.doc('meta/telemetry_state').onSnapshot(rg3ApplySnapshot,function(){RG3.halted=true;rg3ClearDecorated();rg3Dismiss();document.querySelectorAll('a[data-act="rg3-resend"]').forEach(a=>a.removeAttribute('href'));});}
-window.addEventListener('pageshow',function(){if(!rg3Mode()||!RG3.eligible)return;DB.doc('meta/telemetry_state').get().then(rg3ApplySnapshot).catch(function(){RG3.halted=true;rg3ClearDecorated();rg3Dismiss();});});
+function rg3Observe(){
+ if(!RG3.eligible||RG3.observing)return;
+ var epoch=++RG3.observeEpoch;
+ function failed(){
+  if(epoch!==RG3.observeEpoch)return;
+  RG3.observeEpoch++;RG3.observing=false;var unsubscribe=RG3.unsubscribe;RG3.unsubscribe=null;
+  if(typeof unsubscribe==='function')try{unsubscribe();}catch(e){}
+  rg3Unavailable();rg3Retry();
+ }
+ try{
+  var ref=DB.doc('meta/telemetry_state');if(typeof ref.onSnapshot!=='function'){rg3Retry();return;}
+  RG3.observing=true;
+  var unsubscribe=ref.onSnapshot(function(snap){if(epoch===RG3.observeEpoch)rg3ApplySnapshot(snap);},failed);
+  if(epoch===RG3.observeEpoch)RG3.unsubscribe=unsubscribe;else if(typeof unsubscribe==='function')unsubscribe();
+ }catch(e){failed();}
+}
+window.addEventListener('pageshow',function(){if(!rg3Mode()||!RG3.eligible)return;rg3Observe();DB.doc('meta/telemetry_state').get().then(rg3ApplySnapshot).catch(function(){rg3Unavailable();rg3Retry();});});

@@ -27,6 +27,7 @@
 .mot-strong{font-weight:600}
 .mot-warning{padding:var(--s-4);margin-bottom:var(--s-4);border:0;border-radius:var(--r-card);background:var(--amber-fill);color:var(--amber-ink)}
 .mot-watch-line,.mot-coverage,.mot-receipt{padding:var(--s-4) 0;border-top:var(--hairline) solid var(--line)}
+.mot-policy-row{display:flex;align-items:center;justify-content:space-between;gap:var(--s-3);width:100%;background:transparent;text-align:left;font-weight:400;padding:var(--s-3) 0}.mot-policy-row>span{flex:none}
 .mot-notice{color:var(--ink);overflow-wrap:anywhere}
 .mot-notice:empty{display:none}
 .mot-actions,.mot-chips{display:flex;flex-wrap:wrap;gap:var(--s-2);margin:var(--s-2) 0 var(--s-4)}
@@ -63,3 +64,5 @@
 @media(max-width:899px){.mot-overlay{display:grid;grid-template-rows:var(--sheet-top) minmax(0,1fr) var(--mot-nav-space,var(--nav-safe-height));grid-template-columns:minmax(0,1fr);align-items:end;justify-items:center;padding:0}.mot-sheet{grid-row:2;max-height:calc(100dvh - var(--sheet-top) - var(--mot-nav-space,var(--nav-safe-height)))}}
 @keyframes mot-in{from{transform:translateY(var(--s-8))}to{transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.mot-sheet,.mot-button{animation:none!important;transition:none!important;transform:none!important}}
+
+.mot-sheet-footer .mot-sheet-actions{padding:0}

@@ -77,20 +77,14 @@ function coachLoad(){
  })();
  return request.promise;
 }
-function coachSteps(){return '<ol><li>In the Claude app, open <b>Projects</b>. Create a Project named <b>Muster Out</b>, or open yours.</li><li>Tap <b>Add instructions</b>. Paste the coach setup block and save. Reopen it to check the full block saved.</li><li>Start a new chat in that Project. Type <b>Read my existing board</b>. Give the board link only if Claude cannot find it.</li></ol><button class="btn" data-act="copy" data-v="'+esc(C1_PROJECT_INSTRUCTIONS)+'">Copy coach setup</button><p class="muted">The Project keeps your coach instructions and optional records together.</p>';}
 function coachCard(){
- var h='<section class="panel coach-card" aria-labelledby="coachTitle"><h2 id="coachTitle">Your coach</h2>';
+ var h='<section class="panel coach-card" aria-labelledby="coachTitle"><h2 id="coachTitle">Get a coach that knows your plan.</h2>';
  if(C1_DEMO)return h+'<p>Demo plan. Open your own board to set up your coach.</p></section>';
- if(!window.claude?.use||(!DB&&['unavailable','failed'].includes(S.dbState)))return h+'<p>Coach notes are unavailable in this copy. In the Claude app, open Projects, then Muster Out.</p><button class="btn" data-act="project-open">Open your Project steps</button></section>';
+ h+='<ul><li>Keeps and reads your documents.</li><li>Checks Gmail and your calendar when you connect them.</li><li>Remembers your plan and what you tell it.</li></ul><a class="btn pri" href="https://warfarecommand.com/musterout/coach/" target="_blank" rel="noopener">Get the coach setup guide</a>';
  if(S.reset)h+='<p>Coach notes are paused while the board resets.</p>';
- else if(COACH.statusState==='loading')h+='<p>Checking coach setup.</p>';
- else if(COACH.statusState!=='ready')h+='<p>Coach setup could not be checked. You can still open Projects, then Muster Out in the Claude app.</p><button class="btn" data-act="project-open">Open your Project steps</button>';
- else if(!COACH.status)h+=coachSteps();
- else{h+='<p><b>Coach set up</b></p><p>Your coach: Muster Out in the Claude app.</p>';var latest=COACH.checkins[0];
-  h+=COACH.checkinsState!=='ready'?'<p>Check-ins are unavailable in this view.</p>':latest?'<p><b>Last check-in '+esc(mil(parseD(latest.weekOf)))+'</b></p><p>'+esc(coachPlain(latest.summary))+'</p>':'<p>No check-in saved yet.</p>';
-  h+='<button class="btn" data-act="project-open">Open your Project steps</button>';
- }
- return h+'<div class="ctl"><button class="btn" data-act="coach-open">What your coach knows</button><button class="btn" data-act="coach-refresh"'+(COACH.busy?' disabled':'')+'>Refresh coach notes</button></div></section>';
+ else if(COACH.statusState==='ready'&&COACH.status)h+='<p>Coach set up. Open Muster Out in Claude Projects.</p>';
+ else if(COACH.statusState!=='ready')h+='<p>Coach setup could not be checked.</p>';
+ return h+(COACH.facts.length?'<button class="linkbtn" data-act="coach-open">What your coach knows</button>':'')+'</section>';
 }
 function coachSource(source){return ({project:'Coach chat',ask:'Ask',user:'You'})[source];}
 function coachWritable(clearAction){return canEdit()&&S.canWrite===true&&!C1_DEMO&&!C1_UPDATE_FROZEN&&!S.seeding&&!UI.setupBusy&&!UI.migrationBusy&&(clearAction||!COACH_CLEAR_BUSY);}
@@ -198,7 +192,7 @@ function coachThreadHtml(){return COACH_SESSION.map(function(t){return '<article
 function coachThreadCopy(){return COACH_SESSION.map(function(t){return (t.role==='user'?'You: ':'Ask: ')+coachPlain(t.text);}).join('\n\n');}
 function coachAskExtras(){
  var owner=canEdit(),note=COACH_THREAD_NOTE||(COACH.threadState==='unavailable'?'Saved Ask history is unavailable.':'');
- return '<details class="coach-conversation c1-disclosure"><summary>Recent conversation</summary><div class="coach-thread" id="coachThread">'+coachThreadHtml()+'</div></details><p class="muted">'+(owner?'Ask saves successful questions and answers on this board. Clear removes saved conversation history.':'This conversation stays in this view. Only the owner can save or clear board history.')+'</p><p id="coachThreadNote" role="status">'+esc(note)+'</p><div class="ctl"><button class="btn" data-act="coach-clear"'+(UI.askBusy||COACH_THREAD_RUN||COACH_CLEAR_BUSY?' disabled':'')+'>'+(owner?'Clear saved conversation':'Clear this conversation')+'</button>'+(owner?'<button class="btn" data-act="coach-save-thread"'+(COACH_THREAD_RUN||COACH_CLEAR_BUSY?' disabled':'')+'>Save conversation to board</button>':'')+'</div>'+coachLegacyNotice()+(note.startsWith('Not saved')?'<button class="btn" data-act="copy" data-v="'+esc(coachThreadCopy())+'">Copy conversation</button>':'')+(owner?'<button class="btn" data-act="coach-save-answer"'+(!UI.askAnswer||UI.askBusy?' hidden':'')+'>Save to coach memory</button>':'');
+ return '<details class="coach-conversation c1-disclosure"'+(note?' open':'')+'><summary>Recent conversation</summary><p>Ask cannot read Project files. Ask questions about Project files in your Project chat.</p><button class="btn" data-act="ask-copy-question">Copy question</button><div class="coach-thread" id="coachThread">'+coachThreadHtml()+'</div><p class="muted">'+(owner?'Ask saves successful questions and answers on this board. Clear removes saved conversation history.':'This conversation stays in this view. Only the owner can save or clear board history.')+'</p><p id="coachThreadNote" role="status">'+esc(note)+'</p><div class="ctl"><button class="btn" data-act="coach-clear"'+(UI.askBusy||COACH_THREAD_RUN||COACH_CLEAR_BUSY?' disabled':'')+'>'+(owner?'Clear saved conversation':'Clear this conversation')+'</button>'+(owner?'<button class="btn" data-act="coach-save-thread"'+(COACH_THREAD_RUN||COACH_CLEAR_BUSY?' disabled':'')+'>Save conversation to board</button>':'')+'</div>'+coachLegacyNotice()+(note.startsWith('Not saved')?'<button class="btn" data-act="copy" data-v="'+esc(coachThreadCopy())+'">Copy conversation</button>':'')+(owner?'<button class="btn" data-act="coach-save-answer"'+(!UI.askAnswer||UI.askBusy?' hidden':'')+'>Save to coach memory</button>':'')+'</details>';
 }
 function coachSaveThread(turns,clearing){
  if(C1_DEMO||S.reset||!canEdit())return Promise.resolve(false);
@@ -306,5 +300,6 @@ document.addEventListener('click',function(e){var b=e.target.closest('[data-act]
  if(a==='coach-confirm-save'){b.disabled=true;coachFactAction('save').then(function(ok){if(ok)c1Close(false);else{b.disabled=false;if(el('coachProposalNote'))el('coachProposalNote').textContent=COACH_FACT_NOTE+' '+COACH_WRITE_NOTE;}});return;}
  if(a==='coach-save-thread'){coachSaveThread(COACH_SESSION);return;}
  if(a==='coach-clean-drafts'){if(coachWritable())coachCleanLegacy(coachContext());return;}
- if(a==='coach-clear'){coachClear();return;}
+ if(a==='coach-clear'){if(UI.askBusy||COACH_THREAD_RUN||COACH_CLEAR_BUSY||C1_DEMO||S.reset)return;c1Dialog('Clear saved conversation','<p>'+(canEdit()?'This removes saved questions and answers from this board.':'This clears conversation in this view. Saved board history stays unchanged.')+' Your plan and coach facts stay unchanged.</p><div class="ctl"><button class="btn" data-act="c1-close">Cancel</button><button class="btn" data-act="coach-clear-confirm">Clear conversation</button></div>',true);return;}
+ if(a==='coach-clear-confirm'){c1Close(false);coachClear();return;}
 });

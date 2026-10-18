@@ -52,7 +52,7 @@ const MESSAGES = Object.freeze({
 'permissions.denied':'Claude is off for this board. Open permissions.',
 'permissions.absent':"Permissions are unavailable here. Use the artifact's Permissions menu.",
 'permissions.manage.unavailable':"Open the artifact's Permissions menu to change access.",
-'REPORT_QUEUE_FAILED':'Report not saved. Try Send report again.',
+'REPORT_QUEUE_FAILED':'Report not saved. Try Continue to report page again.',
 'REPORT_TRANSPORT_UNAVAILABLE':'Report not sent.',
 'REPORT_VALIDATION_FAILED':'Review the highlighted fields before continuing.',
 'CONSENT_SCHEMA_CHANGED':'Counts paused. Review the new schema to allow sending.',
@@ -75,7 +75,7 @@ return MESSAGES[component + '.upstream_error'] || MESSAGES['db.unavailable'];
 }
 const KNOWN_CODES = new Set(Object.keys(MESSAGES).flatMap(k => [k,k.split('.').pop()]).concat(ABSENT,['UPDATE_TIMEOUT','UPDATE_OVERSIZE','UPDATE_FLOOD','REPORT_SEND_FAILED','permissions.manage.upstream_error','empty_completion','prompt_too_large','queue_overflow','cancelled','NotAllowedError']));
 function node(tag, text, cls) { const e = document.createElement(tag); if (text !== undefined) e.textContent = String(text); if (cls) e.className = cls; return e; }
-function button(text, fn, primary) { const e = node('button', text, 'mot-button' + (primary ? ' mot-primary' : '') + (['Copy diagnostic','Report a problem'].includes(text) ? ' mot-tertiary' : '')); e.type = 'button'; e.addEventListener('click', fn); return e; }
+function button(text, fn, primary) { const e = node('button', text, 'mot-button' + (primary ? ' mot-primary' : '') + (['View diagnostic','Report a problem'].includes(text) ? ' mot-tertiary' : '')); e.type = 'button'; e.addEventListener('click', fn); return e; }
 function icon(kind) {
 const disc = node('span',undefined,'c6-icon-disc'), ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns,'svg');
 svg.setAttribute('viewBox','0 0 24 24'); svg.setAttribute('aria-hidden','true');
@@ -188,7 +188,7 @@ grabber.addEventListener('pointerup',e => { if (!drag || drag.id !== e.pointerId
 grabber.addEventListener('pointercancel',() => { drag = null; });
 const scroll = node('div',undefined,'mot-sheet-scroll'); scroll.append(s.body,s.actions);
 if (title !== 'Report a problem' && title !== 'Review report') { const report = button('Report a problem',openReport); report.classList.add('mot-sheet-report','mot-tertiary'); scroll.append(report); }
-const footer = node('footer',undefined,'mot-sheet-footer'); footer.append(button('Done',dismiss));
+const footer = node('footer',undefined,'mot-sheet-footer');if (title === 'Report a problem' || title === 'Review report') footer.append(s.actions);else footer.append(button('Done',dismiss));
 s.dialog.append(grabber,header,scroll,footer); s.overlay.append(s.dialog); document.body.append(s.overlay);
 const nav = document.querySelector('#tabs');
 if (nav) { const measure = () => s.overlay.style.setProperty('--mot-nav-space',Math.ceil(Math.max(72,nav.getBoundingClientRect().height))+'px'); measure(); s.navObserver = new ResizeObserver(measure); s.navObserver.observe(nav); }
@@ -212,11 +212,11 @@ try { if (!navigator.clipboard?.writeText) throw {code:'CLIPBOARD_UNAVAILABLE'};
 catch (e) { recordError('clipboard','copy',e.code || e.name || 'CLIPBOARD_UNAVAILABLE'); status.textContent = MESSAGES.CLIPBOARD_UNAVAILABLE; preview?.focus(); if (preview) { const r = document.createRange(); r.selectNodeContents(preview); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r); } return false; }
 }
 function openCopy(title,bytes,success) {
-let s; s = sheet(title,() => closeSheet(s)); paragraph(s.body,title === 'Copy diagnostic' ? 'Exact diagnostic':'Exact payload'); const preview = jsonBox(s.body,bytes); const status = s.notice; status.textContent = '';
-if (title === 'Copy diagnostic' && !ring.length) paragraph(s.body,'No errors recorded in this view.');
-s.actions.append(button('Copy',async () => { if (await clipboard(bytes,status,preview)) { status.textContent = success || 'Copied.'; if (title === 'Copy diagnostic') emit('diagnostic-copied'); } }));
+let s; s = sheet(title,() => closeSheet(s)); paragraph(s.body,title === 'View diagnostic' ? 'Exact diagnostic':'Exact payload'); const preview = jsonBox(s.body,bytes); const status = s.notice; status.textContent = '';
+if (title === 'View diagnostic' && !ring.length) paragraph(s.body,'No errors recorded in this view.');
+s.actions.append(button('Copy',async () => { if (await clipboard(bytes,status,preview)) { status.textContent = success || 'Copied.'; if (title === 'View diagnostic') emit('diagnostic-copied'); } }));
 }
-function openDiagnostic() { openCopy('Copy diagnostic',JSON.stringify(diagnostic(),null,2),'Diagnostic copied.'); }
+function openDiagnostic() { openCopy('View diagnostic',JSON.stringify(diagnostic(),null,2),'Diagnostic copied.'); }
 function copyMessage(kind) { const value = o[kind + 'Message']; if (typeof value === 'string' && value) openCopy('Copy ' + kind + ' message',value); else openText('Copy ' + kind + ' message','Open ' + kind.toUpperCase() + ' in Claude for the current message.'); }
 function copyChanges() { if (typeof o.copyChanges === 'function') { try { const data = o.copyChanges(); if (typeof data === 'string') openCopy('Copy changes',data); } catch (e) { recordError('draft','copy',e.code || e.name); openDiagnostic(); } } else openText('Copy changes','Select your changes in the editor and copy them before continuing.'); }
 function mountHeader(el) { if (!el) return; slots.header.push(el); const report = button('Report a problem',openReport); if (el.id === 'trustHeader') { report.setAttribute('aria-label','Report a problem'); report.replaceChildren(icon('help')); } el.append(report); }
@@ -234,11 +234,11 @@ actions = node('div',undefined,'mot-actions mot-save-actions'); el.append(action
 if (save.status === 'unavailable' || ABSENT.includes(codes.replace(/^db\./,''))) { paragraph(el.querySelector('.mot-save-live'),'Last loaded copy.'); actions.append(button('Open your board in Claude',() => openText('Open your board in Claude','Open your saved board from your Claude conversation.'))); }
 const c = codes.replace(/^db\./,'');
 if (codes === 'PLAN_PRO_REQUIRED') { actions.append(button('View demo',() => { if (typeof o.viewDemo === 'function') o.viewDemo(); else openText('View demo','Open the demo from setup.'); }),button('Copy setup message',() => copyMessage('setup'))); return; }
-if (codes === 'db.refresh' || save.operation === 'onSnapshot') { actions.append(button('Reload once',() => { if (typeof o.reload === 'function') o.reload(); else openText('Reload once','Reload your board in Claude once to restore saved data. Copy changes first.'); }),button('Copy diagnostic',openDiagnostic)); return; }
+if (codes === 'db.refresh' || save.operation === 'onSnapshot') { actions.append(button('Reload once',() => { if (typeof o.reload === 'function') o.reload(); else openText('Reload once','Reload your board in Claude once to restore saved data. Copy changes first.'); }),button('View diagnostic',openDiagnostic)); return; }
 if ((c === 'unavailable' || !KNOWN_CODES.has(codes)) && save.status === 'failed' && typeof save.retry === 'function' && saveAttempt < 1) actions.append(button('Retry',retrySave));
 if (save.status === 'failed' && !['invalid_argument','transform_error','TypeError',...ABSENT].includes(c)) actions.append(button('Copy changes',copyChanges));
 if (c === 'quota_exceeded') actions.append(button('Get help',help));
-actions.append(button('Copy diagnostic',openDiagnostic));
+actions.append(button('View diagnostic',openDiagnostic));
 }
 async function retrySave() {
 if (dead || saveAttempt >= 1 || typeof save.retry !== 'function') return;
@@ -272,20 +272,27 @@ if (update.correctionPending && update.status !== 'done') { const banner = node(
 const blocks = sourceBlocks().filter(b => ['MARADMIN','ALMAR'].includes(b.source));
 const row = node('section',undefined,'mot-watch-line');
 const checked = blocks.some(b => b.last_success), quiet = !checked || watchCode === 'WATCH_NOT_CHECKED';
-if (quiet) paragraph(row,'Watch: not checked yet.','mot-meta');
-(quiet ? [] : blocks).forEach(b => { paragraph(row,sourceLabel(b.source),'mot-strong'); paragraph(row,watchSummary(b),'mot-meta'); });
-if (watchCode && watchCode !== 'WATCH_NOT_CHECKED' && checked) paragraph(row,message(watchCode,'feed'),'mot-meta');
-if (!quiet && stale()) paragraph(row,MESSAGES.FEED_STALE,'mot-meta'); if (!quiet && gap()) paragraph(row,MESSAGES.FEED_GAP,'mot-meta');
-row.append(button('Policy update checks',openCoverage)); el.append(row);
+const summary = watchCode && watchCode !== 'WATCH_NOT_CHECKED' ? 'review failed check' : quiet ? 'not checked yet' : stale() ? 'last check is old' : gap() ? 'coverage incomplete' : 'latest check ready';
+const action = button('Policy checks: '+summary,openCoverage); action.classList.add('mot-policy-row'); const chevron=node('span','›'); chevron.setAttribute('aria-hidden','true'); action.append(chevron); row.append(action); el.append(row);
 }
 function mountToday(el) { if (el) { slots.today.push(el); renderToday(el); } }
 function setWatch(value) {
 if (value?.code && ['FEED_UNTRUSTED','WATCH_FAILED','WATCH_NOT_CHECKED'].includes(value.code)) { watchCode = value.code; recordError('feed','verify',value.code); }
 else { watchCode = null; feed = value; } redraw(slots.today,renderToday); emit('watch'); }
 function openCoverage() {
-let s; s = sheet('Policy update checks',() => closeSheet(s)); paragraph(s.body,'These checks compare published Marine Corps policy messages with your plan. Sources without a successful check still need review with the confirming office.');
+let s; s = sheet('Policy update checks',() => closeSheet(s));
 const blocks = sourceBlocks().filter(b => ['MARADMIN','ALMAR'].includes(b.source));
-if (!blocks.length) paragraph(s.body,'Watch: not checked yet.');
+const checked = blocks.filter(b => b.last_success), failed = watchCode || blocks.some(b => b.status === 'failed' || b.truncated || b.unclassified_count > 0 || b.body_available !== true || !Number.isInteger(b.checked_count) || !Number.isInteger(b.unclassified_count)) || stale() || gap();
+const counts = typeof o.noticeSummary === 'function' ? o.noticeSummary() : null;
+const matches = counts?.matches ?? blocks.reduce((sum,b) => sum + (Number.isInteger(b.possible_matches) ? b.possible_matches : (b.notices?.length || 0)),0);
+const review = counts?.review || 0, at = checked.map(b => b.last_success).sort()[0];
+paragraph(s.body,!checked.length ? 'Policy messages have not been checked yet.' : failed ? ((matches || review) ? (matches + review) + ' possible ' + (matches + review === 1 ? 'notice in' : 'notices in') + ' the last saved check. The latest check is incomplete.' : 'The latest check is incomplete. Review the last saved results.') : matches ? matches + ' possible ' + (matches === 1 ? 'notice matches' : 'notices match') + ' your profile.' : review ? review + ' ' + (review === 1 ? 'notice needs' : 'notices need') + ' an applicability review.' : 'No matching notices in the checked messages, checked ' + milDate(at.slice(0,10)) + '.','mot-strong');
+const copy = button('Copy check request',async () => { const bytes = o.weeklyMessage; if (typeof bytes !== 'string' || !bytes) { paragraph(s.body,'The check request is unavailable. Open Talk to Claude.'); return; } if (await clipboard(bytes,s.notice)) s.notice.textContent = 'Copied. Paste into Claude.'; else openCopy('Copy check request',bytes); });
+s.body.append(copy); paragraph(s.body,'Paste into Claude. A check does not change your plan.');
+if (matches || review) paragraph(s.body,'Review possible notices in Sources and documents.');
+const details = node('details'), summary = node('summary','Check details'); details.append(summary); s.body.append(details);
+paragraph(details,'These checks compare published Marine Corps policy messages with your plan. Sources without a successful check still need review with the confirming office.');
+if (!blocks.length) paragraph(details,'No successful check is recorded.');
 blocks.forEach(b => {
 const section = node('section',undefined,'mot-coverage'); section.append(node('h3',sourceLabel(b.source)));
 paragraph(section,feed?.cadence === 'daily' && feed?.daily_shipped === true ? 'Daily checks.' : 'Weekly checks.');
@@ -296,14 +303,14 @@ paragraph(section,'Checked window','mot-meta'); paragraph(section,b.window?.from
 paragraph(section,watchSummary(b));
 if (b.truncated) paragraph(section,'This check is incomplete. Some notices were not included.');
 if (Number.isInteger(b.unclassified_count) && b.unclassified_count > 0) paragraph(section,b.unclassified_count + ' notices await classification.');
-if (b.status === 'failed') paragraph(section,b.reason || 'Last attempt failed.'); s.body.append(section);
+if (b.status === 'failed') paragraph(section,b.reason || 'Last attempt failed.'); details.append(section);
 });
-if (watchCode && watchCode !== 'WATCH_NOT_CHECKED' && blocks.some(b => b.last_success)) paragraph(s.body,message(watchCode,'feed'));
-if (!blocks.some(b => b.source === 'ALMAR')) paragraph(s.body,'ALMAR: Not watched.');
-if (stale()) paragraph(s.body,MESSAGES.FEED_STALE); if (gap()) paragraph(s.body,MESSAGES.FEED_GAP);
-for (const name of ['ALNAV','Cited orders']) paragraph(s.body,name + ': Not yet covered.');
-s.actions.append(button('Copy weekly check message',() => copyMessage('weekly')));
+if (watchCode && watchCode !== 'WATCH_NOT_CHECKED') paragraph(details,checked.length ? message(watchCode,'feed') : watchCode === 'FEED_UNTRUSTED' ? 'The latest feed could not be verified.' : 'The latest check did not finish.');
+if (!blocks.some(b => b.source === 'ALMAR')) paragraph(details,'ALMAR: Not watched.');
+if (stale()) paragraph(details,MESSAGES.FEED_STALE); if (gap()) paragraph(details,MESSAGES.FEED_GAP);
+for (const name of ['ALNAV','Cited orders']) paragraph(details,name + ': Not yet covered.');
 }
+
 async function snooze(dismissed = false) {
 const version = update.version, until = o.now() + 86400000;
 try {
@@ -338,7 +345,7 @@ if (update.correction) paragraph(s.body,update.impact || MESSAGES.UPDATE_UNTRUST
 const valid = notes.length === 2 && notes.every(n => typeof n === 'string' && n.trim()) && (!update.correction || (typeof update.impact === 'string' && update.impact.trim()));
 if (!valid && !update.correction) paragraph(s.body,MESSAGES.UPDATE_UNTRUSTED);
 const now = button('Update now',apply,true); now.disabled = !valid || !o.updates?.applyUpdate;
-s.actions.append(now,button('Not now',cancel)); if (!valid) s.actions.append(button('Copy diagnostic',openDiagnostic)); if (!o.updates?.applyUpdate) { paragraph(s.body,MESSAGES['artifact.absent']); s.actions.append(button('Copy update message',() => copyMessage('update'))); } s.cancel = cancel;
+s.actions.append(now,button('Not now',cancel)); if (!valid) s.actions.append(button('View diagnostic',openDiagnostic)); if (!o.updates?.applyUpdate) { paragraph(s.body,MESSAGES['artifact.absent']); s.actions.append(button('Copy update message',() => copyMessage('update'))); } s.cancel = cancel;
 } else if (status === 'applying') {
 s.heading.textContent = 'Updating Muster Out'; s.cancel = null;
 const progress = node('div'); window.MusterOutUpdateStatus?.render(progress,update,{version:o.version}); s.body.append(progress);
@@ -354,7 +361,7 @@ const progress = node('div'); window.MusterOutUpdateStatus?.render(progress,upda
 s.heading.textContent = 'Update status'; const code = update.code || 'artifact.upstream_error'; notice(s.body,message(code,'artifact')); s.cancel = () => closeSheet(s,true);
 if (['artifact.not_writer','artifact.not_granted','artifact.consent_required','artifact.not_declared','artifact.capability_disabled','artifact.capability_removed','artifact.absent'].includes(code)) s.actions.append(button('Copy update message',() => copyMessage('update')));
 else if (code === 'DRAFT_STORAGE_FAILED') s.actions.append(button('Copy changes',copyChanges));
-else s.actions.append(button('Copy diagnostic',openDiagnostic));
+else s.actions.append(button('View diagnostic',openDiagnostic));
 if (code === 'UPDATE_VERIFY_FAILED') s.actions.append(button('Get help',help));
 s.actions.append(button(code === 'SNOOZE_SAVE_FAILED' ? 'Continue':'Close',s.cancel));
 } else if (status === 'idle' && lastConfirmed) { s.heading.textContent = 'Updated to ' + lastConfirmed.to + '.'; s.cancel = () => closeSheet(s,true); s.actions.append(button('Continue',s.cancel,true));
@@ -408,10 +415,10 @@ let s; s = sheet('Report a problem',() => closeSheet(s)); renderReportForm(s,r);
 function renderReportForm(s,r) {
 s.abort?.abort(); s.draftBindings?.forEach(release => release()); s.draftBindings = []; s.heading.textContent = 'Report a problem'; s.body.replaceChildren(); s.actions.replaceChildren(); s.cancel = () => closeSheet(s);
 paragraph(s.body,'What happened','mot-strong'); const chips = node('div',undefined,'mot-chips'); s.body.append(chips);
-[['Save failed','bug','save'],['Update failed','bug','update'],['Watch check failed','bug','feed'],['Something looks wrong','content','other'],['Other','other','other']].forEach(([label,category,error]) => {
+[['Save failed','bug','save'],['Update failed','bug','update'],['Policy check failed','bug','feed'],['Something looks wrong','content','other'],['Other','other','other']].forEach(([label,category,error]) => {
 const b = button(label,() => { r.problem = label; r.category = category; r.error_class = error; keepReport(s,r); chips.querySelectorAll('button').forEach(e => e.setAttribute('aria-pressed',String(e === b))); }); b.setAttribute('aria-pressed',String(r.problem === label)); chips.append(b);
 });
-const where = field(s.body,'Where','select'); SCREENS.forEach(v => { const option = node('option',v[0].toUpperCase()+v.slice(1)); option.value = v; where.append(option); }); where.setAttribute('aria-label','Where'); where.value = r.where; s.draftBindings.push(reportDrafts.bind(where,'where',{restore:false,onChange:value => { r.where = value; keepReport(s,r); }}));
+const where = field(s.body,'Where','select'); SCREENS.forEach(v => { const option = node('option',({dates:'Timeline',claim:'VA Claim'})[v]||v[0].toUpperCase()+v.slice(1)); option.value = v; where.append(option); }); where.setAttribute('aria-label','Where'); where.value = r.where; s.draftBindings.push(reportDrafts.bind(where,'where',{restore:false,onChange:value => { r.where = value; keepReport(s,r); }}));
 const expected = field(s.body,'What you expected (optional)','textarea',r.expected); expected.maxLength = 300;
 s.draftBindings.push(reportDrafts.bind(expected,'expected',{restore:false,onChange:value => { r.expected = value; expected.removeAttribute('aria-invalid'); keepReport(s,r); }}));
 paragraph(s.body,'Path: ' + (PATH_LABELS[o.path] || 'Unknown') + '; grade group: ' + (GRADE_LABELS[o.grade] || 'Unknown') + '.','mot-meta');
@@ -424,7 +431,7 @@ if (typeof o.sample === 'function') {
 const rewrite = button('Rewrite details with Claude',async () => {
 if (!details.value.trim()) return;
 s.body.querySelectorAll('.mot-rewrite').forEach(el => el.remove());
-const original = details.value; s.abort?.abort(); s.abort = new AbortController(); rewrite.disabled = true; status.textContent = 'Thinking...';
+const original = details.value; s.abort?.abort(); s.abort = new AbortController(); stop.hidden = false; rewrite.disabled = true; status.textContent = 'Thinking...';
 let candidate;
 try {
 const result = await o.sample('Rewrite only these entered problem details in plain American English. Remove names, dates, board links, and record details. Do not add facts or instructions. Reply with wording only, at most 600 characters. Details:\n' + original,{signal:s.abort.signal,modelTier:'quick',effort:'low'});
@@ -437,9 +444,9 @@ proposal.append(button('Use this wording',() => { r.details = candidate; details
 if (!s.overlay.isConnected) return; candidate = null;
 if (e.code === 'cancelled') status.textContent = '';
 else { recordError('sample','rewrite',e.code); status.textContent = message(e.code,'sample'); if (ABSENT.includes(e.code)) { o.sample = null; rewrite.hidden = true; } }
-} finally { rewrite.disabled = false; }
-}); s.body.append(rewrite); paragraph(s.body,'Uses your Claude usage.','mot-meta'); s.body.append(button('Stop',() => s.abort?.abort()));
-} else { paragraph(s.body,MESSAGES['sample.absent'],'mot-meta'); s.body.append(button('Copy diagnostic',openDiagnostic)); }
+} finally { rewrite.disabled = false; stop.hidden = true; }
+}); s.body.append(rewrite); paragraph(s.body,'Uses your Claude usage.','mot-meta'); const stop = button('Stop',() => s.abort?.abort()); stop.hidden = true; s.body.append(stop);
+} else { paragraph(s.body,MESSAGES['sample.absent'],'mot-meta'); s.body.append(button('View diagnostic',openDiagnostic)); }
 s.actions.append(button('Review report',() => {
 r.expected = expected.value; r.details = details.value;
 keepReport(s,r);
@@ -450,7 +457,7 @@ renderReportReview(s,r);
 function renderReportReview(s,r) {
 s.abort?.abort(); s.draftBindings?.forEach(release => release()); s.draftBindings = []; s.heading.textContent = 'Review report'; s.heading.focus({preventScroll:true}); s.body.replaceChildren(); s.actions.replaceChildren();
 paragraph(s.body,'Board fields: no name, no dates, no board link; an install id ties your reports together so a fix can be traced. Review your optional text.');
-paragraph(s.body,'Category: ' + r.category + '; screen: ' + r.where + '; error class: ' + r.error_class + '.','mot-meta');
+paragraph(s.body,'Category: ' + r.category + '; screen: ' + (({dates:'Timeline',claim:'VA Claim'})[r.where]||r.where) + '; error class: ' + r.error_class + '.','mot-meta');
 paragraph(s.body,'Path: ' + (PATH_LABELS[o.path] || 'Unknown') + '; grade group: ' + (GRADE_LABELS[o.grade] || 'Unknown') + '.','mot-meta');
 paragraph(s.body,reportPayload(r).text === undefined ? 'No optional text included.' : 'The payload below includes the optional text you chose to share.');
 const exact = node('details'); exact.append(node('summary','See exactly what is sent')); s.body.append(exact);
@@ -458,7 +465,8 @@ const payload = reportPayload(r), context = Object.freeze({screen:r.where}), byt
 const copy = button('Copy details',() => { exact.open = true; return clipboard(bytes,status,preview); }); copy.classList.add('mot-tertiary');
 s.actions.append(button('Edit',() => renderReportForm(s,r)),copy);
 {
-const queue = button('Send report',async () => {
+paragraph(s.body,'Review here, then send from the report page.');
+const queue = button('Continue to report page',async () => {
 const hadFocus = document.activeElement === queue; queue.disabled = true;
 if (hadFocus) s.heading.focus({preventScroll:true});
 try {
@@ -482,7 +490,7 @@ await refreshSettings();
 queue.disabled = !o.db || o.canWrite === false || !reportValid(payload); s.actions.append(queue);
 if (!reportValid(payload)) paragraph(s.body,'Report needs an install id, path, and grade group before sending. Copy details or check Troubleshooting.');
 }
-const troubleshooting = node('details'); troubleshooting.append(node('summary','Troubleshooting'),button('Copy diagnostic',openDiagnostic)); s.body.append(troubleshooting); s.body.parentElement.scrollTop = 0;
+const troubleshooting = node('details'); troubleshooting.append(node('summary','Troubleshooting'),button('View diagnostic',openDiagnostic)); s.body.append(troubleshooting); s.body.parentElement.scrollTop = 0;
 }
 function usagePayload() { return {kind:'usage',install_id:o.installId || null,week:counterWeek,writer,version:o.version,counters:{...counters}}; }
 function approved(c) { const counts = c?.sample?.counters; return c?.enabled === true && c.schema_version === SCHEMA && c.schema_key === SCHEMA_KEY && canonical(c.counter_meanings) === canonical(COUNTER_MEANINGS) && Number.isFinite(Date.parse(c.approved_at)) && c.sample?.kind === 'usage' && counts && Object.keys(counts).length === COUNTERS.length && COUNTERS.every(key => Number.isInteger(counts[key]) && counts[key] >= 0 && counts[key] <= 10000); }
@@ -513,7 +521,7 @@ const c = {enabled:true,schema_version:SCHEMA,schema_key:SCHEMA_KEY,counter_mean
 await usageChain; await verifiedSet('meta/usage_consent',c); consent = c; consentReady = true; offRequested = false; localPaused = false; await persistCounts(); emit('consent'); await refreshSettings(); status.textContent = 'Weekly counts On.'; closeSheet(s);
 } catch (e) { localPaused = true; recordError('usage','consent',e.code || e.name); status.textContent = 'Counts not enabled. Copy diagnostic.'; on.disabled = false; }
 },true); on.disabled = !o.learningEnabled || !o.db || o.canWrite === false || !/^[a-f0-9]{16,32}$/.test(o.installId || '') || !validVersion(o.version);
-s.actions.append(on,button('Not now',() => closeSheet(s)),button('Copy diagnostic',openDiagnostic));
+s.actions.append(on,button('Not now',() => closeSheet(s)),button('View diagnostic',openDiagnostic));
 }
 async function setUsageEnabled(enabled) {
 if (enabled) { openConsent(); return false; }
@@ -551,7 +559,7 @@ catch (e) { recordError('report','set',e.code); notice(row,'Cancellation is not 
 });
 paragraph(el,'Receipts','mot-strong'); if (!receipts.length) paragraph(el,'No receipts yet.');
 receipts.forEach(item => { const row = node('section',undefined,'mot-receipt'); const sent = item.acknowledged_at && ['sent','acknowledged'].includes(item.status); paragraph(row,item.id + ': ' + (sent ? 'Sent':'Queued')); row.append(button('View receipt',() => openCopy('Receipt',JSON.stringify(item,null,2)))); el.append(row); });
-el.append(button('Delete sent reports and counts',openDeletion),button('Copy diagnostic',openDiagnostic));
+el.append(button('Delete sent reports and counts',openDeletion),button('View diagnostic',openDiagnostic));
 }
 function openDeletion() {
 let s; s = sheet('Delete sent reports and counts',() => closeSheet(s));

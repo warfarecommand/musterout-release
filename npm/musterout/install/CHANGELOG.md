@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.2.18 (2026-10-18)
+- Registration now shows up reliably on new boards, with a Register link in Settings if you miss it.
+- Plan, Timeline, VA Claim and Settings are shorter and easier to use on a phone.
+
 ## 0.2.17 (2026-10-18)
 
 - Registration now appears when your plan is ready, with a link in Settings if you need it.

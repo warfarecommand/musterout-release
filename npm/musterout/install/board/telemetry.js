@@ -25,7 +25,7 @@ async function telLoad(){
   TEL.expired=[];for(var group of [['telemetry_buckets',TEL.buckets],['telemetry_outbox',TEL.outbox]])for(var item of group[1])if(item.value.expires_at&&item.value.expires_at<=Date.now())TEL.expired.push({collection:group[0],id:item.id});
   TEL.expiredAnswers=(TEL.state.answers||[]).concat(TEL.state.queuedUsage||[]).some(function(x){return x.expires_at<=Date.now();});
   TEL.loaded=true;
- }catch(e){TEL.message='Counts are unavailable. Your plan is still here.';TEL.loaded=false;}
+ }catch(e){TEL.message='Counts are unavailable. Your plan is still here.';TEL.loaded=false;if(rg3Enabled()||rg3Mode()||S.install?.registration_schema==='rg2-v3')rg3RetryLoad();}
  render();
 }
 function telLicenseReady(){return TEL_CONFIG.licenseAcknowledgmentRequired===false||TEL_CONFIG.licenseAcknowledgmentRequired===undefined||TEL_CONFIG.licenseAcknowledgmentRequired===true&&TEL_CONFIG.licenseAcknowledgmentVersion==='1.0'&&typeof TEL_CONFIG.licenseAcknowledgmentUrl==='string'&&/^https:\/\/[^\s?#]+$/.test(TEL_CONFIG.licenseAcknowledgmentUrl)&&TC.hex(TEL_CONFIG.licenseAcknowledgmentSha256,64);}
