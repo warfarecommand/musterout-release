@@ -80,7 +80,7 @@ function coachLoad(){
 function coachCard(){
  var h='<section class="panel coach-card" aria-labelledby="coachTitle"><h2 id="coachTitle">Get a coach that knows your plan.</h2>';
  if(C1_DEMO)return h+'<p>Demo plan. Open your own board to set up your coach.</p></section>';
- h+='<ul><li>Keeps and reads your documents.</li><li>Checks Gmail and your calendar when you connect them.</li><li>Remembers your plan and what you tell it.</li></ul><a class="btn pri" href="https://warfarecommand.com/musterout/coach/" target="_blank" rel="noopener">Get the coach setup guide</a>';
+ h+='<ul><li>Keeps and reads your documents.</li><li>Checks Gmail and your calendar when you connect them.</li><li>Remembers your plan and what you tell it.</li></ul><a class="btn pri" href="https://warfarecommand.com/musterout/coach/#setup-help-email" target="_blank" rel="noopener">Email me the coach setup guide</a>';
  if(S.reset)h+='<p>Coach notes are paused while the board resets.</p>';
  else if(COACH.statusState==='ready'&&COACH.status)h+='<p>Coach set up. Open Muster Out in Claude Projects.</p>';
  else if(COACH.statusState!=='ready')h+='<p>Coach setup could not be checked.</p>';

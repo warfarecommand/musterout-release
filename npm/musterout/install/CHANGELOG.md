@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.2.19 (2026-10-18)
+- Setup and updates download less, so they finish faster.
+- Get the coach setup guide by email from the site or your board.
+
 ## 0.2.18 (2026-10-18)
 - Registration now shows up reliably on new boards, with a Register link in Settings if you miss it.
 - Plan, Timeline, VA Claim and Settings are shorter and easier to use on a phone.

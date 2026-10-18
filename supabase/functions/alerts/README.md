@@ -65,3 +65,49 @@ GET confirm, weekly-add, stop-setup, and unsubscribe links redirect to the site'
 RFC 8058 `List-Unsubscribe` and `List-Unsubscribe-Post: List-Unsubscribe=One-Click` are unchanged. Mail-client POSTs go directly to the token URL, return 200 without a redirect, and need no browser Origin or credentials. Deployment and consented provider verification remain supervisor work. No schema change is needed for this repair.
 
 The browser review page marks human unsubscribe POSTs with `review=1`, which requires the Muster Out Origin. A nonmatching or evicted token returns 404 in that mode instead of claiming removal. Direct provider URL POSTs retain idempotent 200, even with an application/json Accept header. The action page bounds both response headers and body reads to 15 seconds, then restores the button and explains that the result may already have been saved. It never retries automatically.
+
+## Requested coach guide (Day 19)
+
+The one-guide flow is independent of the disabled three-message proposal. Deploy
+compatibility hotfix `0861ece` first to restore ordinary signup, confirmation,
+preferences and unsubscribe against the existing production schema. It adds no
+flag or migration. Normal routes select only production columns; unmatched
+legacy footer tokens fail closed if the optional setup schema is absent.
+
+After supervisor review and application of Day 19 EMAIL's minimal SQL, enable
+`COACH_GUIDE_ENABLED=true`. The new fields are `coach_guide` and
+`coach_guide_opted_at`; the source constraint allows `coach`. Do not apply
+`setup_stream.sql`, create setup claims, alter `email_delivery_gate`, or enable
+the setup cron for this guide. Keep `SETUP_EMAIL_ENABLED` absent or false.
+
+The coach form posts `source: "coach", guide: true` after an unchecked opt-in.
+An old `setup: true` client retains its original scope and stays disabled.
+The scope-bound confirmation becomes `consent:coach-guide:v1` only on explicit
+POST. The guide is sent once from reviewed local HTML and plaintext in
+`coach_guide.ts`, with no Resend template publication. It never sends welcome
+or setup follow-ups. A confirmed address is left unchanged by another request;
+the site offers the same public guide directly.
+
+`sendCoachGuide(row, deps)` is read-only by default. Passing `false` is a send
+and requires the supervisor's approval for any operational test or recovery.
+The handler passes it only after explicit address confirmation. The reviewed renderer uses `coach-guide:v2` and versioned provider idempotency.
+All prior `coach-guide:vN` receipts suppress another guide for that address,
+including accepted v1 and held/uncertain attempts. A stable `coach-guide:once`
+transactional receipt serializes current and future versions; the separate v2
+receipt freezes reviewed bytes. A final legacy-history read precedes submission.
+Consent and pending-token scope stay v1, so existing confirmations remain valid.
+Existing 13-month receipt retention also covers deletion and re-enrollment.
+Failed, reserved or unknown attempts are held for review, not retried. The guide
+uses fresh private preferences and unsubscribe links from the ordinary token
+array and rechecks consent immediately before provider submission. A message
+already in flight can still arrive after withdrawal.
+
+For rollback, disable the guide flag, deploy `0861ece` and the prior site, then
+have the supervisor review the separate SQL rollback. It preserves existing
+coach-source records rather than deleting subscribers to restore a narrower
+source check. No production writes or sends are performed by the local tests.
+
+Email rendering uses shared literal CSS and inline table buttons in `email_html.ts`.
+Do not introduce custom properties or important rules in email CSS. Local template
+sources are separate from published Resend aliases; no production HTML is fetched
+by the sender, and a local edit does not update the provider.

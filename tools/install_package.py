@@ -14,6 +14,17 @@ spec = importlib.util.spec_from_file_location('musterout_verify', ROOT / 'npm/mu
 verify = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(verify)
 
+# Folder releases keep their full source/build layout. The signed npm install
+# needs the prebuilt boards and guides, not authoring tools or deployed servers.
+INSTALL_BUILD_ONLY = frozenset({
+    'board/template.html',
+    'board/build_seed.py',
+    'board/seed_copy.py',
+    'board/build_board.py',
+    'tools/install_package.py',
+    'packs/usmc/check_w6.py',
+})
+
 
 def public_files(root=ROOT):
     # Derived from the reviewed public builder allowlist, never a tree copy.
@@ -23,6 +34,8 @@ def public_files(root=ROOT):
         p = source.relative_to(ROOT).as_posix()
         if p.startswith('my/'):
             continue  # Even the public folder scaffolding is excluded from install authority.
+        if p in INSTALL_BUILD_ONLY or p.startswith('supabase/'):
+            continue
         verify.safe_path(p)
         actual = root / p
         if any(x.is_symlink() for x in [actual, *actual.parents]) or not actual.is_file():

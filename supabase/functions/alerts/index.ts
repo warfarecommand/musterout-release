@@ -1,6 +1,8 @@
+import { EMAIL_STYLES, emailButton } from "./email_html.ts";
 // Website correction alerts. Deploy with verify_jwt false. No contact sync.
 // Reader: a Marine who requested alerts. Effect: confirm consent or delete the signup.
 import { BodyReadError, readBody } from "../_shared/body.ts";
+import { COACH_GUIDE_COPY, renderCoachGuide, renderGuideConfirmation } from "./coach_guide.ts";
 export const SITE = "https://musterout.warfarecommand.com";
 export const ORIGINS = [SITE, "https://warfarecommand.com", "https://www.warfarecommand.com"];
 const SOURCES = ["hub", "musterout", "register", "ai101", "coach"];
@@ -16,6 +18,11 @@ export const MUSTEROUT_SCOPE = "correction alerts and release notes";
 // Pending platform tokens use a scope-bound hash; legacy pending links stay narrow.
 export const PLATFORM_CONSENT = "consent:platform-updates:v1";
 const streamConfirmHash = (raw: string) => hash("campaign-streams:v2:" + raw);
+export const GUIDE_CONSENT = "consent:coach-guide:v1";
+export const GUIDE_CAMPAIGN = "coach-guide:v2";
+const GUIDE_ONCE = "coach-guide:once";
+export const GUIDE_SCOPE = "one Muster Out coach setup guide after you confirm. No setup follow-up emails or ongoing updates";
+const guideConfirmHash = (raw: string) => hash("coach-guide:v1:" + raw);
 export const SETUP_CONSENT = "consent:setup-help:v1";
 const setupConfirmHash = (raw: string) => hash("setup-help:v1:" + raw);
 export const SETUP_SCOPE = "Setup help: up to three emails over about 48 hours. No open or click tracking";
@@ -42,9 +49,19 @@ const CORS = { "Access-Control-Allow-Origin": SITE, "Access-Control-Allow-Method
 const redirect = (page: string) => new Response(null, { status: 303, headers: { Location: `${SITE}/alerts/${page}/`, "Cache-Control": "no-store", "Referrer-Policy": "no-referrer" } });
 const tokenOk = (value: string) => /^[a-f0-9]{64}$/.test(value);
 export type Env = (name: string) => string | undefined;
-export type Row = { id: string; email: string; status: string; confirm_hash: string | null; unsubscribe_hashes: string[]; setup_token_hashes?: string[]; last_sent_at: string | null; weekly: boolean; monthly: boolean; corrections: boolean; lessons: boolean; setup?: boolean; setup_opted_at?: string | null; confirmed_at?: string | null };
-export const ROW_FIELDS = "id,email,status,confirm_hash,unsubscribe_hashes,setup_token_hashes,last_sent_at,weekly,monthly,corrections,lessons,setup,setup_opted_at,confirmed_at";
-const footerAuth = (digest: string) => ({ or: `(unsubscribe_hashes.cs.{${digest}},setup_token_hashes.cs.{${digest}})` });
+export type Row = { id: string; email: string; status: string; confirm_hash: string | null; unsubscribe_hashes: string[]; setup_token_hashes?: string[]; last_sent_at: string | null; weekly: boolean; monthly: boolean; corrections: boolean; lessons: boolean; setup?: boolean; setup_opted_at?: string | null; confirmed_at?: string | null; coach_guide?: boolean; coach_guide_opted_at?: string | null };
+// Normal alerts must work before the optional setup-series schema is applied.
+export const ROW_FIELDS = "id,email,status,confirm_hash,unsubscribe_hashes,last_sent_at,weekly,monthly,corrections,lessons,confirmed_at";
+const GUIDE_ROW_FIELDS = ROW_FIELDS + ",coach_guide,coach_guide_opted_at";
+const SETUP_ROW_FIELDS = ROW_FIELDS + ",setup_token_hashes,setup,setup_opted_at";
+// Existing ordinary footers use only the production column. An unmatched token
+// may be an older setup footer; an absent optional column fails closed.
+async function footerRows(db: Database, method: string, digest: string, params: Record<string, string> = {}, body?: unknown): Promise<Row[]> {
+  const rows = await db.rows("alert_signups", method, { unsubscribe_hashes: `cs.{${digest}}`, ...params }, body);
+  if (rows.length) return rows;
+  try { return await db.rows("alert_signups", method, { setup_token_hashes: `cs.{${digest}}`, ...params }, body); }
+  catch { return []; }
+}
 
 export async function hash(value: string): Promise<string> {
   const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
@@ -69,30 +86,30 @@ export function escapeHtml(value: string): string {
 
 // PostgREST only. Never return database errors, addresses, or credentials to callers.
 // Branded email in the Field Desk house style: paper ground, ink type, red only where it means something.
-// Table layout and inline styles so Gmail, Outlook, and Apple Mail render it the same. Light only by design.
-const INK = "#1a1a1c", INK2 = "#4a4a4f", INK3 = "#5f5f65", RED = "#C8102E", REDINK = "#8f0b21", PAPER = "#f3f2ee", PANEL = "#ffffff", LINE = "#dcdad3";
+// Literal email CSS and inline table buttons survive stripped or limited CSS.
+const RED = "#C8102E", PAPER = "#f3f2ee", PANEL = "#ffffff", LINE = "#dcdad3";
 const SANS = "'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif";
 const COND = "'IBM Plex Sans Condensed','Arial Narrow','IBM Plex Sans',Helvetica,Arial,sans-serif";
 const MONO = "'IBM Plex Mono',ui-monospace,Menlo,Consolas,'Courier New',monospace";
 export type EmailParts = { preheader: string; eyebrow: string; heading: string; paragraphs: string[]; button?: { label: string; url: string }; callout?: { label: string; body: string }; note?: string; reason: string; unsubscribeUrl?: string; prefsUrl?: string };
 export function renderEmail(m: EmailParts): { html: string; text: string } {
   const e = escapeHtml;
-  const para = (t: string) => `<p style="margin:0 0 16px;font:400 16px/1.6 ${SANS};color:${INK};">${e(t)}</p>`;
-  const button = m.button ? `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:8px 0 20px;"><tr><td bgcolor="${RED}" style="background:${RED};border-radius:3px;"><a href="${e(m.button.url)}" style="display:inline-block;padding:15px 22px;font:600 14px/1 ${MONO};letter-spacing:.06em;color:#ffffff;text-decoration:none;text-transform:uppercase;">${e(m.button.label)}</a></td></tr></table><p style="margin:0 0 20px;font:400 13px/1.5 ${SANS};color:${INK3};">Or paste this link into your browser:<br><a href="${e(m.button.url)}" style="font:400 12px/1.5 ${MONO};color:${REDINK};word-break:break-all;">${e(m.button.url)}</a></p>` : "";
-  const callout = m.callout ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:4px 0 20px;"><tr><td style="border-left:2px solid ${RED};padding:4px 0 4px 14px;"><div style="font:600 11px/1.4 ${MONO};letter-spacing:.12em;text-transform:uppercase;color:${INK3};margin-bottom:6px;">${e(m.callout.label)}</div><div style="font:400 13px/1.55 ${MONO};color:${INK};word-break:break-word;">${e(m.callout.body)}</div></td></tr></table>` : "";
-  const note = m.note ? `<p style="margin:0;font:400 14px/1.55 ${SANS};color:${INK2};">${e(m.note)}</p>` : "";
-  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="supported-color-schemes" content="light"><title>${e(m.heading)}</title><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet"><style>body{margin:0;padding:0;background:${PAPER};}a{color:${REDINK};}@media (max-width:620px){.wrap{width:100%!important;}.pad{padding:24px 20px!important;}h1{font-size:28px!important;}}</style></head>
-<body style="margin:0;padding:0;background:${PAPER};"><div style="display:none;max-height:0;overflow:hidden;opacity:0;color:${PAPER};">${e(m.preheader)}</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${PAPER}" style="background:${PAPER};"><tr><td align="center" style="padding:28px 12px 36px;">
-<table role="presentation" class="wrap" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px;max-width:600px;">
+  const para = (t: string) => `<p style="margin:0 0 16px;font:400 16px/1.6 ${SANS};">${e(t)}</p>`;
+  const button = m.button ? emailButton(m.button.label, m.button.url) + `<p style="margin:0 0 20px;font:400 13px/1.5 ${SANS};">Or paste this link into your browser:<br><a href="${e(m.button.url)}" style="font:400 12px/1.5 ${MONO};word-break:break-all;">${e(m.button.url)}</a></p>` : "";
+  const callout = m.callout ? `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:4px 0 20px;"><tr><td style="border-left:2px solid ${RED};padding:4px 0 4px 14px;"><div style="font:600 11px/1.4 ${MONO};letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px;">${e(m.callout.label)}</div><div style="font:400 13px/1.55 ${MONO};word-break:break-word;">${e(m.callout.body)}</div></td></tr></table>` : "";
+  const note = m.note ? `<p class="email-muted" style="margin:0;font:400 14px/1.55 ${SANS};">${e(m.note)}</p>` : "";
+  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark"><title>${e(m.heading)}</title><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans+Condensed:wght@600&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet"><style>${EMAIL_STYLES}</style></head>
+<body style="margin:0;padding:0;"><div style="display:none;max-height:0;overflow:hidden;opacity:0;color:${PAPER};">${e(m.preheader)}</div>
+<table role="presentation" class="email" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${PAPER}"><tr><td align="center" style="padding:28px 12px 36px;">
+<table role="presentation" class="wrap" width="100%" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;">
 <tr><td style="padding:0 4px 14px;border-bottom:2px solid ${RED};"><img src="https://musterout.warfarecommand.com/assets/brand/email-header-600@2x.png" width="300" height="56" alt="Warfare Command" title="MUSTER OUT" style="display:block;width:300px;max-width:100%;height:auto;font-family:'IBM Plex Mono',ui-monospace,Menlo,Consolas,'Courier New',monospace;font-size:12px;line-height:1.3;color:#8f0b21;font-weight:600;letter-spacing:.16em;"></td></tr>
 <tr><td style="height:20px;line-height:20px;font-size:0;">&nbsp;</td></tr>
-<tr><td class="pad" bgcolor="${PANEL}" style="background:${PANEL};border:1px solid ${LINE};border-top:3px solid ${RED};padding:32px 32px 28px;">
-<div style="font:600 12px/1.3 ${MONO};letter-spacing:.14em;text-transform:uppercase;color:${REDINK};margin-bottom:10px;">${e(m.eyebrow)}</div>
-<h1 style="margin:0 0 18px;font:600 32px/1.12 ${COND};color:${INK};">${e(m.heading)}</h1>
+<tr><td class="pad email-panel" bgcolor="${PANEL}" style="border:1px solid ${LINE};border-top:3px solid ${RED};padding:32px 32px 28px;">
+<div style="font:600 12px/1.3 ${MONO};letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px;">${e(m.eyebrow)}</div>
+<h1 style="margin:0 0 18px;font:600 32px/1.12 ${COND};">${e(m.heading)}</h1>
 ${m.paragraphs.map(para).join("")}${button}${callout}${note}
 </td></tr>
-<tr><td style="padding:22px 4px 0;font:400 12px/1.6 ${SANS};color:${INK3};"><p style="margin:0 0 8px;">${e(m.reason)}${m.prefsUrl ? ` <a href="${e(m.prefsUrl)}" style="color:${INK2};">Email preferences</a>.` : ""}${m.unsubscribeUrl ? ` <a href="${e(m.unsubscribeUrl)}" style="color:${INK2};">Unsubscribe from everything</a>.` : ""}</p><p style="margin:0;">Warfare Command. Free tools built by a Marine. Unofficial; not affiliated with the Department of Defense or the Marine Corps. <a href="${SITE}" style="color:${INK2};">musterout.warfarecommand.com</a></p></td></tr>
+<tr><td style="padding:22px 4px 0;font:400 12px/1.6 ${SANS};"><p style="margin:0 0 8px;">${e(m.reason)}${m.prefsUrl ? ` <a href="${e(m.prefsUrl)}" style="">Email preferences</a>.` : ""}${m.unsubscribeUrl ? ` <a href="${e(m.unsubscribeUrl)}" style="">Unsubscribe from everything</a>.` : ""}</p><p style="margin:0;">Warfare Command. Free tools built by a Marine. Unofficial; not affiliated with the Department of Defense or the Marine Corps. <a href="${SITE}" style="">musterout.warfarecommand.com</a></p></td></tr>
 </table></td></tr></table></body></html>`;
   const text = ["MUSTER OUT | Warfare Command", m.heading, ...m.paragraphs, ...(m.button ? [`${m.button.label}: ${m.button.url}`] : []), ...(m.callout ? [`${m.callout.label}: ${m.callout.body}`] : []), ...(m.note ? [m.note] : []), m.unsubscribeUrl ? `${m.reason} Unsubscribe from everything: ${m.unsubscribeUrl}` : m.reason, ...(m.prefsUrl ? [`Email preferences: ${m.prefsUrl}`] : []), "Warfare Command. Free tools built by a Marine. Unofficial; not affiliated with the Department of Defense or the Marine Corps."].join("\n\n");
   return { html, text };
@@ -138,7 +155,7 @@ export async function freshLinks(db: Database, id: string, filters: Record<strin
   const unsub = token(), prefs = token(), weekly = token(), stop = token();
   const additions = await Promise.all([unsub, prefs, ...(includeWeekly ? [weekly] : []), ...(setup ? [stop] : [])].map(hash));
   for (let attempt = 0; attempt < 3; attempt++) {
-    const row = (await db.rows("alert_signups", "GET", { id: `eq.${id}`, ...filters, select: ROW_FIELDS }))[0];
+    const row = (await db.rows("alert_signups", "GET", { id: `eq.${id}`, ...filters, select: setup ? SETUP_ROW_FIELDS : filters.coach_guide ? GUIDE_ROW_FIELDS : ROW_FIELDS }))[0];
     if (!row) return;
     const column = setup ? "setup_token_hashes" : "unsubscribe_hashes";
     const old = setup ? row.setup_token_hashes : row.unsubscribe_hashes;
@@ -200,13 +217,72 @@ export async function sendWelcome(row: Row, deps: SendDeps) {
   }
 }
 
+// This requested guide uses the existing transactional receipt table, not the
+// disabled setup-series SQL gate. Failed/unknown claims never retry themselves.
+export async function sendCoachGuide(row: Row, deps: SendDeps, dry = true): Promise<{ decision: string }> {
+  if (deps.env("COACH_GUIDE_ENABLED") !== "true") return { decision: "disabled" };
+  const db = database(deps.env, deps.fetch);
+  const filters = { status: "eq.confirmed", coach_guide: "eq.true", confirm_hash: `eq.${GUIDE_CONSENT}` };
+  const current = (await db.rows("alert_signups", "GET", { id: `eq.${row.id}`, ...filters, select: GUIDE_ROW_FIELDS }))[0];
+  if (!current) return { decision: "consent_changed" };
+  const content = JSON.stringify(renderCoachGuide({unsubscribeUrl: "UNSUBSCRIBE_URL", prefsUrl: "PREFS_URL"}));
+  const salt = deps.env("IP_HASH_SALT") || deps.env("INGEST_SALT");
+  if (!salt) throw new Error("Email hash salt is not configured");
+  const recipient_hash = await hash(salt + "delivery:" + current.email);
+  const history = async () => (await db.rows<Receipt>("email_delivery_receipts", "GET", { recipient_hash: `eq.${recipient_hash}`, campaign: "like.coach-guide:%", select: "campaign,recipient_hash,content_hash,state" })).filter(r => /^coach-guide:v\d+$/.test(r.campaign) || r.campaign === GUIDE_ONCE);
+  const prior = await history();
+  // Versioning reviewed HTML must never grant an address another guide. Treat
+  // uncertain old claims as held too, even after unsubscribe/re-enrollment.
+  const older = prior.filter(r => r.campaign !== GUIDE_CAMPAIGN && r.campaign !== GUIDE_ONCE);
+  if (older.length) return { decision: older.some(r => ["reserved", "failed", "unknown"].includes(r.state)) ? "blocked" : "duplicate" };
+  const version = prior.find(r => r.campaign === GUIDE_CAMPAIGN);
+  if (version) return { decision: version.content_hash !== await hash(content) ? "changed" : ["reserved", "failed", "unknown"].includes(version.state) ? "blocked" : "duplicate" };
+  const once = prior.find(r => r.campaign === GUIDE_ONCE);
+  if (once) return { decision: ["reserved", "failed", "unknown"].includes(once.state) ? "blocked" : "duplicate" };
+  if (dry) return { decision: "eligible" };
+  const key = deps.env("RESEND_API_KEY");
+  if (!key) return { decision: "not_configured" };
+  // One stable unique key serializes all renderer versions using this path.
+  // A second receipt freezes the reviewed v2 bytes without changing that key.
+  const guard = await claimDelivery(db, current, GUIDE_ONCE, GUIDE_ONCE, deps.env, true);
+  if (!guard) return { decision: "duplicate" };
+  const now = deps.now?.() ?? Date.now();
+  let receipt: Receipt | undefined;
+  const state = async (value: string) => {
+    if (receipt) await deliveryState(db, receipt, value, now);
+    await deliveryState(db, guard, value, now);
+  };
+  try {
+    receipt = await claimDelivery(db, current, GUIDE_CAMPAIGN, content, deps.env, true);
+    if (!receipt) { await state("skipped"); return { decision: "duplicate" }; }
+    const ready = await freshLinks(db, current.id, filters);
+    if (!ready) { await state("skipped"); return { decision: "consent_changed" }; }
+    const final = (await db.rows("alert_signups", "GET", { id: `eq.${current.id}`, ...filters, select: "id" }))[0];
+    if (!final || deps.env("COACH_GUIDE_ENABLED") !== "true") { await state("skipped"); return { decision: "consent_changed" }; }
+    if ((await history()).some(r => r.campaign !== GUIDE_CAMPAIGN && r.campaign !== GUIDE_ONCE)) { await state("skipped"); return { decision: "duplicate" }; }
+    const message = renderCoachGuide({ unsubscribeUrl: ready.links.UNSUBSCRIBE_URL, prefsUrl: ready.links.PREFS_URL });
+    const response = await deps.fetch("https://api.resend.com/emails", { method: "POST", headers: { Authorization: `Bearer ${key}`, "content-type": "application/json", "Idempotency-Key": `coach-guide-v2-${receipt.recipient_hash}` }, body: JSON.stringify({ from: FROM, to: [current.email], reply_to: "feedback@warfarecommand.com", subject: COACH_GUIDE_COPY.subject, ...message, headers: unsubscribeHeaders(ready.links.UNSUBSCRIBE_URL) }) });
+    if (!response.ok) {
+      await state(response.status >= 500 || [408, 409, 429].includes(response.status) ? "unknown" : "failed");
+      return { decision: "unavailable" };
+    }
+    if (!(await response.json()).id) throw new Error("Uncertain guide response");
+    await state("accepted");
+    await db.rows("alert_signups", "PATCH", { id: `eq.${current.id}`, status: "eq.confirmed" }, { last_sent_at: new Date(now).toISOString() });
+    return { decision: "accepted" };
+  } catch {
+    for (const claim of [receipt, guard]) if (claim) await db.rows("email_delivery_receipts", "PATCH", { campaign: `eq.${claim.campaign}`, recipient_hash: `eq.${claim.recipient_hash}`, state: "eq.reserved" }, { state: "unknown", updated_at: new Date(now).toISOString() });
+    return { decision: "unavailable" };
+  }
+}
+
 export type Stream = "corrections" | "monthly" | "weekly" | "lessons" | "setup";
 export type DeliveryReport = { recipients: number; eligible: number; accepted: number; skipped: number; reasons: Record<string, number> };
 const contentHash = (alias: string, variables: Record<string, string | number>) => hash(JSON.stringify({ alias, variables: Object.fromEntries(Object.entries(variables).sort(([a], [b]) => a.localeCompare(b))) }));
 async function candidates(db: Database, filters: Record<string, string>): Promise<Row[]> {
   const snapshot: Row[] = []; let after = "";
   while (true) {
-    const rows = await db.rows("alert_signups", "GET", { select: ROW_FIELDS, status: "eq.confirmed", ...filters, order: "id.asc", limit: "500", ...(after ? { id: `gt.${after}` } : {}) });
+    const rows = await db.rows("alert_signups", "GET", { select: filters.setup ? SETUP_ROW_FIELDS : ROW_FIELDS, status: "eq.confirmed", ...filters, order: "id.asc", limit: "500", ...(after ? { id: `gt.${after}` } : {}) });
     if (!rows.length) return snapshot;
     snapshot.push(...rows); after = rows[rows.length - 1].id;
   }
@@ -231,7 +307,7 @@ export async function sendTemplates(alias: string, campaign: string, variables: 
     const messages: ReturnType<typeof templateMessage>[] = [], receipts: Receipt[] = [], ids: string[] = [];
     try {
       for (const snapshot of rows.slice(start, start + 100)) {
-        const row = dry ? snapshot : (await db.rows("alert_signups", "GET", { id: `eq.${snapshot.id}`, status: "eq.confirmed", ...filters, select: ROW_FIELDS }))[0];
+        const row = dry ? snapshot : (await db.rows("alert_signups", "GET", { id: `eq.${snapshot.id}`, status: "eq.confirmed", ...filters, select: filters.setup ? SETUP_ROW_FIELDS : ROW_FIELDS }))[0];
         if (!row) { skip("consent_changed"); continue; }
         const gate = await streamGate(db, row, campaign, content, stream, deps.env, dry);
         if (!["claimed", "eligible"].includes(gate.decision)) { skip(gate.decision); continue; }
@@ -316,6 +392,10 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
     const cors = { ...CORS, "Access-Control-Allow-Origin": ORIGINS.includes(origin) ? origin : SITE };
     const json = (status: number, body: unknown) => new Response(JSON.stringify(body), { status, headers: { ...cors, "content-type": "application/json", "Cache-Control": "no-store" } });
     const success = () => json(200, { ok: true });
+    // Legacy setup links may outlive its send flag, but the old schema is optional.
+    const guideSchema = deps.env("COACH_GUIDE_ENABLED") === "true";
+    const setupSchema = deps.env("SETUP_EMAIL_ENABLED") === "true";
+    const rowFields = setupSchema ? SETUP_ROW_FIELDS : ROW_FIELDS;
     const u = new URL(req.url);
     if (req.method === "OPTIONS") {
       if (!ORIGINS.includes(origin)) return json(403, { ok: false, error: "origin" });
@@ -343,8 +423,8 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
         if (!tokenOk(stop)) return json(404, { ok: false, error: "expired" });
         if (req.method === "GET") return landing({ stop_setup: stop });
         if (origin && origin !== SITE) return json(403, { ok: false, error: "origin" });
-        const db = database(deps.env, deps.fetch), auth = footerAuth(await hash(stop));
-        const rows = await db.rows("alert_signups", "PATCH", auth, { setup: false });
+        const db = database(deps.env, deps.fetch);
+        const rows = await footerRows(db, "PATCH", await hash(stop), {}, { setup: false });
         if (!rows.length) return json(404, { ok: false, error: "expired" });
         return success();
       }
@@ -356,7 +436,7 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
         if (origin && origin !== SITE) return json(403, { ok: false, error: "origin" });
         const reviewed = u.searchParams.get("review") === "1";
         if (reviewed && origin !== SITE) return json(403, { ok: false, error: "origin" });
-        const rows = tokenOk(unsubscribe) ? await database(deps.env, deps.fetch).rows("alert_signups", "DELETE", footerAuth(await hash(unsubscribe))) : [];
+        const rows = tokenOk(unsubscribe) ? await footerRows(database(deps.env, deps.fetch), "DELETE", await hash(unsubscribe)) : [];
         // A browser must not claim removal when an expired link matched nothing.
         // Mail providers keep the RFC 8058 idempotent 200 response.
         if (!rows.length && reviewed) return json(404, { ok: false, error: "expired" });
@@ -380,27 +460,35 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
           const rows = await db.rows("alert_signups", "PATCH", { id: `eq.${row.id}`, status: "eq.confirmed", unsubscribe_hashes: `eq.{${row.unsubscribe_hashes.join(",")}}` }, { weekly: true, unsubscribe_hashes: row.unsubscribe_hashes.filter(h => h !== digest) });
           return rows.length ? success() : json(409, { ok: false, error: "retry" });
         }
-        let changes;
+        let changes: Record<string, boolean> = {};
         if (req.method === "POST") {
           const raw = await readBody(req.body, 1024, deps.bodyDeadlineMs);
           try { changes = JSON.parse(raw); } catch { return json(400, { ok: false, error: "bad_json" }); }
           if (!changes || typeof changes !== "object" || Array.isArray(changes)) return json(400, { ok: false, error: "bad_input" });
-          if (!(changes.unsubscribe === true && Object.keys(changes).length === 1) && (["corrections", "monthly", "weekly", "lessons"].some(k => typeof changes[k] !== "boolean") || Object.keys(changes).some(k => !["corrections", "monthly", "weekly", "lessons", "setup"].includes(k)) || (changes.setup !== undefined && typeof changes.setup !== "boolean"))) return json(400, { ok: false, error: "bad_input" });
+          if (!(changes.unsubscribe === true && Object.keys(changes).length === 1) && (["corrections", "monthly", "weekly", "lessons"].some(k => typeof changes[k] !== "boolean") || Object.keys(changes).some(k => !["corrections", "monthly", "weekly", "lessons", "setup", "coach_guide"].includes(k)) || (changes.setup !== undefined && typeof changes.setup !== "boolean") || (changes.coach_guide !== undefined && typeof changes.coach_guide !== "boolean"))) return json(400, { ok: false, error: "bad_input" });
         }
-        const db = database(deps.env, deps.fetch), auth = footerAuth(await hash(prefs));
-        let row = (await db.rows("alert_signups", "GET", { ...auth, select: ROW_FIELDS }))[0];
+        const db = database(deps.env, deps.fetch), digest = await hash(prefs);
+        let row = (await footerRows(db, "GET", digest, { select: deps.env("SETUP_EMAIL_ENABLED") === "true" ? SETUP_ROW_FIELDS : ROW_FIELDS }))[0];
         if (!row) return json(404, { ok: false, error: "expired" });
+        // Optional guide fields must never make ordinary preferences unavailable.
+        if (guideSchema && row.confirm_hash === GUIDE_CONSENT) {
+          try { row = (await db.rows("alert_signups", "GET", { id: `eq.${row.id}`, select: GUIDE_ROW_FIELDS }))[0] || row; }
+          catch { /* Keep ordinary controls usable if the guide schema is absent. */ }
+        }
         if (req.method === "POST") {
           if (changes.unsubscribe === true && Object.keys(changes).length === 1) {
-            await db.rows("alert_signups", "DELETE", auth);
+            await footerRows(db, "DELETE", digest);
             return success();
           }
           if (row.status !== "confirmed") return json(409, { ok: false, error: "pending" });
+          if (changes.setup !== undefined && !setupSchema) return json(409, { ok: false, error: "unavailable" });
+          if (changes.coach_guide !== undefined && !guideSchema) return json(409, { ok: false, error: "unavailable" });
+          if (changes.coach_guide === true && row.coach_guide !== true) return json(409, { ok: false, error: "opt_in_required" });
           if (changes.setup === true && row.setup !== true) return json(409, { ok: false, error: "opt_in_required" });
-          row = (await db.rows("alert_signups", "PATCH", { ...auth, status: "eq.confirmed" }, { ...(changes.setup === undefined ? {} : { setup: changes.setup }), corrections: changes.corrections, monthly: changes.monthly, weekly: changes.weekly, lessons: changes.lessons }))[0];
+          row = (await footerRows(db, "PATCH", digest, { status: "eq.confirmed" }, { ...(changes.coach_guide === undefined ? {} : { coach_guide: changes.coach_guide }), ...(changes.setup === undefined ? {} : { setup: changes.setup }), corrections: changes.corrections, monthly: changes.monthly, weekly: changes.weekly, lessons: changes.lessons }))[0];
           if (!row) return json(404, { ok: false, error: "expired" });
         }
-        return json(200, { ok: true, email: row.email, status: row.status, corrections: row.corrections, monthly: row.monthly, weekly: row.weekly, lessons: row.lessons, ...(row.setup === undefined ? {} : { setup: row.setup }) });
+        return json(200, { ok: true, email: row.email, status: row.status, corrections: row.corrections, monthly: row.monthly, weekly: row.weekly, lessons: row.lessons, coach_guide: row.coach_guide, ...(row.setup === undefined ? {} : { setup: row.setup }) });
       }
       const confirm = u.searchParams.get("confirm");
       if (confirm !== null) {
@@ -412,13 +500,14 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
         const now = deps.now?.() ?? Date.now(), confirmed_at = new Date(now).toISOString();
         // Keep expiry in the atomic update predicate for every token format.
         const pending = { status: "eq.pending", last_sent_at: `gte.${new Date(now - 7 * 86400000).toISOString()}` };
-        const setup = await db.rows("alert_signups", "PATCH", { confirm_hash: `eq.${await setupConfirmHash(confirm)}`, ...pending, setup: "eq.true" }, { status: "confirmed", confirm_hash: SETUP_CONSENT, confirmed_at });
+        const guide = await db.rows("alert_signups", "PATCH", { confirm_hash: `eq.${await guideConfirmHash(confirm)}`, ...pending }, { status: "confirmed", confirm_hash: GUIDE_CONSENT, confirmed_at });
+        const setup = guide.length ? guide : await db.rows("alert_signups", "PATCH", { confirm_hash: `eq.${await setupConfirmHash(confirm)}`, ...pending }, { status: "confirmed", confirm_hash: SETUP_CONSENT, confirmed_at });
         const current = setup.length ? setup : await db.rows("alert_signups", "PATCH", { confirm_hash: `eq.${await streamConfirmHash(confirm)}`, ...pending }, { status: "confirmed", confirm_hash: STREAM_CONSENT, confirmed_at });
         const platform = current.length ? current : await db.rows("alert_signups", "PATCH", { confirm_hash: `eq.${await platformConfirmHash(confirm)}`, ...pending }, { status: "confirmed", confirm_hash: PLATFORM_CONSENT, confirmed_at });
         const rows = platform.length ? platform : await db.rows("alert_signups", "PATCH", { confirm_hash: `eq.${await hash(confirm)}`, ...pending }, { status: "confirmed", confirm_hash: null, confirmed_at });
         if (!rows.length) return failed();
         // Confirmation is permanent even if the welcome provider is unavailable.
-        try { if (rows[0].setup) await sendSetup(deps, false, rows[0].id); else await sendWelcome(rows[0], deps); } catch { /* The durable receipt retains the attempt. */ }
+        try { if (rows[0].confirm_hash === GUIDE_CONSENT) await sendCoachGuide(rows[0], deps, false); else if (rows[0].setup) await sendSetup(deps, false, rows[0].id); else await sendWelcome(rows[0], deps); } catch { /* The durable receipt retains the attempt. */ }
         return completed("confirmed");
       }
       if (req.method !== "POST") return json(405, { ok: false, error: "method" });
@@ -437,9 +526,14 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
       if (body.kind === "subscribe" && body.source !== undefined && (typeof body.source !== "string" || !SOURCES.includes(body.source))) return json(400, { ok: false, error: "bad_input" });
       if (body.kind === "subscribe") {
         if (body.source === "coach") {
-          if (body.setup !== true || Object.keys(body).some(k => !["kind", "email", "website", "source", "setup"].includes(k))) return json(400, { ok: false, error: "bad_input" });
-          if (deps.env("SETUP_EMAIL_ENABLED") !== "true") return json(503, { ok: false, error: "not_configured" });
-        } else if (body.setup !== undefined) return json(400, { ok: false, error: "bad_input" });
+          if (body.guide === true) {
+            if (Object.keys(body).some(k => !["kind", "email", "website", "source", "guide"].includes(k))) return json(400, { ok: false, error: "bad_input" });
+            if (deps.env("COACH_GUIDE_ENABLED") !== "true") return json(503, { ok: false, error: "not_configured" });
+          } else {
+            if (body.setup !== true || Object.keys(body).some(k => !["kind", "email", "website", "source", "setup"].includes(k))) return json(400, { ok: false, error: "bad_input" });
+            if (deps.env("SETUP_EMAIL_ENABLED") !== "true") return json(503, { ok: false, error: "not_configured" });
+          }
+        } else if (body.setup !== undefined || body.guide !== undefined) return json(400, { ok: false, error: "bad_input" });
       }
       const resendKey = deps.env("RESEND_API_KEY");
       if (!resendKey) return json(503, { ok: false, error: "not_configured" });
@@ -466,7 +560,7 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
       // with last_sent_at before calling Resend, including failed send attempts.
       let addressReserved = false;
       for (let attempt = 0; attempt < 3; attempt++) {
-        const existing = (await db.rows("alert_signups", "GET", { email: `eq.${email}`, select: ROW_FIELDS }))[0];
+        const existing = (await db.rows("alert_signups", "GET", { email: `eq.${email}`, select: rowFields }))[0];
         if (existing?.status === "confirmed") return success();
         if (existing?.last_sent_at && now - Date.parse(existing.last_sent_at) < 600000) return success();
         // Deleting a signup must not reset its email cooldown. This salted
@@ -480,10 +574,10 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
         }
         const confirmToken = token(), unsubscribeToken = token(), prefsToken = token();
         const platform = body.source === "hub" || body.source === "ai101";
-        const confirm_hash = body.source === "coach" ? await setupConfirmHash(confirmToken) : await streamConfirmHash(confirmToken);
+        const confirm_hash = body.source === "coach" && body.guide === true ? await guideConfirmHash(confirmToken) : body.source === "coach" ? await setupConfirmHash(confirmToken) : await streamConfirmHash(confirmToken);
         const unsubscribe_hashes = [...(existing?.unsubscribe_hashes ?? []), await hash(unsubscribeToken), await hash(prefsToken)].slice(-RECENT_HASHES);
         const last_sent_at = new Date(now).toISOString();
-        const fields = { status: "pending", confirm_hash, unsubscribe_hashes, ip_hash, last_sent_at, source: body.source ?? null, ...streamDefaults(body.source), setup: body.source === "coach" && body.setup === true, setup_opted_at: body.source === "coach" ? last_sent_at : null };
+        const fields = { status: "pending", confirm_hash, unsubscribe_hashes, ip_hash, last_sent_at, source: body.source ?? null, ...streamDefaults(body.source), ...(body.source === "coach" && body.guide === true ? { coach_guide: true, coach_guide_opted_at: last_sent_at } : {}), ...(deps.env("SETUP_EMAIL_ENABLED") === "true" ? { setup: body.source === "coach" && body.setup === true, setup_opted_at: body.source === "coach" && body.setup === true ? last_sent_at : null } : {}) };
         const reserved = existing
           ? await db.rows("alert_signups", "PATCH", { id: `eq.${existing.id}`, status: "eq.pending", last_sent_at: existing.last_sent_at ? `eq.${existing.last_sent_at}` : "is.null" }, fields)
           : await db.rows("alert_signups", "POST", { on_conflict: "email" }, { email, ...fields }, "resolution=ignore-duplicates,return=representation");
@@ -491,12 +585,13 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
         const confirmUrl = `${ENDPOINT}?confirm=${confirmToken}`;
         const unsubscribeUrl = `${ENDPOINT}?unsubscribe=${unsubscribeToken}`;
         const prefsUrl = `${SITE}/alerts/preferences/?prefs=${prefsToken}`;
-        const scope = streamNames(fields);
+        const guideRequest = body.source === "coach" && body.guide === true;
+        const scope = guideRequest ? GUIDE_SCOPE : streamNames(fields);
         const { html, text } = renderEmail({
-          preheader: body.source === "coach" ? "Confirm your address for up to three setup help emails." : platform ? "Confirm your address to get Warfare Command updates." : "Confirm your address to get Muster Out correction alerts.",
+          preheader: guideRequest ? "Confirm your address to receive one coach setup guide." : body.source === "coach" ? "Confirm your address for up to three setup help emails." : platform ? "Confirm your address to get Warfare Command updates." : "Confirm your address to get Muster Out correction alerts.",
           eyebrow: body.source === "coach" ? "Setup help" : platform ? "Warfare Command updates" : "Correction alerts",
           heading: "Confirm your email",
-          paragraphs: [`Confirm your address to receive ${scope}. Weekly MARADMIN email is off until you add it.`],
+          paragraphs: [guideRequest ? `Confirm your address to receive ${scope}.` : `Confirm your address to receive ${scope}. Weekly MARADMIN email is off until you add it.`],
           button: { label: "Confirm my email", url: confirmUrl },
           note: "If you did not request this, you can ignore it.",
           reason: platform ? "This address was entered at warfarecommand.com." : "This address was entered at musterout.warfarecommand.com.",
@@ -507,8 +602,8 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
         const receipt = await claimDelivery(db, reserved[0], `confirm:${confirm_hash}`, confirm_hash, deps.env);
         if (!receipt) return success();
         try {
-          let sent = await deps.fetch("https://api.resend.com/emails", { method: "POST", headers, body: JSON.stringify({ ...common, template: { id: "confirm-subscription", variables: { CONFIRM_URL: confirmUrl, ALERT_UNSUBSCRIBE_URL: unsubscribeUrl, PREFS_URL: prefsUrl, CONSENT_SCOPE: scope } } }) });
-          if (!sent.ok && await templateRejected(sent)) sent = await deps.fetch("https://api.resend.com/emails", { method: "POST", headers: { ...headers, "Idempotency-Key": `alerts-confirm-fallback-${confirm_hash}` }, body: JSON.stringify({ ...common, html, text }) });
+          let sent = await deps.fetch("https://api.resend.com/emails", { method: "POST", headers, body: JSON.stringify(guideRequest ? { ...common, subject: "Confirm your Muster Out coach guide request", ...renderGuideConfirmation(confirmUrl, unsubscribeUrl, prefsUrl) } : { ...common, template: { id: "confirm-subscription", variables: { CONFIRM_URL: confirmUrl, ALERT_UNSUBSCRIBE_URL: unsubscribeUrl, PREFS_URL: prefsUrl, CONSENT_SCOPE: scope } } }) });
+          if (!guideRequest && !sent.ok && await templateRejected(sent)) sent = await deps.fetch("https://api.resend.com/emails", { method: "POST", headers: { ...headers, "Idempotency-Key": `alerts-confirm-fallback-${confirm_hash}` }, body: JSON.stringify({ ...common, html, text }) });
           if (!sent.ok) {
             await deliveryState(db, receipt, sent.status >= 500 || [408, 409, 429].includes(sent.status) ? "unknown" : "failed", now);
             return json(502, { ok: false, error: "send" });

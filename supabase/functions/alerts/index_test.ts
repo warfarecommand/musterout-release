@@ -28,6 +28,7 @@ export function fixture() {
     if (op === "lte") return row[key] != null && String(row[key]) <= value;
     if (op === "gte") return row[key] != null && String(row[key]) >= value;
     if (op === "gt") return String(row[key]) > value;
+    if (op === "like") { assert(value === "coach-guide:%", "Unsupported mock LIKE filter"); return String(row[key]).startsWith("coach-guide:"); }
     if (op === "in") return value.slice(1,-1).split(",").includes(String(row[key]));
     if (op === "cs") return ((row[key] ?? []) as string[]).includes(value.slice(1, -1));
     if (op === "eq" && Array.isArray(row[key])) return `{${(row[key] as string[]).join(",")}}` === value;
@@ -36,8 +37,8 @@ export function fixture() {
   });
   const reply = (body: unknown, status = 200, headers = {}) => new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", ...headers } });
   const net: typeof fetch = async (input, init) => {
-    const url = new URL(String(input)), method = init?.method ?? "GET", headers = new Headers(init?.headers);
-    const body = init?.body ? JSON.parse(String(init.body)) : undefined;
+    const url = new URL(String(input)), method = (init as RequestInit | undefined)?.method ?? "GET", headers = new Headers((init as RequestInit | undefined)?.headers);
+    const body = (init as RequestInit | undefined)?.body ? JSON.parse(String((init as RequestInit).body)) : undefined;
     calls.push({ url, method, body, headers });
     if (url.origin === "https://api.resend.com") {
       assert(url.pathname === "/emails" || url.pathname === "/emails/batch", "Never sync contacts");
@@ -642,15 +643,15 @@ Deno.test("weekly-add GET is passive and POST consumes the enrollment authorizer
   equal((await submit()).status,200);
   equal((await submit()).status,404);
   equal(f.tables.alert_signups[0].weekly,true);
-  assert(!(f.tables.alert_signups[0].unsubscribe_hashes as string[]).includes(await hash(raw)));
-  assert(!JSON.stringify(f.tables).includes(raw));
+  assert(!(f.tables.alert_signups[0].unsubscribe_hashes as string[]).includes(await hash(raw!)));
+  assert(!JSON.stringify(f.tables).includes(raw!));
 });
 
 Deno.test("a preference change after link reservation removes the recipient before batch dispatch",async()=>{
   const f=fixture();f.tables.alert_signups.push(row("one"));
   const net:typeof fetch=async(input,init)=>{
     const result=await f.deps.fetch(input,init);
-    if(String(input).includes("alert_signups?")&&init?.method==="PATCH"&&String(init.body).includes("unsubscribe_hashes"))f.tables.alert_signups[0].monthly=false;
+    if(String(input).includes("alert_signups?")&&(init as RequestInit | undefined)?.method==="PATCH"&&String((init as RequestInit).body).includes("unsubscribe_hashes"))f.tables.alert_signups[0].monthly=false;
     return result;
   };
   await sendAlert(monthly("preference-race"),true,{...f.deps,fetch:net,print:()=>{}});
@@ -785,7 +786,7 @@ Deno.test("setup stop page GET does not opt out; POST stops setup only and expir
   const stop=setupMail(f)[0].template.variables.STOP_SETUP_URL;
   equal((await f.handler(new Request(stop))).status,303);equal(r.setup,true);
   const raw=new URL(stop).searchParams.get("stop_setup")!;
-  assert((r.setup_token_hashes as string[]).includes(await hash(raw)));assert(!JSON.stringify(f.tables).includes(raw));
+  assert((r.setup_token_hashes as string[]).includes(await hash(raw!)));assert(!JSON.stringify(f.tables).includes(raw!));
   equal((await f.handler(new Request(stop,{method:"POST"}))).status,200);equal(r.setup,false);equal(r.monthly,true);
   f.advance(48*3600000);await sendSetup(f.deps,false);equal(setupMail(f).length,1);
   equal((await f.handler(new Request(`${ENDPOINT}?stop_setup=${token()}`,{method:"POST"}))).status,404);
@@ -824,7 +825,7 @@ Deno.test("confirmed signup cannot change choices or add setup through source sp
 });
 Deno.test("setup rereads consent before provider send and refuses arbitrary campaigns",async()=>{
   const f=fixture();f.values.SETUP_EMAIL_ENABLED="true";await coachSignup(f);f.values.SETUP_EMAIL_ENABLED="false";await f.handler(postLink(`${ENDPOINT}?confirm=${f.links().confirm}`));f.values.SETUP_EMAIL_ENABLED="true";
-  const net:typeof fetch=async(input,init)=>{if(String(input).includes("alert_signups?")&&init?.method==="PATCH"&&String(init.body).includes("setup_token_hashes"))f.tables.alert_signups[0].setup=false;return f.deps.fetch(input,init);};
+  const net:typeof fetch=async(input,init)=>{if(String(input).includes("alert_signups?")&&(init as RequestInit | undefined)?.method==="PATCH"&&String((init as RequestInit).body).includes("setup_token_hashes"))f.tables.alert_signups[0].setup=false;return f.deps.fetch(input,init);};
   await sendSetup({...f.deps,fetch:net},false);equal(setupMail(f).length,0);equal(f.tables.email_setup_claims[0].state,"skipped");
   let refused=false;try{await sendTemplates("setup-1","setup-1:v2",{}, {setup:"eq.true"},f.deps,"setup");}catch{refused=true;}assert(refused);
 });
