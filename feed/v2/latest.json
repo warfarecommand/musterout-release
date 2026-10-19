@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-18T13:48:29.525Z",
-  "expires_at": "2026-10-26T13:48:29.525Z",
-  "seq": 29000001,
+  "generated_at": "2026-10-19T16:50:05.016Z",
+  "expires_at": "2026-10-27T16:50:05.016Z",
+  "seq": 34000001,
   "capture_replay": false,
   "classification_mode": "keyword-baseline",
   "sources": [
@@ -11,11 +11,11 @@
       "coverage": "MARADMIN messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-18T13:47:51.137Z",
-      "last_success": "2026-10-18T13:47:51.137Z",
+      "last_attempt": "2026-10-19T16:49:53.907Z",
+      "last_success": "2026-10-19T16:49:53.907Z",
       "window": {
-        "from": "2026-09-19",
-        "to": "2026-10-18"
+        "from": "2026-09-20",
+        "to": "2026-10-19"
       },
       "checked_count": 83,
       "unclassified_count": 0,
@@ -29,7 +29,7 @@
           "posted": "2026-10-05",
           "description": "R 021430Z OCT 26MARADMIN 473/26MSGID/GENADMIN/CMC WASHINGTON DC MRA RA//SUBJ/FISCAL YEAR 2027 ACTIVE",
           "series": "MARADMIN",
-          "body_available": false,
+          "body_available": true,
           "relevant": true,
           "lines": [
             "reserve"
@@ -38,11 +38,22 @@
             "all"
           ],
           "action": "informational",
-          "summary": "Title indicates a possible connection to leaving active duty. Read the official message before acting.",
+          "summary": "The keyword baseline found language that may concern leaving active duty. Review the official message for applicability and any required action.",
           "deadline": null,
-          "confidence": "low",
+          "confidence": "medium",
+          "card_detail": null,
           "id": "MARADMIN-473-26",
-          "card_detail": null
+          "applicability": {
+            "service_types": [
+              "officer"
+            ]
+          },
+          "applicability_evidence": {
+            "service_types": [
+              "This MARADMIN announces the Reserve Affairs Active Reserve (AR) Officer Accession and Career Designation (CD)Plan for Fiscal Year 2027 (FY27)."
+            ]
+          },
+          "applicability_version": 1
         },
         {
           "number": "454/26",
@@ -63,8 +74,28 @@
           "summary": "The keyword baseline found language that may concern leaving active duty. Review the official message for applicability and any required action.",
           "deadline": null,
           "confidence": "medium",
+          "card_detail": null,
           "id": "MARADMIN-454-26",
-          "card_detail": null
+          "applicability": {
+            "reserve": [
+              true
+            ],
+            "service_types": [
+              "officer",
+              "enlisted"
+            ]
+          },
+          "applicability_evidence": {
+            "reserve": [
+              "This MARADMIN updates the Direct Affiliation Program (DAP) policy, cancels reference (a), and supersedes all previous DAP MARADMINs.",
+              "DAP provides qualified Active Component (AC) Marines a seamless transition, without a break in service, to the Reserve Component (RC) through direct affiliation with a Selected Marine Corps Reserve (SMCR) unit or Individual Mobilization Augmentee (IMA) detachment upon expiration of active service (EAS)."
+            ],
+            "service_types": [
+              "Officers may submit a DAP request no earlier than (NET) 180 days prior to EAS and no later than (NLT) 60 calendar days prior to EAS.",
+              "Enlisted Marines requesting direct affiliation may submit a DAP request NET 180 days prior to EAS and NLT 30 calendar days prior to EAS."
+            ]
+          },
+          "applicability_version": 1
         }
       ]
     },
@@ -73,11 +104,11 @@
       "coverage": "ALMAR messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-18T13:47:51.137Z",
-      "last_success": "2026-10-18T13:47:51.137Z",
+      "last_attempt": "2026-10-19T16:49:53.907Z",
+      "last_success": "2026-10-19T16:49:53.907Z",
       "window": {
-        "from": "2026-09-19",
-        "to": "2026-10-18"
+        "from": "2026-09-20",
+        "to": "2026-10-19"
       },
       "checked_count": 3,
       "unclassified_count": 0,
@@ -90,11 +121,11 @@
       "coverage": "Official ALNAV listings; full text for new titles with possible separation relevance",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-18T13:47:51.137Z",
-      "last_success": "2026-10-18T13:47:51.137Z",
+      "last_attempt": "2026-10-19T16:49:53.907Z",
+      "last_success": "2026-10-19T16:49:53.907Z",
       "window": {
-        "from": "2026-09-19",
-        "to": "2026-10-18"
+        "from": "2026-09-20",
+        "to": "2026-10-19"
       },
       "checked_count": 8,
       "unclassified_count": 0,
@@ -107,11 +138,11 @@
       "coverage": "6 orders: metadata checked daily; PDF hashes checked on detail changes; NAVMC 763 unresolved",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-18T13:47:51.137Z",
-      "last_success": "2026-10-18T13:47:51.137Z",
+      "last_attempt": "2026-10-19T16:49:53.907Z",
+      "last_success": "2026-10-19T16:49:53.907Z",
       "window": {
-        "from": "2026-09-19",
-        "to": "2026-10-18"
+        "from": "2026-09-20",
+        "to": "2026-10-19"
       },
       "checked_count": 6,
       "unclassified_count": 0,
