@@ -1,6 +1,6 @@
 /* Registration never sends from the board. Only native first-party anchors. */
 var R3=window.MusterOutRG3;
-var RG3={mode:false,eligible:false,busy:false,load:TEL_CONFIG.registrationV3Enabled===true?R3.random():null,firstFrame:0,visibleMs:0,lastTick:0,wasIdle:false,framePending:false,confirmation:null,opened:false,dismissed:false,card:null,tapped:false,message:'',halted:false,ready:false,stopping:false,pendingOffer:null,observing:false,observeEpoch:0,unsubscribe:null,retryTimer:null,retryDelay:1000,loadRetryTimer:null,loadRetryDelay:1000,bucket:null};
+var RG3={startedAt:Date.now(),mode:false,eligible:false,busy:false,load:TEL_CONFIG.registrationV3Enabled===true?R3.random():null,firstFrame:0,visibleMs:0,lastTick:0,wasIdle:false,framePending:false,confirmation:null,opened:false,dismissed:false,card:null,tapped:false,message:'',halted:false,ready:false,stopping:false,pendingOffer:null,observing:false,observeEpoch:0,unsubscribe:null,retryTimer:null,retryDelay:1000,loadRetryTimer:null,loadRetryDelay:1000,bucket:null};
 function rg3Mode(){return RG3.mode;}
 function rg3Enabled(){return TEL_CONFIG.registrationV3Enabled===true;}
 function rg3Agreement(s){return s?.schema===3&&s.agreement_version==='rg2-v3'&&Number.isFinite(Date.parse(s.agreement_accepted_at))&&telLicenseReady()&&(TEL_CONFIG.licenseAcknowledgmentRequired!==true||s.license?.agreed===true&&s.license.version===TEL_CONFIG.licenseAcknowledgmentVersion&&s.license.terms_sha256===TEL_CONFIG.licenseAcknowledgmentSha256);}
@@ -38,6 +38,7 @@ async function rg3PrepareManual(){
  }catch(e){rg3Unavailable();rg3Retry();}
  finally{RG3.busy=false;}
 }
+function rg3DeferredOffer(s){return !!s?.offer_deferred&&s.offer_deferred.load!==RG3.load&&Date.parse(s.offer_deferred.at)<RG3.startedAt&&!s.tap_observed&&!s.link_copied;}
 function rg3Deferred(){return UI.autoSeeding||UI.building||UI.migrationBusy||UI.setupBusy||UI.intakeBusy||UI.dateBusy||S.seeding||C1_UPDATE_FROZEN;}
 async function rg3Tick(){
  if(!rg3Mode()||!rg3Enabled())return;
@@ -46,14 +47,15 @@ async function rg3Tick(){
  RG3.lastTick=tick;RG3.wasIdle=idle;
  if(!RG3.firstFrame||UI.tab==='settings'){rg3AfterRender();return;}
  if(RG3.busy||!idle)return;
- if(TEL.state.rg3.gate_offered||RG3.dismissed){if(RG3.pendingOffer&&!RG3.dismissed){var pending=RG3.pendingOffer;RG3.pendingOffer=null;if(R3.canonical(pending)===R3.canonical(TEL.state.rg3.registration))rg3Show(pending);}if(!RG3.opened){RG3.opened=true;rg3Count('opens');}return;}
- if(TEL.state.rg3.first_value_load===RG3.load&&RG3.visibleMs<60000)return;
+ if((TEL.state.rg3.gate_offered&&!rg3DeferredOffer(TEL.state.rg3))||RG3.dismissed){if(RG3.pendingOffer&&!RG3.dismissed){var pending=RG3.pendingOffer;RG3.pendingOffer=null;if(R3.canonical(pending)===R3.canonical(TEL.state.rg3.registration))rg3Show(pending);}if(!RG3.opened){RG3.opened=true;rg3Count('opens');}return;}
+ if((TEL.state.rg3.first_value_load===RG3.load||TEL.state.rg3.offer_deferred)&&RG3.visibleMs<60000)return;
  RG3.busy=true;
  try{
   if(!await c1VerifyMigration()||!rg3Idle()||!rg3PlanReady()||!rg3Active(TEL.state.rg3))return;
   var show=false;
   var state=await rg3Patch(function(s){
-   if(!rg3Active(s)||s.gate_offered||RG3.dismissed)return null;
+   if(!rg3Active(s)||(s.gate_offered&&!rg3DeferredOffer(s))||RG3.dismissed)return null;
+   if(s.offer_deferred&&RG3.visibleMs<60000)return null;
    if(!s.first_value_at){s.first_value_at=nowIso();s.first_value_load=RG3.load;if(!s.board_key)rg3Freeze(s);return s;}
    if(s.first_value_load===RG3.load&&RG3.visibleMs<60000)return null;
    // The next load still paints its plan first, with a short quiet interval.
@@ -61,7 +63,7 @@ async function rg3Tick(){
    if(!rg3Idle())return null;
    if(!s.board_key)rg3Freeze(s);
    if(!R3.valid(s.registration)||s.board_key!==s.registration.board_key||!rg3Fragment(s.registration))return null;
-   s.gate_offered=true;show=true;return s;
+   delete s.offer_deferred;s.gate_offered=true;show=true;return s;
   });
   // A verified offer may finish saving after Today stops being idle. Keep it
   // only in this load; a committed or uncertain offer never rearms on reload.
@@ -71,21 +73,65 @@ async function rg3Tick(){
  finally{RG3.busy=false;}
 }
 function rg3Fragment(record){try{return R3.encode(record);}catch(_){return null;}}
-function rg3Link(record,label,action){var fragment=rg3Fragment(record);if(!fragment)return '';return '<a class="btn '+(action==='rg3-tap'?'pri':'')+'" data-act="'+action+'" target="_blank" rel="noopener noreferrer" href="https://musterout.warfarecommand.com/r/#'+fragment+'">'+label+'</a>';}
+function rg3TransportOk(s){return s?.link_transport==='query-v1'&&RG3.transportUnconfirmed!==true;}
+function rg3Url(record){var token=rg3Fragment(record);if(!token)return null;return 'https://musterout.warfarecommand.com/r/'+(record.kind==='delete'?'#':'?registration=')+token;}
+function rg3Link(record,label,action){var url=rg3Url(record);if(!url||record.kind==='registration'&&!rg3TransportOk(TEL.state.rg3))return '';return '<a class="btn '+(action==='rg3-tap'?'pri':'')+'" data-act="'+action+'" target="_blank" rel="noopener noreferrer" href="'+url+'">'+label+'</a>';}
+var RG3_TRANSPORT_NOTICE="Your registration link carries this board's count code in the web address. Our hosting provider can log it. It holds no name, email or plan details. Details are in Privacy.";
+var RG3_TRANSPORT_DETAIL="Registration links now put count details and a key that can change or delete counts in the web address, where hosting providers can log them.";
+function rg3Controls(record){
+ if(!rg3TransportOk(TEL.state.rg3))return '<p class="c1-prose">'+RG3_TRANSPORT_NOTICE+'</p><button class="btn pri" data-act="rg3-transport"'+(RG3.transportBusy?' disabled':'')+'>Agree and continue</button>';
+ return rg3Link(record,'Register in browser',(TEL.state.rg3?.tap_observed||RG3.tapped)?'rg3-resend':'rg3-tap')+'<button class="btn" data-act="rg3-copy">Copy registration link</button><p class="c1-prose">If the browser cannot register, copy the link and paste it into your browser address bar. Keep the link private.</p>';
+}
+function rg3Purpose(){return '<p class="c1-prose">New setups require agreement to a one-time board count.</p><p class="c1-prose">Registration counts that a new board exists, with no name, no email, and nothing from your plan. <button class="linkbtn" data-act="rg3-settings">Settings for details</button></p>';}
+function rg3Fields(){return '<p class="c1-prose">Your browser sends your board version, plan path, grade group, campaign code, setup day, and a random board key. Your plan and notes stay in Claude.</p>';}
+function rg3RefreshCard(){if(!RG3.card)return;var record=TEL.state.rg3?.registration;RG3.card.remove();RG3.card=null;if(rg3Active(TEL.state.rg3)&&record)rg3Show(record);else{el('app').hidden=false;el('app').inert=false;}}
+async function rg3AcceptTransport(){
+ if(RG3.transportBusy||!rg3Active(TEL.state.rg3))return;
+ RG3.transportBusy=true;RG3.transportUnconfirmed=true;RG3.message='';
+ try{await rg3Patch(function(s){if(!rg3Active(s))throw Error('inactive');s.link_transport='query-v1';return s;});RG3.transportUnconfirmed=false;}
+ catch(e){RG3.message='Your choice was not confirmed. Try again. Your plan is ready.';}
+ finally{RG3.transportBusy=false;rg3RefreshPrivacy();rg3RefreshCard();}
+}
+async function rg3Copy(){
+ var s=TEL.state.rg3;if(!rg3Active(s)||!rg3TransportOk(s)||!s.registration)return;
+ var url=rg3Url(s.registration);if(!url)return;
+ var host=RG3.card?.querySelector('.rg3-content')||document.querySelector('.rg3-settings');if(!host)return;
+ host.querySelector('[data-rg3-copy]')?.remove();
+ // Keep a selectable fallback in this surface even when clipboard access is denied.
+ var box=document.createElement('div');box.dataset.rg3Copy='true';
+ var label=document.createElement('label');label.className='field';label.textContent='Copy this private link, then paste it into your browser address bar.';
+ var field=document.createElement('textarea');field.readOnly=true;field.rows=3;field.value=url;field.setAttribute('aria-label','Registration link');label.append(field);box.append(label);host.append(box);RG3.copied=true;
+ rg3Patch(function(s){if(!rg3Active(s)||!rg3TransportOk(s))return null;s.link_copied=true;s.gate_offered=true;return s;}).catch(function(){});
+ try{await navigator.clipboard.writeText(url);if(box.isConnected&&rg3Active(TEL.state.rg3)&&rg3TransportOk(TEL.state.rg3)){RG3.message='Link copied. Paste it into your browser address bar.';toast(RG3.message);}}
+ catch(e){if(box.isConnected){field.focus();field.select();}}
+}
 function rg3Show(record){
- var section=document.createElement('section');section.id='rg3-card';section.setAttribute('aria-labelledby','rg3-title');
- section.innerHTML='<div class="rg3-content"><h1 id="rg3-title" tabindex="-1">Register your board.</h1><p>One tap. No name, no email.</p><p>This helps Warfare Command count boards. Your browser sends your version, plan path, grade group, campaign code, setup day and a random board key. Your plan and notes stay in Claude.</p>'+rg3Link(record,'Register my board','rg3-tap')+'<p>Opens your browser. Your board stays usable even if registration fails.</p><details><summary>Privacy</summary><p>'+RG3_AGREEMENT.join('</p><p>')+'</p></details></div>';
+ var section=document.createElement('section');section.id='rg3-card';section.dataset.transport=String(rg3TransportOk(TEL.state.rg3));section.setAttribute('aria-labelledby','rg3-title');
+ section.innerHTML='<div class="rg3-content"><h1 id="rg3-title" tabindex="-1">Register your board.</h1>'+rg3Purpose()+rg3Fields()+rg3Controls(record)+'<button class="btn" data-act="rg3-later">Not now</button><p class="c1-prose">Register later. Your plan stays open.</p><p role="status">'+esc(RG3.message)+'</p><details><summary>Privacy</summary><p class="c1-prose">'+RG3_AGREEMENT.join('</p><p class="c1-prose">').replace(' Do you agree?','')+'</p></details></div>';
  RG3.card=section;var app=el('app');app.inert=true;app.hidden=true;document.body.append(section);el('rg3-title').focus();
 }
 function rg3Dismiss(){if(RG3.card){RG3.dismissed=true;RG3.card.remove();RG3.card=null;el('app').hidden=false;el('app').inert=false;var heading=el('who');heading.tabIndex=-1;heading.focus({preventScroll:true});}}
-function rg3Settings(){if(!rg3Writable())return '';var s=TEL.state.rg3||{},stopped=RG3.halted||RG3.stopping||!RG3.ready||s.withdrawn||!s.enabled;return '<section class="panel rg3-settings"><h2>Board registration</h2><p>'+(stopped?(s.withdrawn?'Counts stopped. Your plan is ready.':'Counts paused in this view. Your plan is ready.'):(s.tap_observed||RG3.tapped)?'Registration page opened. Check the result there.':'Your plan is ready.')+'</p>'+(rg3Active(s)&&s.registration&&!rg3Fragment(s.registration)?'<p>Registration link unavailable. Your plan is ready.</p>':'')+(rg3Active(s)&&s.registration?rg3Link(s.registration,(s.tap_observed||RG3.tapped)?'Send registration again':'Register this board',(s.tap_observed||RG3.tapped)?'rg3-resend':'rg3-tap'):'')+rg3UsageSettings(s)+'<p role="status">'+esc(RG3.message)+'</p><details class="c1-disclosure"><summary>Privacy</summary>'+rg3Confirmation()+(!s.withdrawn?'<button class="btn" data-act="rg3-stop">Stop counts</button>':'')+(RG3.eligible&&s.board_key?'<button class="btn" data-act="rg3-delete">Delete received counts</button>':'')+'<p>'+RG3_AGREEMENT.join('</p><p>').replace(' Do you agree?','')+'</p></details></section>';}
+function rg3Later(){
+ if(!RG3.card)return;
+ RG3.pendingOffer=null;rg3Dismiss();
+ // Only an explicit deferral permits a later offer. Existing views stay quiet.
+ rg3Patch(function(s){if(!rg3Active(s)||s.tap_observed||s.link_copied)return null;s.offer_deferred={at:nowIso(),load:RG3.load};return s;}).catch(function(){RG3.message='Registration stays in Settings. Your plan is ready.';});
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&RG3.card){e.preventDefault();rg3Later();}});
+function rg3PossibleReceipt(s){return !!(s.tap_observed||s.link_copied||RG3.tapped||RG3.copied);}
+function rg3Settings(){if(!rg3Writable())return '';var s=TEL.state.rg3||{},stopped=RG3.halted||RG3.stopping||!RG3.ready||s.withdrawn||!s.enabled;return '<section class="panel rg3-settings"><h2>Board registration</h2>'+rg3Purpose()+'<p>'+(stopped?(s.withdrawn?'Counts stopped. Your plan is ready.':'Counts paused in this view. Your plan is ready.'):'Not confirmed. Your plan is ready.')+'</p>'+(rg3Active(s)&&s.registration&&!rg3Fragment(s.registration)?'<p>Registration link unavailable. Your plan is ready.</p>':'')+(rg3Active(s)&&s.registration&&rg3Fragment(s.registration)?rg3Controls(s.registration)+rg3Fields():'')+rg3UsageSettings(s)+'<p role="status">'+esc(RG3.message)+'</p><details class="c1-disclosure"><summary>Privacy</summary>'+rg3Confirmation()+(rg3PossibleReceipt(s)?'<p>If your board was counted:</p>'+(!s.withdrawn?'<button class="btn" data-act="rg3-stop">Stop counts</button>':'')+(RG3.eligible&&s.board_key?'<button class="btn" data-act="rg3-delete">Delete received counts</button>':''):'')+'<p class="c1-prose">'+RG3_AGREEMENT.join('</p><p class="c1-prose">').replace(' Do you agree?','')+'</p></details></section>';}
 function rg3Confirmation(){
  if(!RG3.confirmation)return '';
  var deletion=RG3.confirmation==='delete';
- return '<div role="group" aria-label="Confirm privacy change"><p>'+(deletion?'Stop future counts and request deletion of received counts for this board. Deletion completes only after your browser confirms it. A one-way key hash remains to prevent old links from restoring records.':'Stop future counts for this board on all devices after the change saves. This does not delete counts already received. Previously copied or in-flight links cannot be recalled.')+' This cannot be undone. Your saved plan stays usable.</p><button class="btn" data-act="rg3-confirm-'+RG3.confirmation+'">'+(deletion?'Stop counts and review deletion':'Confirm stop counts')+'</button><button class="btn" data-act="rg3-cancel">Cancel</button></div>';
+ return '<div role="group" aria-label="Confirm privacy change"><p class="c1-prose">'+(deletion?'Stop future counts and request deletion of received counts for this board. Deletion completes only after your browser confirms it. A one-way key hash remains to prevent old links from restoring records.':'Stop future counts for this board on all devices after the change saves. This does not delete counts already received. Previously copied or in-flight links cannot be recalled.')+' This cannot be undone. Your saved plan stays usable.</p><button class="btn" data-act="rg3-confirm-'+RG3.confirmation+'">'+(deletion?'Stop counts and review deletion':'Confirm stop counts')+'</button><button class="btn" data-act="rg3-cancel">Cancel</button></div>';
 }
-function rg3RefreshPrivacy(){var panel=document.querySelector('.rg3-settings'),opened=panel?.querySelector('details')?.open;if(panel){panel.outerHTML=rg3Settings();var details=document.querySelector('.rg3-settings details');if(details)details.open=opened;}}
-async function rg3Stop(){RG3.stopping=true;RG3.pendingOffer=null;rg3Dismiss();rg3ClearDecorated();document.querySelectorAll('a[data-act^="rg3-"]').forEach(function(a){a.removeAttribute('href');});try{await rg3Patch(function(s){s.enabled=false;s.usage_enabled=false;s.withdrawn=true;s.gate_offered=true;s.usage_buckets=[];return s;},true);RG3.message='Counts stopped. Previously copied or in-flight links cannot be recalled.';}catch(e){RG3.message='Counts paused in this view. Stopping on other devices is not confirmed. Try Stop counts again.';}render();return TEL.state.rg3?.withdrawn===true;}
+function rg3RefreshPrivacy(){
+ var panel=document.querySelector('.rg3-settings'),opened=panel?.querySelector('details')?.open;
+ if(panel){var copy=panel.querySelector('[data-rg3-copy]'),field=copy?.querySelector('textarea'),focused=field===document.activeElement;panel.outerHTML=rg3Settings();panel=document.querySelector('.rg3-settings');var details=panel?.querySelector('details');if(details)details.open=opened;
+  if(copy&&panel&&rg3Active(TEL.state.rg3)&&rg3TransportOk(TEL.state.rg3)&&field.value===rg3Url(TEL.state.rg3.registration)){panel.append(copy);if(focused){field.focus();field.select();}}
+ }
+}
+async function rg3Stop(){document.querySelectorAll('[data-rg3-copy]').forEach(x=>x.remove());RG3.stopping=true;RG3.pendingOffer=null;rg3Dismiss();rg3ClearDecorated();document.querySelectorAll('a[data-act^="rg3-"]').forEach(function(a){a.removeAttribute('href');});try{await rg3Patch(function(s){s.enabled=false;s.usage_enabled=false;s.withdrawn=true;s.gate_offered=true;s.usage_buckets=[];return s;},true);RG3.message=rg3PossibleReceipt(TEL.state.rg3)?'Previously copied or in-flight links cannot be recalled.':'';}catch(e){RG3.message='Counts paused in this view. Stopping on other devices is not confirmed. Try Stop counts again.';}render();return TEL.state.rg3?.withdrawn===true;}
 async function rg3Count(kind){
  if(!rg3Mode()||TEL_CONFIG.registrationV3UsageEnabled!==true||!['opens','done'].includes(kind))return false;
  try{await rg3Patch(function(s){if(!rg3Active(s)||s.usage_enabled!==true||s.usage_agreement_version!=='rg3-usage-1'||!s.first_value_at)return null;var now=Date.now(),week=Math.floor((now-Date.parse(s.first_value_at))/604800000);if(week<0||week>104)return null;var rows=(s.usage_buckets||[]).filter(x=>x.created_at+180*86400000>now);var row=rows.find(x=>x.bucket.bucket_id===RG3.bucket&&x.bucket.week_index===week&&x.bucket.revision<10000);if(!row){RG3.bucket=R3.random();row={created_at:now,bucket:{bucket_id:RG3.bucket,week_index:week,revision:0,opens:0,done_actions:0}};rows.push(row);}row.bucket.revision++;var key=kind==='done'?'done_actions':'opens';row.bucket[key]=Math.min(10000,row.bucket[key]+1);if(rows.length>512){rows=rows.slice(-512);s.usage_overflow=true;}s.usage_buckets=rows;return s;});return true;}catch(e){return false;}
@@ -93,15 +139,19 @@ async function rg3Count(kind){
 // Future Help/Report integration is deliberately dormant until the 8 KiB probe.
 // Report content remains reviewed and never sent automatically by this module.
 function rg3UsageEnvelope(s,report){if(TEL_CONFIG.registrationV3UsageEnabled!==true||!rg3Active(s)||s.usage_enabled!==true||s.usage_agreement_version!=='rg3-usage-1')return null;var b=R3.batch(s.usage_buckets||[],s.usage_cursor||0,Date.now());return {fragment:R3.envelope(s.registration,b.rows.length?{schema_version:3,kind:'usage',board_key:s.board_key,version:VERSION,buckets:b.rows.map(x=>x.bucket)}:null,report),next_cursor:b.cursor};}
-var RG3_AGREEMENT=["Muster Out requires a one-tap board registration after you first see your plan. No name or email is needed. Your browser sends Warfare Command a random board key, version, plan path, grade group, campaign code if present, and setup day. Your plan, notes and service dates stay in Claude. The board stays usable if registration fails.","Registration records stay for up to 24 months. Published results use groups of at least 10 boards. You can stop future counts and request deletion in Settings. After deletion or expiry, a one-way key hash remains only to prevent old links from restoring records while this registration system accepts them. The website and hosting providers also process normal connection data such as your IP address. Later usage counts need a separate choice; reports and email are separate. Do you agree?"];
+var RG3_AGREEMENT=["Muster Out requires a one-tap board registration after you first see your plan. No name or email is needed. Your browser sends Warfare Command a random board key, version, plan path, grade group, campaign code if present, and setup day. Your plan, notes and service dates stay in Claude. The board stays usable if registration fails.",RG3_TRANSPORT_DETAIL,"Registration records stay for up to 24 months. Published results use groups of at least 10 boards. You can stop future counts and request deletion in Settings. After deletion or expiry, a one-way key hash remains only to prevent old links from restoring records while this registration system accepts them. The website and hosting providers also process normal connection data such as your IP address. Later usage counts need a separate choice; reports and email are separate. Do you agree?"];
 if(rg3Enabled()){
  setInterval(rg3Tick,1000);
  document.addEventListener('visibilitychange',function(){RG3.lastTick=performance.now();RG3.wasIdle=false;if(document.hidden)rg3Dismiss();});
  window.addEventListener('pageshow',function(e){if(e.persisted)rg3Dismiss();});
 }
 document.addEventListener('click',function(e){if(!rg3Mode())return;var a=e.target.closest('[data-act^="rg3-"]');if(!a)return;
+  if(a.dataset.act==='rg3-settings'){rg3Dismiss();if(UI.tab!=='settings')c1Go('settings');var details=document.querySelector('.rg3-settings>.c1-disclosure');if(details){details.open=true;details.querySelector('summary')?.focus();}return;}
+  if(a.dataset.act==='rg3-later'){rg3Later();return;}
+  if(a.dataset.act==='rg3-transport'){rg3AcceptTransport();return;}
+  if(a.dataset.act==='rg3-copy'){rg3Copy();return;}
   if(a.dataset.act==='rg3-tap'||a.dataset.act==='rg3-resend'){
-   if(!rg3Active(TEL.state.rg3)){e.preventDefault();return;}
+   if(!rg3Active(TEL.state.rg3)||!rg3TransportOk(TEL.state.rg3)||a.href!==rg3Url(TEL.state.rg3.registration)){e.preventDefault();return;}
    // Keep the native anchor mounted until its default action has dispatched.
    RG3.tapped=true;RG3.dismissed=true;setTimeout(rg3Dismiss,0);
    rg3Patch(function(s){if(!rg3Active(s))return null;s.tap_observed=true;s.gate_offered=true;return s;}).catch(function(){});return;
@@ -112,12 +162,12 @@ document.addEventListener('click',function(e){if(!rg3Mode())return;var a=e.targe
   if(a.dataset.act==='rg3-confirm-delete'&&RG3.confirmation==='delete'){
    RG3.confirmation=null;
    var key=TEL.state.rg3?.board_key;
-   rg3Stop().then(function(saved){if(!key||!rg3Writable())return;RG3.message=saved?'Counts stopped; check deletion in your browser.':'Counts paused in this view; check deletion in your browser. Stopping on other devices is not confirmed.';render();var host=document.querySelector('.rg3-settings');if(host){var details=host.querySelector('details');if(details)details.open=true;(details||host).insertAdjacentHTML('beforeend',rg3Link({schema_version:3,kind:'delete',board_key:key},'Open deletion confirmation','rg3-delete-link'));}});
+   rg3Stop().then(function(saved){if(!key||!rg3Writable())return;RG3.message=saved?'Check deletion in your browser.':'Counts paused in this view; check deletion in your browser. Stopping on other devices is not confirmed.';render();var host=document.querySelector('.rg3-settings');if(host){var details=host.querySelector('details');if(details)details.open=true;(details||host).insertAdjacentHTML('beforeend',rg3Link({schema_version:3,kind:'delete',board_key:key},'Open deletion confirmation','rg3-delete-link'));}});
   }
  });
 
 var RG3_USAGE_COPY="Send saved counts when I open Muster Out's help or report page. These count board opens and items I mark done, grouped by weeks since setup, and include my board key and running version. No task names, notes, questions or service dates are included. Counts stay for up to 180 days. I can turn this off without changing my plan.";
-function rg3UsageSettings(s){return (s.usage_overflow?'<p>Some older saved counts expired to keep storage bounded. Your plan is ready.</p>':'')+'<p>Optional opens and done counts: '+(s.usage_enabled?'On':'Off')+'.</p>'+(TEL_CONFIG.registrationV3UsageEnabled===true&&rg3Active(s)?'<p>'+RG3_USAGE_COPY+'</p><p>After saved counts expire, only a one-way bucket hash remains until registration expiry or deletion to prevent replay. A 512-bucket lifetime limit can pause new optional counts; Help and reports stay available.</p><p>Example: week 0, opens 1, done actions 0. A random bucket id prevents duplicate counting.</p><button class="btn" data-act="rg3-usage">'+(s.usage_enabled?'Turn optional counts off':'Enable optional counts')+'</button>':'');}
+function rg3UsageSettings(s){return (s.usage_overflow?'<p>Some older saved counts expired to keep storage bounded. Your plan is ready.</p>':'')+'<p>Optional opens and done counts: '+(s.usage_enabled?'On':'Off')+'.</p>'+(TEL_CONFIG.registrationV3UsageEnabled===true&&rg3Active(s)?'<p class="c1-prose">'+RG3_USAGE_COPY+'</p><p class="c1-prose">After saved counts expire, only a one-way bucket hash remains until registration expiry or deletion to prevent replay. A 512-bucket lifetime limit can pause new optional counts; Help and reports stay available.</p><p class="c1-prose">Example: week 0, opens 1, done actions 0. A random bucket id prevents duplicate counting.</p><button class="btn" data-act="rg3-usage">'+(s.usage_enabled?'Turn optional counts off':'Enable optional counts')+'</button>':'');}
 function rg3ClearDecorated(){document.querySelectorAll('a[data-rg3-decorated]').forEach(function(a){a.href=a.dataset.rg3OriginalHref;delete a.dataset.rg3Decorated;delete a.dataset.rg3OriginalHref;delete a.dataset.rg3Cursor;a.querySelector('.rg3-count-label')?.remove();});}
 async function rg3Decorate(){
  if(TEL_CONFIG.registrationV3UsageEnabled!==true||!rg3Mode())return;
@@ -137,6 +187,7 @@ function rg3RetryLoad(){
 }
 // Transient transport/storage failures suppress links without withdrawing consent.
 function rg3Unavailable(){
+ document.querySelectorAll('[data-rg3-copy]').forEach(x=>x.remove());
  RG3.ready=false;RG3.wasIdle=false;RG3.message='Registration is unavailable. Your plan is ready.';
  rg3ClearDecorated();document.querySelectorAll('a[data-act="rg3-tap"],a[data-act="rg3-resend"]').forEach(a=>a.removeAttribute('href'));rg3Dismiss();rg3RefreshPrivacy();
 }
@@ -158,6 +209,8 @@ function rg3ApplySnapshot(snap){
  if(RG3.message==='Registration is unavailable. Your plan is ready.'||RG3.message==='Registration link unavailable. Your plan is ready.')RG3.message='';
  if(s.usage_enabled!==true)rg3ClearDecorated();
  if(RG3.halted||RG3.stopping){RG3.pendingOffer=null;rg3ClearDecorated();document.querySelectorAll('a[data-act="rg3-tap"],a[data-act="rg3-resend"]').forEach(a=>a.removeAttribute('href'));rg3Dismiss();}
+ if(!rg3Active(s)||!rg3TransportOk(s))document.querySelectorAll('[data-rg3-copy]').forEach(x=>x.remove());
+ if(RG3.card&&RG3.card.dataset.transport!==String(rg3TransportOk(s)))rg3RefreshCard();
  rg3RefreshPrivacy();rg3AfterRender();
 }
 function rg3Observe(){

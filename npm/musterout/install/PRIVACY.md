@@ -3,9 +3,9 @@
 
 Updated 18 OCT 2026.
 
-Muster Out counts installs, usage, and progress milestones. It cannot read your plan.
+The existing TEL1 system covers install, usage, and progress milestone counts. It cannot read your plan.
 
-Anthropic hosts your board, conversations, Project records, and optional Ask history in your Claude account. Warfare Command cannot read your board database. Claude reads your plan to answer your questions. Your plan, notes, service-day dates, leave, claim details, contacts, and coach facts are not telemetry. Keep the board private and review sharing permissions. A shared viewer can read shared plan data under Claude's access rules. Telemetry access and pending records use owner-only storage rules.
+Anthropic hosts your board, conversations, Project records, and optional Ask history in your Claude account. Warfare Command cannot read your board database. Claude reads your plan to answer your questions. Your plan, notes, service-day dates, leave, claim details, contacts, and coach facts are not telemetry. Keep the board private and review sharing permissions. A shared viewer can read shared plan data under Claude's access rules. Telemetry access and pending records use private storage rules.
 
 Your Project is in your Claude account; before uploading records, turn off "Help Improve our AI models" in Settings > Privacy. [Claude privacy controls](https://privacy.claude.com/en/articles/12109829-how-do-i-change-my-model-improvement-privacy-settings). This choice does not erase existing conversations or provider records.
 
@@ -16,7 +16,7 @@ An update runs only after you confirm it. In chat, Claude checks each release fi
 
 ## Projects, uploads and connectors
 
-A Claude Project holds your pinned instructions and public pack. You add reviewed board snapshots and files as needed. A snapshot has a capture time and does not sync automatically. Upload only your own records needed for the question, such as a TRS certificate, orders, LES, VA letter, resume or selected STR/OMPF extracts. Keep unrelated personal information and Social Security numbers out. The maintainer receives none of those uploads. Claude hosts and processes them under your account's terms. See the [Project guide](PROJECT.md) for setup and the upload checklist.
+A Claude Project holds your pinned instructions and public pack. You add reviewed board snapshots and files as needed. A snapshot has a capture time and does not sync automatically. Upload only your own records needed for the question, such as a Transition Readiness Seminar (TRS) certificate, orders, LES, VA letter, resume or selected STR/OMPF extracts. Keep unrelated personal information and Social Security numbers out. The maintainer receives none of those uploads. Claude hosts and processes them under your account's terms. See the [Project guide](PROJECT.md) for setup and the upload checklist.
 
 Gmail, Google Calendar and Google Drive connectors are optional. Review their permissions in Claude; scopes can exceed a single search. The Project instructions request read only unless you ask for a change. Review and approve any proposed message or record change before it runs. Connector data may remain in chats or Project copies. [Claude Google connector guidance](https://support.claude.com/en/articles/10166901-use-google-workspace-connectors).
 
@@ -24,9 +24,13 @@ To remove Project data, delete the uploaded knowledge files and chats that conta
 
 ## Required setup and your choices
 
-Before publishing, setup explains the count schema and asks for Yes, continue or No, stop. Agreeing is required for a new supported install. On No, setup stops before publishing and sends no keyed install record. The public guide and isolated fictional demo remain available. The welcome setup button separately counts a tap with product/version only. It cannot connect that tap to an install id. Hosting providers receive ordinary request metadata when you visit.
+Before publishing, setup explains the count schema and asks for Yes, continue or No, stop. Agreeing is required for a new supported install. On No, setup stops before publishing and sends no keyed install record. The public guide and isolated fictional demo remain available. The older welcome setup count used product/version only and a salted address hash. The new site setup-button totals are described below.
 
 After intake, a required browser review sends the install record. Your locally verified plan opens immediately after intake. Registration remains pending with a retry until the board verifies the independent server signature and matching payload digest on a completed-install receipt. Usage queues locally while registration is pending. Opening a link, copying a record, pressing Publish, a registered flag, and bare HTTP success do not prove a received record. A failed send preserves your saved answers at the same board address. Registration failure never withholds your saved plan.
+
+## Site setup-button totals
+
+When you tap Copy board setup or Copy coach setup, we add one to that button's daily UTC total. These totals store no IP address, cookie, identifier, or referrer and cannot be linked to your registration. Each button has a site-wide cap of 200 counted taps per UTC hour; extra taps go into a separate daily overflow total. Failed requests can leave taps uncounted. A private weekly summary compares taps with new board registration records in the same UTC week; it does not measure completed setups or individual conversion. Hosting providers receive ordinary connection metadata under their own terms.
 
 ## What counts contain
 
@@ -46,17 +50,17 @@ No name, email, account id, unit, precise location, board URL, full service date
 
 The artifact never contacts ingest. It stores counts on your board until a setup, update, or weekly chat requests a browser handoff. You review the rows at the explicit registration page and choose Send. The temporary handoff uses a fragment, which the page removes immediately. No payload or token enters a URL query, email, referrer, browser localStorage, or sandbox file. A paste-and-review route is available when the link or clipboard fails. The site keeps the request in memory for retries and shows a signed receipt to bring back. Copying alone is not sending.
 
-A server-issued capability authenticates future sends without collecting your identity. Random enrollment and access secrets live in owner-only board storage and the temporary browser handoff. The database stores only their hashes. A person with an access secret can exercise its count/deletion authority, so do not share handoffs or receipts. No plaintext secret appears in dashboards, diagnostics, plan copies, or email. Counts use per-page random week buckets to avoid a persistent device identifier. Browser writes are last-writer-wins with readback; activity can be incomplete after interrupted saves or an offline device. Capped or missing activity is never presented as complete observation.
+A server-issued capability authenticates future sends without collecting your identity. Random enrollment and access secrets live in private board storage and the temporary browser handoff. The database stores only their hashes. A person with an access secret can exercise its count/deletion authority, so do not share handoffs or receipts. No plaintext secret appears in dashboards, diagnostics, plan copies, or email. Counts use per-page random week buckets to avoid a persistent device identifier. Browser writes are last-writer-wins with readback; activity can be incomplete after interrupted saves or an offline device. Capped or missing activity is never presented as complete observation.
 
 Supabase stores received count records and operational receipt times. Separate short-lived rate tables contain telemetry-namespaced salted address hashes. They do not store raw addresses and are not joined to email rate hashes. Hosting and network providers can receive ordinary connection metadata under their own terms. Source code review cannot prove their live retention settings.
 
 ## Reporting and recipients
 
-The Warfare Command owner and authorized operators can view a private owner dashboard. It uses a dedicated role that can execute only the fixed aggregate reporting function. No public dashboard or client table reads are offered. Database administrators retain administrative raw access; a dashboard restriction does not remove that power.
+The Warfare Command maintainer and authorized operators can view a private reporting dashboard. It uses a dedicated role that can execute only the fixed aggregate reporting function. No public dashboard or client table reads are offered. Database administrators retain administrative raw access; a dashboard restriction does not remove that power.
 
 Every reported cell needs at least 10 distinct completed, eligible install ids. Multiple records do not raise that floor. If any fixed cell is too small, the whole breakdown and complementary totals/rates are withheld. Base, grade, path, or EAS month can be shown one at a time, never a combined base-by-grade-by-month report. The same floor applies to HTML and CSV. Fixed periods reduce subtraction attacks but are not differential privacy or a promise of nonidentification. Anonymous enrollment does not prove 10 different people. Global setup taps are shown only with at least 10 completed installs for that fixed period; taps are not linked person-level conversions. Weekly activity counts received chat records, not every board visit.
 
-No external learning agent receives new raw counts or base/grade/month records under this build. Legacy free-text reports and weekly learning counts remain disabled until their separate release gate. An independently approved support report has its own payload review; it is not part of required telemetry.
+No external learning agent receives new raw counts or base/grade/month records under this build. Legacy free-text reports and weekly learning counts are disabled. An independently approved support report has its own payload review; it is not part of required telemetry.
 
 ## Stop counts or delete received records
 
@@ -79,13 +83,13 @@ Delete your artifact, chats, Project files and browser drafts through Claude/dev
 | Email delivery receipts | 13 months |
 | Tool suggestions | 24 months |
 
-The existing cleanup job applies these periods. Its live schedule and dry run require supervisor verification before activation. Owner backups are intended to retain copies for up to 14 days and must preserve deletions on restore; source review does not establish deployed backup settings. Providers retain their own records under their terms. Local unsent counts expire after 180 days with a visible warning; the plan stays.
+The existing cleanup job applies these periods.  Backup retention is not confirmed, so deleting received records does not promise immediate removal from backups. Restoring a backup must preserve prior deletions. Providers retain their own records under their terms. Local unsent counts expire after 180 days with a visible warning; the plan stays.
 
 ## Optional email and survey
 
 "Get release notes and an occasional two-minute survey" is a separate optional ask after install. It opens a blank signup and requires double opt-in through the existing email system. No install id, capability, board link, return URL, or telemetry payload is attached. No database join connects email addresses and install ids. Email delivery does not depend on count agreement.
 
-Week-8 pricing content is a disabled owner-review preview. Because email is unlinked, the project cannot target an individual's eighth board-use week. TRS must choose list-based timing, confirmed stream scope, an anonymous survey destination, and authorize delivery. No survey is sent by this build and no new response service is claimed. Only separately suppressed distributions may be compared with week-4 answers.
+No survey is sent by this build. Email addresses are not linked to board use.
 
 ## Email choices
 Email signup is optional. Confirm the choices in the email we send before any stream begins. The preference page shows these four ongoing update streams in this order. The coach setup guide is a separate choice:
@@ -99,7 +103,7 @@ Email signup is optional. Confirm the choices in the email we send before any st
 
 Existing confirmed subscribers retain corrections only. Their monthly, weekly, and lesson choices start off, regardless of signup source. Older pending confirmation links retain their earlier consent. Any confirmed subscriber can turn each stream on or off using the private Email preferences link. Turning every stream off keeps your address and choices in the database; Unsubscribe from everything deletes the signup.
 
-For ongoing update signups, we send one welcome email per address after confirmation, with your chosen streams, a preference link, and a button to add the weekly roundup. The coach setup guide is one requested email after you confirm your address. It explains how to create a Claude Project and start your coach. It requires its own opt-in and does not subscribe you to setup follow-ups, corrections, Monthly, weekly roundup or lessons. The email has preferences and unsubscribe links. If your address already has confirmed email choices, the request form preserves those choices and you can use the coach guide on the site. Monthly is planned for the first Tuesday of the month and skips empty issues. The weekly roundup runs Mondays at 15:00 UTC, only with at least one match in a feed generated within the last 72 hours. Corrections and lesson launches send only after owner review. No standalone release-note or feedback campaign is sent; Monthly carries its question and replies go to `feedback@warfarecommand.com`.
+For ongoing update signups, we send one welcome email per address after confirmation, with your chosen streams, a preference link, and a button to add the weekly roundup. The coach setup guide is one requested email after you confirm your address. It explains how to create a Claude Project and start your coach. It requires its own opt-in and does not subscribe you to setup follow-ups, corrections, Monthly, weekly roundup or lessons. The email has preferences and unsubscribe links. If your address already has confirmed email choices, the request form preserves those choices and you can use the coach guide on the site. Monthly is planned for the first Tuesday of the month and skips empty issues. The weekly roundup runs Mondays at 15:00 UTC, only with at least one match in a feed generated within the last 72 hours. Corrections and lesson launches are selected individually before sending. No standalone release-note or feedback campaign is sent; Monthly carries its question and replies go to `feedback@warfarecommand.com`.
 
 Across Monthly, weekly roundup, and lesson launches, we send at most one campaign email per person per UTC ISO week and four per UTC calendar month. Corrections and the requested coach guide are exempt. The confirmation request and single welcome are consent messages outside these campaign caps. A stream can be skipped when another stream has used its allowance. The weekly sender can be triggered publicly, but each address can receive that roundup only once per ISO week. A stale feed or quiet week sends nothing. No open tracking, click tracking, or tracking pixels are used.
 
@@ -116,7 +120,7 @@ Keep names, dates, board data, and medical details out of suggestions. To reques
 
 ## Older records and id-based deletion
 
-Older laptop counts are optional and contain service, path, grade group, version and a random install id, with receipt time and salted address rate metadata. The id stays in `my/receipt.json`. Older install registration contains product, version, path, grade group, channel and a random install id. Legacy feedback reports and usage-week records are separate from schema-2 counts and remain behind their learning release gate.
+Older laptop counts are optional and contain service, path, grade group, version and a random install id, with receipt time and salted address rate metadata. The id stays in `my/receipt.json`. Older install registration contains product, version, path, grade group, channel and a random install id. Legacy feedback reports and usage-week records are separate from schema-2 counts and are disabled.
 
 For an id with no protected schema-2 admission, an id-based delete removes the older laptop count, install registration, feedback reports, usage-week records and private install-cohort correlation record. It does not remove rate counters or setup taps, which have no install id. For a protected schema-2 installation, use Review deletion above; the legacy command is refused.
 
@@ -143,6 +147,6 @@ Keep these out of the board, the Muster Out folder, and your chats: other people
 
 ## Registration codes
 
-The service issues your registration nonce, a random access code valid for 24 hours before its first use. Your board obtains it through an explicit browser handoff and saves it in owner-only storage before an install record can be sent. The service stores only its hash. The issuance generation is single use, and its nonce cannot recreate a deleted install. Accepted unfinished records reuse the same nonce for their exact retries and later completion.
+The service issues your registration nonce, a random access code valid for 24 hours before its first use. Your board obtains it through an explicit browser handoff and saves it in private storage before an install record can be sent. The service stores only its hash. The issuance generation is single use, and its nonce cannot recreate a deleted install. Accepted unfinished records reuse the same nonce for their exact retries and later completion.
 
 If the service reports expiry and no verified receipt exists, a reviewed restart uses a newly issued nonce and a new random count id. Your board preserves the plan, original creation metadata, address, optional answers and pending usage. Received records are never silently relabeled. Budget exhaustion leaves registration pending and your plan available. The browser keeps proof only in memory for the handoff; it never saves payloads or access credentials in localStorage.

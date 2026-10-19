@@ -96,6 +96,39 @@ function validVersion(value) { return typeof value === 'string' && value.length 
 function canonical(value) { if (Array.isArray(value)) return '[' + value.map(canonical).join(',') + ']'; if (value && typeof value === 'object') return '{' + Object.keys(value).sort().map(key => JSON.stringify(key)+':'+canonical(value[key])).join(',') + '}'; return JSON.stringify(value); }
 function definite(snap) { return !!snap && !!snap.metadata && snap.metadata.fromCache === false && snap.metadata.hasPendingWrites === false; }
 function validDraftId(id) { return typeof id === 'string' && id.length <= 128 && /^[A-Za-z0-9][A-Za-z0-9._-]*(?::[A-Za-z0-9][A-Za-z0-9._-]*)*$/.test(id); }
+// One contract for flagged notices, plan applicability and source coverage.
+function policySummary(feed, options = {}) {
+const now = options.now ?? Date.now(), expected = ['MARADMIN','ALMAR','ALNAV','ORDER'];
+const raw = feed?.sources, blocks = Array.isArray(raw) ? raw : raw && typeof raw === 'object' ? Object.entries(raw).map(([source,b]) => ({...b,source:b.source || source})) : [];
+const groups = {matches:[],review:[],excluded:[]};
+const sources = blocks.map(block => {
+const notices = Array.isArray(block.notices) ? block.notices : [], counts = {flagged:notices.length,matches:0,review:0,excluded:0};
+notices.forEach(notice => {
+const result = typeof options.classify === 'function' ? options.classify(notice) : {notice,reason:'Applicability needs review.'};
+const kind = !result ? 'excluded' : result.reason ? 'review' : 'matches';
+groups[kind].push(result || {notice,reason:'Does not match your saved plan.'}); counts[kind]++;
+});
+// Legacy checks record possible notices without enough facts to establish plan matches.
+if (feed?.legacy && Number.isInteger(block.possible_matches) && block.possible_matches > notices.length) {
+counts.review += block.possible_matches - notices.length; counts.flagged = block.possible_matches;
+}
+return {...block,counts,countsKnown:!feed?.legacy || Number.isInteger(block.possible_matches) && block.possible_matches >= 0};
+});
+const sum = key => sources.reduce((total,source) => total + source.counts[key],0), countsKnown = sources.every(source => source.countsKnown);
+const checked = sources.filter(source => source.last_success), missing = expected.filter(name => !sources.some(source => source.source === name));
+const stale = !!feed && (now - Date.parse(feed.generated_at) > 8*86400000 || Date.parse(feed.expires_at) <= now);
+const gap = !!feed && (feed.gap === true || now - Date.parse(feed.generated_at) > 30*86400000);
+const incomplete = !countsKnown || !!options.code || !!missing.length || !checked.length || sources.some(source => source.status === 'failed' || !source.last_success || source.truncated || source.unclassified_count > 0 || !Number.isInteger(source.checked_count) || !Number.isInteger(source.unclassified_count)) || stale || gap;
+const flagged = countsKnown ? sum('flagged') : null, matches = sum('matches'), review = sum('review'), excluded = sum('excluded');
+const summary = !checked.length ? 'Policy messages have not been checked yet' : !countsKnown ? 'Flagged notices are unknown for this saved check' : flagged + ' flagged, ' + matches + ' match your plan';
+const details = [];
+if (review) details.push(review + (review === 1 ? ' needs' : ' need') + ' applicability review.');
+if (excluded) details.push(excluded + ' excluded by your saved plan.');
+if (incomplete && feed) details.push('The latest check is incomplete.');
+if (options.code) details.push(options.code === 'FEED_UNTRUSTED' ? (checked.length ? 'The latest feed could not be verified. Showing the last saved check.' : 'The latest feed could not be verified.') : (checked.length ? 'The latest check did not finish. Showing the last saved check.' : 'The latest check did not finish.'));
+const detail = details.join(' '), text = summary + '.' + (detail ? ' ' + detail : '');
+return {sources,missing,groups,checked:checked.length,at:checked.map(source => source.last_success).sort()[0] || null,flagged,matches,review,excluded,countsKnown,stale,gap,incomplete,summary,detail,text};
+}
 function createDraftOwner(owner,options) {
 if (!['report','ask'].includes(owner)) throw new TypeError('Invalid draft owner');
 const opts = options || {}, storageKey = 'mo.drafts.' + owner + '.' + (opts.scope === undefined ? location.pathname : String(opts.scope));
@@ -151,7 +184,20 @@ return {version:/^[0-9A-Za-z.+-]{1,64}$/.test(o.version) ? o.version : 'unknown'
 }
 function notice(parent,text) { const e = node('p',text,'mot-notice'); e.setAttribute('role','status'); e.setAttribute('aria-live','polite'); parent.append(e); return e; }
 function actionRow(parent) { const e = node('div',undefined,'mot-actions'); parent.append(e); return e; }
-function help() { openText('Get help','Open SUPPORT in Claude. Copy the diagnostic before continuing.'); }
+function help() {
+let s; s = sheet('Save or update help',() => closeSheet(s));
+paragraph(s.body,'Copy the diagnostic, then paste it into the Claude chat with your board and describe what failed. If changes have not saved, copy those too before leaving.');
+function recovery(label,read,success) {
+const details = node('details'), summary = node('summary',label); details.append(summary); s.body.append(details);
+const preview = jsonBox(details,''); preview.setAttribute('aria-label',label);
+s.actions.append(button('Copy ' + label.toLowerCase(),async () => {
+try { const bytes = read(); if (typeof bytes !== 'string') throw {code:'DRAFT_STORAGE_FAILED'}; preview.textContent = bytes; details.open = true; if (await clipboard(bytes,s.notice,preview)) { s.notice.textContent = success; if (label === 'Diagnostic') emit('diagnostic-copied'); } }
+catch (e) { recordError('draft','copy',e.code || e.name); s.notice.textContent = MESSAGES.DRAFT_STORAGE_FAILED; }
+}));
+}
+recovery('Diagnostic',() => JSON.stringify(diagnostic(),null,2),'Diagnostic copied.');
+if (typeof o.copyChanges === 'function' && ['unsaved','saving','failed'].includes(save.status)) recovery('Changes',() => o.copyChanges(),'Changes copied.');
+}
 function lockBackground(sheet) {
 const changed = [];
 for (const el of document.body.children) { if (el !== sheet.overlay && !el.inert) { changed.push({el,ariaHidden:el.getAttribute('aria-hidden')}); el.inert = true; el.setAttribute('aria-hidden','true'); } }
@@ -159,27 +205,28 @@ sheet.locked = changed;
 }
 function closeSheet(sheet, force) {
 if (!sheet || !sheets.includes(sheet) || (!force && !sheet.cancel)) return;
+if (!dead && sheet === updateSheet && update.status === 'applying') return;
 if (sheets[sheets.length-1] !== sheet) return;
-sheet.navObserver?.disconnect(); sheet.abort?.abort(); sheet.draftBindings?.forEach(release => release()); sheet.overlay.remove(); sheets.pop(); sheet.locked.forEach(({el,ariaHidden}) => { el.inert = false; if (ariaHidden === null) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden',ariaHidden); });
+sheet.navObserver?.disconnect(); document.removeEventListener('keydown',sheet.keydown,true); sheet.abort?.abort(); sheet.draftBindings?.forEach(release => release()); sheet.overlay.remove(); sheets.pop(); sheet.locked.forEach(({el,ariaHidden}) => { el.inert = false; if (ariaHidden === null) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden',ariaHidden); });
 if (sheet === updateSheet) updateSheet = null;
 document.body.style.overflow = sheets.length ? 'hidden' : sheet.oldOverflow;
 if (sheet.opener?.isConnected && !sheet.opener.closest('[inert]')) sheet.opener.focus({preventScroll:true});
 else if (sheets.length) sheets[sheets.length-1].heading.focus({preventScroll:true});
 else { const replacement = sheet.returnContainer?.isConnected && Array.from(sheet.returnContainer.querySelectorAll('button,[tabindex="0"]')).find(el => !el.disabled && !el.closest('[inert]')); if (replacement) replacement.focus({preventScroll:true}); }
 }
-function sheet(title,cancel) {
-const s = {opener:document.activeElement,cancel,oldOverflow:document.body.style.overflow};
+function sheet(title,cancel,opener) {
+const s = {opener:opener || document.activeElement,cancel,oldOverflow:document.body.style.overflow};
 s.returnContainer = [...slots.header,...slots.save,...slots.today,...slots.settings].find(el => el.contains(s.opener)) || s.opener?.parentElement;
 s.overlay = node('div',undefined,'mot-overlay'); s.overlay.style.zIndex = String(100 + sheets.length * 2);
 s.dialog = node('section',undefined,'mot-sheet'); s.dialog.setAttribute('role','dialog'); s.dialog.setAttribute('aria-modal','true');
 s.heading = node('h2',title); s.heading.id = 'mot-heading-' + hex(); s.heading.tabIndex = -1; s.dialog.setAttribute('aria-labelledby',s.heading.id);
 const header = node('header',undefined,'mot-sheet-header'); header.append(s.heading);
-const dismiss = () => { if (s === updateSheet && ['available','snoozed'].includes(update.status)) { void snooze(true); closeSheet(s,true); return; } const result = s.cancel?.(); if (result?.then) return result.finally(() => closeSheet(s,true)); closeSheet(s,true); };
+const dismiss = () => { if (s === updateSheet && update.status === 'applying') return; if (s === updateSheet && ['available','snoozed'].includes(update.status)) { void snooze(true); closeSheet(s,true); return; } const result = s.cancel?.(); if (result?.then) return result.finally(() => closeSheet(s,true)); closeSheet(s,true); };
 s.close = button('Close',dismiss); s.close.classList.add('mot-close'); s.close.setAttribute('aria-label','Close sheet'); s.close.replaceChildren(icon('close')); s.close.hidden = false; header.append(s.close);
 s.notice = notice(header,'');
 s.body = node('div',undefined,'mot-sheet-body'); s.actions = node('div',undefined,'mot-sheet-actions');
 let moved = false;
-const grabber = button('',e => { if (e.detail === 0 || !moved) dismiss(); }); grabber.className = 'mot-drag-handle'; grabber.setAttribute('aria-label','Dismiss sheet');
+const grabber = button('',e => { if (e.detail === 0 || !moved) dismiss(); }); s.grabber = grabber; grabber.className = 'mot-drag-handle'; grabber.setAttribute('aria-label','Dismiss sheet');
 const pill = node('span',undefined,'c6-grabber'); pill.setAttribute('aria-hidden','true'); grabber.append(pill);
 let drag = null;
 grabber.addEventListener('pointerdown',e => { if (!e.isPrimary || e.button !== 0) return; moved = false; drag = {id:e.pointerId,x:e.clientX,y:e.clientY}; grabber.setPointerCapture(e.pointerId); });
@@ -187,23 +234,23 @@ grabber.addEventListener('pointermove',e => { if (drag && drag.id === e.pointerI
 grabber.addEventListener('pointerup',e => { if (!drag || drag.id !== e.pointerId) return; const start = drag; drag = null; if (e.clientY-start.y >= 48 && e.clientY-start.y > Math.abs(e.clientX-start.x)) dismiss(); });
 grabber.addEventListener('pointercancel',() => { drag = null; });
 const scroll = node('div',undefined,'mot-sheet-scroll'); scroll.append(s.body,s.actions);
-if (title !== 'Report a problem' && title !== 'Review report') { const report = button('Report a problem',openReport); report.classList.add('mot-sheet-report','mot-tertiary'); scroll.append(report); }
-const footer = node('footer',undefined,'mot-sheet-footer');if (title === 'Report a problem' || title === 'Review report') footer.append(s.actions);else footer.append(button('Done',dismiss));
+if (title !== 'Report a problem' && title !== 'Review report') { const report = button('Report a problem',openReport); s.report = report; report.classList.add('mot-sheet-report','mot-tertiary'); scroll.append(report); }
+const footer = node('footer',undefined,'mot-sheet-footer'); s.footer = footer; if (title === 'Report a problem' || title === 'Review report' || title === 'Updates') footer.append(s.actions); else footer.append(button('Done',dismiss));
 s.dialog.append(grabber,header,scroll,footer); s.overlay.append(s.dialog); document.body.append(s.overlay);
 const nav = document.querySelector('#tabs');
 if (nav) { const measure = () => s.overlay.style.setProperty('--mot-nav-space',Math.ceil(Math.max(72,nav.getBoundingClientRect().height))+'px'); measure(); s.navObserver = new ResizeObserver(measure); s.navObserver.observe(nav); }
 sheets.push(s); lockBackground(s); document.body.style.overflow = 'hidden';
 s.overlay.addEventListener('click', e => { if (e.target === s.overlay) dismiss(); });
-s.overlay.addEventListener('keydown', e => {
+s.keydown = e => {
 if (sheets[sheets.length-1] !== s) return;
-if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); dismiss(); }
+if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); dismiss(); return; }
 if (e.key !== 'Tab') return;
 const focusables = Array.from(s.dialog.querySelectorAll('button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),summary,a[href],[tabindex="0"]')).filter(el => !el.hidden && !el.closest('[hidden]') && el.getClientRects().length);
-const first = focusables[0], last = focusables[focusables.length-1];
-if (!first) { e.preventDefault(); s.heading.focus({preventScroll:true}); }
-else if (e.shiftKey && (document.activeElement === first || document.activeElement === s.heading)) { e.preventDefault(); last.focus(); }
-else if (!e.shiftKey && (document.activeElement === last || !s.dialog.contains(document.activeElement))) { e.preventDefault(); first.focus(); }
-});
+e.preventDefault();
+const index = focusables.indexOf(document.activeElement), next = e.shiftKey ? (index <= 0 ? focusables.length-1 : index-1) : (index+1)%focusables.length;
+if (!focusables.length) s.heading.focus({preventScroll:true}); else focusables[next].focus({preventScroll:true});
+};
+document.addEventListener('keydown',s.keydown,true);
 s.heading.focus({preventScroll:true}); return s;
 }
 function openText(title,text) { let s; s = sheet(title,() => closeSheet(s)); paragraph(s.body,text);  }
@@ -253,26 +300,22 @@ redraw(slots.save,renderSave); emit('save');
 if (saveAttempt < 1 && save.status === 'failed' && !save.operation && (save.code === 'unavailable' || save.code === 'db.unavailable' || !KNOWN_CODES.has(save.code)) && typeof save.retry === 'function') timer = setTimeout(retrySave,300 + Math.random()*400);
 }
 function mountSave(el) { if (el) { slots.save.push(el); renderSave(el); } }
-function sourceBlocks() { const blocks = feed?.sources; return Array.isArray(blocks) ? blocks : blocks && typeof blocks === 'object' ? Object.entries(blocks).map(([source,b]) => ({...b,source:b.source || source})) : []; }
+function currentPolicy() { return typeof o.noticeSummary === 'function' ? o.noticeSummary({feed,code:watchCode,now:o.now()}) : policySummary(feed,{code:watchCode,now:o.now()}); }
 function sourceLabel(source) { return source === 'ORDER' ? 'Cited orders' : source; }
 function watchSummary(b) {
 if (!b.last_success) return sourceLabel(b.source) + ': No successful check yet.';
 const count = Number.isInteger(b.checked_count) && b.checked_count >= 0 ? b.checked_count + ' ' + (b.source === 'ORDER' ? 'orders' : b.source + 's') : 'Count not stated';
 const coverage = typeof b.body_available === 'boolean' ? (b.body_available ? 'full text':'titles only') : 'text availability not recorded';
-const matches = Number.isInteger(b.possible_matches) && b.possible_matches >= 0 ? (b.possible_matches === 0 ? 'No possible matches.' : b.possible_matches + ' possible matches. Review before changing your plan.') : 'Possible matches are unknown for this check.';
-return 'Checked ' + utc(b.last_success) + ': ' + count + ', ' + coverage + '. ' + (b.status === 'failed' ? MESSAGES.WATCH_FAILED : matches);
+return 'Checked ' + utc(b.last_success) + ': ' + count + ', ' + coverage + '. ' + (b.countsKnown ? b.counts.flagged + ' flagged.' : 'Flagged count not recorded.') + (b.status === 'failed' ? ' ' + MESSAGES.WATCH_FAILED : '');
 }
-function stale() { return !!feed && (o.now() - Date.parse(feed.generated_at) > 8*86400000 || Date.parse(feed.expires_at) <= o.now()); }
-function gap() { return !!feed && (feed.gap === true || o.now() - Date.parse(feed.generated_at) > 30*86400000); }
 const todayKeys = new WeakMap();
 function renderToday(el) {
-const key = JSON.stringify({correction:update.correctionPending && update.status !== 'done',version:update.version,impact:update.impact,feed,watchCode,stale:stale(),gap:gap()}); if (todayKeys.get(el) === key) return; todayKeys.set(el,key);
+const policy = currentPolicy();
+const key = JSON.stringify({correction:update.correctionPending && update.status !== 'done',version:update.version,impact:update.impact,policy}); if (todayKeys.get(el) === key) return; todayKeys.set(el,key);
 el.replaceChildren(); el.classList.add('mot-root');
 if (update.correctionPending && update.status !== 'done') { const banner = node('section',undefined,'mot-warning'); paragraph(banner,'Correction ready: ' + (update.version || 'Review update'),'mot-strong'); paragraph(banner,update.impact || MESSAGES.UPDATE_UNTRUSTED); banner.append(button('Review correction',openUpdates)); el.append(banner); }
-const blocks = sourceBlocks().filter(b => ['MARADMIN','ALMAR'].includes(b.source));
 const row = node('section',undefined,'mot-watch-line');
-const checked = blocks.some(b => b.last_success), quiet = !checked || watchCode === 'WATCH_NOT_CHECKED';
-const summary = watchCode && watchCode !== 'WATCH_NOT_CHECKED' ? 'review failed check' : quiet ? 'not checked yet' : stale() ? 'last check is old' : gap() ? 'coverage incomplete' : 'latest check ready';
+const summary = policy.summary + (policy.incomplete && policy.checked ? '. Check incomplete' : '');
 const action = button('Policy checks: '+summary,openCoverage); action.classList.add('mot-policy-row'); const chevron=node('span','›'); chevron.setAttribute('aria-hidden','true'); action.append(chevron); row.append(action); el.append(row);
 }
 function mountToday(el) { if (el) { slots.today.push(el); renderToday(el); } }
@@ -281,21 +324,17 @@ if (value?.code && ['FEED_UNTRUSTED','WATCH_FAILED','WATCH_NOT_CHECKED'].include
 else { watchCode = null; feed = value; } redraw(slots.today,renderToday); emit('watch'); }
 function openCoverage() {
 let s; s = sheet('Policy update checks',() => closeSheet(s));
-const blocks = sourceBlocks().filter(b => ['MARADMIN','ALMAR'].includes(b.source));
-const checked = blocks.filter(b => b.last_success), failed = watchCode || blocks.some(b => b.status === 'failed' || b.truncated || b.unclassified_count > 0 || b.body_available !== true || !Number.isInteger(b.checked_count) || !Number.isInteger(b.unclassified_count)) || stale() || gap();
-const counts = typeof o.noticeSummary === 'function' ? o.noticeSummary() : null;
-const matches = counts?.matches ?? blocks.reduce((sum,b) => sum + (Number.isInteger(b.possible_matches) ? b.possible_matches : (b.notices?.length || 0)),0);
-const review = counts?.review || 0, at = checked.map(b => b.last_success).sort()[0];
-paragraph(s.body,!checked.length ? 'Policy messages have not been checked yet.' : failed ? ((matches || review) ? (matches + review) + ' possible ' + (matches + review === 1 ? 'notice in' : 'notices in') + ' the last saved check. The latest check is incomplete.' : 'The latest check is incomplete. Review the last saved results.') : matches ? matches + ' possible ' + (matches === 1 ? 'notice matches' : 'notices match') + ' your profile.' : review ? review + ' ' + (review === 1 ? 'notice needs' : 'notices need') + ' an applicability review.' : 'No matching notices in the checked messages, checked ' + milDate(at.slice(0,10)) + '.','mot-strong');
-const copy = button('Copy check request',async () => { const bytes = o.weeklyMessage; if (typeof bytes !== 'string' || !bytes) { paragraph(s.body,'The check request is unavailable. Open Talk to Claude.'); return; } if (await clipboard(bytes,s.notice)) s.notice.textContent = 'Copied. Paste into Claude.'; else openCopy('Copy check request',bytes); });
-s.body.append(copy); paragraph(s.body,'Paste into Claude. A check does not change your plan.');
-if (matches || review) paragraph(s.body,'Review possible notices in Sources and documents.');
+const policy = currentPolicy(), blocks = policy.sources;
+paragraph(s.body,policy.text,'mot-strong');
+const copy = button('Copy check request',async () => { const bytes = o.weeklyMessage; if (typeof bytes !== 'string' || !bytes) { paragraph(s.body,'The check request is unavailable. Open Board update messages.'); return; } if (await clipboard(bytes,s.notice)) s.notice.textContent = 'Copied. Paste into Claude.'; else openCopy('Copy check request',bytes); });
+s.body.append(copy); paragraph(s.body,'Paste into Claude to check policy. Your plan stays unchanged.','mot-policy-help');
+if (policy.flagged) paragraph(s.body,'Review flagged notices in Sources and documents.');
 const details = node('details'), summary = node('summary','Check details'); details.append(summary); s.body.append(details);
-paragraph(details,'These checks compare published Marine Corps policy messages with your plan. Sources without a successful check still need review with the confirming office.');
+paragraph(details,'These checks compare published policy messages and cited orders with your plan. Sources without a successful check still need review with the confirming office.');
 if (!blocks.length) paragraph(details,'No successful check is recorded.');
 blocks.forEach(b => {
 const section = node('section',undefined,'mot-coverage'); section.append(node('h3',sourceLabel(b.source)));
-paragraph(section,feed?.cadence === 'daily' && feed?.daily_shipped === true ? 'Daily checks.' : 'Weekly checks.');
+paragraph(section,feed?.cadence === 'daily' && feed?.daily_shipped === true ? 'Daily checks.' : feed?.legacy ? 'Saved weekly check.' : 'Check times are listed below.');
 paragraph(section,b.coverage || sourceLabel(b.source) + ' coverage has not been recorded.');
 paragraph(section,'Last successful check','mot-meta'); paragraph(section,utc(b.last_success),'mot-mono');
 paragraph(section,'Last attempt','mot-meta'); paragraph(section,utc(b.last_attempt),'mot-mono');
@@ -305,10 +344,9 @@ if (b.truncated) paragraph(section,'This check is incomplete. Some notices were 
 if (Number.isInteger(b.unclassified_count) && b.unclassified_count > 0) paragraph(section,b.unclassified_count + ' notices await classification.');
 if (b.status === 'failed') paragraph(section,b.reason || 'Last attempt failed.'); details.append(section);
 });
-if (watchCode && watchCode !== 'WATCH_NOT_CHECKED') paragraph(details,checked.length ? message(watchCode,'feed') : watchCode === 'FEED_UNTRUSTED' ? 'The latest feed could not be verified.' : 'The latest check did not finish.');
-if (!blocks.some(b => b.source === 'ALMAR')) paragraph(details,'ALMAR: Not watched.');
-if (stale()) paragraph(details,MESSAGES.FEED_STALE); if (gap()) paragraph(details,MESSAGES.FEED_GAP);
-for (const name of ['ALNAV','Cited orders']) paragraph(details,name + ': Not yet covered.');
+if (watchCode && watchCode !== 'WATCH_NOT_CHECKED') paragraph(details,policy.checked ? message(watchCode,'feed') : watchCode === 'FEED_UNTRUSTED' ? 'The latest feed could not be verified.' : 'The latest check did not finish.');
+policy.missing.forEach(name => paragraph(details,sourceLabel(name) + ': No coverage recorded in this feed.'));
+if (policy.stale) paragraph(details,MESSAGES.FEED_STALE); if (policy.gap) paragraph(details,MESSAGES.FEED_GAP);
 }
 
 async function snooze(dismissed = false) {
@@ -326,7 +364,8 @@ snoozePrefs[version] = until; if (update.status !== 'failed') closeSheet(updateS
 catch (e) { recordError('update','snooze',e.code || 'SNOOZE_SAVE_FAILED'); update = {...update,status:'failed',code:'SNOOZE_SAVE_FAILED'}; if (!dismissed) { openUpdates(); renderUpdate(); } }
 }
 async function apply() {
-if (!o.updates?.applyUpdate || (update.correction && !update.impact)) return;
+if (!o.updates?.applyUpdate || update.status === 'applying' || (update.correction && !update.impact)) return;
+setUpdate({...update,status:'applying',phase:'preparing'});
 void count('update_taps');
 try { const result = await o.updates.applyUpdate(); if (result) setUpdate(result); }
 catch (e) { setUpdate({...update,status:'failed',code:e.code || 'artifact.upstream_error'}); }
@@ -363,10 +402,12 @@ if (['artifact.not_writer','artifact.not_granted','artifact.consent_required','a
 else if (code === 'DRAFT_STORAGE_FAILED') s.actions.append(button('Copy changes',copyChanges));
 else s.actions.append(button('View diagnostic',openDiagnostic));
 if (code === 'UPDATE_VERIFY_FAILED') s.actions.append(button('Get help',help));
-s.actions.append(button(code === 'SNOOZE_SAVE_FAILED' ? 'Continue':'Close',s.cancel));
+s.actions.append(button('Close',s.cancel,true));
 } else if (status === 'idle' && lastConfirmed) { s.heading.textContent = 'Updated to ' + lastConfirmed.to + '.'; s.cancel = () => closeSheet(s,true); s.actions.append(button('Continue',s.cancel,true));
 } else { s.heading.textContent = 'Updates'; paragraph(s.body,status === 'checking' ? 'Checking for an update...' : o.updates ? (update.upToDate ? 'No newer verified release was found.' : 'The release check did not finish. Your saved plan is kept.') : MESSAGES['artifact.absent']); s.cancel = () => closeSheet(s,true); s.actions.append(button('Copy update message',() => copyMessage('update')),button('Close',s.cancel)); }
-s.close.hidden = false;
+const locked = status === 'applying', terminal = status === 'done' || status === 'failed' || (status === 'idle' && lastConfirmed);
+s.close.hidden = locked || terminal; s.grabber.hidden = locked || terminal; if (s.report) s.report.hidden = locked;
+s.dialog.setAttribute('aria-busy',String(locked));
 }
 function openUpdates() { if (updateSheet) { updateSheet.heading.focus({preventScroll:true}); return; } updateSheet = sheet('Updates',null); renderUpdate(); }
 function normalizeUpdateCode(code) {
@@ -404,13 +445,13 @@ function reportValid(payload) { return /^[a-f0-9]{16,32}$/.test(payload.install_
 function keepReport(s,r) {
 if (!reportDrafts.write('current',JSON.stringify(r))) s.notice.textContent = MESSAGES.DRAFT_STORAGE_FAILED;
 }
-function openReport() {
+function openReport(event) {
 let r = {id:hex(),created:new Date(o.now()).toISOString(),category:'content',problem:'Something looks wrong',where:SCREENS.includes(o.screen) ? o.screen : 'more',expected:'',details:'',error_class:'other',include_text:false};
 try {
 const saved = JSON.parse(reportDrafts.read('current') || 'null');
 if (saved && /^[a-f0-9]{32}$/.test(saved.id) && Number.isFinite(Date.parse(saved.created)) && SCREENS.includes(saved.where) && ['bug','content','other'].includes(saved.category) && ERROR_CLASSES.includes(saved.error_class) && typeof saved.problem === 'string' && typeof saved.expected === 'string' && saved.expected.length <= 300 && typeof saved.details === 'string' && saved.details.length <= 600 && typeof saved.include_text === 'boolean') r = saved;
 } catch (_) { recordError('draft','get','DRAFT_STORAGE_FAILED'); }
-let s; s = sheet('Report a problem',() => closeSheet(s)); renderReportForm(s,r);
+let s; s = sheet('Report a problem',() => closeSheet(s),event?.currentTarget instanceof HTMLElement ? event.currentTarget : null); renderReportForm(s,r);
 }
 function renderReportForm(s,r) {
 s.abort?.abort(); s.draftBindings?.forEach(release => release()); s.draftBindings = []; s.heading.textContent = 'Report a problem'; s.body.replaceChildren(); s.actions.replaceChildren(); s.cancel = () => closeSheet(s);
@@ -459,9 +500,11 @@ s.abort?.abort(); s.draftBindings?.forEach(release => release()); s.draftBinding
 paragraph(s.body,'Board fields: no name, no dates, no board link; an install id ties your reports together so a fix can be traced. Review your optional text.');
 paragraph(s.body,'Category: ' + r.category + '; screen: ' + (({dates:'Timeline',claim:'VA Claim'})[r.where]||r.where) + '; error class: ' + r.error_class + '.','mot-meta');
 paragraph(s.body,'Path: ' + (PATH_LABELS[o.path] || 'Unknown') + '; grade group: ' + (GRADE_LABELS[o.grade] || 'Unknown') + '.','mot-meta');
-paragraph(s.body,reportPayload(r).text === undefined ? 'No optional text included.' : 'The payload below includes the optional text you chose to share.');
+const payload = reportPayload(r);
+paragraph(s.body,'Your report text','mot-strong');
+const prose = paragraph(s.body,payload.text === undefined ? 'No optional text included.' : payload.text,'mot-report-text'); prose.tabIndex = 0;
 const exact = node('details'); exact.append(node('summary','See exactly what is sent')); s.body.append(exact);
-const payload = reportPayload(r), context = Object.freeze({screen:r.where}), bytes = JSON.stringify(payload,null,2), preview = jsonBox(exact,bytes), status = s.notice; status.textContent = '';
+const context = Object.freeze({screen:r.where}), bytes = JSON.stringify(payload,null,2), preview = jsonBox(exact,bytes), status = s.notice; status.textContent = '';
 const copy = button('Copy details',() => { exact.open = true; return clipboard(bytes,status,preview); }); copy.classList.add('mot-tertiary');
 s.actions.append(button('Edit',() => renderReportForm(s,r)),copy);
 {
@@ -595,5 +638,5 @@ if (!definite(s)) return; consent = s.exists ? s.data() : null; consentReady = t
 }
 return Object.freeze({mountHeader,mountSave,mountToday,mountSettings,setContext(v) { for (const key of ['screen','path','grade']) if (key in v) o[key] = v[key]; },setSave,setWatch,setUpdate,openUpdates,openCoverage,openReport,openConsent,openDiagnostic,count,recordError,diagnostic,setUsageEnabled,refreshSettings,destroy});
 }
-window.MusterOutTrust = Object.freeze({create,createDraftOwner,validDraftId,COUNTER_KEYS:COUNTERS,SCHEMA_VERSION:SCHEMA,message});
+window.MusterOutTrust = Object.freeze({create,policySummary,createDraftOwner,validDraftId,COUNTER_KEYS:COUNTERS,SCHEMA_VERSION:SCHEMA,message});
 })();

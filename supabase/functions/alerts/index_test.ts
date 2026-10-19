@@ -1001,3 +1001,5 @@ Deno.test("human unsubscribe reports an expired link honestly while provider ret
   equal((await click()).status, 404); equal(g.tables.alert_signups.length, 0);
   equal((await g.handler(postLink(valid))).status, 200);
 });
+
+import './setup_count_test.ts';

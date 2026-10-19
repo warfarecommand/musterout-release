@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.2.20 (2026-10-18)
+- Setup goes straight to your board, and Register now works when you tap it.
+- Tasks now read in plain English, with clearer VA and family coverage steps and a tighter phone layout.
+
 ## 0.2.19 (2026-10-18)
 - Setup and updates download less, so they finish faster.
 - Get the coach setup guide by email from the site or your board.

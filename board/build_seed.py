@@ -168,7 +168,7 @@ item('sep-tell', 'sep', 'Tell your CO your plan and your date', 'Your reporting 
      verify='CO: how do you want this routed, and who is my point of contact in the unit?',
      basis='target')
 item('sep-ic', 'sep', 'Individualized Initial Counseling (IC)', 'Complete this mandatory TRP gate no later than 365 days before EAS under MCO 1700.31A. Count calendar days from the projected last active-duty day on the "Last day of active duty" item. A date you confirm there overrides the projection. Keep the Retired List action date separate. Retiree IC may begin as soon as possible during the 24-month period preceding anticipated retirement. Other Marines may complete IC 18 months before separation or release from active duty.',
-     how=['The rule deadline computes from your entered date, planned or approved. Have IPAC and the TRP office confirm the EAS used by the order; record any different service-end date on the "Last day of active duty" item. Keep the appointment separate.', 'Record the actual appointment as a fixed date on the "Individualized Initial Counseling (IC): confirmed appointment" item and actual completion as the done date on this item.', "Complete IC, pre-separation counseling, TRS workshops, Capstone and Commander's Verification in that order. For SkillBridge, complete all transition requirements before participation under NAVMC 1700.2B, enclosure (2), paragraph 7."], owner='TAP counselor',
+     how=['Contact the installation TRP office to confirm your initial counseling status and what to do next.', 'The rule deadline computes from your entered date, planned or approved. Have IPAC and the TRP office confirm the EAS used by the order; record any different service-end date on the "Last day of active duty" item. Keep the appointment separate.', 'Record the actual appointment as a fixed date on the "Individualized Initial Counseling (IC): confirmed appointment" item and actual completion as the done date on this item.', "Complete IC, pre-separation counseling, TRS workshops, Capstone and Commander's Verification in that order. For SkillBridge, complete all transition requirements before participation under NAVMC 1700.2B, enclosure (2), paragraph 7."], owner='TAP counselor',
      due={'item': 'va-service-end', 'days': -365}, critical=True,
      cite=[c(TRPA, 'Encl (2), Ch 5 para 3.a', 'Individualized Initial Counseling (IC). Must be completed not later than 365 days prior to EAS date.', UTRPA), c(TRPA, 'Encl (2), Ch 8 para 2', 'IC must be completed, in-person, prior to the Pre-separation Counseling Brief.', UTRPA), c(TRPA, 'Encl (2), Ch 8 para 4.a-b', 'For EAS dates due to retirement, this may begin as soon as possible during the 24-month period preceding an anticipated retirement date but no later than 365 days prior to EAS date. ... For EAS dates other than retirement, Marines may complete the IC 18 months before separation or release from AD but no later than 365 days prior to EAS date.', UTRPA)],
      verify='Installation TRP office, UTC and IPAC: confirm EAS, sequencing, completion and any short-notice instructions. SkillBridge coordinator and CO: confirm completion before participation.', basis='rule')
@@ -1361,6 +1361,21 @@ for citation in by_id["sep-approval"]["cite"]:
     if citation["ref"] == "MARADMIN 045/25": citation["when"] = ["reserve"]
 
 merge_copy(items, COPY)
+# TXT: row, drawer and Ask share one title. Only display copy changes here.
+for record in items:
+    entry = COPY[record["id"]]
+    record["title"] = entry["label"]
+    for field in ("why", "how", "verify", "owner"):
+        if field in entry:
+            record[field] = entry[field]
+for benefit in claim["benefits"]["rows"]:
+    if benefit.get("id") == "benefit-champva":
+        benefit["what"] = "Family veterans health coverage"
+        benefit["detail"] = COPY["fam-champva"]["why"].replace(
+            "permanently and totally disabled", "having a permanent and total service-connected disability"
+        ).replace("The agency decides eligibility.", "The agency decides eligibility; anyone eligible for TRICARE is excluded.")
+        benefit["verify"] = COPY["fam-champva"]["verify"]
+ledger["note"] = "Use your latest Leave and Earnings Statement (LES) to enter your actual leave balance."
 seed = {"pack": PACK, "settings": settings, "ledger": ledger, "loes": loes, "items": items, "contacts": contacts, "blocks": blocks, "conditions": conditions, "claim": claim}
 
 # ---------------- checks ----------------

@@ -1,6 +1,6 @@
 # Resigning a Regular officer commission
 
-Answers use the copied regulations and supplemental official source texts listed in README.md. External seed citations do not establish an answer here. Paragraphs refer to the printed documents, including conflicts and older instructions that require office confirmation.
+Start with the next step for your path. Ask the office named in each answer to confirm your individual dates and requirements; source references are included for review.
 
 ## 1. Resignation request windows
 
@@ -24,7 +24,7 @@ Terminal leave requires CO approval and completion of all administrative and med
 
 ## 6. Combining SkillBridge, PTAD and terminal leave
 
-MARADMIN 280/24, 3.a-c, sets 120/90-day category limits and rank-based approval, and 625/24, 5.d, repeats the limits, while NAVMC 1700.2B, 4.a(1) and enclosure (2), 2, uses CO/OIC approval, a 180-day boundary and no added rank/grade restrictions. Authority and duration remain unresolved. MARADMIN 280/24 requires PTAD before leave within its combined absence limit. Get written confirmation of the governing version and approval route. Confirm the combined absence cap and sequence before using dates. Confirm with: installation SkillBridge coordinator and approving command.
+MARADMIN 280/24, 3.a-c, sets 120/90-day category limits and rank-based approval, and 625/24, 5.d, repeats the limits, while NAVMC 1700.2B, 4.a(1) and enclosure (2), 2, uses CO/OIC approval, a 180-day boundary and no added rank/grade restrictions. Have your SkillBridge coordinator and approving command confirm the governing authority and duration before using dates. MARADMIN 280/24 requires PTAD before leave within its combined absence limit. Get written confirmation of the governing version and approval route. Confirm the combined absence cap and sequence before using dates. Confirm with: installation SkillBridge coordinator and approving command.
 
 ## 7. Reserve commissions and DAP
 
@@ -32,11 +32,11 @@ MARADMIN 045/25, paragraphs 2 and 3(b)(1), requires at least 4 months from HQMC 
 
 ## 8. Family TRICARE coverage
 
-The pack does not settle this for your family's eligibility, enrollment deadlines, costs, or coverage after a resignation or ordinary EAS. MARADMIN 454/26, 3.a, states that transitioning Active Component Marines who affiliate with the Selected Reserve without a break in service are eligible for 180 days of premium-free TAMP and that eligible Selected Reserve Marines may enroll in TRICARE Reserve Select afterward. That paragraph does not establish every dependent's enrollment requirements or eligibility for CHCBP. Have the benefits office confirm your qualifying status and each family member's coverage dates. Confirm with: TRICARE benefits office and DEERS office.
+Ask TRICARE to confirm each family member's eligibility, enrollment deadline, costs and coverage after active duty. MARADMIN 454/26, 3.a, states that transitioning Active Component Marines who affiliate with the Selected Reserve without a break in service are eligible for 180 days of premium-free TAMP and that eligible Selected Reserve Marines may enroll in TRICARE Reserve Select afterward. Confirm each dependent's enrollment requirements and whether the Continued Health Care Benefit Program (CHCBP) applies. Have the benefits office confirm your qualifying status and each family member's coverage dates. Confirm with: TRICARE benefits office and DEERS office.
 
 ## 9. BDD and the separation physical
 
-The copied VA guide v6.1, Module 3, p. 72, says to "Submit your BDD claims between 180 and 90 days" before the final active-duty day. It requires a known separation date, completed SHA Part A, records for the entire service history and availability for exams for 45 days after filing. The final active-duty day is the filing anchor. MCO 1900.16 CH-3, 1011.2, says to schedule SHPE at least 6 months before separation. Guide p. 74 says a completed SHA returned to DoD at least 30 days before separation can satisfy the discharge examination requirement. A scheduled VA exam alone does not satisfy that condition. Confirm with: VA benefits office or accredited VSO and military medical clinic.
+The VA guide v6.1, Module 3, p. 72, says to "Submit your BDD claims between 180 and 90 days" before the final active-duty day. It requires a known separation date, completed SHA Part A, records for the entire service history and availability for exams for 45 days after filing. The final active-duty day is the filing anchor. MCO 1900.16 CH-3, 1011.2, says to schedule SHPE at least 6 months before separation. Guide p. 74 says a completed SHA returned to DoD at least 30 days before separation can satisfy the discharge examination requirement. A scheduled VA exam alone does not satisfy that condition. Confirm with: VA benefits office or accredited VSO and military medical clinic.
 
 ## 10. Transition counseling and training
 
@@ -52,4 +52,4 @@ BDD is the preferred route; intent to file protects the potential effective date
 
 ## VA dental and family CHAMPVA
 
-VA dental care eligibility, Class IV rating and unemployability statements, permits any needed dental care for a qualifying 100 percent service-connected rating or individual unemployability paid at the 100 percent rate. Permanence is not required; temporary 100 percent ratings do not qualify for Class IV. VA CHAMPVA benefits, "Eligibility for CHAMPVA", permits qualifying spouses and dependent children of veterans rated permanent and total for a service-connected disability, and lists survivor categories. Anyone eligible for TRICARE is excluded, including retiree families eligible for TRICARE. Confirm with: VA dental clinic eligibility office, VA CHAMPVA eligibility office and DEERS/TRICARE benefits office.
+VA dental care eligibility, Class IV rating and unemployability statements, permits any needed dental care for a qualifying 100 percent service-connected rating or individual unemployability paid at the 100 percent rate. Permanence is not required; temporary 100 percent ratings do not qualify for Class IV. VA CHAMPVA benefits, "Eligibility for CHAMPVA", permits qualifying spouses and dependent children of veterans rated permanent and total for a service-connected disability. Anyone eligible for TRICARE is excluded, including retiree families eligible for TRICARE. Confirm with: VA dental clinic eligibility office, VA CHAMPVA eligibility office and DEERS/TRICARE benefits office.

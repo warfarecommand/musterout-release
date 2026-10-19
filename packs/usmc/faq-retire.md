@@ -1,6 +1,6 @@
 # Retirement and FMCR transfer
 
-Answers use the copied regulations and supplemental official source texts listed in README.md. External seed citations do not establish an answer here. Paragraphs refer to the printed documents, including conflicts and older instructions that require office confirmation.
+Start with the next step for your path. Ask the office named in each answer to confirm your individual dates and requirements; source references are included for review.
 
 ## 1. Retirement and FMCR request windows
 
@@ -12,7 +12,7 @@ For commissioned officers, the manual describes 20 years and 1 day of active ser
 
 ## 3. Request routing and date approval
 
-Routine voluntary officer retirement requests go through MCTFS unit diary processing, and the officer signs Appendix J for the electronic service record. Reporting units also submit enlisted retirement or FMCR transfer requests through the unit diary and obtain the Marine's signed Appendix J. Mere submission is not approval, and the Director, Manpower Management, may approve a different retirement date. See MCO 1900.16 CH-3, 2004.1-2 and 7005.1-2, and MARADMIN 175/24, 3; the pack does not establish one final approving official for every retirement category and waiver. Confirm with: IPAC and HQMC MMSR-2.
+Routine voluntary officer retirement requests go through MCTFS unit diary processing, and the officer signs Appendix J for the electronic service record. Reporting units also submit enlisted retirement or FMCR transfer requests through the unit diary and obtain the Marine's signed Appendix J. Mere submission is not approval, and the Director, Manpower Management, may approve a different retirement date. See MCO 1900.16 CH-3, 2004.1-2 and 7005.1-2, and MARADMIN 175/24, 3; ask the retirement desk to identify the final approving official for your retirement category and any waiver. Confirm with: IPAC and HQMC MMSR-2.
 
 ## 4. Terminal leave
 
@@ -24,15 +24,15 @@ Officers and enlisted Marines with an approved retirement date are eligible for 
 
 ## 6. Combining SkillBridge, PTAD and terminal leave
 
-MARADMIN 280/24, 3.a-c, sets 120/90-day category limits and rank-based approval, and 625/24, 5.d, repeats the limits, while NAVMC 1700.2B, 4.a(1) and enclosure (2), 2, uses CO/OIC approval, a 180-day boundary and no added rank/grade restrictions. Authority and duration remain unresolved. MARADMIN 280/24 requires PTAD before leave within its combined absence limit. Get written confirmation of the governing version and approval route. Confirm the combined absence cap and sequence before using dates. Confirm with: installation SkillBridge coordinator and approving command.
+MARADMIN 280/24, 3.a-c, sets 120/90-day category limits and rank-based approval, and 625/24, 5.d, repeats the limits, while NAVMC 1700.2B, 4.a(1) and enclosure (2), 2, uses CO/OIC approval, a 180-day boundary and no added rank/grade restrictions. Have your SkillBridge coordinator and approving command confirm the governing authority and duration before using dates. MARADMIN 280/24 requires PTAD before leave within its combined absence limit. Get written confirmation of the governing version and approval route. Confirm the combined absence cap and sequence before using dates. Confirm with: installation SkillBridge coordinator and approving command.
 
 ## 7. Retirement family TRICARE coverage
 
-The copied pack does not establish current retiree or FMCR TRICARE enrollment deadlines, recovery options or individual coverage. MARADMIN 454/26, 5.e, makes retiring Marines, including medical retirees, ineligible for DAP. Its Selected Reserve TAMP statement in paragraph 3.a therefore does not establish a retiree's family coverage. MCO 1900.16 CH-3, 1407.1-5, requires accurate family information in DEERS and refers retired/FMCR medical benefits to TRICARE. Obtain enrollment rules, dependent coverage dates and ID card instructions from those offices. Confirm with: TRICARE benefits office and DEERS office.
+You, your eligible spouse and children can continue TRICARE through retiree enrollment. Call your regional contractor to confirm plan choices, costs, deadlines and coverage dates. Active-duty enrollment does not simply carry over. Review https://www.tricare.mil/LifeEvents/Retiring and find your regional contractor at https://www.tricare.mil/ContactUs/CallUs. MARADMIN 454/26, 5.e, makes retiring Marines, including medical retirees, ineligible for DAP. The Transitional Assistance Management Program (TAMP) statement in paragraph 3.a concerns qualifying Selected Reserve affiliation; use retiree TRICARE enrollment guidance for retirement. MCO 1900.16 CH-3, 1407.1-5, requires accurate family information in the Defense Enrollment Eligibility Reporting System (DEERS) and refers retired/FMCR medical benefits to TRICARE. Obtain enrollment rules, dependent coverage dates and ID card instructions from those offices. Confirm with: TRICARE benefits office and DEERS office.
 
 ## 8. BDD and the separation physical
 
-The copied VA guide v6.1, Module 3, p. 72, says to "Submit your BDD claims between 180 and 90 days" before the final active-duty day. It requires a known separation date, completed SHA Part A, records for the entire service history and availability for exams for 45 days after filing. The final active-duty day is the filing anchor. MCO 1900.16 CH-3, 1011.2, says to schedule SHPE at least 6 months before separation. Guide p. 74 says a completed SHA returned to DoD at least 30 days before separation can satisfy the discharge examination requirement. A scheduled VA exam alone does not satisfy that condition. Confirm with: VA benefits office or accredited VSO and military medical clinic.
+The VA guide v6.1, Module 3, p. 72, says to "Submit your BDD claims between 180 and 90 days" before the final active-duty day. It requires a known separation date, completed SHA Part A, records for the entire service history and availability for exams for 45 days after filing. The final active-duty day is the filing anchor. MCO 1900.16 CH-3, 1011.2, says to schedule SHPE at least 6 months before separation. Guide p. 74 says a completed SHA returned to DoD at least 30 days before separation can satisfy the discharge examination requirement. A scheduled VA exam alone does not satisfy that condition. Confirm with: VA benefits office or accredited VSO and military medical clinic.
 
 ## 9. DD 2656 and SBP elections
 
@@ -52,4 +52,4 @@ BDD is the preferred route; intent to file protects the potential effective date
 
 ## VA dental and family CHAMPVA
 
-VA dental care eligibility, Class IV rating and unemployability statements, permits any needed dental care for a qualifying 100 percent service-connected rating or individual unemployability paid at the 100 percent rate. Permanence is not required; temporary 100 percent ratings do not qualify for Class IV. VA CHAMPVA benefits, "Eligibility for CHAMPVA", permits qualifying spouses and dependent children of veterans rated permanent and total for a service-connected disability, and lists survivor categories. Anyone eligible for TRICARE is excluded, including retiree families eligible for TRICARE. Confirm with: VA dental clinic eligibility office, VA CHAMPVA eligibility office and DEERS/TRICARE benefits office.
+VA dental care eligibility, Class IV rating and unemployability statements, permits any needed dental care for a qualifying 100 percent service-connected rating or individual unemployability paid at the 100 percent rate. Permanence is not required; temporary 100 percent ratings do not qualify for Class IV. VA CHAMPVA benefits, "Eligibility for CHAMPVA", permits qualifying spouses and dependent children of veterans rated permanent and total for a service-connected disability. Anyone eligible for TRICARE is excluded, including retiree families eligible for TRICARE. Confirm with: VA dental clinic eligibility office, VA CHAMPVA eligibility office and DEERS/TRICARE benefits office.

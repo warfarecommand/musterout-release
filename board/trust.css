@@ -8,8 +8,8 @@
 .mot-button[aria-pressed=true]{border:0;background:var(--ink);color:var(--bg)}
 .mot-primary:not(:disabled){background:var(--accent);color:var(--on-accent);border:0}
 .mot-root :focus-visible,.mot-overlay :focus-visible{outline:var(--stroke) solid var(--focus);outline-offset:var(--stroke)}
-.mot-overlay{position:fixed;inset:0;display:flex;align-items:flex-end;justify-content:center;box-sizing:border-box;padding:0;background:var(--scrim)}
-.mot-sheet{width:100%;max-width:var(--sheet-width);max-height:calc(100dvh - var(--s-6));display:flex;flex-direction:column;background:var(--panel);border:0;border-radius:var(--r-sheet) var(--r-sheet) 0 0;box-shadow:var(--shadow-sheet);animation:mot-in var(--duration-sheet) var(--ease);overflow:hidden}
+.mot-overlay{position:fixed;inset:var(--c1-host-top,0px) 0 auto;height:var(--c1-host-height,100dvh);display:flex;align-items:flex-end;justify-content:center;box-sizing:border-box;padding:0;background:var(--scrim)}
+.mot-sheet{width:100%;max-width:var(--sheet-width);max-height:calc(var(--c1-host-height,100dvh) - var(--s-6));display:flex;flex-direction:column;background:var(--panel);border:0;border-radius:var(--r-sheet) var(--r-sheet) 0 0;box-shadow:var(--shadow-sheet);animation:mot-in var(--duration-sheet) var(--ease);overflow:hidden}
 .mot-sheet-header{display:flex;align-items:center;gap:var(--s-3);flex-wrap:wrap;flex-shrink:0;border:0;padding:var(--s-2) var(--s-4)}
 .mot-sheet-header h2{flex:1;font:600 var(--text-lg)/var(--lh-tight) var(--sans);margin:0;overflow-wrap:anywhere}
 .mot-sheet-header .mot-button{margin-top:var(--s-2);width:100%;color:var(--ink-2)}
@@ -22,6 +22,9 @@
 .mot-sheet-actions .mot-tertiary,.mot-tertiary{background:transparent;color:var(--accent-ink);border:0}
 .mot-sheet-actions .mot-primary:disabled{background:var(--fill);color:var(--ink-2)}
 .mot-json{white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;font:400 var(--text-xs)/var(--lh-meta) var(--mono);padding:var(--s-4);margin:var(--s-2) 0 var(--s-4);border:0;border-radius:var(--r-control);color:var(--ink);background:var(--surface-2);user-select:text}
+.mot-report-text{white-space:pre-wrap;overflow-wrap:anywhere;user-select:text}
+.mot-policy-help{text-wrap:pretty}
+.mot-sheet [hidden]{display:none!important}
 .mot-meta,.mot-save-live{font:400 var(--text-sm)/var(--lh-body) var(--sans);color:var(--ink-2)}
 .mot-mono{font:400 var(--text-xs)/var(--lh-meta) var(--mono);color:var(--ink-3)}
 .mot-strong{font-weight:600}
@@ -60,8 +63,8 @@
 .mot-sheet-footer{position:sticky;bottom:0;flex:none;padding:var(--s-3) var(--s-4);background:var(--surface);border-top:var(--hairline) solid var(--sep)}
 .mot-sheet-footer .mot-button{width:100%}
 .mot-report-link{display:block;text-decoration:none;margin-top:var(--s-3)}
-@media(min-width:900px){.mot-overlay{align-items:center;padding:var(--s-6)}.mot-sheet{border-radius:var(--r-sheet);max-height:calc(100dvh - var(--target))}.mot-sheet-header,.mot-sheet-body{padding-inline:var(--s-5)}.mot-sheet-actions{padding:var(--s-4) var(--s-5) var(--s-5)}}
-@media(max-width:899px){.mot-overlay{display:grid;grid-template-rows:var(--sheet-top) minmax(0,1fr) var(--mot-nav-space,var(--nav-safe-height));grid-template-columns:minmax(0,1fr);align-items:end;justify-items:center;padding:0}.mot-sheet{grid-row:2;max-height:calc(100dvh - var(--sheet-top) - var(--mot-nav-space,var(--nav-safe-height)))}}
+@media(min-width:900px){.mot-overlay{align-items:center;padding:var(--s-6)}.mot-sheet{border-radius:var(--r-sheet);max-height:calc(var(--c1-host-height,100dvh) - var(--target))}.mot-sheet-header,.mot-sheet-body{padding-inline:var(--s-5)}.mot-sheet-actions{padding:var(--s-4) var(--s-5) var(--s-5)}}
+@media(max-width:899px){.mot-overlay{display:grid;grid-template-rows:var(--sheet-top) minmax(0,1fr) var(--mot-nav-space,var(--nav-safe-height));grid-template-columns:minmax(0,1fr);align-items:end;justify-items:center;padding:0}.mot-sheet{grid-row:2;max-height:calc(var(--c1-host-height,100dvh) - var(--sheet-top) - var(--mot-nav-space,var(--nav-safe-height)))}}
 @keyframes mot-in{from{transform:translateY(var(--s-8))}to{transform:translateY(0)}}
 @media(prefers-reduced-motion:reduce){.mot-sheet,.mot-button{animation:none!important;transition:none!important;transform:none!important}}
 

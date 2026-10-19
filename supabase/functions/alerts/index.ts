@@ -401,6 +401,28 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
       if (!ORIGINS.includes(origin)) return json(403, { ok: false, error: "origin" });
       return new Response(null, { status: 204, headers: cors });
     }
+    if (u.pathname.endsWith("/alerts/setup-count")) {
+      if (req.method !== "POST") return json(405, { ok: false, error: "method" });
+      if (!ORIGINS.includes(origin)) return json(403, { ok: false, error: "origin" });
+      if (u.search) return json(400, { ok: false, error: "bad_input" });
+      if (req.headers.get("content-type")?.split(";")[0].trim().toLowerCase() !== "application/json") return json(415, { ok: false, error: "content_type" });
+      if (Number(req.headers.get("content-length")) > 128) return json(413, { ok: false, error: "too_large" });
+      try {
+        const text = await readBody(req.body, 128, deps.bodyDeadlineMs);
+        let body;
+        try { body = JSON.parse(text); } catch { return json(400, { ok: false, error: "bad_json" }); }
+        if (!body || Array.isArray(body) || typeof body !== "object" || Object.keys(body).length !== 1 || !["copy_board", "copy_coach"].includes(body.button)) return json(400, { ok: false, error: "bad_input" });
+        // UTC day, atomic hourly cap and dropped totals live in the aggregate RPC.
+        // Never read request addresses or reuse identifier-bearing rate tables.
+        const result = await database(deps.env, deps.fetch).rpc<{ status: string }>("setup_copy_hit", { p_button: body.button });
+        if (result?.status === "dropped") return json(429, { ok: false, error: "rate_limited" });
+        if (result?.status !== "counted") return json(503, { ok: false, error: "unavailable" });
+        return success();
+      } catch (error) {
+        if (error instanceof BodyReadError) return json(error.status, { ok: false, error: error.code });
+        return json(503, { ok: false, error: "unavailable" });
+      }
+    }
     if (u.pathname.endsWith("/alerts/setup")) {
       if (req.method !== "POST") return json(405, { ok: false, error: "method" });
       const secret = deps.env("SETUP_CRON_SECRET");

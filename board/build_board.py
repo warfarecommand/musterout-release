@@ -45,6 +45,13 @@ def embed_trust(fragment, root=here.parent):
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
+# MTN-94, TRS ruling 18 OCT 2026: 125 copy revisions measured 121,039 bytes
+# in format 2; the full publication measured 1,158,488 bytes. The old 120,000
+# soft target was a page budget, not a database or wire limit. Allow growth
+# to 160,000 without dropping history; retain the 200,000-byte hard ceiling.
+FINGERPRINT_SOFT_TARGET_BYTES = 160000
+FINGERPRINT_HARD_LIMIT_BYTES = 200000
+
 def decode_fingerprints(value):
     if "format" not in value:
         return value
@@ -74,7 +81,7 @@ def pack_fingerprints(value):
                   variants={i: [indices[h] for h in rows] for i, rows in value["variants"].items()})
     if canonical(decode_fingerprints(packed)) != canonical(value):
         raise ValueError("fingerprint compaction lost data")
-    if len(canonical(packed).encode()) >= 120000:
+    if len(canonical(packed).encode()) >= FINGERPRINT_SOFT_TARGET_BYTES:
         raise ValueError("compact fingerprint map exceeds TEL1 target")
     return packed
 
@@ -238,9 +245,9 @@ def seed_fingerprints(root=here.parent):
     # Budget raised from 100 KB to 150 KB for 0.2.0 (label and brief changed every current hash),
     # then to 200 KB for 0.2.4 (one more released seed version, no seed change). Compact the map
     # (shared digest table) before it reaches this bound; each release adds about 15 KB. Tracked in MTN-55.
-    # Raised to 230 KB for 0.2.8 and 0.2.9 (identical released seeds repeat in the map) until MTN-55 compaction lands.
-    if len(canonical(pack_fingerprints(result)).encode()) >= 230000:
-        raise SystemExit("seed fingerprint map exceeds 230 KB")
+    # TEL1 compaction and MTN-94 retain a separate 200 KB hard ceiling.
+    if len(canonical(pack_fingerprints(result)).encode()) >= FINGERPRINT_HARD_LIMIT_BYTES:
+        raise SystemExit("seed fingerprint map exceeds 200 KB")
     return result
 
 

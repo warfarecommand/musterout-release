@@ -1,6 +1,6 @@
 # Separation glossary
 
-One entry per line. Citations identify support in the copied regulations and supplemental texts. Unresolved definitions name the office that can confirm them. TRS means either the seminar or health plan.
+Use these definitions when an office uses a shortened name. TRS can mean either the transition seminar or TRICARE Reserve Select; confirm which one the speaker means.
 
 - EAS: End of active service is the date a Marine's active service ends (MARADMIN 045/25, 3.a.2).
 - ECC: End of current contract is the end date used to limit how much leave a Marine can earn before separation (MCO 1900.16 CH-3, 1010.2.e).
@@ -43,12 +43,12 @@ One entry per line. Citations identify support in the copied regulations and sup
 - 21-526EZ: VA Form 21-526-EZ is the VA disability claim form named in the guide (VA guide v6.1, Module 3, line 3769).
 - C&P exam: A compensation and pension exam may be scheduled for a standard claim or one converted from an FDC (VA guide v6.1, Module 3, p. 72, lines 3674-3681).
 - PACT Act: The law expands VA health care and benefits for veterans exposed to toxic substances (VA guide v6.1, Module 3, lines 3403-3413).
-- ILER: Definition not established by the copied pack; confirm with the military medical/exposure office.
+- ILER: Individual Longitudinal Exposure Record, the system linking documented military occupational and environmental exposures. Ask your military medical/exposure office for help reviewing your record. Official guidance: https://www.health.mil/Military-Health-Topics/Environmental-Exposures-Hub/Environmental-Exposures-Topics/ILER?type=FAQ
 - TAMP: The Transitional Assistance Management Program provides the 180 days of premium-free transitional health care described for qualifying Selected Reserve affiliation without a break in service (MARADMIN 454/26, 3.a).
 - TRS (seminar): The Transition Readiness Seminar is the transition training named in SkillBridge eligibility procedures (NAVMC 1700.2B, enclosure (2), 3.c).
 - TRS (health plan): TRICARE Reserve Select is the health plan eligible Selected Reserve Marines may enroll in after TAMP (MARADMIN 454/26, 3.a).
-- CHCBP: Definition not established by the copied pack; confirm with the TRICARE benefits office.
-- FEDVIP: Definition not established by the copied pack; confirm with the TRICARE benefits office.
+- CHCBP: Continued Health Care Benefit Program, temporary health coverage for qualifying people who lose TRICARE eligibility. Confirm eligibility, costs, duration and enrollment deadlines with the TRICARE benefits office. Official guidance: https://www.tricare.mil/Plans/SpecialPrograms/CHCBP
+- FEDVIP: Federal Employees Dental and Vision Insurance Program. Retirees and family members may qualify to purchase dental coverage. Confirm individual eligibility, enrollment, costs and coverage dates with the benefits office. Official guidance: https://www.tricare.mil/LifeEvents/Retiring
 - SBP: The Survivor Benefit Plan provides elected survivor coverage associated with military retirement (MCO 1900.16 CH-3, 1406).
 - DD 2656: DD Form 2656 is the retirement election form used to establish retired pay information and SBP choices (MCO 1900.16 CH-3, 1406.1).
 - DFAS: The Defense Finance and Accounting Service maintains retired Marine pay accounts (MCO 1900.16 CH-3, 1404.1).
@@ -91,3 +91,5 @@ One entry per line. Citations identify support in the copied regulations and sup
 - Class IV dental: Any needed VA dental care for a qualifying 100 percent service-connected rating or individual unemployability at the 100 percent rate. Permanence is not required; temporary ratings are excluded (VA dental care eligibility, Class IV statements). Confirm with: VA dental clinic eligibility office.
 - CHAMPVA: VA family health benefits for qualifying dependents or survivors; anyone eligible for TRICARE is excluded (VA CHAMPVA benefits, Eligibility for CHAMPVA). Confirm with: VA CHAMPVA eligibility office and DEERS/TRICARE benefits office.
 - Final HHG move: Household goods shipment after separation, retirement or FMCR. Entitlement, destination and time limit depend on the orders and applicable JTR category; storage has a separate limit (JTR, 1 OCT 2026, 052012.A/C and 052013.A/B, Table 5-52). Confirm with: installation DMO/TMO.
+
+- LES: Leave and Earnings Statement, your monthly military pay statement showing earnings, deductions and leave balance. Use the actual closing balance for the board leave planner. Official guidance: https://www.militaryonesource.mil/financial-legal/personal-finance/les-leave-and-earnings-statement/

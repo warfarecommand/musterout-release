@@ -30,10 +30,10 @@ Pack usmc-2026.10 covers the situations in the first table. For the situations i
 ## Setup help
 
 ### Claude plan
-Muster Out works on Claude Free. Your board installs in a Project and saves your progress. Claude Pro at $20 a month gives more room for long coach chats. Muster Out adds no charge.
+Works on Claude Free. Start with one message in a Claude chat. Enable Code execution and file creation. Add a coach in a Claude Project later if you want to keep documents and continue planning there.
 
 ### Publishing your board
-Tap Publish when Claude asks. Publishing creates the board page in your Claude account; keep its visibility private and share its link only with people you choose.
+Approve publishing if Claude asks; the button label can vary. Publishing creates the board page in your Claude account; keep its visibility private and share its link only with people you choose.
 
 ### Resume after the chat closes
 Paste the setup message into a new Claude chat. Claude looks for your existing board. Open that same board to resume the setup cards; the page saves completion even if the chat closed. Never create a second board to recover.
@@ -48,7 +48,7 @@ Use a personal phone or computer to open [claude.ai](https://claude.ai), then pa
 If your path is covered, send this one message in a Claude chat that can run the security check: the Claude app on a phone, claude.ai, or the desktop app, including Claude Code and the desktop Code tab. Muster Out works on Claude Free.
 
 ```
-Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.19/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.19/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.19.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify.
+Set up Muster Out for me. Check https://cdn.jsdelivr.net/npm/musterout@0.2.20/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.20/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.20.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the setup guide they verify.
 ```
 
 Claude checks the release files, asks you to tap Publish for your private board, and says "Open your board." You answer the setup cards on the board. If you do not have a date yet, use the undated plan and add your date later. If the phone app cannot open the board, use claude.ai in your phone browser. The [welcome page](https://musterout.warfarecommand.com/#setup) has a Copy button for the message.
@@ -61,13 +61,13 @@ Your board shows the weekly and update messages under Talk to Claude, each with 
 Weekly message:
 
 ```
-Run the Muster Out weekly check. Use the signed feed. Check https://cdn.jsdelivr.net/npm/musterout@0.2.19/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.19/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.19.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the weekly guide they verify.
+Run the Muster Out weekly check. Use the signed feed. Check https://cdn.jsdelivr.net/npm/musterout@0.2.20/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.20/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.20.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the weekly guide they verify.
 ```
 
 Update message:
 
 ```
-Update Muster Out. Keep my existing board at the same address. Check https://cdn.jsdelivr.net/npm/musterout@0.2.19/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.19/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.19.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the update guide they verify.
+Update Muster Out. Keep my existing board at the same address. Check https://cdn.jsdelivr.net/npm/musterout@0.2.20/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.20/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.20.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the update guide they verify.
 ```
 
 - **Weekly check.** During setup, Claude offers a Monday check if the chat supports recurring tasks. Confirm your timezone and time. If scheduling is unavailable or you skip it, send the weekly message any week. The check files possible matches from the sources actually covered for your path and lines of effort. It also checks for new versions. The board shows watch status itself once the signed feed reaches it. Missing coverage or a failed check is never a clean result. More > Watch coverage names each source, checked window, last success and any failed attempt. MARADMIN Watch checks MARADMIN, ALMAR, ALNAV and orders by title; it does not read every order in full.
@@ -86,7 +86,7 @@ Save status is beside the editor. Saved means the write was read back and matche
 | `db.resource_exhausted` | Saving paused. Try again later when fewer changes are pending. Copy changes. |
 | `db.quota_exceeded` | Board storage is full. Your changes have not saved. Copy changes / Get help. Do not delete records automatically. |
 | `db.invalid_argument`, `db.transform_error`, ref `TypeError` | This change could not be saved. Copy diagnostic. Do not repeat a malformed write. |
-| Confirmed data-write permission false | This view is read-only. You can view saved work. Open the owner's view to edit. |
+| Confirmed data-write permission false | This view is read-only. You can view saved work. Open your editable board to make changes. |
 | Missing db or host; `revoked`, `not_granted`, `capability_disabled`, `capability_removed` | Saving is unavailable in this view. Open your board in Claude / Copy diagnostic. A retained snapshot is a Last loaded copy. |
 | Terminal refresh listener error, including `queue_overflow` | Saved data could not refresh. Reload once / Copy diagnostic. A repeated write does not repair a stopped listener. |
 | Seed still running after two minutes | Open the same board and reload once. The expired claim can resume missing writes. Never change counts or seed by hand. |
@@ -158,10 +158,14 @@ Reports and counts have separate consent. Counts start off and require a filled 
 
 ## Project help
 
-Use [PROJECT.md](PROJECT.md) after your first useful board. It includes the full instructions, uploads and optional connector guidance. A Project uses your own Claude account and records; its drafts still need verification. If Claude cannot read the board, upload a reviewed snapshot with its capture time. Finish setup on a computer if the phone path is unavailable. The starter workflows are on your board under More, then Project, each with a Copy button. Each one names the evidence and the confirming office for its draft.
+Use [PROJECT.md](PROJECT.md) after your first useful board. It includes the full instructions, uploads and optional connector guidance. A Project uses your own Claude account and records; review its drafts against your records and official sources. If Claude cannot read the board, upload a reviewed snapshot with its capture time. Finish setup on a computer if the phone path is unavailable. The starter workflows are on your board under More, then Project, each with a Copy button. Each one names the evidence and the confirming office for its draft.
 
 ## Security check and pending updates
 
 Use the current pinned setup message from the Muster Out site. Code execution is required for setup and chat/folder verification. WebFetch alone cannot run the check. If unavailable, setup stops; existing boards keep working and Update now uses their installed verifier. Do not install a runtime or bypass a network refusal. Failed feed verification keeps the last good check and its date; it does not mean zero matches.
 
 A pending update keeps the exact release already approved. Do not clear its recovery record or switch to latest. If publication is uncertain, inspect the same address before any further publish. Complete an already published target's verified migration and bookkeeping; never roll back over a partial migration. A legacy unsigned journal needs an exactly matching signed archive or reviewed recovery. Refresh old saved Project instructions separately from the page update.
+
+## Individual use
+
+Choose Muster Out voluntarily on your own personal device and account. A unit requirement to install it is outside the [Individual Use license](https://musterout.warfarecommand.com/license/). Leaders can recommend it and share completed outputs under that license.

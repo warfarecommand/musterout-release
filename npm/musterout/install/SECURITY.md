@@ -1,6 +1,6 @@
 # Security
 
-Muster Out checks the publisher's signature before installing a release or filing notices through the refreshed setup and weekly paths. Release checks cover both the board and its setup instructions. If this chat cannot run the check, it stops and keeps your saved plan. Notice matches still need a review of the official source before you act.
+Muster Out checks the publisher's signature before installing a release or filing notices through the refreshed setup and weekly paths. Release checks cover both the board and its setup instructions. If this chat cannot run the check, it stops and keeps your saved plan. Review the official source for each notice match before you act.
 
 ## The initial trusted message
 
@@ -21,7 +21,7 @@ After you approve an update, its recovery record keeps the exact signed version 
 To update, open your board and choose **Update now**. Review the release and confirm the update. If that route cannot finish, use the pinned message under Talk to Claude at the same board address. Protected failures never fall back to unsigned files.
 
 ```text
-Update Muster Out. Keep my existing board at the same address. Check https://cdn.jsdelivr.net/npm/musterout@0.2.19/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.19/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.19.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the update guide they verify.
+Update Muster Out. Keep my existing board at the same address. Check https://cdn.jsdelivr.net/npm/musterout@0.2.20/verify.cjs (SHA-256 540dbd2d782e85a62d3d51e3d8000c57f2809999c3b6eb3c4f9ab3d35f75ce88) and https://cdn.jsdelivr.net/npm/musterout@0.2.20/verify.py (SHA-256 968eecc40477d527a6bcffd96ae25f451dafad8594f1fc83ce0b3482a8d3e512). Download https://registry.npmjs.org/musterout/-/musterout-0.2.20.tgz with your own tools, read package/verify.cjs or package/verify.py in memory, and check the same SHA-256 pin before running stage-tarball. Then follow the update guide they verify.
 ```
 
 ## What Claude is asked to do
@@ -62,7 +62,7 @@ Website signups go to the separate `alerts` edge function. The service role alon
 
 The function accepts signups from the Warfare Command and Muster Out origins, checks a honeypot and the email format, and limits subscribe requests to three per hashed IP per hour and confirmation emails to one per address per ten minutes. Confirmation and unsubscribe tokens contain 32 random bytes; only their SHA-256 hashes are stored. A used confirmation link cannot confirm again. GET and one-click POST unsubscribe delete the matching row. The last eight unsubscribe token hashes are retained so links from recent emails remain valid.
 
-Resend receives addresses only for delivery, with a sending-only key. It holds no synced contact list. The owner sends correction alerts by hand to confirmed addresses; the send script defaults to a count-only dry run. See `PRIVACY.md` for the stored fields and how to delete a signup.
+Resend receives addresses only for delivery, with a sending-only key. It holds no synced contact list. Correction alerts go only to confirmed addresses. See `PRIVACY.md` for the stored fields and how to delete a signup.
 
 ## Tool suggestions
 The same alerts function accepts `suggest` from both allowed origins. It checks the honeypot, requires a trimmed idea of 10 to 1000 characters, validates any optional email, and reserves three requests per salted IP hash per hour in a separate suggestions rate namespace. The service role alone can access the `suggestions` table; row level security is on with no client policies or grants. It stores the idea, optional reply email, receipt time, and salted IP hash.
@@ -72,6 +72,6 @@ The function sends a branded notice to `feedback@warfarecommand.com` through Res
 ## Reporting
 [Report a security problem by email](mailto:security@warfarecommand.com). Include the version from `config.json`, what you saw, and how to repeat it. Do not put your board data or anything personal in the report. During the pilot one maintainer reads these reports, and the expected response window is a week.
 
-The primary chat path downloads the exact https://registry.npmjs.org/musterout/-/musterout-0.2.19.tgz with the model's own tools, reads package/verify.cjs or package/verify.py in memory, and checks the independently supplied SHA-256 pin before execution. Use stage-tarball VERSION TARBALL_PATH PRIVATE_PARENT; updates use stage-update-tarball TARGET CURRENT TARBALL_PATH PRIVATE_PARENT and confirmed-target recovery uses stage-resume-tarball VERSION TARBALL_PATH PRIVATE_PARENT with the public target on standard input. These offline commands require the publisher signature and every file hash, with optional dist integrity for transport only. For weekly checks, download feed.js from either fixed signed feed URL and use feed-file FEED_PATH with public now/pack/records JSON on standard input. Optional network mode honors HTTPS_PROXY or https_proxy using CONNECT and verified origin TLS, without redirects or ambient cookies.
+The primary chat path downloads the exact https://registry.npmjs.org/musterout/-/musterout-0.2.20.tgz with the model's own tools, reads package/verify.cjs or package/verify.py in memory, and checks the independently supplied SHA-256 pin before execution. Use stage-tarball VERSION TARBALL_PATH PRIVATE_PARENT; updates use stage-update-tarball TARGET CURRENT TARBALL_PATH PRIVATE_PARENT and confirmed-target recovery uses stage-resume-tarball VERSION TARBALL_PATH PRIVATE_PARENT with the public target on standard input. These offline commands require the publisher signature and every file hash, with optional dist integrity for transport only. For weekly checks, download feed.js from either fixed signed feed URL and use feed-file FEED_PATH with public now/pack/records JSON on standard input. Optional network mode honors HTTPS_PROXY or https_proxy using CONNECT and verified origin TLS, without redirects or ambient cookies.
 
 Registry tarballs accept exactly one gzip member. Concatenated or split gzip members are rejected before archive parsing to bound decoder work. Network responses have one 20-second total deadline across DNS, TCP, CONNECT headers, proxy/origin TLS, origin headers and body reads.
