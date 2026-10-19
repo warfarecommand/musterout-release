@@ -1,4 +1,4 @@
-// Public weekly trigger. Fresh feed, durable ISO week receipts, and stream caps.
+// Authenticated weekly trigger. Fresh feed, durable ISO week receipts, and stream caps.
 // Reader: a confirmed weekly subscriber. Effect: review the official notices.
 import { database, escapeHtml, sendTemplates } from "../alerts/index.ts";
 import type { SendDeps } from "../alerts/index.ts";
@@ -116,13 +116,18 @@ export function weekKey(now: number): string {
 export type DigestDeps = SendDeps & { feedKeys?: Readonly<Record<string, string>>; bodyDeadlineMs?: number };
 export function createHandler(deps: DigestDeps) {
   return async (req: Request): Promise<Response> => {
-    const json = (status: number, body: unknown) => new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", "Cache-Control": "no-store" } });
+    let diagnostic = false;
+    const json = (status: number, body: unknown) => new Response(JSON.stringify(diagnostic ? body : status < 400 ? { ok: true } : { ok: false, error: "unavailable" }), { status, headers: { "content-type": "application/json", "Cache-Control": "no-store" } });
     if (req.method !== "GET" && req.method !== "POST") return json(405, { ok: false, error: "method" });
     try {
       const dry = new URL(req.url).searchParams.get("dry") === "1";
       if (dry) {
         const secret = deps.env("DIGEST_OPS_KEY");
         if (!secret || !await opsKeyMatches(req.headers.get("x-ops-key") ?? "", secret)) return json(200, { ok: true });
+        diagnostic = true;
+      } else {
+        const secret = deps.env("DIGEST_CRON_KEY");
+        if (!secret || !await opsKeyMatches(req.headers.get("x-cron-key") ?? "", secret)) return json(200, { ok: true });
       }
       const now = deps.now?.() ?? Date.now();
       // Watch runs daily at 10:00 UTC and sync at 11:00. The existing

@@ -106,6 +106,75 @@ try { if (canonical(JSON.parse(payload)) !== payload) fail('invalid_payload'); }
 }
 return e;
 }
+// Bound plain JSON before serialization, canonicalization or signature work.
+// Structured clone can carry cycles, transferables and non-JSON objects.
+function boundedMessage(value, kind, ports) {
+if (ports && ports.length) fail('invalid_message');
+var bytes = 0, nodes = 0, seen = new Set();
+function visit(item, depth) {
+if (++nodes > 50000 || depth > 32) fail('too_large');
+if (item === null || typeof item === 'boolean') { bytes += 5; }
+else if (typeof item === 'number' && Number.isSafeInteger(item)) { bytes += 24; }
+else if (typeof item === 'string') {
+// Refuse large strings before allocating their UTF-8 encoding.
+if (item.length > MAX_BYTES) fail('too_large');
+bytes += enc.encode(item).length + 2;
+} else if (item && typeof item === 'object') {
+if (seen.has(item)) fail('invalid_message');
+seen.add(item);
+if (Array.isArray(item)) {
+if (item.length > 50000) fail('too_large');
+bytes += item.length + 2;
+for (var child of item) visit(child, depth + 1);
+} else {
+if (Object.getPrototypeOf(item) !== Object.prototype) fail('invalid_message');
+var keys = Object.keys(item);
+if (keys.length > 256) fail('too_large');
+bytes += keys.length * 2 + 2;
+for (var key of keys) { visit(key, depth + 1); visit(item[key], depth + 1); }
+}
+} else fail('invalid_message');
+if (bytes > MAX_BYTES) fail('too_large');
+}
+visit(value, 0);
+exact(value, kind === 'release' ? ['envelope','signature','html'] : ['envelope','signature','data']);
+if (typeof value.signature !== 'string' || value.signature.length > 100) fail('invalid_message');
+var e = value.envelope;
+exact(e, kind === 'release' ? ['product','kind','version','pack','sha256','size','created','key_id','notes','correction','impact','keychain'] : ['product','kind','seq','pack','sha256','size','created','expires','key_id','keychain']);
+if (e.kind !== kind) fail('wrong_kind');
+if (!Array.isArray(e.keychain) || e.keychain.length > 16) fail('invalid_message');
+if (kind === 'release' ? typeof value.html !== 'string' : !value.data || Array.isArray(value.data) || typeof value.data !== 'object') fail('invalid_message');
+// Retain the exact serialized byte ceiling as well as the traversal bounds.
+if (enc.encode(JSON.stringify(value)).length > MAX_BYTES) fail('too_large');
+return value;
+}
+// Defense in depth for mutable channel code. This is not a JavaScript sandbox.
+// No state enters this worker. Remove origin storage, communication and nested
+// worker APIs from their defining prototypes before the single captured import.
+function channelWorker(source, kind) {
+'use strict';
+var root = globalThis, load = root.importScripts.bind(root), send = root.postMessage.bind(root), close = root.close.bind(root);
+var define = Object.defineProperty, proto = Object.getPrototypeOf, own = Function.call.bind(Object.prototype.hasOwnProperty), sent = false;
+function deny(object, name, value) {
+for (var current = object; current; current = proto(current)) {
+if (own(current, name)) define(current, name, {value:value, writable:false, configurable:false});
+}
+define(object, name, {value:value, writable:false, configurable:false});
+}
+function once(value, transfer) {
+if (sent) return;
+sent = true;
+try { if (transfer !== undefined) fail('invalid_message'); boundedMessage(value, kind); send(value); }
+catch (error) { var code = error && error.code; send({channel_error:code === 'too_large' ? 'too_large' : code === 'wrong_kind' ? 'wrong_kind' : 'invalid_message'}); }
+finally { close(); }
+}
+// Also cover OPFS and locks exposed through WorkerNavigator, then remove its
+// accessor so constructor/prototype walks cannot recover the original object.
+if (root.navigator) ['storage','locks','serviceWorker','sendBeacon'].forEach(function (name) { deny(root.navigator, name, undefined); });
+['indexedDB','caches','Worker','SharedWorker','fetch','XMLHttpRequest','WebSocket','WebSocketStream','WebTransport','EventSource','BroadcastChannel','navigator','importScripts'].forEach(function (name) { deny(root, name, undefined); });
+deny(root, 'postMessage', once);
+load(source);
+}
 function loadWorker(source, kind) {
 return new Promise(function (resolve, reject) {
 var worker, url, timer, settled = false;
@@ -118,7 +187,7 @@ if (url) URL.revokeObjectURL(url);
 if (error) reject(Object.assign(new Error(error), {code:error})); else resolve(value);
 }
 try {
-url = URL.createObjectURL(new Blob(['importScripts(' + JSON.stringify(source) + ');'], {type:'text/javascript'}));
+url = URL.createObjectURL(new Blob(['var MAX_BYTES=' + MAX_BYTES + ',enc=new TextEncoder();\n' + fail.toString() + '\n' + exact.toString() + '\n' + boundedMessage.toString() + '\n(' + channelWorker.toString() + ')(' + JSON.stringify(source) + ',' + JSON.stringify(kind) + ');'], {type:'text/javascript'}));
 worker = new Worker(url);
 timer = setTimeout(function () { finish('worker_timeout'); }, 20000);
 worker.onerror = function (event) { event.preventDefault(); finish('worker_error'); };
@@ -128,10 +197,16 @@ worker.onmessage = function (event) {
 var value = event.data;
 worker.terminate();
 try {
-exact(value, kind === 'release' ? ['envelope','signature','html'] : ['envelope','signature','data']);
-if (typeof value.signature !== 'string' || value.signature.length > 100 || enc.encode(JSON.stringify(value)).length > MAX_BYTES || kind === 'release' && (typeof value.html !== 'string' || value.html.length > MAX_BYTES)) return finish('too_large');
+// A rejected child sends only this fixed failure schema, never the rejected data.
+if (event.ports && event.ports.length) fail('invalid_message');
+if (value && Object.prototype.hasOwnProperty.call(value, 'channel_error')) {
+exact(value, ['channel_error']);
+if (!['too_large','wrong_kind','invalid_message'].includes(value.channel_error)) fail('invalid_message');
+return finish(value.channel_error);
+}
+boundedMessage(value, kind, event.ports);
 finish(null, value);
-} catch (_) { finish('invalid_message'); }
+} catch (error) { finish(['too_large','wrong_kind'].includes(error.code) ? error.code : 'invalid_message'); }
 };
 } catch (_) { finish('worker_unavailable'); }
 });

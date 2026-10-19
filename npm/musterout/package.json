@@ -1,6 +1,6 @@
 {
   "name": "musterout",
-  "version": "0.2.21",
+  "version": "0.2.22",
   "description": "Signed Muster Out board releases",
   "files": [
     "release.js",

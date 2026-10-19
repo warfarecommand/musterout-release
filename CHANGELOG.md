@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.2.22 (2026-10-19)
+- Add or edit your details anytime from Settings, under Profile.
+- BDD window shows open or closed again, update checks are tighter, and setup chats stay short.
+
 ## 0.2.21 (2026-10-18)
 - Updates finish on their own now, with a clear status while they complete.
 - Add details only edits your details, and bug reports copy first so they always send.

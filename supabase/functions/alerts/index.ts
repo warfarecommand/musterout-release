@@ -567,6 +567,11 @@ export function createHandler(deps: { env: Env; fetch: typeof fetch; now?: () =>
       const ip_hash = (await hash(salt + ip)).slice(0, 24);
       if (!await reserveRate(db, `${body.kind === "suggest" ? "suggest:" : ""}ip:${ip_hash}`, 3, 60, now)) return json(429, { ok: false, error: "rate_limited" });
       if (body.kind === "suggest") {
+        // Shared durable slots cap attempts across addresses and cold starts.
+        // Reserve before any stored suggestion or provider call. Keep reservations
+        // on failure; an hourly denial may conservatively consume a daily slot.
+        if (!await reserveRate(db, "suggest:global-day", 60, 24 * 60, now) ||
+            !await reserveRate(db, "suggest:global-hour", 20, 60, now)) return success();
         const rows = await db.rows<{ id: string }>("suggestions", "POST", {}, { idea, email: email || null, ip_hash });
         const { html, text } = renderEmail({
           preheader: "A tool idea was submitted to Warfare Command.", eyebrow: "Tool suggestion", heading: "New tool suggestion",

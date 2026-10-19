@@ -5,7 +5,7 @@
 
 The board is the design system. The view changes density and navigation; the planning engine, seed rules, date resolution, leave math, fingerprints and pack behavior remain intact except the approved migration add step for a plan option change.
 
-Phone navigation has Today, Plan, Dates, Claim and More in an opaque bottom bar, 72 px plus safe area. Targets are at least 48 px, labels use mixed case and simple line icons, and selection uses red ink. At 900 px and wider, the same five destinations use a left rail with a content column at most 720 px wide. No horizontal tab rail or global dashboard header remains. BUILD_SPEC rules take precedence over the earlier L3 four-cell specimen.
+Phone navigation has Today, Plan, Dates, Claim and More in an opaque bottom bar, 72 px plus safe area. Targets are at least 48 px, labels use mixed case and simple line icons, and selection uses red ink. At 900 px and wider, the same five destinations use a left rail with a content column at most 720 px wide. No horizontal tab rail or global dashboard header remains. The navigation and layout rules in this document define the public view contract.
 
 Today presents the reduced Stack wordmark and EAS or RET stamp with date basis, a 64 px Condensed countdown, three next-action rows, then Late, Critical and Needs a date counts linking to full Plan filters. An undated view shows Add your date instead of a countdown; a demo is labeled. Save failure comes first among health/update lines, and a dismissed correction keeps its banner. Ask about your plan is a first-class card: Answers from this board., question field, Ask, streamed answer, Stop and Copy answer. Its four starters are `What should I do this week?`, `What is late and what does it block?`, `Walk me through my claim timeline.`, and `What changes if my date moves 30 days?`. They fill the field. Records, mail, and research live in your Project. links to More > Open your Project. One watch line follows. A quiet Report a problem control remains in every screen header.
 
@@ -23,7 +23,7 @@ Until new seed copy arrives, render title for label and the first sentence of wh
 
 ## Tokens
 
-The L3 token contract is in `_cook/overhaul/lenses/L3_tokens.css` and `L3_TOKENS.md`. Automatic and explicit light use one map. Keep embedded IBM Plex fonts and their license. Values below replace the prior look section; use ink tokens for semantic text and matching tints for fills.
+The token contract is documented below. Automatic and explicit light use one map. Keep embedded IBM Plex fonts and their license. Values below replace the prior look section; use ink tokens for semantic text and matching tints for fills.
 
 | `Token` | Light | Dark |
 | `---` | --- | --- |
@@ -61,7 +61,7 @@ Dates are `12 OCT 2026` with a four-digit year. The stamp includes date basis wh
 
 ## Density and spacing
 
-This section is the geometry contract for future board work. Use the final DESIGN1 geometry block in `board/template.html`. Earlier CSS owns color, state, visibility, and interaction only. Add or change geometry in that final block; do not append another override layer. Research and source links are recorded in the DESIGN1 operation's `RESEARCH.md`.
+This section is the geometry contract for future board work. Use the final DESIGN1 geometry block in `board/template.html`. Earlier CSS owns color, state, visibility, and interaction only. Add or change geometry in that final block; do not append another override layer. The token values and roles below are the public geometry reference.
 
 | Tokens | Values and use |
 | --- | --- |
