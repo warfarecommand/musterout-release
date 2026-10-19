@@ -312,8 +312,30 @@ hooks();
 if (!pending && await options.verifyMigration() !== true) return false;
 await requireWriter();
 if (pending) {
-report('applying', {phase:'migrating'});
-await options.runMigration();
+report('applying', {phase:'migrating', version:config.version});
+var backoff = 1000;
+for (;;) {
+try { await options.runMigration(); break; }
+catch (error) {
+if (!error || error.code !== 'busy') throw error;
+// A surviving webview may renew its lease. Keep waiting, with a capped
+// interval, rather than declaring a valid, pinned update failed.
+report('applying', {phase:'finishing', version:config.version});
+var delay = Math.min(45000, Math.max(backoff, Number(error.retryAfterMs) || 0));
+await new Promise(function (resolve) { setTimeout(resolve, delay); });
+backoff = Math.min(45000, backoff * 2);
+await requireWriter();
+var waiting = await db.doc('meta/update').get(), latest = waiting.exists ? waiting.data() : null;
+if (canonical(latest) === canonical(Object.assign({}, journal, {state:'complete'}))) {
+// Another finisher committed this exact approved update while we waited.
+var doneInstall = await db.doc('meta/install').get();
+if (!doneInstall.exists || doneInstall.data().version !== config.version || await options.verifyMigration() !== true) fail('install_unverified');
+justUpdated = {from:journal.from, to:config.version}; correctionPending = false;
+report('done'); return true;
+}
+if (canonical(latest) !== canonical(journal)) fail('journal_changed');
+}
+}
 report('applying', {phase:'verifying'});
 if (await options.verifyMigration() !== true) fail('migration_unverified');
 }

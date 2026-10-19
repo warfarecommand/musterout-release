@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.2.21 (2026-10-18)
+- Updates finish on their own now, with a clear status while they complete.
+- Add details only edits your details, and bug reports copy first so they always send.
+
 ## 0.2.20 (2026-10-18)
 - Setup goes straight to your board, and Register now works when you tap it.
 - Tasks now read in plain English, with clearer VA and family coverage steps and a tighter phone layout.

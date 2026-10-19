@@ -52,7 +52,7 @@ const MESSAGES = Object.freeze({
 'permissions.denied':'Claude is off for this board. Open permissions.',
 'permissions.absent':"Permissions are unavailable here. Use the artifact's Permissions menu.",
 'permissions.manage.unavailable':"Open the artifact's Permissions menu to change access.",
-'REPORT_QUEUE_FAILED':'Report not saved. Try Continue to report page again.',
+'REPORT_QUEUE_FAILED':'Report not saved. Try Copy report again.',
 'REPORT_TRANSPORT_UNAVAILABLE':'Report not sent.',
 'REPORT_VALIDATION_FAILED':'Review the highlighted fields before continuing.',
 'CONSENT_SCHEMA_CHANGED':'Counts paused. Review the new schema to allow sending.',
@@ -505,15 +505,15 @@ paragraph(s.body,'Your report text','mot-strong');
 const prose = paragraph(s.body,payload.text === undefined ? 'No optional text included.' : payload.text,'mot-report-text'); prose.tabIndex = 0;
 const exact = node('details'); exact.append(node('summary','See exactly what is sent')); s.body.append(exact);
 const context = Object.freeze({screen:r.where}), bytes = JSON.stringify(payload,null,2), preview = jsonBox(exact,bytes), status = s.notice; status.textContent = '';
-const copy = button('Copy details',() => { exact.open = true; return clipboard(bytes,status,preview); }); copy.classList.add('mot-tertiary');
-s.actions.append(button('Edit',() => renderReportForm(s,r)),copy);
-{
-paragraph(s.body,'Review here, then send from the report page.');
-const queue = button('Continue to report page',async () => {
-const hadFocus = document.activeElement === queue; queue.disabled = true;
-if (hadFocus) s.heading.focus({preventScroll:true});
+paragraph(s.body,'Copy report, then open the report page and paste. Review it there before you tap Send.');
+const copy = button('Copy report',() => prepareReport(false),true);
+const manualCopy = button('I copied the report',() => prepareReport(true)); manualCopy.hidden = true;
+async function prepareReport(manual) {
+copy.disabled = true; manualCopy.disabled = true;
 try {
-if (!o.db || o.canWrite === false || !reportValid(payload)) throw {code:'REPORT_VALIDATION_FAILED'};
+if (!manual && !await clipboard(bytes,status,preview)) { exact.open = true; preview.focus(); manualCopy.hidden = false; status.textContent = 'Select and copy the report below, then tap I copied the report.'; return; }
+if (manual) status.textContent = 'Open the report page and paste.';
+if (!o.db || o.canWrite === false || !reportValid(payload)) return;
 const ref = o.db.doc('outbox/' + payload.id), existing = await ref.get();
 if (!definite(existing)) throw {code:'unavailable'};
 const document = {schema_version:SCHEMA,kind:'feedback',id:payload.id,payload,bytes,context,approved_at:new Date(o.now()).toISOString(),status:'queued'};
@@ -523,16 +523,18 @@ const read = await ref.get(); if (!definite(read) || !read.exists || read.data()
 const encoded = btoa(String.fromCharCode(...new TextEncoder().encode(bytes))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 const url = 'https://musterout.warfarecommand.com/report/#r=' + encoded;
 reportDrafts.clear(); emit('report-queued');
-status.textContent = 'Send it from the report page';
-const link = node('a','Open report page','mot-button'); link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
-s.actions.querySelector('.mot-report-link')?.remove(); link.classList.add('mot-report-link','mot-primary'); queue.remove(); s.actions.prepend(link,copy);
+const link = node('a','Open report page and paste','mot-button'); link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+link.addEventListener('click',() => { status.textContent = 'If you sent it, you are done. You can close this.'; });
+s.actions.querySelector('.mot-report-link')?.remove(); link.classList.add('mot-report-link'); copy.after(link);
+manualCopy.hidden = true;
 o.onReportLink?.(link);
 await refreshSettings();
-} catch (e) { recordError('report','queue',e.code || e.name); status.textContent = e.code === 'REPORT_VALIDATION_FAILED' ? MESSAGES.REPORT_VALIDATION_FAILED : MESSAGES.REPORT_QUEUE_FAILED; queue.disabled = false; }
-},true);
-queue.disabled = !o.db || o.canWrite === false || !reportValid(payload); s.actions.append(queue);
-if (!reportValid(payload)) paragraph(s.body,'Report needs an install id, path, and grade group before sending. Copy details or check Troubleshooting.');
+} catch (e) { recordError('report','queue',e.code || e.name); status.textContent = e.code === 'REPORT_VALIDATION_FAILED' ? MESSAGES.REPORT_VALIDATION_FAILED : MESSAGES.REPORT_QUEUE_FAILED; }
+finally { copy.disabled = false; manualCopy.disabled = false; }
 }
+// Copy stays available without storage; the handoff still requires verified queuing.
+s.actions.append(copy,manualCopy,button('Edit',() => renderReportForm(s,r)));
+if (!reportValid(payload)) paragraph(s.body,'Report needs an install id, path, and grade group before sending. Copy report or check Troubleshooting.');
 const troubleshooting = node('details'); troubleshooting.append(node('summary','Troubleshooting'),button('View diagnostic',openDiagnostic)); s.body.append(troubleshooting); s.body.parentElement.scrollTop = 0;
 }
 function usagePayload() { return {kind:'usage',install_id:o.installId || null,week:counterWeek,writer,version:o.version,counters:{...counters}}; }
