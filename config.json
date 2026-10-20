@@ -1,6 +1,6 @@
 {
   "product": "Muster Out",
-  "version": "0.2.22",
+  "version": "0.2.23",
   "pack": "usmc-2026.10",
   "release_url": "https://musterout.warfarecommand.com/release.json",
   "watch_feed": "https://watch.warfarecommand.com/feed/latest.json",

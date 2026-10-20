@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.2.23 (2026-10-19)
+- Setup now tells you exactly what to turn on when Claude can't download Muster Out.
+- The security page explains each Claude setting setup needs, and why.
+
 ## 0.2.22 (2026-10-19)
 - Add or edit your details anytime from Settings, under Profile.
 - BDD window shows open or closed again, update checks are tighter, and setup chats stay short.
