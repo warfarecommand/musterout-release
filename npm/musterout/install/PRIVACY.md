@@ -1,16 +1,22 @@
 <!-- Reader: Marines using Muster Out. Effect: understand counts, control, and deletion. -->
 # Privacy
 
-Updated 18 OCT 2026.
+Updated 20 OCT 2026.
 
-The existing TEL1 system covers install, usage, and progress milestone counts. It cannot read your plan.
+## Registration and usage by board version
+
+New personally owned boards initialized with registration v3 show the plan first, then ask for a registration agreement on the board. Declining or a failed send leaves the plan usable. The browser registration page sends the count; the board does not POST it. Registration links use a query parameter containing the disclosed count fields and board key. Hosting providers and browser or app link handling can see that initial address. The receiver clears the query and fragment before parsing. A no-referrer policy cannot hide the initial address from the host. Existing fragment links and deletion fragments remain supported.
+
+V3 registration sends a random board key, version, plan path, grade group, campaign code if present and setup day. It sends no name, email, service dates, plan text or medical records. Counts are pseudonymous. They do not verify people. Optional v3 usage is Off and inactive in this build. It requires both a separate agreement and activation; its only activity counters are opens and done actions. Stop counts preserves the plan. Deletion retains a one-way revocation hash and does not remove provider logs or Claude records.
+
+Existing TEL1 schema-2 boards and new flag-off setups retain their own required count agreement, browser registration review, local count collection and update/weekly browser handoff. Registration pending does not withhold their saved plan. Their schema-2 agreement covers fixed usage counts; it is not the separate optional B3 weekly-learning consent described in historical guides. V3 never runs TEL1 enrollment, surveys or weekly count preparation, including after a flag rollback. The sections labeled TEL1 below describe that separate legacy route.
 
 Anthropic hosts your board, conversations, Project records, and optional Ask history in your Claude account. Warfare Command cannot read your board database. Claude reads your plan to answer your questions. Your plan, notes, service-day dates, leave, claim details, contacts, and coach facts are not telemetry. Keep the board private and review sharing permissions. A shared viewer can read shared plan data under Claude's access rules. Telemetry access and pending records use private storage rules.
 
 Your Project is in your Claude account; before uploading records, turn off "Help Improve our AI models" in Settings > Privacy. [Claude privacy controls](https://privacy.claude.com/en/articles/12109829-how-do-i-change-my-model-improvement-privacy-settings). This choice does not erase existing conversations or provider records.
 
 ## Release files, the weekly check, and updates
-Chat setup, updates, and the weekly check download public files from the release repository at `https://raw.githubusercontent.com/warfarecommand/musterout-release/main/`: `release.json`, the release files it lists, and, for the weekly check, the validated notice feed copied there. Each source has its own coverage and last-success record. The laptop route instead reads `https://musterout.warfarecommand.com/release.json` once per session and the feed named in `config.json`. Each request is a plain GET that sends no identifiers, board data, or installed version. The host receives the normal internet address and request headers. When the signed channel is enabled, an isolated board worker reads public release or feed scripts from npm through unpkg or jsDelivr. Those hosts receive request metadata, including internet address and headers, but no board data, identifiers or installed version supplied by the board. The worker receives no board context; signature verification precedes trust. Failures do not block the board. Its registration status opens the required count review and retry; the board itself never posts reports or usage counts.
+Chat setup, updates, and the weekly check download public files from the release repository at `https://raw.githubusercontent.com/warfarecommand/musterout-release/main/`: `release.json`, the release files it lists, and, for the weekly check, the validated notice feed copied there. Each source has its own coverage and last-success record. The laptop route instead reads `https://musterout.warfarecommand.com/release.json` once per session and the feed named in `config.json`. Each request is a plain GET that sends no identifiers, board data, or installed version. The host receives the normal internet address and request headers. When the signed channel is enabled, an isolated board worker reads public release or feed scripts from npm through unpkg or jsDelivr. Those hosts receive request metadata, including internet address and headers, but no board data, identifiers or installed version supplied by the board. The worker receives no board context; signature verification precedes trust. Failures do not block the board. TEL1 registration status opens its count review and retry; v3 follows the registration agreement described above. The board itself never posts reports or usage counts.
 
 An update runs only after you confirm it. In chat, Claude checks each release file against the manifest's SHA-256 values; on the laptop route, it verifies each changed file against the release manifest and keeps your `my/` files. Both replace the page at your existing board address. Update now publishes only after a tap on the verified offer, preserves drafts, runs migration and verifies records. An unfinished update keeps a marker so the next run can resume. The pasted update remains a recovery path.
 
@@ -22,7 +28,7 @@ Gmail, Google Calendar and Google Drive connectors are optional. Review their pe
 
 To remove Project data, delete the uploaded knowledge files and chats that contain it, or delete the Project in Claude. Unarchive a Project first if deletion is unavailable. Archiving alone keeps its data. [Claude Project deletion](https://support.claude.com/en/articles/9519177-how-can-i-create-and-manage-projects). Disconnect apps in Customize > Connectors, then remove retrieved copies from chats and Project knowledge. Disconnecting does not delete records in Google; use that account's controls for originals. The maintainer cannot delete your Claude or Google records.
 
-## Required setup and your choices
+## TEL1 setup and your choices
 
 Before publishing, setup explains the count schema and asks for Yes, continue or No, stop. Agreeing is required for a new supported install. On No, setup stops before publishing and sends no keyed install record. The public guide and isolated fictional demo remain available. The older welcome setup count used product/version only and a salted address hash. The new site setup-button totals are described below.
 
@@ -32,7 +38,7 @@ After intake, a required browser review sends the install record. Your locally v
 
 When you tap Copy board setup or Copy coach setup, we add one to that button's daily UTC total. These totals store no IP address, cookie, identifier, or referrer and cannot be linked to your registration. Each button has a site-wide cap of 200 counted taps per UTC hour; extra taps go into a separate daily overflow total. Failed requests can leave taps uncounted. A private weekly summary compares taps with new board registration records in the same UTC week; it does not measure completed setups or individual conversion. Hosting providers receive ordinary connection metadata under their own terms.
 
-## What counts contain
+## TEL1 count contents
 
 Every schema-2 record has a fixed product/schema, installed version, random install id, and a random submission id. The random install id links your records and supports deletion. These records are pseudonymous, not guaranteed anonymous. The combination of a base group, grade group, EAS month, and unusual progress can narrow a population. We never promise that these combinations cannot identify someone.
 
@@ -46,7 +52,7 @@ Every schema-2 record has a fixed product/schema, installed version, random inst
 
 No name, email, account id, unit, precise location, board URL, full service date, plan text, notes, custom category, Ask question/answer, coach fact, medical record, stack trace, or arbitrary text is accepted into these counts. Installation/base group is one of US West, US Central, US East, Hawaii, Japan, Other overseas, Other US location, or Not on an installation. It is not geolocation or an exact installation inventory. Full dates stay on your board. The observable install date is the server's first completed receipt, which can be later than your first attempt. Later activity uses elapsed weeks, not personal dates.
 
-## Sending and storage
+## TEL1 sending and storage
 
 The artifact never contacts ingest. It stores counts on your board until a setup, update, or weekly chat requests a browser handoff. You review the rows at the explicit registration page and choose Send. The temporary handoff uses a fragment, which the page removes immediately. No payload or token enters a URL query, email, referrer, browser localStorage, or sandbox file. A paste-and-review route is available when the link or clipboard fails. The site keeps the request in memory for retries and shows a signed receipt to bring back. Copying alone is not sending.
 
@@ -58,7 +64,7 @@ Supabase stores received count records and operational receipt times. Separate s
 
 The Warfare Command maintainer and authorized operators can view a private reporting dashboard. It uses a dedicated role that can execute only the fixed aggregate reporting function. No public dashboard or client table reads are offered. Database administrators retain administrative raw access; a dashboard restriction does not remove that power.
 
-Every reported cell needs at least 10 distinct completed, eligible install ids. Multiple records do not raise that floor. If any fixed cell is too small, the whole breakdown and complementary totals/rates are withheld. Base, grade, path, or EAS month can be shown one at a time, never a combined base-by-grade-by-month report. The same floor applies to HTML and CSV. Fixed periods reduce subtraction attacks but are not differential privacy or a promise of nonidentification. Anonymous enrollment does not prove 10 different people. Global setup taps are shown only with at least 10 completed installs for that fixed period; taps are not linked person-level conversions. Weekly activity counts received chat records, not every board visit.
+Every reported cell needs at least 10 distinct completed, eligible install ids. Multiple records do not raise that floor. If any fixed cell is too small, the whole breakdown and complementary totals/rates are withheld. Base, grade, path, or EAS month can be shown one at a time. A report cannot combine base, grade and month. The same floor applies to HTML and CSV. Fixed periods reduce subtraction attacks but are not differential privacy or a promise of nonidentification. Anonymous enrollment does not prove 10 different people. Global setup taps are shown only with at least 10 completed installs for that fixed period; taps are not linked person-level conversions. TEL1 weekly activity measures received chat records. It does not measure every board visit. V3 optional usage remains off and inactive in this build.
 
 No external learning agent receives new raw counts or base/grade/month records under this build. Legacy free-text reports and weekly learning counts are disabled. An independently approved support report has its own payload review; it is not part of required telemetry.
 
@@ -145,8 +151,10 @@ Changes appear on this page with a new last-updated date. If a change affects wh
 ## What never belongs here
 Keep these out of the board, the Muster Out folder, and your chats: other people's personal information, anything classified or controlled unclassified, a password, a CAC PIN, or a Social Security number. Do not paste them. The assistant is instructed not to ask for them; if it does, stop and report it.
 
-## Registration codes
+## TEL1 registration codes
 
-The service issues your registration nonce, a random access code valid for 24 hours before its first use. Your board obtains it through an explicit browser handoff and saves it in private storage before an install record can be sent. The service stores only its hash. The issuance generation is single use, and its nonce cannot recreate a deleted install. Accepted unfinished records reuse the same nonce for their exact retries and later completion.
+For TEL1 schema 2, the service issues your registration nonce, a random access code valid for 24 hours before its first use. Your board obtains it through an explicit browser handoff and saves it in private storage before an install record can be sent. The service stores only its hash. The issuance generation is single use, and its nonce cannot recreate a deleted install. Accepted unfinished records reuse the same nonce for their exact retries and later completion.
 
 If the service reports expiry and no verified receipt exists, a reviewed restart uses a newly issued nonce and a new random count id. Your board preserves the plan, original creation metadata, address, optional answers and pending usage. Received records are never silently relabeled. Budget exhaustion leaves registration pending and your plan available. The browser keeps proof only in memory for the handoff; it never saves payloads or access credentials in localStorage.
+
+The optional device backup contains plan details, including medical and coach notes, and uses the platform's save confirmation. Registration credentials, consent, counts and report receipts are excluded from that file. No in-board restore snapshot is created. Nothing is emailed or sent automatically.

@@ -235,10 +235,27 @@ if (!best || (kind === 'release' ? compare(e.version, best.envelope.version) > 0
 if (!best) throw results.map(function (r) { return r.reason; }).find(function (r) { return r && r.code === 'not_newer'; }) || results[0].reason;
 return best;
 }
+// Explicit owner-requested device backup. This helper performs reads only.
+var BACKUP_COLLECTIONS=['items','loes','contacts','blocks','conditions','claim','links','inbox','coach','coach_facts','coach_checkins'];
+function freshSnapshot(s){return s&&!s.metadata?.fromCache&&!s.metadata?.hasPendingWrites;}
+async function collectRecords(db){
+if(!db||typeof db.collection!=='function')fail('backup_unavailable');
+var records=[],collections=BACKUP_COLLECTIONS;
+for(var collection of collections){
+var query=db.collection(collection),seen=new Set();
+for(;;){var snap=await query.get();if(!freshSnapshot(snap)||!Array.isArray(snap.docs))fail('backup_unverified');
+for(var doc of snap.docs){if(typeof doc.id!=='string'||!/^[A-Za-z0-9_.~:@+-]+$/.test(doc.id)||doc.id==='.'||doc.id==='..'||seen.has(doc.id)||!freshSnapshot(doc))fail('backup_unverified');seen.add(doc.id);var path=collection+'/'+doc.id;var value=doc.data();if(!value||typeof value!=='object'||Array.isArray(value))fail('backup_unverified');records.push({path:path,value:JSON.parse(JSON.stringify(value))});}
+if(!snap.hasMore&&!snap.nextPage)break;
+if(typeof snap.nextPage==='function')query={get:snap.nextPage};else if(typeof query.startAfter==='function'&&snap.docs.length)query=query.startAfter(snap.docs.at(-1));else fail('backup_incomplete');
+}
+}
+for(var path of ['meta/profile','meta/settings','meta/ledger']){var snap=await db.doc(path).get();if(!freshSnapshot(snap))fail('backup_unverified');if(snap.exists)records.push({path:path,value:JSON.parse(JSON.stringify(snap.data()))});}
+records.sort(function(a,b){return a.path.localeCompare(b.path);});return records;
+}
 function create(options) {
 options = options || {};
 var config = options.config || global.MusterOutUpdateConfig || {}, state, candidate = null, checkTask = null, applyTask = null, readyTask = null, listeners = new Set();
-var db = options.db, correctionPending = false, justUpdated = null, pendingVersion = null;
+var db = options.db, correctionPending = false, justUpdated = null, pendingVersion = null, visitDismissed=new Set(), offerTimer=null;
 if (typeof options.onState === 'function') listeners.add(options.onState);
 function report(status, values) {
 state = Object.freeze(Object.assign({status:status, correctionPending:correctionPending, justUpdated:justUpdated}, values || {}));
@@ -248,9 +265,10 @@ return state;
 report('idle');
 function info() {
 var e = candidate.envelope;
-return {version:e.version, notes:Object.freeze(e.notes.slice()), correction:e.correction, impact:e.impact};
+var key='mo.update.first.'+config.version+'.'+e.version,first;try{first=Number(localStorage.getItem(key));if(!Number.isFinite(first)||first<=0||first>Date.now()){first=Date.now();localStorage.setItem(key,String(first));}}catch(_){first=Date.now();}var overdue=Date.now()-first>=7*86400000;clearTimeout(offerTimer);if(!overdue)offerTimer=setTimeout(function(){if(candidate?.envelope.version===e.version&&['available','snoozed'].includes(state.status))report(visitDismissed.has(e.version)?'snoozed':'available',info());},Math.max(1,7*86400000-(Date.now()-first)));return {version:e.version, notes:Object.freeze(e.notes.slice()), correction:e.correction, critical:e.correction, impact:e.impact,overdue:overdue,visitDismissed:!e.correction&&visitDismissed.has(e.version),sheetDismissed:e.correction&&visitDismissed.has(e.version)};
 }
 function snoozed(version) {
+var offer=candidate&&candidate.envelope.version===version?info():null;if(offer&&(offer.critical||offer.overdue))return visitDismissed.has(version);
 try { var until = Number(localStorage.getItem('mo.update.snooze.' + version)); return Number.isFinite(until) && until > Date.now() && until <= Date.now() + 86400000; } catch (_) { return false; }
 }
 async function pinnedJournal() {
@@ -302,7 +320,7 @@ return checkTask;
 }
 function snooze() {
 if (!candidate || state.status === 'applying' || applyTask) return state;
-try { localStorage.setItem('mo.update.snooze.' + candidate.envelope.version, String(Date.now() + 86400000)); } catch (_) {}
+var offer=info();if(offer.critical||offer.overdue)visitDismissed.add(candidate.envelope.version);else try { localStorage.setItem('mo.update.snooze.' + candidate.envelope.version, String(Date.now() + 86400000)); } catch (_) {}
 return report('snoozed', info());
 }
 async function capability(name) {
@@ -443,5 +461,6 @@ return Object.freeze({get state() { return state; }, ready:ready, checkForUpdate
 subscribe:function (fn) { listeners.add(fn); try { fn(state); } catch (_) {} return function () { listeners.delete(fn); }; }});
 }
 global.MusterOutUpdate = Object.freeze({create:create, verifyEnvelope:verifyEnvelope, canonical:canonical, compareVersions:compare,
+collectRecords:collectRecords,
 loadFeed:function (options, validate) { return loadVerified(Object.assign({}, options, {kind:'feed'}), validate); }});
 })(window);

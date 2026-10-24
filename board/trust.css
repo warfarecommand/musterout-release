@@ -25,7 +25,7 @@
 .mot-report-text{white-space:pre-wrap;overflow-wrap:anywhere;user-select:text}
 .mot-policy-help{text-wrap:pretty}
 .mot-sheet [hidden]{display:none!important}
-.mot-meta,.mot-save-live{font:400 var(--text-sm)/var(--lh-body) var(--sans);color:var(--ink-2)}
+.mot-meta,.mot-save-live{font:400 var(--text-sm)/var(--lh-body) var(--sans);color:var(--ink-2);text-wrap:pretty}
 .mot-mono{font:400 var(--text-xs)/var(--lh-meta) var(--mono);color:var(--ink-3)}
 .mot-strong{font-weight:600}
 .mot-warning{padding:var(--s-4);margin-bottom:var(--s-4);border:0;border-radius:var(--r-card);background:var(--amber-fill);color:var(--amber-ink)}
@@ -69,3 +69,6 @@
 @media(prefers-reduced-motion:reduce){.mot-sheet,.mot-button{animation:none!important;transition:none!important;transform:none!important}}
 
 .mot-sheet-footer .mot-sheet-actions{padding:0}
+
+/* V30: the scrolling sheet owns the phone gutter once. */
+@media(max-width:899px){.mot-sheet-scroll>.mot-sheet-body{padding-inline:0}}

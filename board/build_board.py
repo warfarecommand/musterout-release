@@ -40,6 +40,8 @@ def embed_trust(fragment, root=here.parent):
             fragment = fragment.replace(marker, content)
         else:
             fragment += "\n<" + tag + ">" + content + "</" + tag + ">\n"
+    fragment = fragment.replace('/*VA_SELFHELP_JS*/', (root / 'board/va_selfhelp.js').read_text()).replace('/*VA_SELFHELP_DATA*/{}', canonical(json.loads((root / 'packs/usmc/va-selfhelp.json').read_text())).replace('</', '<\\/'))
+    fragment = fragment.replace('/*VA115_DATA*/{}', canonical(json.loads((root / 'packs/usmc/va115.json').read_text())).replace('</', '<\\/'))
     return fragment
 
 def canonical(value):
@@ -274,8 +276,8 @@ def embed(template, seed, fingerprints, root=here.parent):
             raise SystemExit(f"workflow lacks a plain text prompt: {file}")
         workflows.append({"file": file.name, "title": title[1], "text": prompt[1].strip()})
     if "/*WORKFLOWS*/" in template:
-        if len(workflows) != 10:
-            raise SystemExit("expected ten starter workflow prompts")
+        if len(workflows) != 12:
+            raise SystemExit("expected twelve starter workflow prompts")
         template = template.replace("/*WORKFLOWS*/", escape(workflows))
     libraries = "<script>" + (root / "board/fingerprints.js").read_text() + "</script>\n"
     libraries += "<script>" + (root / "supabase/functions/_shared/telemetry_contract.js").read_text() + "</script>\n"

@@ -167,7 +167,7 @@ function create(options) {
 const o = Object.assign({version:'unknown',pack:'unknown',screen:'today',db:null,sample:null,updates:null,learningEnabled:false,canWrite:null,now:Date.now},options || {});
 let watchCode = null, dead = false, update = {status:'idle'}, feed = null, save = {status:o.db ? (o.canWrite === false ? 'read-only' : 'unsaved') : 'unavailable'}, saveAttempt = 0, saveRevision = 0, timer = null;
 let snoozePrefs = {}, snoozesReady = !o.db, pendingUpdate = null;
-let lastConfirmed = null, releaseInfo = {}, updateSheet = null, forced = new Set(), ring = [], sheets = [], writer = hex(), counters = Object.fromEntries(COUNTERS.map(k => [k,0])), counterWeek = weekAt(o.now());
+let lastConfirmed = null, releaseInfo = {}, updateSheet = null, visitDismissed = new Set(), forced = new Set(), ring = [], sheets = [], writer = hex(), counters = Object.fromEntries(COUNTERS.map(k => [k,0])), counterWeek = weekAt(o.now());
 let consent = null, offRequested = false, localPaused = true, consentReady = false, usageChain = Promise.resolve(), unsubscribe = null, consentUnsubscribe = null;
 let receipts = [], outbox = [], controls = [], settingsError = '';
 const reportDrafts = createDraftOwner('report',{scope:o.draftScope,onError:e => recordError(e.component,e.operation,e.code)});
@@ -311,11 +311,13 @@ return 'Checked ' + utc(b.last_success) + ': ' + count + ', ' + coverage + '. ' 
 const todayKeys = new WeakMap();
 function renderToday(el) {
 const policy = currentPolicy();
-const key = JSON.stringify({correction:update.correctionPending && update.status !== 'done',version:update.version,impact:update.impact,policy}); if (todayKeys.get(el) === key) return; todayKeys.set(el,key);
+const key = JSON.stringify({correction:update.correctionPending && update.status !== 'done'&&!update.visitDismissed,version:update.version,impact:update.impact,watchCode,policy}); if (todayKeys.get(el) === key) return; todayKeys.set(el,key);
 el.replaceChildren(); el.classList.add('mot-root');
-if (update.correctionPending && update.status !== 'done') { const banner = node('section',undefined,'mot-warning'); paragraph(banner,'Correction ready: ' + (update.version || 'Review update'),'mot-strong'); paragraph(banner,update.impact || MESSAGES.UPDATE_UNTRUSTED); banner.append(button('Review correction',openUpdates)); el.append(banner); }
+if (update.correctionPending && update.status !== 'done' && !update.visitDismissed) { const banner = node('section',undefined,'mot-warning'); paragraph(banner,'Correction ready: ' + (update.version || 'Review update'),'mot-strong'); paragraph(banner,update.impact || MESSAGES.UPDATE_UNTRUSTED); banner.append(button('Review correction',openUpdates)); el.append(banner); }
 const row = node('section',undefined,'mot-watch-line');
-const summary = policy.summary + (policy.incomplete && policy.checked ? '. Check incomplete' : '');
+// Reader: Marines reviewing Today. Effect: distinguish absent, completed and failed checks.
+const failed = !!watchCode && (watchCode !== 'WATCH_NOT_CHECKED' || policy.checked > 0);
+const summary = failed ? 'last check failed.' + (policy.at ? ' Showing results from ' + milDate(policy.at.slice(0,10)) + '.' : '') : !policy.checked ? 'not checked yet.' : (policy.flagged === 0 ? 'none flagged yet.' : policy.summary + '.') + (policy.incomplete ? ' Check incomplete.' : '');
 const action = button('Policy checks: '+summary,openCoverage); action.classList.add('mot-policy-row'); const chevron=node('span','›'); chevron.setAttribute('aria-hidden','true'); action.append(chevron); row.append(action); el.append(row);
 }
 function mountToday(el) { if (el) { slots.today.push(el); renderToday(el); } }
@@ -350,6 +352,8 @@ if (policy.stale) paragraph(details,MESSAGES.FEED_STALE); if (policy.gap) paragr
 }
 
 async function snooze(dismissed = false) {
+if(update.critical||update.correction){const state=o.updates?.snooze?await o.updates.snooze():{...update,status:'snoozed'};if(state)setUpdate({...state,visitDismissed:false});closeSheet(updateSheet,true);return;}
+if(update.overdue){const version=update.version;visitDismissed.add(version);const state=o.updates?.snooze?await o.updates.snooze():{...update,status:'snoozed',visitDismissed:true};if(state)setUpdate({...state,visitDismissed:true});closeSheet(updateSheet,true);return;}
 const version = update.version, until = o.now() + 86400000;
 try {
 const state = o.updates?.snooze ? await o.updates.snooze() : {...update,status:'snoozed'}; if (state) setUpdate(state);
@@ -370,6 +374,9 @@ void count('update_taps');
 try { const result = await o.updates.applyUpdate(); if (result) setUpdate(result); }
 catch (e) { setUpdate({...update,status:'failed',code:e.code || 'artifact.upstream_error'}); }
 }
+function openWhatsNew(){const s=sheet("What's new in Muster Out "+(update.version||o.version),()=>closeSheet(s));const notes=Array.isArray(update.notes)?update.notes:[];if(notes.length===2&&notes.every(n=>typeof n==='string'&&n.trim())){const list=node('ul',undefined,'mot-release-notes');notes.forEach(text=>list.append(node('li',text)));s.body.append(list);if(update.correction&&update.impact)paragraph(s.body,update.impact);}else paragraph(s.body,MESSAGES.UPDATE_UNTRUSTED);s.actions.append(button('Back to update',()=>closeSheet(s,true),true));}
+async function saveDeviceBackup(s){const status=node('p',undefined,'mot-notice');status.setAttribute('role','status');s.body.append(status);try{const user=await window.claude?.use?.('user');if(await user?.isOwner?.()!==true)throw{code:'not_owner'};const downloads=await window.claude?.use?.('downloads');if(!downloads?.save){status.textContent='File saving is unavailable in this view.';return;}status.textContent='Preparing your backup...';const records=await window.MusterOutUpdate.collectRecords(o.db,true);const data=JSON.stringify({schema:1,product:'Muster Out',version:o.version,created:new Date(o.now()).toISOString(),records:records},null,2);const result=await downloads.save({filename:'MusterOut_Plan_Backup_'+new Date(o.now()).toISOString().slice(0,10)+'.json',data:data});status.textContent=result?.status==='saved'?'Backup saved to your device.':'Backup handed to the platform. Confirm the save there.';}catch(e){status.textContent=e.code==='declined'?'Backup save canceled.':e.code==='not_owner'?'Open your own board to save a backup.':'The backup did not save. Your board is unchanged.';}}
+function backupControl(s){paragraph(s.body,'This file contains your plan details. Keep it somewhere private.','mot-meta');s.body.append(button('Save a backup to this device',()=>saveDeviceBackup(s)));}
 function renderUpdate() {
 if (!updateSheet) return;
 const s = updateSheet, status = update.status;
@@ -377,14 +384,14 @@ s.body.replaceChildren(); s.actions.replaceChildren();
 const cancel = () => snooze();
 if (status === 'available' || status === 'snoozed') {
 s.heading.textContent = (update.correction ? 'Correction ready: ':'Muster Out ') + update.version + (update.correction ? '' : ' is ready');
-paragraph(s.body,'What changed','mot-strong');
+paragraph(s.body,'What changed','mot-strong');paragraph(s.body,'You can save a backup to your device before updating.','mot-meta');s.body.append(button("What's new",openWhatsNew));
 const notes = Array.isArray(update.notes) ? update.notes : [];
 notes.slice(0,2).forEach(text => paragraph(s.body,text));
 if (update.correction) paragraph(s.body,update.impact || MESSAGES.UPDATE_UNTRUSTED);
 const valid = notes.length === 2 && notes.every(n => typeof n === 'string' && n.trim()) && (!update.correction || (typeof update.impact === 'string' && update.impact.trim()));
 if (!valid && !update.correction) paragraph(s.body,MESSAGES.UPDATE_UNTRUSTED);
-const now = button('Update now',apply,true); now.disabled = !valid || !o.updates?.applyUpdate;
-s.actions.append(now,button('Not now',cancel)); if (!valid) s.actions.append(button('View diagnostic',openDiagnostic)); if (!o.updates?.applyUpdate) { paragraph(s.body,MESSAGES['artifact.absent']); s.actions.append(button('Copy update message',() => copyMessage('update'))); } s.cancel = cancel;
+const now = button('Update now',() => apply(),true); now.disabled = !valid || !o.updates?.applyUpdate;
+backupControl(s);s.actions.append(now,button(update.overdue&&!update.critical&&!update.correction?'Not this visit':'Not now',cancel)); if (!valid) s.actions.append(button('View diagnostic',openDiagnostic)); if (!o.updates?.applyUpdate) { paragraph(s.body,MESSAGES['artifact.absent']); s.actions.append(button('Copy update message',() => copyMessage('update'))); } s.cancel = cancel;
 } else if (status === 'applying') {
 s.heading.textContent = 'Updating Muster Out'; s.cancel = null;
 const progress = node('div'); window.MusterOutUpdateStatus?.render(progress,update,{version:o.version}); s.body.append(progress);
@@ -419,13 +426,14 @@ return code && (code.includes('.') || /^[A-Z]/.test(code)) ? code : 'artifact.' 
 function setUpdate(state) {
 if (dead || !state) return;
 if (state.status === 'available' && !snoozesReady) { pendingUpdate = state; return; }
-if (state.status === 'available') { let until = snoozePrefs[state.version]; try { until = Math.max(until || 0,Number(localStorage.getItem('mo.update.snooze.' + state.version)) || 0); } catch (_) {} if (until > o.now() && until <= o.now()+86400000) state = {...state,status:'snoozed'}; }
-if (state.version) releaseInfo = {version:state.version,notes:state.notes,correction:state.correction,impact:state.impact}; update = {...releaseInfo,...state}; if (update.code) update.code = normalizeUpdateCode(update.code);
+if (state.status === 'available' && !state.critical && !state.correction && !state.overdue) { let until = snoozePrefs[state.version]; try { until = Math.max(until || 0,Number(localStorage.getItem('mo.update.snooze.' + state.version)) || 0); } catch (_) {} if (until > o.now() && until <= o.now()+86400000) state = {...state,status:'snoozed'}; }
+if(state.version&&(state.critical||state.correction||state.overdue)&&visitDismissed.has(state.version))state={...state,status:'snoozed',visitDismissed:true};
+if (state.version) releaseInfo = {version:state.version,notes:state.notes,correction:state.correction,critical:state.critical||state.correction,impact:state.impact,overdue:state.overdue,visitDismissed:state.visitDismissed}; update = {...releaseInfo,...state}; if (update.code) update.code = normalizeUpdateCode(update.code);
 if (update.status === 'available' && (!Array.isArray(update.notes) || update.notes.length !== 2 || update.notes.some(n => typeof n !== 'string' || !n.trim()) || (update.correction && (typeof update.impact !== 'string' || !update.impact.trim())))) update.code = 'UPDATE_UNTRUSTED';
 if (update.code) recordError('update','apply',update.code); if (update.quietCode) recordError('update','verify',update.quietCode);
 if (update.status === 'done') { lastConfirmed = {from:update.justUpdated?.from || null,to:update.justUpdated?.to || update.version || o.version}; if (o.db && o.canWrite !== false) void verifiedSet('meta/trust_update_receipt',lastConfirmed).catch(e => recordError('db','set',e.code || e.name)); }
 redraw(slots.today,renderToday);
-if (update.status === 'available' && !forced.has(update.version)) { forced.add(update.version); openUpdates(); }
+if (update.status === 'available' && (!update.overdue || update.critical || update.correction) && !forced.has(update.version)) { forced.add(update.version); openUpdates(); }
 if (update.status === 'snoozed' && updateSheet) closeSheet(updateSheet,true);
 if (update.status === 'done' && !updateSheet && update.justUpdated) openUpdates();
 renderUpdate(); emit('update');

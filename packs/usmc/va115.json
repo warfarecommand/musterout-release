@@ -1,0 +1,1432 @@
+{
+  "routes": [
+    {
+      "requirement": "T3-R006",
+      "id": "va-str",
+      "title": "Verify Marine STR delivery locally",
+      "action": "Ask medical records and IPAC which complete STR export is required and when they must receive it.",
+      "rules": [
+        "Ask military medical records staff and IPAC who holds your service treatment records, which transfer package applies and which authority sets its timing. Do not substitute service end for an earlier departure-related transfer requirement.",
+        "Explain the online versus other-channel STR distinction and unresolved guidance difference. Distinguish record requests, local possession and confirmed VA receipt."
+      ],
+      "office": "Military medical records and IPAC",
+      "url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/",
+      "question": "Who currently holds these Marine STRs, which transfer package applies and what exact authority sets its timing?",
+      "evidence": "Record the custodian's instruction and confirmation of the particular transfer. Ask the office to confirm its deadline.",
+      "existing_ids": [
+        "va-str"
+      ],
+      "proposed_ids": [],
+      "timing": "Ask medical records and IPAC for the identified STR transfer deadline, including any earlier departure requirement. No universal service-end offset is verified."
+    },
+    {
+      "requirement": "T3-R008",
+      "id": "va-add",
+      "title": "Preserve adding-issue advice without delay",
+      "action": "Ask VA how additional issues will be processed and record the confirmed procedure.",
+      "rules": [
+        "Late-added issues may be processed outside BDD. A program cutoff does not prohibit later compensation claims or justify withholding truthful evidence.",
+        "Make the official filing route usable while records or professional assistance are still being obtained. A complete local checklist or purchased opinion is not a prerequisite."
+      ],
+      "office": "VA or an accredited representative",
+      "url": "https://www.va.gov/disability/how-to-file-claim/when-to-file/pre-discharge-claim/",
+      "question": "How will an added issue at this point be handled without delaying timely filing or implying that BDD is the only route?",
+      "evidence": "Record the question sent to VA about added issues and its response; preserve the original claim receipt.",
+      "existing_ids": [
+        "va-add"
+      ],
+      "proposed_ids": [],
+      "timing": "The BDD date boundary is 90 days before anticipated release. Later-added issues may be handled outside BDD; standard filing remains available."
+    },
+    {
+      "requirement": "T3-R009",
+      "id": "va-shpe",
+      "title": "Relabel medical scheduling advice",
+      "action": "Ask the MTF to schedule separation-health work and confirm the applicable requirements.",
+      "rules": [
+        "The Marine manual advises scheduling at least six calendar months ahead. Ask the MTF which completion timing and medical-process exceptions apply to you.",
+        "Track the member history, clinical examination, report receipt and DoD acceptance independently. Attendance is not an award, and medical care does not wait for a claim."
+      ],
+      "office": "Military treatment facility",
+      "url": "https://www.health.mil/Military-Health-Topics/Access-Cost-Quality-and-Safety/DES/Separation-Health-Assessment?type=FAQ",
+      "question": "Which current separation-health timing and exceptions apply to this service, process and anticipated departure?",
+      "evidence": "Record an MTF scheduling instruction and the completed assessment separately; a suggested planning target is not a universal completion rule.",
+      "existing_ids": [
+        "va-shpe"
+      ],
+      "proposed_ids": []
+    },
+    {
+      "requirement": "T3-R010",
+      "id": "va-sha",
+      "title": "Verify completed SHA transfer and acceptance",
+      "action": "Ask the MTF whether completed SHA results reached DoD and satisfy the applicable separation examination requirements.",
+      "rules": [
+        "Ask the MTF whether a completed VA SHA report can satisfy DoD separation requirements, what return timing applies and whether another exam is required. Returning a report is not automatic DoD acceptance.",
+        "Track the member history, clinical examination, report receipt and DoD acceptance independently. Attendance is not an award, and medical care does not wait for a claim."
+      ],
+      "office": "MTF and VA separation-health staff",
+      "url": "https://benefits.va.gov/BENEFITS/separation-health-assessment.asp",
+      "question": "Will the MTF accept this VA assessment for DoD separation purposes, and what additional action is required?",
+      "evidence": "Record the report identified and the MTF's actual acceptance or further-exam instruction.",
+      "existing_ids": [
+        "va-sha"
+      ],
+      "proposed_ids": [],
+      "timing": "Finish every phase of the VA and DoD separation exam before release. Ask the MTF for the report-return and acceptance instructions for your route."
+    },
+    {
+      "requirement": "T3-R011",
+      "id": "va-intent",
+      "title": "Use actual intent receipt",
+      "action": "Ask whether an intent to file is useful and record VA's actual receipt only if one is made.",
+      "rules": [
+        "ITF is distinct from a completed claim and a review request. Duplicate intent does not simply restart a clock; Supplemental Claim and continuously pursued claim interactions require qualified review.",
+        "Keep intent receipt, a qualifying claim within the first post-service year and continuous pursuit separate. Do not automatically allocate duplicate intents or promise an effective date."
+      ],
+      "office": "VA or an accredited representative",
+      "url": "https://www.va.gov/resources/your-intent-to-file-a-va-claim/",
+      "question": "Was a qualifying intent received for this benefit and how is it treated in this claim history?",
+      "evidence": "Record an actual intent receipt and benefit category, without copying health content or promising an effective date.",
+      "existing_ids": [
+        "va-intent"
+      ],
+      "proposed_ids": []
+    },
+    {
+      "requirement": "T3-R012",
+      "id": "va-itf-complete",
+      "title": "Keep the ITF completion clock separate",
+      "action": "Confirm the completion anniversary from the actual ITF receipt and keep proof of the completed claim's receipt.",
+      "rules": [
+        "The ordinary ITF completion period is one year. It does not automatically extend HLR, Board or continuous-pursuit deadlines; disputed allocation and calendar edge cases require review.",
+        "Keep intent receipt, a qualifying claim within the first post-service year and continuous pursuit separate. Do not automatically allocate duplicate intents or promise an effective date.",
+        "Use the calendar rule for the identified forum. Do not apply a universal weekend extension, turn a calendar year into 365 days, or clamp leap-day deadlines without authority."
+      ],
+      "office": "VA or an accredited representative",
+      "url": "https://www.va.gov/resources/your-intent-to-file-a-va-claim/",
+      "question": "Which intent and complete-claim receipts govern here, including duplicate intents, Supplemental Claims and any extension issue?",
+      "evidence": "Record the identified intent receipt, agency-confirmed controlling deadline and any qualifying complete-claim receipt.",
+      "existing_ids": [
+        "va-itf-complete"
+      ],
+      "proposed_ids": [],
+      "timing": "The ordinary ITF completion period is one year from actual intent receipt. It does not extend HLR, Board or continuous-pursuit periods. Ask about disputed allocation and calendar exceptions."
+    },
+    {
+      "requirement": "T3-R013",
+      "id": "va-net",
+      "title": "Distinguish the first-year effective-date opportunity",
+      "action": "Confirm timely claim receipt and possible effective-date treatment before the first service-end anniversary.",
+      "rules": [
+        "Receipt within the first postservice year can preserve an earlier effective date under governing conditions. It is neither a universal presumption nor the last opportunity to claim; payment commencement is a separate fact.",
+        "Keep intent receipt, a qualifying claim within the first post-service year and continuous pursuit separate. Do not automatically allocate duplicate intents or promise an effective date.",
+        "Use the calendar rule for the identified forum. Do not apply a universal weekend extension, turn a calendar year into 365 days, or clamp leap-day deadlines without authority."
+      ],
+      "office": "VA or an accredited representative",
+      "url": "https://www.va.gov/get-help-from-accredited-representative/",
+      "question": "Does this claim meet the applicable first-year effective-date conditions, and what exceptions or other dates control?",
+      "evidence": "Record actual service end and actual claim receipt separately; do not mark a conditional effective-date rule as an award.",
+      "existing_ids": [
+        "va-net",
+        "va-net-confirm"
+      ],
+      "proposed_ids": [],
+      "timing": "File within 1 year after your last day of active duty so VA can pay from the day after separation. No guarantee; confirm with your VSO. This period starts on your last day of active duty. The 11-month check is a planning target; earlier help is available. Filing later remains available."
+    },
+    {
+      "requirement": "T3-R015",
+      "id": "va-hlr-referral",
+      "title": "Refer Higher-Level Review",
+      "action": "Use the official HLR route to discuss an alleged error on the existing record with accredited help.",
+      "rules": [
+        "Ordinary modernized HLR has a one-year notice period and no new evidence. Prior HLR, cure periods, legacy and contested cases require distinct handling.",
+        "Identify the issuing body, notice type, issue and procedural lane before using a review date. Distinguish issuance, mailing, Board receipt and hearing events; a generic decision date cannot supply them.",
+        "Use the calendar rule for the identified forum. Do not apply a universal weekend extension, turn a calendar year into 365 days, or clamp leap-day deadlines without authority.",
+        "After an initial or Supplemental Claim decision, HLR information is discoverable. A prior HLR decision on the same issue does not offer HLR of HLR. Public discovery only. A stage label alone does not establish an issued decision, a valid election, an open deadline or permission for a concurrent same-issue review. Confirm the actual notice, issue and prior lane with VA or an accredited representative. A pending same-issue administrative review requires qualified review of the 38 CFR 3.2500 restrictions and withdrawal/change exceptions; no election is automated. Qualified VA or accredited help remains available when the notice or stage is unknown. A Board decision uses the qualified Supplemental Claim/court referral path, not a new Board-to-Board election."
+      ],
+      "office": "VA or an accredited representative",
+      "url": "https://www.va.gov/decision-reviews/higher-level-review/",
+      "question": "Is HLR available for this issue and prior lane, which notice starts its period, and how is new evidence treated? Identify whether the actual notice is an initial, Supplemental Claim, HLR or Board decision and whether a same-issue review is pending; do not infer this from a generic phase.",
+      "evidence": "Record the HLR election and VA receipt only if actually made; distinguish the closed record and any duty-to-assist correction.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-hlr-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R016",
+      "id": "va-supplemental-referral",
+      "title": "Refer Supplemental Claims",
+      "action": "Ask accredited help to assess new and relevant evidence and use the official Supplemental Claim route.",
+      "rules": [
+        "Supplemental Claims may remain available after one year, with effective-date consequences. An increase claim and a Supplemental Claim are distinct; ITF and continuous pursuit are not interchangeable.",
+        "Keep intent receipt, a qualifying claim within the first post-service year and continuous pursuit separate. Do not automatically allocate duplicate intents or promise an effective date.",
+        "Identify the issuing body, notice type, issue and procedural lane before using a review date. Distinguish issuance, mailing, Board receipt and hearing events; a generic decision date cannot supply them."
+      ],
+      "office": "VA or an accredited representative",
+      "url": "https://www.va.gov/decision-reviews/supplemental-claim/",
+      "question": "What new and relevant evidence and continuous-pursuit rules apply to this issue and prior decision history?",
+      "evidence": "Record the chosen Supplemental Claim and receipt separately from the new-and-relevant-evidence inquiry.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-supplemental-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R017",
+      "id": "va-board-referral",
+      "title": "Refer Board docket and evidence choices",
+      "action": "Use the official Board route and verify the selected docket and notice with accredited help.",
+      "rules": [
+        "Ordinary Board requests use a one-year mailed-notice period. Docket-specific evidence windows have different anchors; hearing withdrawal and no-shows do not share one default.",
+        "Identify the issuing body, notice type, issue and procedural lane before using a review date. Distinguish issuance, mailing, Board receipt and hearing events; a generic decision date cannot supply them.",
+        "Use the calendar rule for the identified forum. Do not apply a universal weekend extension, turn a calendar year into 365 days, or clamp leap-day deadlines without authority.",
+        "After an initial, Supplemental Claim or HLR decision, Board-review information is discoverable. A Board decision does not offer Board-to-Board review. Public discovery only. A stage label alone does not establish an issued decision, a valid election, an open deadline or permission for a concurrent same-issue review. Confirm the actual notice, issue and prior lane with VA or an accredited representative. A pending same-issue administrative review requires qualified review of the 38 CFR 3.2500 restrictions and withdrawal/change exceptions; no election is automated. Qualified VA or accredited help remains available when the notice or stage is unknown. A Board decision uses the qualified Supplemental Claim/court referral path, not a new Board-to-Board election."
+      ],
+      "office": "VA or an accredited representative",
+      "url": "https://www.va.gov/decision-reviews/board-appeal/",
+      "question": "Which Board docket and actual receipt/hearing event govern, including a withdrawn hearing, no-show or docket change? Identify whether the actual notice is an initial, Supplemental Claim, HLR or Board decision and whether a same-issue review is pending; do not infer this from a generic phase.",
+      "evidence": "Record the actual Board election, docket and receipt or hearing event; do not infer the evidence window from an upload.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-board-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R018",
+      "id": "va-urgent-review-referral",
+      "title": "Keep late and court routes urgent",
+      "action": "For an identified final Board decision, seek qualified court review promptly; non-Board or unidentified notices use the explicit VA/accredited route in R029/R075.",
+      "rules": [
+        "A final Board decision ordinarily has a 120-day CAVC appeal period. Court filing differs from filing with VA; exceptions require qualified assessment and never create a general 150-day deadline.",
+        "Use the calendar rule for the identified forum. Do not apply a universal weekend extension, turn a calendar year into 365 days, or clamp leap-day deadlines without authority.",
+        "For a contested administrative notice, reduction proposal, legacy matter, late VA filing or unidentified/disputed notice, expose VA/accredited help at https://www.va.gov/get-help-from-accredited-representative/ through qualified notice review. Ask the qualified reviewer to identify the issuing body, actual notice, issue, procedural stage, required response and governing period. For an identified final Board decision, retain court-specific help at https://www.uscourts.cavc.gov/appeal.php through the final-Board court route. Keep an unknown notice unidentified until qualified review, route an ordinary AOJ notice directly to court, choose an election, assume good cause/extension or apply a universal one-year clock. Urgency is a planning priority, not a new legal period; an unknown or false court predicate cannot hide qualified VA help."
+      ],
+      "office": "Qualified court practitioner and CAVC public filing office",
+      "url": "https://www.uscourts.cavc.gov/appeal.php",
+      "question": "For this identified final Board decision, which court notice, filing event, period and exception need qualified court assessment? An AOJ decision or unidentified notice is not a final Board decision.",
+      "evidence": "Record prompt contact with qualified review or court help and the specific notice identified; a generic deadline remains suppressed.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-urgent-review-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R020",
+      "id": "va-vso",
+      "title": "Replace ranked help with verified choice",
+      "action": "Compare available accredited help through VA's directory and confirm appointment and intake.",
+      "rules": [
+        "Accredited VSO help is free. A representative's accreditation, availability and actual appointment are separate facts; an unverified vendor ranking or wait estimate is not evidence.",
+        "Offer direct filing and accredited assistance as usable choices. Distinguish directory listing, accreditation, availability and actual appointment; provide a public phone alternative with hours."
+      ],
+      "office": "VA or an accredited representative",
+      "url": "https://www.va.gov/get-help-from-accredited-representative/",
+      "question": "Is this individual currently accredited for the requested role, available, and actually appointed if representation is desired?",
+      "evidence": "Record the user's choice, a verified person's role and any accepted appointment separately; listing or a clicked link is not contact.",
+      "existing_ids": [
+        "va-vso"
+      ],
+      "proposed_ids": [],
+      "timing": "Contacting help 200 days before release is an optional planning target. You can seek accredited help now, and an appointment is not required before standard filing."
+    },
+    {
+      "requirement": "T3-R022",
+      "id": "va-sickcall",
+      "title": "Keep truthful clinical care available",
+      "action": "Seek clinical care: use general VA health access and clinic discovery for physical/hearing concerns, the distinct mental-health route for behavioral concerns, and the specific MST care route when relevant.",
+      "rules": [
+        "Clinical assessment and truthful functional history support care. A missing service diagnosis is not a universal claim bar; a diagnosis or treatment device does not establish a rating.",
+        "Keep care, trauma-sensitive support and urgent official help accessible without requiring a diagnosis, detailed narrative, uploaded record or compensation claim.",
+        "Physical/hearing: https://www.va.gov/health-care/how-to-apply/, Option 3 and its medical-center/clinic discovery link, provides general health access rather than a verified audiology booking endpoint. Ask which local clinical service can assess the physical or hearing concern and what access/referral step applies. Behavioral: https://www.va.gov/health-care/health-needs-conditions/mental-health/; ask the VA primary-care/mental-health service how to access the appropriate service given current enrollment, preserving its existing-user and new-user instructions. MST: https://www.va.gov/health-care/health-needs-conditions/military-sexual-trauma/; retain the specific clinical access and privacy inquiry without collecting a trauma narrative or requiring compensation filing. No diagnosis, appointment availability, enrollment or care entitlement is inferred. Current-service or eligibility exceptions remain for the clinical office."
+      ],
+      "office": "VA medical center/clinic health-access staff for physical/hearing access; VA primary-care/mental-health or MST service for its corresponding inquiry",
+      "url": "https://www.va.gov/health-care/how-to-apply/",
+      "question": "Physical/hearing: https://www.va.gov/health-care/how-to-apply/, Option 3 and its medical-center/clinic discovery link, provides general health access rather than a verified audiology booking endpoint. Ask which local clinical service can assess the physical or hearing concern and what access/referral step applies. Behavioral: https://www.va.gov/health-care/health-needs-conditions/mental-health/; ask the VA primary-care/mental-health service how to access the appropriate service given current enrollment, preserving its existing-user and new-user instructions. MST: https://www.va.gov/health-care/health-needs-conditions/military-sexual-trauma/; retain the specific clinical access and privacy inquiry without collecting a trauma narrative or requiring compensation filing. No diagnosis, appointment availability, enrollment or care entitlement is inferred. Current-service or eligibility exceptions remain for the clinical office.",
+      "evidence": "If desired, record only the corresponding clinical inquiry or actual appointment event. A link click, compensation claim, diagnosis or local task completion is not required to discover care and does not prove enrollment or an appointment.",
+      "existing_ids": [
+        "va-sickcall",
+        "va-hearing",
+        "va-bh"
+      ],
+      "proposed_ids": [],
+      "links": [
+        {
+          "label": "Physical and hearing: general VA health access",
+          "url": "https://www.va.gov/health-care/how-to-apply/"
+        },
+        {
+          "label": "Behavioral health access",
+          "url": "https://www.va.gov/health-care/health-needs-conditions/mental-health/"
+        },
+        {
+          "label": "MST clinical care access",
+          "url": "https://www.va.gov/health-care/health-needs-conditions/military-sexual-trauma/"
+        }
+      ],
+      "timing": "Seek care when needed. Ask the clinical office for its actual appointment and referral instructions; no universal EAS-based clinical deadline is verified."
+    },
+    {
+      "requirement": "T3-R023",
+      "id": "va-exposure",
+      "title": "Refer exposure questions without a filing barrier",
+      "action": "Keep accurate service and exposure facts for clinical and accredited review using current official pathways.",
+      "rules": [
+        "PACT, particulate, Gulf War, herbicide and Camp Lejeune routes have different facts and exceptions. Exposure alone does not establish disability or connection; a stale regulatory date cannot override the enacted statute."
+      ],
+      "office": "VA or an accredited representative",
+      "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/",
+      "question": "Which service, location, timing and condition facts matter for this exposure pathway, and which other service-connection routes remain available?",
+      "evidence": "Record a request for official exposure/eligibility help, without declaring exposure, presumptive eligibility or a diagnosis.",
+      "existing_ids": [
+        "va-exposure"
+      ],
+      "proposed_ids": [],
+      "timing": "Ask VA or accredited help which service, exposure and filing facts control this pathway. There is no single verified exposure deadline for all programs."
+    },
+    {
+      "requirement": "T3-R024",
+      "id": "va-care-referral",
+      "title": "Provide trauma-sensitive care routes",
+      "action": "Open the appropriate official MST or mental-health care route without supplying a trauma narrative.",
+      "rules": [
+        "MST care eligibility differs from compensation. Current-service Vet Center access and VA-facility referral/authorization rules differ; record-sharing statements must be route-specific.",
+        "Keep care, trauma-sensitive support and urgent official help accessible without requiring a diagnosis, detailed narrative, uploaded record or compensation claim."
+      ],
+      "office": "VA MST coordinator, Vet Center or military clinical service",
+      "url": "https://www.mentalhealth.va.gov/msthome/treatment.asp",
+      "question": "Which trauma-sensitive care or benefits route can help, and what are that route's privacy and evidence practices?",
+      "evidence": "Record only the user's optional care/help action, without requiring an incident narrative or recording a confidentiality promise.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-care-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R025",
+      "id": "va-reserve",
+      "title": "Separate Reserve affiliation medical standards",
+      "action": "Ask the military medical office and career counselor about affiliation qualification; ask VA about claim eligibility separately.",
+      "rules": [
+        "Reserve affiliation fitness, VA qualifying service and compensation are separate determinations. Ask your Career Planner which affiliation standards and exceptions apply.",
+        "Route Reserve duty, nonregular retirement, Guard and disability-process cases explicitly. Full-time active-duty Reserve BDD screening is distinct from ADT/IDT qualification and medical-board referral."
+      ],
+      "office": "Military medical office and Career Planner",
+      "url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/",
+      "question": "Does this Marine qualify for the intended affiliation route and what service action and obligations are confirmed?",
+      "evidence": "Record Career Planner guidance and any actual affiliation approval separately from VA eligibility.",
+      "existing_ids": [
+        "va-reserve"
+      ],
+      "proposed_ids": [],
+      "timing": "Ask the Career Planner which affiliation timing and fitness instructions apply to this case. No universal VA compensation deadline follows from a Reserve preference."
+    },
+    {
+      "requirement": "T3-R026",
+      "id": "va-reserve-duty-referral",
+      "title": "Refer Reserve duty and nonregular questions",
+      "action": "Identify the actual AD, ADT or IDT period and available evidence, then verify qualifying service and retirement questions with the proper office.",
+      "rules": [
+        "Qualifying duty and line-of-duty evidence matter. A formal DD261 is not universal; nonregular pay start, DD214-1 and Guard status require distinct review.",
+        "Preserve yes, no and unknown separately. An unknown choice must not become a false eligibility answer, a zero amount or today's date; neutral filing and care remain reachable.",
+        "Route Reserve duty, nonregular retirement, Guard and disability-process cases explicitly. Full-time active-duty Reserve BDD screening is distinct from ADT/IDT qualification and medical-board referral."
+      ],
+      "office": "MMSR-5, unit records, VA and accredited help",
+      "url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Reserve-Separation-and-Retirement/",
+      "question": "Which duty period and line-of-duty criteria apply, and does the case require Reserve, nonregular retirement, Guard or medical-process help?",
+      "evidence": "Record the duty category and official referral response; unknown AD/ADT/IDT or line-of-duty facts remain unknown.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-reserve-duty-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R027",
+      "id": "va-drill",
+      "title": "Verify Reserve pay coordination",
+      "action": "Compare the actual military-pay notice with unit records before making a waiver election.",
+      "rules": [
+        "Compensation and active-service pay cannot cover the same period. Paid assemblies and duty days require verification; an EAS-plus-60 reminder is not the notice deadline.",
+        "Use actual verified payments for a budget. Separate ordinary SBP retired-pay eligibility from the Reserve written-notification election; do not infer a spouse's election or concurrence."
+      ],
+      "office": "VA and Reserve unit pay administration",
+      "url": "https://www.va.gov/forms/21-8951-2/",
+      "question": "Which days and pay periods overlap, what election is required and how will the agencies reconcile them?",
+      "evidence": "Record the fiscal period and verified duty-pay days, the actual VA form response and adjustment notice separately.",
+      "existing_ids": [
+        "va-drill"
+      ],
+      "proposed_ids": [],
+      "timing": "Optional 60-day check reminder: This period starts on your last day of active duty. It is a planning target, not the actual notice's response period. Use that notice for its deadline."
+    },
+    {
+      "requirement": "T3-R028",
+      "id": "va-medical-referral",
+      "title": "Route medical boards to assigned offices",
+      "action": "Use PEBLO, MSC and disability counsel for the actual notice, election instructions and uncertain service date.",
+      "rules": [
+        "Military fitness decisions and proposed VA evaluations are distinct from final VA compensation. Medical cases do not inherit an ordinary scheduled-EAS plan or invented election deadline.",
+        "Route Reserve duty, nonregular retirement, Guard and disability-process cases explicitly. Full-time active-duty Reserve BDD screening is distinct from ADT/IDT qualification and medical-board referral."
+      ],
+      "office": "Assigned PEBLO, MSC and disability counsel",
+      "url": "https://www.health.mil/Military-Health-Topics/Access-Cost-Quality-and-Safety/DES/Integrated-Evaluation-System",
+      "question": "Which disability-process stage, fitness decision, compensation action and service-end instructions apply while dates remain uncertain?",
+      "evidence": "Record contact with PEBLO, MSC or assigned counsel and the next official process event; no ordinary EAS deadline is invented.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-medical-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R029",
+      "id": "va-exception-help",
+      "title": "Expose discharge and hardship help",
+      "action": "Use qualified VA/accredited help for exceptional or unidentified notices, while retaining distinct character-of-service, records, housing and priority-request referrals.",
+      "rules": [
+        "Character labels and hardship do not supply a universal entitlement or extension decision. Priority processing is requested, not a guaranteed award date.",
+        "Keep care, trauma-sensitive support and urgent official help accessible without requiring a diagnosis, detailed narrative, uploaded record or compensation claim.",
+        "For a contested administrative notice, reduction proposal, legacy matter, late VA filing or unidentified/disputed notice, expose VA/accredited help at https://www.va.gov/get-help-from-accredited-representative/ through qualified notice review. Ask the qualified reviewer to identify the issuing body, actual notice, issue, procedural stage, required response and governing period. For an identified final Board decision, retain court-specific help at https://www.uscourts.cavc.gov/appeal.php through the final-Board court route. Keep an unknown notice unidentified until qualified review, route an ordinary AOJ notice directly to court, choose an election, assume good cause/extension or apply a universal one-year clock. Urgency is a planning priority, not a new legal period; an unknown or false court predicate cannot hide qualified VA help."
+      ],
+      "office": "VA, accredited help and appropriate legal or care office",
+      "url": "https://www.va.gov/get-help-from-accredited-representative/",
+      "question": "Which character-of-service review, records assistance, hardship or urgent route applies? For a contested, reduction, legacy, late or unidentified notice, identify its issuer, issue, stage, required response and governing period.",
+      "evidence": "Record only the relevant qualified notice-review inquiry, character/records/priority request or office response that actually occurred; no inquiry establishes a favorable determination, valid election or deadline extension.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-exception-help"
+      ],
+      "links": [
+        {
+          "label": "Separate character-of-discharge information",
+          "url": "https://www.benefits.va.gov/benefits/character_of_discharge.asp"
+        }
+      ]
+    },
+    {
+      "requirement": "T3-R030",
+      "id": "va-severe-disability-referral",
+      "title": "Refer severe-disability and work questions",
+      "action": "Ask accredited help about TDIU, SMC or permanent-and-total status using the actual decision and care needs.",
+      "rules": [
+        "TDIU, SMC, schedular total ratings and permanent-total status have different criteria. A threshold or work-status checkbox cannot decide entitlement.",
+        "Exclude categorical provider shortcuts about favored conditions, temporary disability or employment. Use qualified clinical/accredited referrals and preserve the controlling distinctions."
+      ],
+      "office": "VA and accredited representative",
+      "url": "https://www.va.gov/disability/eligibility/special-claims/unemployability/",
+      "question": "Which severe-disability or unemployability review is appropriate and which actual findings, work facts or care needs require evaluation?",
+      "evidence": "Record the qualified severe-disability referral; keep TDIU, SMC and permanent-and-total findings separate.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-severe-disability-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R033",
+      "id": "va-health",
+      "title": "Correct health enrollment shortcuts",
+      "action": "Ask VA to determine health enrollment and priority independently of the compensation claim.",
+      "rules": [
+        "VA health enrollment, priority, compensation and family coverage differ. The combat 10-year route is conditional and other service or exposure routes exist. Ask VA when you may apply; the board does not set a universal pre-separation enrollment date.",
+        "Keep care, trauma-sensitive support and urgent official help accessible without requiring a diagnosis, detailed narrative, uploaded record or compensation claim."
+      ],
+      "office": "VA health enrollment office",
+      "url": "https://www.va.gov/health-care/how-to-apply/",
+      "question": "Which enrollment route, service/discharge criteria and priority group apply, including the conditional combat route and other routes?",
+      "evidence": "Record VA enrollment application receipt and VA eligibility decision separately; referral access does not mean enrollment or free care.",
+      "existing_ids": [
+        "va-health"
+      ],
+      "proposed_ids": [],
+      "timing": "The combat 10-year enrollment route is conditional. Other service and exposure routes exist. Ask VA which eligibility period applies; no universal pre-separation enrollment date is set here."
+    },
+    {
+      "requirement": "T3-R034",
+      "id": "va-dental",
+      "title": "Keep Class II dental conditions and clocks",
+      "action": "Ask VA dental eligibility staff to identify the dental class, applicable service period and application anchor, written-explanation record, completion certification and separate examination condition.",
+      "rules": [
+        "Modern Class II ordinarily requires a service-connected noncompensable dental condition present at release, qualifying active service and discharge, no final-90-day complete-examination/treatment certification, and application within 180 days after release. Qualifying service is at least 90 days during the Persian Gulf War or 180 days otherwise. The VA exam ordinarily occurs within six calendar months after release unless delayed through no fault of the Veteran. Qualifying active-service reentry within 90 days of a prior release permits the subsequent/final-release application anchor; the regulation specifies final release after August 12, 1981 and related service-period conditions. Competent-authority correction of a disqualifying discharge supplies a separate 180-day application period after correction. The statutory written explanation and acknowledgment/officer certification are separate records from dental-treatment completion. Missing or uncertain notice requires prompt VA dental/accredited review, not an app-granted timeliness exception or care entitlement. For ordinary modern Class II, verify discharge under conditions other than dishonorable. Check whether the DD214 bears certification of a complete dental examination and all appropriate treatment within 90 days before release; that certification affects Class II eligibility.",
+        "Family and coverage actions need their own eligibility facts and event anchors. Preserve insurance and CHCBP conflicts; a confirmed deadline remains a rule, separate from the confirmation event.",
+        "Ask VA dental or accredited help to verify the actual application anchor and any notice or correction issue. The board does not decide timeliness or entitlement.",
+        "Use the current 180-day application window for ordinary modern Class II, with all eligibility and exception facts. The older manual's 90-day application text conflicts with current VA and regulation guidance. Ask VA dental staff which rule and exception apply."
+      ],
+      "office": "VA dental eligibility office",
+      "url": "https://www.va.gov/health-care/about-va-health-benefits/dental-care/",
+      "question": "Which dental class and qualifying service period apply? Is the application anchored to actual release, qualifying reentry/final release or completed correction of a disqualifying discharge? Separately verify dental-completion certification, statutory explanation and acknowledgment/officer certification, dental receipt and examination timing/no-fault delay. For absent, disputed or unknown notice, what record development and qualified review apply? Dental route: https://www.va.gov/health-care/about-va-health-benefits/dental-care/; disputed notice/correction help: https://www.va.gov/get-help-from-accredited-representative/. No automatic timeliness or entitlement decision is requested from the planner.",
+      "evidence": "Record only the bounded dental inquiry, actual dental application receipt or office response that occurred, with minimal event identity and date if desired. Keep those events separate from the examination.",
+      "existing_ids": [
+        "va-dental"
+      ],
+      "proposed_ids": [],
+      "timing": "Modern Class II application is ordinarily within 180 days after actual release; the VA exam ordinarily occurs within six calendar months unless delayed through no fault of the Veteran. Reentry, corrected discharge and notice exceptions need their own facts and office review. This period starts on your last day of active duty."
+    },
+    {
+      "requirement": "T3-R035",
+      "id": "fam-va-dental-iv",
+      "title": "Keep Class IV dental separate",
+      "action": "Confirm Class IV eligibility with VA dental using the actual rating or IU determination.",
+      "rules": [
+        "Qualifying total schedular or IU payment status can support Class IV without permanence. VA guidance excludes temporary total ratings; VADIP insurance is a separate purchased route.",
+        "Separate a benefit inquiry, application, eligibility finding, election and awarded service. Use each program's evidence and office; another benefit's eligibility does not complete this task."
+      ],
+      "office": "VA dental eligibility office",
+      "url": "https://www.va.gov/health-care/about-va-health-benefits/dental-care/",
+      "question": "Does the actual VA total-disability determination meet Class IV requirements and which exclusions apply?",
+      "evidence": "Record VA's Class IV eligibility confirmation, including the basis of total disability; an assumed rating does not complete the task.",
+      "existing_ids": [
+        "fam-va-dental-iv"
+      ],
+      "proposed_ids": []
+    },
+    {
+      "requirement": "T3-R036",
+      "id": "fam-sgli",
+      "title": "Split life-insurance clocks",
+      "action": "Compare official SGLI continuation, conversion and VGLI enrollment requirements before choosing coverage.",
+      "rules": [
+        "Ordinary SGLI continuation/conversion uses 120 days. VGLI's ordinary no-insurability period is 240 days, with a distinct one-year-plus-120-day application and initial-premium limit. Disability extensions are separate.",
+        "Use the calendar rule for the identified forum. Do not apply a universal weekend extension, turn a calendar year into 365 days, or clamp leap-day deadlines without authority.",
+        "Family and coverage actions need their own eligibility facts and event anchors. Preserve insurance and CHCBP conflicts; a confirmed deadline remains a rule, separate from the confirmation event.",
+        "Separate a benefit inquiry, application, eligibility finding, election and awarded service. Use each program's evidence and office; another benefit's eligibility does not complete this task."
+      ],
+      "office": "VA insurance and OSGLI",
+      "url": "https://www.va.gov/life-insurance/options-eligibility/vgli/",
+      "question": "Which SGLI continuation or conversion, VGLI application and evidence-of-insurability periods apply, including any disability extension?",
+      "evidence": "Record existing coverage, the chosen SGLI/VGLI action, premium/application receipt and insurer-confirmed deadlines separately.",
+      "existing_ids": [
+        "fam-sgli"
+      ],
+      "proposed_ids": [],
+      "timing": "Ordinary SGLI continuation and conversion use 120 days after release. VGLI has a 240-day no-insurability period and a separate one-year-plus-120-day application and initial-premium limit. Disability extensions are separate. This period starts on your last day of active duty."
+    },
+    {
+      "requirement": "T3-R037",
+      "id": "fam-fsgli-referral",
+      "title": "Refer spouse insurance conversion",
+      "action": "Ask VA insurance about an FSGLI conversion event and participating individual-policy options.",
+      "rules": [
+        "Spousal FSGLI may be converted to a participating permanent individual policy within 120 days of a specified qualifying event, including the member's separation. This is not spouse VGLI enrollment. Confirm the actual qualifying event and policy requirements.",
+        "Family and coverage actions need their own eligibility facts and event anchors. Preserve insurance and CHCBP conflicts; a confirmed deadline remains a rule, separate from the confirmation event.",
+        "Public referral discovery is available with dependents true, false or unknown on an ordinary or referral path. This does not expand supported plan scope or infer entitlement. Spousal FSGLI discovery still requires confirmation of actual qualifying event, spouse coverage and conversion rules before any program action."
+      ],
+      "office": "VA insurance",
+      "url": "https://www.va.gov/life-insurance/options-eligibility/fsgli/",
+      "question": "Which FSGLI qualifying event starts this conversion period and which insurer process and exclusions apply?",
+      "evidence": "Record the qualifying FSGLI event and insurer confirmation, then actual conversion completion if elected.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "fam-fsgli-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R038",
+      "id": "fam-tamp",
+      "title": "Make TAMP conditional",
+      "action": "Verify TAMP eligibility and its recorded start and end with the service and DEERS.",
+      "rules": [
+        "TAMP's 180-day period applies only to qualifying categories. A Reserve-affiliation preference alone does not establish eligibility or completed next-day affiliation.",
+        "Family and coverage actions need their own eligibility facts and event anchors. Preserve insurance and CHCBP conflicts; a confirmed deadline remains a rule, separate from the confirmation event."
+      ],
+      "office": "Service benefits office and DEERS",
+      "url": "https://www.tricare.mil/Plans/SpecialPrograms/TAMP",
+      "question": "Does this separation category qualify for TAMP and what coverage dates and family actions are confirmed?",
+      "evidence": "Record DEERS/contractor confirmation of TAMP eligibility and actual coverage dates; service end alone is insufficient.",
+      "existing_ids": [
+        "fam-tamp"
+      ],
+      "proposed_ids": [],
+      "timing": "For a qualifying category, TAMP lasts 180 days after actual service end once the service confirms eligibility. Confirm actual coverage dates with DEERS; a Reserve preference alone does not establish eligibility. This period starts on your last day of active duty."
+    },
+    {
+      "requirement": "T3-R039",
+      "id": "fam-trs",
+      "title": "Verify Reserve health transition",
+      "action": "Ask the service benefits office which coverage is available after active service or TAMP.",
+      "rules": [
+        "Ask the TRICARE contractor which Reserve health and dental coverage, eligibility, election, payment and effective-date rules apply. A Reserve affiliation preference is not enrollment."
+      ],
+      "office": "Service benefits office and TRICARE",
+      "url": "https://www.tricare.mil/Plans/SpecialPrograms/TAMP",
+      "question": "Which Reserve health and dental coverage route applies here, and what election, payment and effective-date conditions govern?",
+      "evidence": "Record the TRICARE contractor's category-specific TRS/TDP eligibility and election instruction.",
+      "existing_ids": [
+        "fam-trs",
+        "fam-dental-tdp"
+      ],
+      "proposed_ids": [],
+      "timing": "Ask the TRICARE contractor for the category-specific election, payment and coverage effective dates. Reserve preference alone is not enrollment or confirmed next-day coverage."
+    },
+    {
+      "requirement": "T3-R040",
+      "id": "fam-chcbp",
+      "title": "Refer CHCBP conflicts promptly",
+      "action": "Ask the CHCBP administrator to confirm eligibility and the applicable notice-based election date promptly.",
+      "rules": [
+        "The regulation has category-specific 60-day election anchors. The public former-TRS 30-day statement remains unresolved; no automatic last-safe-day is cleared.",
+        "Family and coverage actions need their own eligibility facts and event anchors. Preserve insurance and CHCBP conflicts; a confirmed deadline remains a rule, separate from the confirmation event."
+      ],
+      "office": "TRICARE CHCBP administrator",
+      "url": "https://www.tricare.mil/Plans/SpecialPrograms/CHCBP",
+      "question": "How does the contractor reconcile the category-specific CHCBP election period for this prior coverage?",
+      "evidence": "Record the contractor's identified former-coverage category and written election deadline; do not compute the disputed former-TRS last day.",
+      "existing_ids": [
+        "fam-chcbp"
+      ],
+      "proposed_ids": [],
+      "timing": "CHCBP uses category-specific 60-day election anchors. The public former-TRS 30-day statement remains unresolved. Ask the contractor to identify the controlling event and enrollment window; no last-safe-day is calculated."
+    },
+    {
+      "requirement": "T3-R041",
+      "id": "fam-tricare-ret",
+      "title": "Separate retirement health enrollment",
+      "action": "Confirm retiree and family TRICARE enrollment with the responsible plan office.",
+      "rules": [
+        "Retirement changes TRICARE status. DHA describes a 90-day enrollment period and a conditional retroactive request within 12 months, including fees; VA care is separate.",
+        "Separate a benefit inquiry, application, eligibility finding, election and awarded service. Use each program's evidence and office; another benefit's eligibility does not complete this task."
+      ],
+      "office": "TRICARE regional enrollment office",
+      "url": "https://www.tricare.mil/LifeEvents/Retiring",
+      "question": "Which retiree plan and qualifying-life-event election window apply to this family and retirement category?",
+      "evidence": "Record DEERS/contractor confirmation of retiree eligibility, plan election and effective coverage; retirement date is not enrollment.",
+      "existing_ids": [
+        "fam-tricare-ret"
+      ],
+      "proposed_ids": [],
+      "timing": "Eligible retiree enrollment uses a 90-day period from the actual retirement event. A conditional retroactive request within 12 months, including fees, needs TRICARE confirmation."
+    },
+    {
+      "requirement": "T3-R042",
+      "id": "fam-fedvip",
+      "title": "Keep purchased dental and vision eligibility distinct",
+      "action": "Review official FEDVIP and other dental coverage routes for the actual family status.",
+      "rules": [
+        "FEDVIP dental and vision eligibility differ. Purchased insurance and direct VA dental care remain separate decisions.",
+        "Separate a benefit inquiry, application, eligibility finding, election and awarded service. Use each program's evidence and office; another benefit's eligibility does not complete this task."
+      ],
+      "office": "BENEFEDS and the responsible benefits office",
+      "url": "https://www.opm.gov/healthcare-insurance/dental-vision/eligibility/",
+      "question": "Is this person eligible for FEDVIP now, and which enrollment period or qualifying event permits an election?",
+      "evidence": "Record BENEFEDS eligibility and the actual permitted election window and confirmation.",
+      "existing_ids": [
+        "fam-fedvip",
+        "fam-dental-civ"
+      ],
+      "proposed_ids": [],
+      "timing": "Ask BENEFEDS which enrollment period or qualifying event permits an election for this person. Dental and vision eligibility differ; no universal separation-based deadline is verified."
+    },
+    {
+      "requirement": "T3-R043",
+      "id": "fam-champva",
+      "title": "Keep CHAMPVA eligibility conditional",
+      "action": "Ask VA to interpret the actual permanent-total determination and family eligibility, including TRICARE exclusion.",
+      "rules": [
+        "The living-veteran route requires qualifying permanent-total service-connected status and an eligible family relationship. TRICARE eligibility excludes CHAMPVA even when enrollment is declined.",
+        "Family and coverage actions need their own eligibility facts and event anchors. Preserve insurance and CHCBP conflicts; a confirmed deadline remains a rule, separate from the confirmation event.",
+        "Public referral discovery is available with dependents true, false or unknown on an ordinary or referral path. This does not expand supported plan scope or infer entitlement. CHAMPVA still requires the actual qualifying relationship and veteran status, and excludes TRICARE eligibility on the stated living-veteran route."
+      ],
+      "office": "VA CHAMPVA",
+      "url": "https://www.va.gov/family-and-caregiver-benefits/health-and-disability/champva/",
+      "question": "Do the sponsor and dependent conditions qualify, and how does TRICARE eligibility affect this application?",
+      "evidence": "Record VA's CHAMPVA eligibility decision and actual application receipt, including any TRICARE eligibility restriction.",
+      "existing_ids": [
+        "fam-champva"
+      ],
+      "proposed_ids": []
+    },
+    {
+      "requirement": "T3-R044",
+      "id": "fam-id",
+      "title": "Keep dependent changes visible",
+      "action": "Update the appropriate family records and verify VA dependency evidence and event dates.",
+      "rules": [
+        "VA dependent compensation and military DEERS/cards are separate. Potential retroactive payment depends on qualifying events, rating and timely evidence.",
+        "Preserve yes, no and unknown separately. An unknown choice must not become a false eligibility answer, a zero amount or today's date; neutral filing and care remain reachable.",
+        "Family and coverage actions need their own eligibility facts and event anchors. Preserve insurance and CHCBP conflicts; a confirmed deadline remains a rule, separate from the confirmation event.",
+        "Public referral discovery is available with dependents true, false or unknown on an ordinary or referral path. This does not expand supported plan scope or infer entitlement. A known absence of current dependents can follow a removal event. Keep VA removal/update and the separate DEERS route reachable."
+      ],
+      "office": "VA dependency benefits office and military benefits office",
+      "url": "https://www.va.gov/manage-dependents/",
+      "question": "Which relationship change and actual VA rating facts trigger a dependency action, and what date and evidence rule apply?",
+      "evidence": "Record the specific family event, the program-specific evidence request and VA receipt; unknown family status is not no dependents.",
+      "existing_ids": [
+        "fam-id",
+        "ret-id"
+      ],
+      "proposed_ids": [],
+      "timing": "Ask VA which actual relationship event, rating facts, evidence and receipt date control the dependency action. Confirm DEERS and card timing separately; no universal service-end deadline applies to both programs."
+    },
+    {
+      "requirement": "T3-R045",
+      "id": "va-vre-referral",
+      "title": "Refer VR&E eligibility and entitlement",
+      "action": "Use the VA VR&E route and let the counselor determine entitlement and services.",
+      "rules": [
+        "Application eligibility and entitlement differ. The ordinary 20% plus employment-handicap and 10% plus serious-handicap routes do not guarantee a degree, stipend or preferred program.",
+        "Separate a benefit inquiry, application, eligibility finding, election and awarded service. Use each program's evidence and office; another benefit's eligibility does not complete this task."
+      ],
+      "office": "VA VR&E counselor",
+      "url": "https://www.va.gov/careers-employment/vocational-rehabilitation/eligibility/",
+      "question": "Does this applicant meet the applicable VR&E eligibility and entitlement conditions, and what evaluation is next?",
+      "evidence": "Record VR&E application receipt and the separate eligibility/entitlement decision and plan.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-vre-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R046",
+      "id": "va-education-referral",
+      "title": "Refer education entitlement",
+      "action": "Check qualifying service, discharge, prior elections and remaining GI Bill entitlement with VA.",
+      "rules": [
+        "Post-9/11 GI Bill eligibility and expiration depend on the applicable service history and exceptions; a claim or rating does not decide them.",
+        "Separate a benefit inquiry, application, eligibility finding, election and awarded service. Use each program's evidence and office; another benefit's eligibility does not complete this task."
+      ],
+      "office": "VA education benefits",
+      "url": "https://www.va.gov/education/about-gi-bill-benefits/post-9-11/",
+      "question": "Which GI Bill entitlement, eligibility and use-period rules apply to the actual service and election history?",
+      "evidence": "Record the VA education eligibility decision, benefit election and school certification separately.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-education-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R047",
+      "id": "fam-teb",
+      "title": "Preserve transfer approval and exception review",
+      "action": "Confirm the approved GI Bill transfer, service obligation and any exception before departure.",
+      "rules": [
+        "DoD approves transfers under conditional status, service and dependent rules. Early departure can affect transfer validity and debt, but exceptions require review.",
+        "Separate a benefit inquiry, application, eligibility finding, election and awarded service. Use each program's evidence and office; another benefit's eligibility does not complete this task.",
+        "Public referral discovery is available with dependents true, false or unknown on an ordinary or referral path. This does not expand supported plan scope or infer entitlement. Transfer discovery does not establish an eligible dependent, DoD transfer approval, qualifying service or a valid exception."
+      ],
+      "office": "DoD service education-transfer office",
+      "url": "https://www.va.gov/education/transfer-post-9-11-gi-bill-benefits/",
+      "question": "Is transfer still available in this duty status, what obligation applies and what confirms DoD approval?",
+      "evidence": "Record DoD transfer approval, designated dependents and obligations separately from VA use of transferred benefits.",
+      "existing_ids": [
+        "fam-teb"
+      ],
+      "proposed_ids": [],
+      "timing": "Ask DoD to confirm the actual transfer approval, service obligation, dependent facts and any departure exception. No universal separation-date reminder establishes transfer validity."
+    },
+    {
+      "requirement": "T3-R048",
+      "id": "va-home-loan-referral",
+      "title": "Correct home-loan fee shortcuts",
+      "action": "Ask the lender and VA to confirm a funding-fee exemption before closing using qualifying evidence.",
+      "rules": [
+        "A pending claim alone does not establish exemption. Qualified compensation, proposed-rating, survivor and active-duty Purple Heart routes have distinct requirements.",
+        "Separate a benefit inquiry, application, eligibility finding, election and awarded service. Use each program's evidence and office; another benefit's eligibility does not complete this task."
+      ],
+      "office": "VA home-loan office and lender",
+      "url": "https://www.va.gov/housing-assistance/home-loans/funding-fee-and-closing-costs/",
+      "question": "Which verified eligibility fact establishes fee exemption or a refund for this loan and closing date?",
+      "evidence": "Record the lender/VA funding-fee exemption finding or later refund determination; a pending claim alone is insufficient.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-home-loan-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R049",
+      "id": "va-caregiver-referral",
+      "title": "Refer caregiver programs",
+      "action": "Ask the VA caregiver team which support program fits the confirmed care needs.",
+      "rules": [
+        "PCAFC requires more than a rating threshold; PGCSS is a separate support route. Veteran and caregiver approval are agency decisions.",
+        "Separate a benefit inquiry, application, eligibility finding, election and awarded service. Use each program's evidence and office; another benefit's eligibility does not complete this task.",
+        "Public referral discovery is available with dependents true, false or unknown on an ordinary or referral path. This does not expand supported plan scope or infer entitlement. Caregiver discovery does not require a dependent. PCAFC's veteran/caregiver conditions and PGCSS's distinct support route remain agency-specific."
+      ],
+      "office": "VA facility caregiver support team",
+      "url": "https://www.va.gov/family-and-caregiver-benefits/health-and-disability/comprehensive-assistance-for-family-caregivers/",
+      "question": "Which caregiver program applies and which veteran, caregiver, care-need and other eligibility conditions must be evaluated?",
+      "evidence": "Record caregiver program application, assessment and agency decision separately; no rating threshold alone marks approval.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-caregiver-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R050",
+      "id": "fam-survivor-income-referral",
+      "title": "Refer survivor income separately",
+      "action": "Ask VA and DFAS about the actual survivor circumstances and benefit notices.",
+      "rules": [
+        "DIC and SBP have distinct survivor and death-related conditions. The former SBP-DIC offset no longer applies from 2023, but neither benefit is guaranteed by a veteran rating alone.",
+        "Separate a benefit inquiry, application, eligibility finding, election and awarded service. Use each program's evidence and office; another benefit's eligibility does not complete this task.",
+        "Public referral discovery is available with dependents true, false or unknown on an ordinary or referral path. This does not expand supported plan scope or infer entitlement. Survivor discovery does not require the veteran to report a current dependent. The actual survivor, death, relationship and program conditions still control."
+      ],
+      "office": "VA survivor benefits and DFAS",
+      "url": "https://www.va.gov/family-and-caregiver-benefits/survivor-compensation/dependency-indemnity-compensation/",
+      "question": "Which survivor benefits and current DIC/SBP treatment apply, and which death/service and relationship evidence is needed?",
+      "evidence": "Record DIC application receipt, VA decision and separate SBP/DFAS survivor action without combining the programs.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "fam-survivor-income-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R051",
+      "id": "fam-survivor-education-referral",
+      "title": "Refer survivor education",
+      "action": "Use the official DEA or Fry route to verify the applicable family and service circumstances.",
+      "rules": [
+        "DEA and Fry have different eligibility and time limits. Blanket age and remarriage rules are not supported.",
+        "Separate a benefit inquiry, application, eligibility finding, election and awarded service. Use each program's evidence and office; another benefit's eligibility does not complete this task.",
+        "Public referral discovery is available with dependents true, false or unknown on an ordinary or referral path. This does not expand supported plan scope or infer entitlement. Survivor education discovery does not establish a qualifying survivor, event, DEA/Fry program or period of use."
+      ],
+      "office": "VA education benefits",
+      "url": "https://www.va.gov/family-and-caregiver-benefits/education-and-careers/dependents-education-assistance/",
+      "question": "Which dependent or survivor education program applies and what eligibility, election and use-period rules control?",
+      "evidence": "Record the chosen DEA or Fry route, actual eligibility decision and benefit election.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "fam-survivor-education-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R052",
+      "id": "fam-burial-referral",
+      "title": "Refer burial and pre-need routes",
+      "action": "Ask the VA cemetery or burial-benefits office about eligibility and the applicable application.",
+      "rules": [
+        "National-cemetery eligibility, pre-need determination and monetary burial allowance are separate. The ordinary two-year non-service-connected allowance period runs after burial, with exceptions.",
+        "Separate a benefit inquiry, application, eligibility finding, election and awarded service. Use each program's evidence and office; another benefit's eligibility does not complete this task."
+      ],
+      "office": "VA burial benefits and National Cemetery Administration",
+      "url": "https://www.va.gov/burials-memorials/veterans-burial-allowance/",
+      "question": "Which burial, plot or transportation benefit and application exception apply, and what actual event starts its period?",
+      "evidence": "Record the burial benefit category, payment/application evidence and VA receipt; distinguish burial date from other eligibility events.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "fam-burial-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R053",
+      "id": "va-state-referral",
+      "title": "Refer state and territory discovery",
+      "action": "Find the official veterans office and ask about residence-specific eligibility.",
+      "rules": [
+        "This route finds official state and territory veterans offices. Ask the office to verify that jurisdiction's current benefit, amount, residency conditions and deadlines.",
+        "Family and coverage actions need their own eligibility facts and event anchors. Preserve insurance and CHCBP conflicts; a confirmed deadline remains a rule, separate from the confirmation event."
+      ],
+      "office": "Official state or territory veterans office",
+      "url": "https://discover.va.gov/external-resources/",
+      "question": "Which current residency and program conditions apply in this jurisdiction, and where is the controlling official source?",
+      "evidence": "Record the jurisdiction and official state/territory office response; discovery is not a verified state entitlement.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-state-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R054",
+      "id": "ret-pay",
+      "title": "Qualify concurrent retired pay",
+      "action": "Confirm the actual retired-pay category, VA determination and processed waiver or CRDP with DFAS.",
+      "rules": [
+        "A rating threshold alone cannot establish retired-pay entitlement or full concurrent payment. Chapter 61 and nonregular categories have additional limits and timing.",
+        "Use actual verified payments for a budget. Separate ordinary SBP retired-pay eligibility from the Reserve written-notification election; do not infer a spouse's election or concurrence."
+      ],
+      "office": "DFAS retired pay and VA",
+      "url": "https://www.dfas.mil/RetiredMilitary/disability/crdp/",
+      "question": "Does this retirement and service category qualify for CRDP, and how is the actual retired-pay/VA waiver calculated?",
+      "evidence": "Record the actual retirement category, VA determination and DFAS treatment; threshold shorthand does not establish concurrent payment.",
+      "existing_ids": [
+        "ret-pay"
+      ],
+      "proposed_ids": [],
+      "timing": "Use the actual DFAS retirement category, processed waiver and payment determination. No automatic first-payment date or full concurrent-payment prediction is supplied."
+    },
+    {
+      "requirement": "T3-R055",
+      "id": "va-crsc-referral",
+      "title": "Refer CRSC and preserve Soto conflict",
+      "action": "Use the official Navy/Marine CRSC route and ask about current implementation and any prior decision.",
+      "rules": [
+        "CRSC requires a service combat-related determination and qualifying retired-pay circumstances. Soto defeats the stated Barring Act limit, but current Navy correction procedures remain unverified.",
+        "Use actual verified payments for a budget. Separate ordinary SBP retired-pay eligibility from the Reserve written-notification election; do not infer a spouse's election or concurrence."
+      ],
+      "office": "Navy CRSC office and DFAS",
+      "url": "https://www.va.gov/resources/combat-related-special-compensation-crsc/",
+      "question": "What current Navy/Marine process implements the controlling CRSC law and Soto for this category and decision history?",
+      "evidence": "Record the service CRSC application or correction inquiry and actual decision; no automatic back-pay estimate.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-crsc-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R056",
+      "id": "va-recoupment-referral",
+      "title": "Refer recoupment by payment type",
+      "action": "Ask qualified VA/accredited help about VA withholding for separation pay or disability severance; use distinct retired-pay/concurrent-receipt information and pay-office verification for the corresponding pay question.",
+      "rules": [
+        "Separation pay, disability severance and retired-pay recoupment differ. Combat exceptions, later service, same-disability limits and tax refunds cannot be collapsed into one offset formula.",
+        "Use actual verified payments for a budget. Separate ordinary SBP retired-pay eligibility from the Reserve written-notification election; do not infer a spouse's election or concurrence.",
+        "For VA withholding after separation pay or disability severance, ask VA or an accredited representative about the actual payment, service period, tax record, decision, prior recovery and statutory exceptions. Ask the service or DFAS pay office separately about the original payment or retired-pay recovery. No task-specific direct DFAS recoupment endpoint has been verified. The CRDP link covers concurrent-receipt information only; it does not settle separation or severance recovery, duplicate recovery, an exception or an individual amount."
+      ],
+      "office": "VA compensation/accredited representative for VA-benefit withholding; separate service/DFAS pay office for original payment or retired-pay recovery; DFAS retired-pay information for concurrent receipt",
+      "url": "https://www.va.gov/get-help-from-accredited-representative/",
+      "question": "Which actual payment authority, service period, tax-withholding record, VA decision and prior recovery control VA recoupment? For retired pay or the original service payment, which separate service or DFAS pay-office review is required?",
+      "evidence": "Record only the distinct VA-benefit inquiry or service/DFAS pay-office response actually received, identifying its limited topic. A CRDP page visit does not verify a separation/severance recovery decision, an exception, a deduction or spendable cash.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-recoupment-referral"
+      ],
+      "links": [
+        {
+          "label": "DFAS concurrent-receipt information only",
+          "url": "https://www.dfas.mil/RetiredMilitary/disability/crdp/"
+        }
+      ]
+    },
+    {
+      "requirement": "T3-R057",
+      "id": "ret-sbp",
+      "title": "Separate SBP election from unverified lead times",
+      "action": "Confirm the actual retirement or Reserve notification, beneficiary facts and valid election receipt with DFAS and the service.",
+      "rules": [
+        "Ordinary SBP elections must precede the first retired-pay eligibility day, with applicable spouse concurrence and exceptions. The separate Reserve-component election has a 90-day period following receipt of the qualifying written notification. Do not use the ordinary retirement date for that notification clock. Ask DFAS and Marine retirement administration to verify any local 30-day receipt requirement or 45-day planning target; neither replaces the controlling election rule.",
+        "Use actual verified payments for a budget. Separate ordinary SBP retired-pay eligibility from the Reserve written-notification election; do not infer a spouse's election or concurrence.",
+        "The ordinary SBP and Reserve-component SBP election clocks require separate identified events and completion evidence. Retain both statutory rules as text; an office confirmation event does not change a rule into a planning target."
+      ],
+      "office": "DFAS and Marine retirement administration",
+      "url": "https://www.dfas.mil/retiredmilitary/provide/sbp/coverage/",
+      "question": "Is the controlling event first eligibility for retired pay or receipt of the Reserve written notification, and what election and concurrence requirements apply?",
+      "evidence": "Record the applicable ordinary or Reserve election path, precise event, election receipt and any required spouse concurrence separately.",
+      "existing_ids": [
+        "ret-sbp"
+      ],
+      "proposed_ids": [],
+      "timing": "Ordinary SBP elections must precede first retired-pay eligibility. The separate Reserve-component election uses 90 days following actual receipt of the qualifying written notification. Confirm applicable spouse concurrence and exceptions."
+    },
+    {
+      "requirement": "T3-R058",
+      "id": "va-tax-referral",
+      "title": "Separate tax treatment from payment",
+      "action": "Use the appropriate current tax-year guidance and a qualified tax adviser for actual payment treatment.",
+      "rules": [
+        "VA compensation and CRSC are tax-free under the stated rules; CRDP generally follows retired-pay treatment. Disability-severance exclusion, recoupment and amended-return limits remain separate."
+      ],
+      "office": "IRS public guidance and qualified tax adviser",
+      "url": "https://www.irs.gov/publications/p525",
+      "question": "Which amounts are VA compensation, retired pay, severance or another payment, and what current tax treatment applies?",
+      "evidence": "Record the actual type of payment and tax document, then qualified tax guidance when facts are unresolved.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-tax-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R059",
+      "id": "fam-budget",
+      "title": "Budget only from verified payments",
+      "action": "Reconcile actual pay statements, offsets, premiums and taxes before treating benefits as available cash.",
+      "rules": [
+        "An award, rating or proposed retired-pay amount does not establish net household cash. Existing budget planning needs explicit verification of waiver, recoupment, premiums and taxes.",
+        "Use actual verified payments for a budget. Separate ordinary SBP retired-pay eligibility from the Reserve written-notification election; do not infer a spouse's election or concurrence."
+      ],
+      "office": "DFAS, VA and qualified tax/financial help",
+      "url": "https://www.dfas.mil/RetiredMilitary/disability/crdp/",
+      "question": "Which payments are actually available after waiver, offsets, recoupment and elections, without predicting a future award?",
+      "evidence": "Use actual deposits and official payment statements for cash planning; pending awards remain unknown rather than zero.",
+      "existing_ids": [
+        "fam-budget"
+      ],
+      "proposed_ids": [],
+      "timing": "Use official statements and actual deposit dates for cash planning. A proposed rating or award does not establish net payment or its date."
+    },
+    {
+      "requirement": "T3-R062",
+      "id": "trp-validity-verification",
+      "title": "Respect TRP applicability and validity",
+      "action": "Ask TRP to confirm required phases, documented exemptions and whether prior completion remains current.",
+      "rules": [
+        "Current TRP policy uses AC/RC service thresholds, separate exemptions and 24-month phase validity. A curriculum exemption is not exemption from all TRP or VA-benefits instruction."
+      ],
+      "office": "Installation TRP",
+      "url": "https://www.okinawa.usmc-mccs.org/modules/media/?do=inline&id=66b20c97-887b-462b-a8a7-97dcd431a6e3&v=1",
+      "question": "Which phase-specific validity rule applies and is any repeat or updated action needed?",
+      "evidence": "Record the phase and training completion date and coordinator's validity determination after a changed separation date.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "trp-validity-verification"
+      ]
+    },
+    {
+      "requirement": "T3-R064",
+      "id": "sep-dd214",
+      "title": "Review discharge records and corrections",
+      "action": "Review the relevant discharge/service record and ask the separation activity to correct missing or inaccurate information.",
+      "rules": [
+        "Record availability and correctness support claims and benefits. DD214-1 may apply to Reserve component separation; it supplements rather than replaces all DD214 uses."
+      ],
+      "office": "Separation activity and MMSR-5",
+      "url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Reserve-Separation-and-Retirement/",
+      "question": "Which issuing or correction office and record procedure apply, including Reserve documents and pending claims?",
+      "evidence": "Record the identified DD214 discrepancy and official correction/submission receipt separately from the benefits claim.",
+      "existing_ids": [
+        "sep-dd214"
+      ],
+      "proposed_ids": []
+    },
+    {
+      "requirement": "T3-R068",
+      "id": "T3-R068",
+      "title": "Replace unsupported appointment-office claims",
+      "action": "Confirm appointments, travel arrangements and care access directly with the responsible office.",
+      "rules": [
+        "Confirm the actual appointment office, travel payment, distance and privacy practices with the office handling your visit. These depend on the route.",
+        "Offer direct filing and accredited assistance as usable choices. Distinguish directory listing, accreditation, availability and actual appointment; provide a public phone alternative with hours."
+      ],
+      "office": "VA scheduling contractor, MTF or identified clinical office",
+      "url": "https://www.va.gov/resources/va-claim-exam/",
+      "question": "Which office conducts this appointment, what should the member bring, and what route-specific travel and privacy rules apply?",
+      "evidence": "Record an appointment confirmation, attendance and any separately verified travel/reimbursement inquiry.",
+      "existing_ids": [],
+      "proposed_ids": []
+    },
+    {
+      "requirement": "T3-R069",
+      "id": "T3-R069",
+      "title": "Retain supported-path limits",
+      "action": "Use office referrals for medical, involuntary, nonregular, Guard and other-service situations outside ordinary planning.",
+      "rules": [
+        "Existing support boundaries remain the default. Generic referrals do not imply a fully supported specialized plan.",
+        "Route Reserve duty, nonregular retirement, Guard and disability-process cases explicitly. Full-time active-duty Reserve BDD screening is distinct from ADT/IDT qualification and medical-board referral."
+      ],
+      "office": "Applicable personnel, Reserve or disability office",
+      "url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/",
+      "question": "Which service or benefits office handles this case outside the supported ordinary Marine paths?",
+      "evidence": "Record that the appropriate public office route was shown for an unsupported case; do not generate a complete ordinary plan.",
+      "existing_ids": [],
+      "proposed_ids": []
+    },
+    {
+      "requirement": "T3-R077",
+      "id": "va-connection-referral",
+      "title": "Refer connection and aggravation questions",
+      "action": "Ask accredited help about direct, secondary or aggravation questions using accurate history and available records.",
+      "rules": [
+        "Connection theories, soundness, causation and overlapping manifestations require individual evidence. Spicer limits narrow secondary-causation exclusions; a purchased nexus letter or private DBQ is not a universal filing prerequisite."
+      ],
+      "office": "VA or an accredited representative",
+      "url": "https://www.va.gov/get-help-from-accredited-representative/",
+      "question": "Which connection theory, evidence and applicable exception require review without an automated diagnosis, nexus or claim strategy?",
+      "evidence": "Record a qualified service-connection referral; preserve direct, secondary, aggravation and presumptive distinctions.",
+      "existing_ids": [],
+      "proposed_ids": [
+        "va-connection-referral"
+      ]
+    },
+    {
+      "requirement": "T3-R078",
+      "id": "sep-diary",
+      "title": "Refer resignation request-window confirmation",
+      "action": "Confirm the requested resignation action date and current submission window with IPAC and MMSR-2.",
+      "rules": [
+        "The current Total Force request window is 18 to 6 calendar months. Confirm the exact regular-commission resignation rule and exception with IPAC and MMSR-2 using your requested resignation date. Keep the legal window manual; the earlier office-check reminder is a planning target.",
+        "Label projected, approved and actual service events. Distinguish EAS, resignation, FMCR transfer, Retired List effective date and leave; changing a plan must preserve actual receipts."
+      ],
+      "office": "IPAC and MMSR-2",
+      "url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/",
+      "question": "Which regular-commission resignation request rule and exception apply to this officer and requested effective date?",
+      "evidence": "Record the resignation request type, route and receipt; distinguish a requested effective date from approval and actual service end.",
+      "existing_ids": [
+        "sep-diary"
+      ],
+      "proposed_ids": []
+    }
+  ],
+  "sources": [
+    {
+      "ref": "Pre-discharge claim",
+      "para": "Requirements; standard claim route; online and other-channel records",
+      "url": "https://www.va.gov/disability/how-to-file-claim/when-to-file/pre-discharge-claim/",
+      "version": "Last updated June 18, 2026",
+      "reviewed": "2026-10-20",
+      "scope": "Bounded research review, not individual event confirmation.",
+      "limitation": "",
+      "maintenance_owner": "Muster Out product maintainer",
+      "review_due": "2026-10-24"
+    },
+    {
+      "ref": "Separation Health Assessment for service members",
+      "para": "Part A and clinical assessment",
+      "url": "https://benefits.va.gov/BENEFITS/separation-health-assessment.asp",
+      "version": "Last updated April 16, 2025",
+      "reviewed": "2026-10-20",
+      "scope": "Bounded research review, not individual event confirmation.",
+      "limitation": "",
+      "maintenance_owner": "Muster Out product maintainer",
+      "review_due": "2026-10-24"
+    },
+    {
+      "ref": "Claim status tool FAQs",
+      "para": "Evidence details and status omissions",
+      "url": "https://www.va.gov/resources/claim-status-tool-faqs/",
+      "version": "Live official help page inspected October 19, 2026 PDT",
+      "reviewed": "2026-10-20",
+      "scope": "Bounded research review, not individual event confirmation.",
+      "limitation": "",
+      "maintenance_owner": "Muster Out product maintainer",
+      "review_due": "2026-10-24"
+    },
+    {
+      "ref": "38 CFR 3.103, procedural due process and notice",
+      "para": "3.103(f)(1)-(8): decision notice",
+      "url": "https://www.ecfr.gov/current/title-38/chapter-I/part-3/subpart-A/subject-group-ECFR63da83ba671b92b/section-3.103",
+      "version": "eCFR displayed current through October 15 or 16, 2026; title last amended August 27, 2026",
+      "reviewed": "2026-10-20",
+      "scope": "Bounded research review, not individual event confirmation.",
+      "limitation": "eCFR is continuously updated and is not the official legal edition. Displayed currency stops before the research date. Reverify before implementation.",
+      "maintenance_owner": "Muster Out product maintainer",
+      "review_due": "2026-10-24"
+    },
+    {
+      "ref": "MCO 1700.31A, Transition Readiness Program",
+      "para": "Enclosure (2), chapter 3 paragraphs 7.a-b and 15; chapter 5 paragraphs 3-4; chapters 8-12",
+      "url": "https://www.okinawa.usmc-mccs.org/modules/media/?do=inline&id=66b20c97-887b-462b-a8a7-97dcd431a6e3&v=1",
+      "version": "March 2, 2026; signed order and enclosure (2)",
+      "reviewed": "2026-10-20",
+      "scope": "Bounded research review, not individual event confirmation.",
+      "limitation": "Full 49-page official MCCS copy downloaded and relevant pages visually inspected. Marine Corps flagship PDF returned HTTP 403.",
+      "maintenance_owner": "Muster Out product maintainer",
+      "review_due": "2026-10-24"
+    },
+    {
+      "ref": "MARADMIN 175/24, Interim Guidance for Retirement and Resignation Requests",
+      "para": "Paragraphs 2-3 and 5: retirement/resignation request window",
+      "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/3739611/interim-guidance-for-retirement-and-resignation-requests/",
+      "version": "April 12, 2024",
+      "reviewed": "2026-10-20",
+      "scope": "Bounded research review, not individual event confirmation.",
+      "limitation": "Full substantive six-paragraph official message text available through search index; direct page returned HTTP 403. Current MMSR-2 page independently corroborates enlisted/FMCR window. Timestamp records registration and review of the retrieved evidence in this bundle; the browser/index did not expose an HTTP retrieval timestamp.",
+      "maintenance_owner": "Muster Out product maintainer",
+      "review_due": "2026-10-24"
+    },
+    {
+      "ref": "38 CFR Part 4",
+      "para": "4.126(a): frequency, severity and duration",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-16/title-38.xml?part=4",
+      "version": "eCFR Title 38 up to date through 2026-10-16; latest title amendment 2026-08-27",
+      "reviewed": "2026-10-20",
+      "scope": "Bounded research review, not individual event confirmation.",
+      "limitation": "eCFR is authoritative but unofficial. Aggregate part has multiple effective dates; null source effective dates are not missing rule dates. Check section amendment notes. API requires Accept-Encoding compression.",
+      "maintenance_owner": "Muster Out product maintainer",
+      "review_due": "2026-10-24"
+    },
+    {
+      "ref": "VA Benefits and Services Participant Guide, Version 6.1",
+      "aliases": [
+        "VA Benefits and Services Participant Guide v6.1"
+      ],
+      "para": "Cover (PDF page 1); BDD printed page 72 (PDF page 85); effective-date example printed page 74 (PDF page 87). Other topic pagination remains unverified for this edition.",
+      "url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+      "version": "Version 6.1, July 2026, verified on downloaded cover and page footers",
+      "reviewed": "2026-10-20",
+      "scope": "Bounded cited topics only, not comprehensive benefits coverage.",
+      "limitation": "Full 45,251,732-byte PDF retrieved directly. Browser open failed size limit. Cover and printed pages 72 and 74 rendered and visually inspected. Search index exposes earlier July/September 2025 versions under the same stable URL; use this hash for this assertion version.",
+      "maintenance_owner": "Muster Out product maintainer",
+      "review_due": "2026-10-24"
+    },
+    {
+      "ref": "VA claim exam (C&P exam)",
+      "para": "Attendance, notices, rescheduling and additional exams",
+      "url": "https://www.va.gov/resources/va-claim-exam/",
+      "version": "Last updated August 15, 2025",
+      "reviewed": "2026-10-20",
+      "scope": "General guide assertions only; no individual claim determination.",
+      "limitation": "",
+      "maintenance_owner": "Muster Out product maintainer",
+      "review_due": "2026-10-24"
+    },
+    {
+      "ref": "Public Disability Benefits Questionnaires",
+      "para": "Provider-completed evidence and optional private costs",
+      "url": "https://www.benefits.va.gov/compensation/dbq_publicdbqs.asp",
+      "version": "Public live DBQ directory inspected October 19, 2026 PDT",
+      "reviewed": "2026-10-20",
+      "scope": "General guide assertions only; no individual claim determination.",
+      "limitation": "",
+      "maintenance_owner": "Muster Out product maintainer",
+      "review_due": "2026-10-24"
+    },
+    {
+      "ref": "38 CFR 3.400, effective dates",
+      "para": "Applicable service-connection and effective-date provisions",
+      "url": "https://www.ecfr.gov/current/title-38/chapter-I/part-3/subpart-A/subject-group-ECFR429f47d98271c40/section-3.400",
+      "version": "eCFR displayed current through October 15 or 16, 2026; title last amended August 27, 2026",
+      "reviewed": "2026-10-20",
+      "scope": "General guide assertions only; no individual claim determination.",
+      "limitation": "eCFR is continuously updated and is not the official legal edition. Displayed currency stops before the research date. Reverify before implementation.",
+      "maintenance_owner": "Muster Out product maintainer",
+      "review_due": "2026-10-24"
+    },
+    {
+      "ref": "VA representative regulation 14.636",
+      "para": "14.636(c), (d), (g): claim stage, fees, agreements and exceptions",
+      "url": "https://www.ecfr.gov/current/title-38/chapter-I/part-14/subject-group-ECFRe2d861683c66a39/section-14.636",
+      "version": "eCFR title 38 current through 2026-10-16; title last amended 2026-08-27; section 14.636",
+      "reviewed": "2026-10-20",
+      "scope": "General guide assertions only; no individual claim determination.",
+      "limitation": "eCFR is authoritative but unofficial. Current-through date is publication currency, not an effective date for every paragraph.",
+      "maintenance_owner": "Muster Out product maintainer",
+      "review_due": "2026-10-24"
+    },
+    {
+      "ref": "38 CFR Part 3",
+      "para": "3.303(d): postservice diagnosis; 3.400(b)(2): conditional effective date",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-16/title-38.xml?part=3",
+      "version": "eCFR Title 38 up to date through 2026-10-16; latest title amendment 2026-08-27",
+      "reviewed": "2026-10-20",
+      "scope": "General guide assertions only; no individual claim determination.",
+      "limitation": "eCFR is authoritative but unofficial. Aggregate part has multiple effective dates; null source effective dates are not missing rule dates. Check section amendment notes. API requires Accept-Encoding compression.",
+      "maintenance_owner": "Muster Out product maintainer",
+      "review_due": "2026-10-24"
+    }
+  ],
+  "inventory_reference": "H9 FINDINGS.md, Hypothesis 1 matrix: User-maintained document inventory, H9-F02/F39. No legal clearance.",
+  "retired_benefit_rows": [
+    {
+      "what": "Federal jobs",
+      "detail": "30 percent or higher: 10 point preference in the top category and a noncompetitive hiring authority."
+    },
+    {
+      "what": "Smaller benefits",
+      "detail": "VALife whole life insurance up to $40,000 with no medical underwriting. Commissary and exchange access."
+    },
+    {
+      "what": "Protections",
+      "detail": "Ratings can go up as conditions age, and you file for increases. A rating held 20 years cannot drop below that level. Cuts require proven improvement."
+    }
+  ],
+  "benefit_metadata_before": {
+    "title": "What a rating can mean",
+    "label": "Thresholds are statutory; amounts come from VA's current table",
+    "note": "VA decides the rating from the evidence and the exams. Nothing on this board predicts it."
+  },
+  "claim_before": {
+    "where": {
+      "rows": [
+        {
+          "appt": "Separation physical and hearing test",
+          "where": "Branch Health Clinic on base",
+          "home": "",
+          "base": "",
+          "how": "You call. The clinic confirms where the hearing test is done. Required SHPE travel goes on command-funded TAD."
+        },
+        {
+          "appt": "BDD exams",
+          "where": "Contractor site VA assigns near your home address",
+          "home": "",
+          "base": "",
+          "how": "The contractor calls you. VA aims for 50 miles for general exams and 100 for specialty. Clear the days with the command; no VA travel pay while on active duty."
+        },
+        {
+          "appt": "Primary care after your date",
+          "where": "Nearest VA community clinic",
+          "home": "",
+          "base": "",
+          "how": "VA enrollment and scheduling."
+        },
+        {
+          "appt": "Specialty care",
+          "where": "VA Medical Center",
+          "home": "",
+          "base": "",
+          "how": "By VA referral."
+        },
+        {
+          "appt": "Benefits office and VSOs",
+          "where": "VA Regional Benefit Office",
+          "home": "",
+          "base": "",
+          "how": "Walk in or book through VERA. Set up VSO intake separately."
+        },
+        {
+          "appt": "Readjustment counseling",
+          "where": "Vet Center or telehealth",
+          "home": "",
+          "base": "",
+          "how": "You request it. Open to active duty members who served in a combat theater. Records reach VA only with your permission."
+        },
+        {
+          "appt": "Mental health care now",
+          "where": "Base PCM, then a military or TRICARE provider",
+          "home": "",
+          "base": "",
+          "how": "PCM referral for civilian care. MFLC keeps no records, so use clinical care for anything the claim needs."
+        }
+      ],
+      "note": "Enter your own drive times. They are one way estimates."
+    },
+    "vso": {
+      "rows": [
+        {
+          "rank": 1,
+          "name": "VFW Pre-Discharge",
+          "why": "Publishes remote BDD routing for bases without a VFW representative.",
+          "phone": "202-543-2239",
+          "email": "bdd@vfw.org"
+        },
+        {
+          "rank": 2,
+          "name": "DAV regional office",
+          "why": "Accredited office at the VA regional office, plus DAV's national transition program.",
+          "phone": "",
+          "email": ""
+        },
+        {
+          "rank": 3,
+          "name": "State department of veterans services",
+          "why": "Accredited state team. Intake waits of 30 to 90 days are common, so call early.",
+          "phone": "",
+          "email": ""
+        }
+      ],
+      "script": "I serve on active duty, separate on (your date), and plan to file a BDD claim around (date). I want an accredited representative on a 21-22 before I file. Can you take me on, and what do you need from me first?",
+      "note": "The ranking is a judgment call, and intake capacity is unknown until you call. Check any representative on VA's accreditation search before you sign VA Form 21-22."
+    },
+    "exposure": {
+      "rows": [],
+      "notes": [
+        "Open ILER with your CAC, save the Individual Exposure Summary, and add missing events. Self reports do not overwrite official records.",
+        "Put every exposure in SHA Part A Section 7 and in front of military medical before you file.",
+        "At VA enrollment, ask for the Toxic Exposure Screening. It records concerns; it does not prove exposure.",
+        "Confirm you are in the Burn Pit Registry. It does not replace the claim.",
+        "Exposure alone is not a disability. It matters when a condition shows up, now or years from now."
+      ]
+    },
+    "benefits": {
+      "title": "What a rating can mean",
+      "label": "Thresholds are statutory; amounts come from VA's current table",
+      "rows": [
+        {
+          "what": "Monthly pay, tax free",
+          "detail": "Set by VA's rate table for your rating and dependents. Rises with the cost of living each year."
+        },
+        {
+          "what": "Retired pay and VA pay",
+          "detail": "At 50 percent or higher, CRDP pays retired pay in full on top of VA pay (10 USC 1414)."
+        },
+        {
+          "what": "Health care",
+          "detail": "50 percent or higher is VA Priority Group 1: free care with no copays, service connected or not."
+        },
+        {
+          "what": "VA home loan",
+          "detail": "Funding fee waived on a purchase or refinance."
+        },
+        {
+          "what": "Education and training (VR&E)",
+          "detail": "At 20 percent or higher with an employment handicap finding, VA pays for a degree or training plus a monthly allowance. The old 12 year limit does not apply to discharges on or after 1 January 2013. Check eligibility on va.gov."
+        },
+        {
+          "what": "Federal jobs",
+          "detail": "30 percent or higher: 10 point preference in the top category and a noncompetitive hiring authority."
+        },
+        {
+          "what": "Smaller benefits",
+          "detail": "VALife whole life insurance up to $40,000 with no medical underwriting. Commissary and exchange access."
+        },
+        {
+          "what": "Protections",
+          "detail": "Ratings can go up as conditions age, and you file for increases. A rating held 20 years cannot drop below that level. Cuts require proven improvement."
+        },
+        {
+          "id": "benefit-va-dental-iv",
+          "what": "VA dental: Class IV",
+          "detail": "A qualifying 100 percent service-connected rating or individual unemployability paid at the 100 percent rate may qualify you for any needed dental care. Permanence is not required. A temporary 100 percent rating does not qualify for Class IV.",
+          "cite": [
+            {
+              "ref": "VA dental care eligibility",
+              "para": "Class IV: rating and unemployability statements",
+              "quote": "I have 1 or more service-connected disabilities rated 100% disabling ... Class IV ... Any needed dental care ... If you’re being paid at the 100% disabling rate based on a temporary rating (for a reason such as a long stay in the hospital or rehab care), that doesn’t qualify you for this benefit. ... I’m unemployable (unable to work), and I get disability compensation at the 100% disabling rate due to service-connected conditions ... Class IV ... Any needed dental care",
+              "url": "https://www.va.gov/health-care/about-va-health-benefits/dental-care/"
+            }
+          ],
+          "verify": "VA dental clinic eligibility office: confirm Class IV eligibility and the temporary-rating exclusion."
+        },
+        {
+          "id": "benefit-champva",
+          "what": "Family veterans health coverage",
+          "detail": "Retiree families use TRICARE. The Civilian Health and Medical Program of the Department of Veterans Affairs (CHAMPVA) is for some families of veterans the agency rates as having a permanent and total service-connected disability. The agency decides eligibility; anyone eligible for TRICARE is excluded.",
+          "cite": [
+            {
+              "ref": "VA CHAMPVA benefits",
+              "para": "Eligibility for CHAMPVA",
+              "quote": "You’re the spouse or dependent child of a Veteran who’s been rated permanently and totally disabled from a service-connected disability, ... If you’re eligible for or enrolled in TRICARE, you can’t get CHAMPVA benefits.",
+              "url": "https://www.va.gov/family-and-caregiver-benefits/health-and-disability/champva/"
+            }
+          ],
+          "verify": "Confirm family eligibility with the Department of Veterans Affairs (VA). Its guidance describes permanent and total disability as 100 percent disabling and not expected to improve. Ask the office to interpret your actual decision; confirm the TRICARE exclusion with your benefits office."
+        },
+        {
+          "what": "Reserve drill pay",
+          "detail": "Each year you waive VA pay for drill days or the reverse, whichever pays more."
+        }
+      ],
+      "note": "VA decides the rating from the evidence and the exams. Nothing on this board predicts it."
+    }
+  },
+  "phone": {
+    "number": "800-827-1000",
+    "hours": "Weekdays, 8 a.m. to 9 p.m. Eastern time.",
+    "url": "https://www.va.gov/resources/helpful-va-phone-numbers/",
+    "reviewed": "2026-10-21"
+  },
+  "contacts_before": [
+    {
+      "id": "c-vso",
+      "name": "",
+      "role": "Accredited VSO (to be chosen)",
+      "org": "VFW, DAV, American Legion, or your state",
+      "phone": "",
+      "email": "",
+      "loe": "va",
+      "note": "Appoint on VA Form 21-22.",
+      "when": []
+    },
+    {
+      "id": "c-va",
+      "name": "VA benefits line",
+      "role": "VA",
+      "org": "VA",
+      "phone": "800-827-1000",
+      "email": "",
+      "loe": "va",
+      "note": "General VA benefits help.",
+      "when": []
+    },
+    {
+      "id": "c-dfas",
+      "name": "DFAS retired pay",
+      "role": "Retired pay and SBP",
+      "org": "DFAS",
+      "phone": "800-321-1080",
+      "email": "",
+      "loe": "sep",
+      "note": "DD 2656, direct deposit, first payment.",
+      "when": [
+        "retire"
+      ]
+    },
+    {
+      "id": "c-state-vso",
+      "name": "",
+      "role": "State department of veterans services",
+      "org": "Your state",
+      "phone": "",
+      "email": "",
+      "loe": "va",
+      "note": "Accredited state representatives.",
+      "when": []
+    }
+  ]
+}

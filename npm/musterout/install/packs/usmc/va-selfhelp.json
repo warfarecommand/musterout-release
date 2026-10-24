@@ -1,0 +1,2526 @@
+{
+  "schemaVersion": 1,
+  "checked": "2026-10-20",
+  "ecfrAsOf": "2026-10-19",
+  "abr": {
+    "title": "Common conditions among VA compensation recipients (FY2025 Annual Benefits Report)",
+    "url": "https://www.benefits.va.gov/REPORTS/abr/docs/2025-compensation.pdf",
+    "population": "All compensation recipients as of 30 SEP 2025. Ten conditions from printed page 99, plus the ten highest-count additional named conditions on pages 103-106. This is not a national top-20 ranking."
+  },
+  "ratings": [
+    {
+      "id": "tinnitus",
+      "name": "Tinnitus",
+      "count": 3583295,
+      "abrPage": 99,
+      "section": "4.87",
+      "dc": "6260",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.87",
+      "rows": [
+        [
+          "6260 Tinnitus, recurrent",
+          "10"
+        ],
+        [
+          "Note (1): A separate evaluation for tinnitus may be combined with an evaluation under diagnostic codes 6100, 6200, 6204, or other diagnostic code, except when tinnitus supports an evaluation under one of those diagnostic codes.",
+          ""
+        ],
+        [
+          "Note (2): Assign only a single evaluation for recurrent tinnitus, whether the sound is perceived in one ear, both ears, or in the head.",
+          ""
+        ],
+        [
+          "Note (3): Do not evaluate objective tinnitus (in which the sound is audible to other people and has a definable cause that may or may not be pathologic) under this diagnostic code, but evaluate it as part of any underlying condition causing it.",
+          ""
+        ]
+      ],
+      "notes": [],
+      "references": [],
+      "options": [
+        {
+          "v": 10,
+          "text": "6260 Tinnitus, recurrent",
+          "dc": "6260",
+          "row": 0,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": false,
+      "guidance": "Use one recurrent-tinnitus evaluation for either or both ears. Do not use DC 6260 for objective tinnitus, or add it when tinnitus already supports another evaluation. Hearing loss may be separate when it is a distinct impairment."
+    },
+    {
+      "id": "knee-flexion",
+      "name": "Limitation of flexion, knee",
+      "count": 2312985,
+      "abrPage": 99,
+      "section": "4.71a",
+      "dc": "5260",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.71a",
+      "rows": [
+        [
+          "5260 Leg, limitation of flexion of:",
+          ""
+        ],
+        [
+          "Flexion limited to 15°",
+          "30"
+        ],
+        [
+          "Flexion limited to 30°",
+          "20"
+        ],
+        [
+          "Flexion limited to 45°",
+          "10"
+        ],
+        [
+          "Flexion limited to 60°",
+          "0"
+        ]
+      ],
+      "notes": [
+        "Joint measurements and functional loss need clinical findings. See 38 CFR 4.40, 4.45 and 4.59. Do not count the same manifestation twice (4.14)."
+      ],
+      "references": [],
+      "options": [
+        {
+          "v": 30,
+          "text": "Flexion limited to 15°",
+          "dc": "5260",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 20,
+          "text": "Flexion limited to 30°",
+          "dc": "5260",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "Flexion limited to 45°",
+          "dc": "5260",
+          "row": 3,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 0,
+          "text": "Flexion limited to 60°",
+          "dc": "5260",
+          "row": 4,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": true,
+      "guidance": ""
+    },
+    {
+      "id": "sciatic",
+      "name": "Paralysis of the sciatic nerve",
+      "count": 2026583,
+      "abrPage": 99,
+      "section": "4.124a",
+      "dc": "8520",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.124a",
+      "rows": [
+        [
+          "8520 Paralysis of:",
+          ""
+        ],
+        [
+          "Complete; the foot dangles and drops, no active movement possible of muscles below the knee, flexion of knee weakened or (very rarely) lost",
+          "80"
+        ],
+        [
+          "Incomplete:",
+          ""
+        ],
+        [
+          "Severe, with marked muscular atrophy",
+          "60"
+        ],
+        [
+          "Moderately severe",
+          "40"
+        ],
+        [
+          "Moderate",
+          "20"
+        ],
+        [
+          "Mild",
+          "10"
+        ]
+      ],
+      "notes": [
+        "The term “incomplete paralysis,” with this and other peripheral nerve injuries, indicates a degree of lost or impaired function substantially less than the type picture for complete paralysis given with each nerve, whether due to varied level of the nerve lesion or to partial regeneration. When the involvement is wholly sensory, the rating should be for the mild, or at most, the moderate degree. The ratings for the peripheral nerves are for unilateral involvement; when bilateral, combine with application of the bilateral factor."
+      ],
+      "references": [],
+      "options": [
+        {
+          "v": 80,
+          "text": "Complete; the foot dangles and drops, no active movement possible of muscles below the knee, flexion of knee weakened or (very rarely) lost",
+          "dc": "8520",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 60,
+          "text": "Incomplete: Severe, with marked muscular atrophy",
+          "dc": "8520",
+          "row": 3,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 40,
+          "text": "Incomplete: Moderately severe",
+          "dc": "8520",
+          "row": 4,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 20,
+          "text": "Incomplete: Moderate",
+          "dc": "8520",
+          "row": 5,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "Incomplete: Mild",
+          "dc": "8520",
+          "row": 6,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": true,
+      "peripheralNerve": true,
+      "guidance": "Choose each affected leg separately. Wholly sensory involvement cannot use a tier above moderate. A clinician must clarify findings if you are unsure."
+    },
+    {
+      "id": "strain",
+      "name": "Lumbosacral or cervical strain",
+      "count": 1791869,
+      "abrPage": 99,
+      "section": "4.71a",
+      "dc": "5237",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.71a",
+      "rows": [
+        [
+          "5237 Lumbosacral or cervical strain",
+          ""
+        ],
+        [
+          "General Rating Formula for Diseases and Injuries of the Spine",
+          ""
+        ],
+        [
+          "(For diagnostic codes 5235 to 5243 unless 5243 is evaluated under the Formula for Rating Intervertebral Disc Syndrome Based on Incapacitating Episodes):",
+          ""
+        ],
+        [
+          "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease",
+          ""
+        ],
+        [
+          "Unfavorable ankylosis of the entire spine",
+          "100"
+        ],
+        [
+          "Unfavorable ankylosis of the entire thoracolumbar spine",
+          "50"
+        ],
+        [
+          "Unfavorable ankylosis of the entire cervical spine; or, forward flexion of the thoracolumbar spine 30 degrees or less; or, favorable ankylosis of the entire thoracolumbar spine",
+          "40"
+        ],
+        [
+          "Forward flexion of the cervical spine 15 degrees or less; or, favorable ankylosis of the entire cervical spine",
+          "30"
+        ],
+        [
+          "Forward flexion of the thoracolumbar spine greater than 30 degrees but not greater than 60 degrees; or, forward flexion of the cervical spine greater than 15 degrees but not greater than 30 degrees; or, the combined range of motion of the thoracolumbar spine not greater than 120 degrees; or, the combined range of motion of the cervical spine not greater than 170 degrees; or, muscle spasm or guarding severe enough to result in an abnormal gait or abnormal spinal contour such as scoliosis, reversed lordosis, or abnormal kyphosis",
+          "20"
+        ],
+        [
+          "Forward flexion of the thoracolumbar spine greater than 60 degrees but not greater than 85 degrees; or, forward flexion of the cervical spine greater than 30 degrees but not greater than 40 degrees; or, combined range of motion of the thoracolumbar spine greater than 120 degrees but not greater than 235 degrees; or, combined range of motion of the cervical spine greater than 170 degrees but not greater than 335 degrees; or, muscle spasm, guarding, or localized tenderness not resulting in abnormal gait or abnormal spinal contour; or, vertebral body fracture with loss of 50 percent or more of the height",
+          "10"
+        ],
+        [
+          "Note (1): Evaluate any associated objective neurologic abnormalities, including, but not limited to, bowel or bladder impairment, separately, under an appropriate diagnostic code.",
+          ""
+        ],
+        [
+          "Note (2): (See also Plate V.) For VA compensation purposes, normal forward flexion of the cervical spine is zero to 45 degrees, extension is zero to 45 degrees, left and right lateral flexion are zero to 45 degrees, and left and right lateral rotation are zero to 80 degrees. Normal forward flexion of the thoracolumbar spine is zero to 90 degrees, extension is zero to 30 degrees, left and right lateral flexion are zero to 30 degrees, and left and right lateral rotation are zero to 30 degrees. The combined range of motion refers to the sum of the range of forward flexion, extension, left and right lateral flexion, and left and right rotation. The normal combined range of motion of the cervical spine is 340 degrees and of the thoracolumbar spine is 240 degrees. The normal ranges of motion for each component of spinal motion provided in this note are the maximum that can be used for calculation of the combined range of motion.",
+          ""
+        ],
+        [
+          "Note (3): In exceptional cases, an examiner may state that because of age, body habitus, neurologic disease, or other factors not the result of disease or injury of the spine, the range of motion of the spine in a particular individual should be considered normal for that individual, even though it does not conform to the normal range of motion stated in Note (2). Provided that the examiner supplies an explanation, the examiner's assessment that the range of motion is normal for that individual will be accepted.",
+          ""
+        ],
+        [
+          "Note (4): Round each range of motion measurement to the nearest five degrees.",
+          ""
+        ],
+        [
+          "Note (5): For VA compensation purposes, unfavorable ankylosis is a condition in which the entire cervical spine, the entire thoracolumbar spine, or the entire spine is fixed in flexion or extension, and the ankylosis results in one or more of the following: difficulty walking because of a limited line of vision; restricted opening of the mouth and chewing; breathing limited to diaphragmatic respiration; gastrointestinal symptoms due to pressure of the costal margin on the abdomen; dyspnea or dysphagia; atlantoaxial or cervical subluxation or dislocation; or neurologic symptoms due to nerve root stretching. Fixation of a spinal segment in neutral position (zero degrees) always represents favorable ankylosis.",
+          ""
+        ],
+        [
+          "Note (6): Separately evaluate disability of the thoracolumbar and cervical spine segments, except when there is unfavorable ankylosis of both segments, which will be rated as a single disability.",
+          ""
+        ]
+      ],
+      "notes": [
+        "Joint measurements and functional loss need clinical findings. See 38 CFR 4.40, 4.45 and 4.59. Do not count the same manifestation twice (4.14)."
+      ],
+      "references": [],
+      "options": [
+        {
+          "v": 100,
+          "text": "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease Unfavorable ankylosis of the entire spine",
+          "dc": "5237",
+          "row": 4,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 50,
+          "text": "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease Unfavorable ankylosis of the entire thoracolumbar spine",
+          "dc": "5237",
+          "row": 5,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 40,
+          "text": "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease Unfavorable ankylosis of the entire cervical spine; or, forward flexion of the thoracolumbar spine 30 degrees or less; or, favorable ankylosis of the entire thoracolumbar spine",
+          "dc": "5237",
+          "row": 6,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 30,
+          "text": "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease Forward flexion of the cervical spine 15 degrees or less; or, favorable ankylosis of the entire cervical spine",
+          "dc": "5237",
+          "row": 7,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 20,
+          "text": "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease Forward flexion of the thoracolumbar spine greater than 30 degrees but not greater than 60 degrees; or, forward flexion of the cervical spine greater than 15 degrees but not greater than 30 degrees; or, the combined range of motion of the thoracolumbar spine not greater than 120 degrees; or, the combined range of motion of the cervical spine not greater than 170 degrees; or, muscle spasm or guarding severe enough to result in an abnormal gait or abnormal spinal contour such as scoliosis, reversed lordosis, or abnormal kyphosis",
+          "dc": "5237",
+          "row": 8,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease Forward flexion of the thoracolumbar spine greater than 60 degrees but not greater than 85 degrees; or, forward flexion of the cervical spine greater than 30 degrees but not greater than 40 degrees; or, combined range of motion of the thoracolumbar spine greater than 120 degrees but not greater than 235 degrees; or, combined range of motion of the cervical spine greater than 170 degrees but not greater than 335 degrees; or, muscle spasm, guarding, or localized tenderness not resulting in abnormal gait or abnormal spinal contour; or, vertebral body fracture with loss of 50 percent or more of the height",
+          "dc": "5237",
+          "row": 9,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": false,
+      "guidance": "Choose the cervical or thoracolumbar segment for each row. Both segments with unfavorable ankylosis use one entire-spine evaluation. Strain and arthritis cannot duplicate the same segment. Objective neurologic abnormalities may be separate under the appropriate code."
+    },
+    {
+      "id": "ptsd",
+      "name": "Post-traumatic stress disorder",
+      "count": 1760497,
+      "abrPage": 99,
+      "section": "4.130",
+      "dc": "9411",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.130",
+      "rows": [
+        [
+          "9411 Posttraumatic stress disorder."
+        ],
+        [
+          "",
+          "Rating"
+        ],
+        [
+          "Total occupational and social impairment, due to such symptoms as: gross impairment in thought processes or communication; persistent delusions or hallucinations; grossly inappropriate behavior; persistent danger of hurting self or others; intermittent inability to perform activities of daily living (including maintenance of minimal personal hygiene); disorientation to time or place; memory loss for names of close relatives, own occupation, or own name.",
+          "100"
+        ],
+        [
+          "Occupational and social impairment, with deficiencies in most areas, such as work, school, family relations, judgment, thinking, or mood, due to such symptoms as: suicidal ideation; obsessional rituals which interfere with routine activities; speech intermittently illogical, obscure, or irrelevant; near-continuous panic or depression affecting the ability to function independently, appropriately and effectively; impaired impulse control (such as unprovoked irritability with periods of violence); spatial disorientation; neglect of personal appearance and hygiene; difficulty in adapting to stressful circumstances (including work or a worklike setting); inability to establish and maintain effective relationships.",
+          "70"
+        ],
+        [
+          "Occupational and social impairment with reduced reliability and productivity due to such symptoms as: flattened affect; circumstantial, circumlocutory, or stereotyped speech; panic attacks more than once a week; difficulty in understanding complex commands; impairment of short- and long-term memory (e.g., retention of only highly learned material, forgetting to complete tasks); impaired judgment; impaired abstract thinking; disturbances of motivation and mood; difficulty in establishing and maintaining effective work and social relationships.",
+          "50"
+        ],
+        [
+          "Occupational and social impairment with occasional decrease in work efficiency and intermittent periods of inability to perform occupational tasks (although generally functioning satisfactorily, with routine behavior, self-care, and conversation normal), due to such symptoms as: depressed mood, anxiety, suspiciousness, panic attacks (weekly or less often), chronic sleep impairment, mild memory loss (such as forgetting names, directions, recent events).",
+          "30"
+        ],
+        [
+          "Occupational and social impairment due to mild or transient symptoms which decrease work efficiency and ability to perform occupational tasks only during periods of significant stress, or symptoms controlled by continuous medication.",
+          "10"
+        ],
+        [
+          "A mental condition has been formally diagnosed, but symptoms are not severe enough either to interfere with occupational and social functioning or to require continuous medication.",
+          "0"
+        ]
+      ],
+      "notes": [
+        "(a) When evaluating a mental disorder, the rating agency shall consider the frequency, severity, and duration of psychiatric symptoms, the length of remissions, and the veteran's capacity for adjustment during periods of remission. The rating agency shall assign an evaluation based on all the evidence of record that bears on occupational and social impairment rather than solely on the examiner's assessment of the level of disability at the moment of the examination.",
+        "(b) When evaluating the level of disability from a mental disorder, the rating agency will consider the extent of social impairment, but shall not assign an evaluation solely on the basis of social impairment.",
+        "(c) Neurocognitive disorders shall be evaluated under the general rating formula for mental disorders; neurologic deficits or other impairments stemming from the same etiology (e.g., a head injury) shall be evaluated separately and combined with the evaluation for neurocognitive disorders (see § 4.25).",
+        "(d) When a single disability has been diagnosed both as a physical condition and as a mental disorder, the rating agency shall evaluate it using a diagnostic code which represents the dominant (more disabling) aspect of the condition (see § 4.14)."
+      ],
+      "references": [],
+      "options": [
+        {
+          "v": 100,
+          "text": "Total occupational and social impairment, due to such symptoms as: gross impairment in thought processes or communication; persistent delusions or hallucinations; grossly inappropriate behavior; persistent danger of hurting self or others; intermittent inability to perform activities of daily living (including maintenance of minimal personal hygiene); disorientation to time or place; memory loss for names of close relatives, own occupation, or own name.",
+          "dc": "9411",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 70,
+          "text": "Occupational and social impairment, with deficiencies in most areas, such as work, school, family relations, judgment, thinking, or mood, due to such symptoms as: suicidal ideation; obsessional rituals which interfere with routine activities; speech intermittently illogical, obscure, or irrelevant; near-continuous panic or depression affecting the ability to function independently, appropriately and effectively; impaired impulse control (such as unprovoked irritability with periods of violence); spatial disorientation; neglect of personal appearance and hygiene; difficulty in adapting to stressful circumstances (including work or a worklike setting); inability to establish and maintain effective relationships.",
+          "dc": "9411",
+          "row": 3,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 50,
+          "text": "Occupational and social impairment with reduced reliability and productivity due to such symptoms as: flattened affect; circumstantial, circumlocutory, or stereotyped speech; panic attacks more than once a week; difficulty in understanding complex commands; impairment of short- and long-term memory (e.g., retention of only highly learned material, forgetting to complete tasks); impaired judgment; impaired abstract thinking; disturbances of motivation and mood; difficulty in establishing and maintaining effective work and social relationships.",
+          "dc": "9411",
+          "row": 4,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 30,
+          "text": "Occupational and social impairment with occasional decrease in work efficiency and intermittent periods of inability to perform occupational tasks (although generally functioning satisfactorily, with routine behavior, self-care, and conversation normal), due to such symptoms as: depressed mood, anxiety, suspiciousness, panic attacks (weekly or less often), chronic sleep impairment, mild memory loss (such as forgetting names, directions, recent events).",
+          "dc": "9411",
+          "row": 5,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "Occupational and social impairment due to mild or transient symptoms which decrease work efficiency and ability to perform occupational tasks only during periods of significant stress, or symptoms controlled by continuous medication.",
+          "dc": "9411",
+          "row": 6,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 0,
+          "text": "A mental condition has been formally diagnosed, but symptoms are not severe enough either to interfere with occupational and social functioning or to require continuous medication.",
+          "dc": "9411",
+          "row": 7,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": false,
+      "guidance": "Use one evaluation for the overall occupational and social impairment. Do not base it solely on social impairment. For one disability diagnosed as both physical and mental, use the dominant aspect; separate neurologic deficits need their appropriate code."
+    },
+    {
+      "id": "hearing",
+      "name": "Hearing loss",
+      "count": 1690837,
+      "abrPage": 99,
+      "section": "4.85",
+      "dc": "6100",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.85",
+      "rows": [
+        [
+          "6100 Hearing impairment. Evaluation uses Tables VI or VIa and VII of 38 CFR 4.85, with 4.86 where applicable."
+        ]
+      ],
+      "notes": [
+        "(a) An examination for hearing impairment for VA purposes must be conducted by a state-licensed audiologist and must include a controlled speech discrimination test (Maryland CNC) and a puretone audiometry test. Examinations will be conducted without the use of hearing aids.",
+        "(b) Table VI, “Numeric Designation of Hearing Impairment Based on Puretone Threshold Average and Speech Discrimination,” is used to determine a Roman numeral designation (I through XI) for hearing impairment based on a combination of the percent of speech discrimination (horizontal rows) and the puretone threshold average (vertical columns). The Roman numeral designation is located at the point where the percentage of speech discrimination and puretone threshold average intersect.",
+        "(c) Table VIa, “Numeric Designation of Hearing Impairment Based Only on Puretone Threshold Average,” is used to determine a Roman numeral designation (I through XI) for hearing impairment based only on the puretone threshold average. Table VIa will be used when the examiner certifies that use of the speech discrimination test is not appropriate because of language difficulties, inconsistent speech discrimination scores, etc., or when indicated under the provisions of § 4.86.",
+        "(d) “Puretone threshold average,” as used in Tables VI and VIa, is the sum of the puretone thresholds at 1000, 2000, 3000 and 4000 Hertz, divided by four. This average is used in all cases (including those in § 4.86) to determine the Roman numeral designation for hearing impairment from Table VI or VIa.",
+        "(e) Table VII, “Percentage Evaluations for Hearing Impairment,” is used to determine the percentage evaluation by combining the Roman numeral designations for hearing impairment of each ear. The horizontal rows represent the ear having the better hearing and the vertical columns the ear having the poorer hearing. The percentage evaluation is located at the point where the row and column intersect.",
+        "(f) If impaired hearing is service-connected in only one ear, in order to determine the percentage evaluation from Table VII, the non-service-connected ear will be assigned a Roman Numeral designation for hearing impairment of I, subject to the provisions of § 3.383 of this chapter.",
+        "(g) When evaluating any claim for impaired hearing, refer to § 3.350 of this chapter to determine whether the veteran may be entitled to special monthly compensation due either to deafness, or to deafness in combination with other specified disabilities.",
+        "(h) Numeric tables VI, VIA*, and VII.",
+        "(a) When the puretone threshold at each of the four specified frequencies (1000, 2000, 3000, and 4000 Hertz) is 55 decibels or more, the rating specialist will determine the Roman numeral designation for hearing impairment from either Table VI or Table VIa, whichever results in the higher numeral. Each ear will be evaluated separately.",
+        "(b) When the puretone threshold is 30 decibels or less at 1000 Hertz, and 70 decibels or more at 2000 Hertz, the rating specialist will determine the Roman numeral designation for hearing impairment from either Table VI or Table VIa, whichever results in the higher numeral. That numeral will then be elevated to the next higher Roman numeral. Each ear will be evaluated separately.",
+        "Table VIa is for use only as specified in 4.85 and 4.86. Table VII: * Review for entitlement to special monthly compensation under 3.350 of this chapter."
+      ],
+      "references": [
+        {
+          "title": "Table VI: Numeric designation of hearing impairment based on puretone threshold average and speech discrimination",
+          "rows": [
+            [
+              "% of discrimination / Puretone Threshold Average",
+              "0-41",
+              "42-49",
+              "50-57",
+              "58-65",
+              "66-73",
+              "74-81",
+              "82-89",
+              "90-97",
+              "98+"
+            ],
+            [
+              "92-100",
+              "I",
+              "I",
+              "I",
+              "II",
+              "II",
+              "II",
+              "III",
+              "III",
+              "IV"
+            ],
+            [
+              "84-90",
+              "II",
+              "II",
+              "II",
+              "III",
+              "III",
+              "III",
+              "IV",
+              "IV",
+              "IV"
+            ],
+            [
+              "76-82",
+              "III",
+              "III",
+              "IV",
+              "IV",
+              "IV",
+              "V",
+              "V",
+              "V",
+              "V"
+            ],
+            [
+              "68-74",
+              "IV",
+              "IV",
+              "V",
+              "V",
+              "VI",
+              "VI",
+              "VII",
+              "VII",
+              "VII"
+            ],
+            [
+              "60-66",
+              "V",
+              "V",
+              "VI",
+              "VI",
+              "VII",
+              "VII",
+              "VIII",
+              "VIII",
+              "VIII"
+            ],
+            [
+              "52-58",
+              "VI",
+              "VI",
+              "VII",
+              "VII",
+              "VIII",
+              "VIII",
+              "VIII",
+              "VIII",
+              "IX"
+            ],
+            [
+              "44-50",
+              "VII",
+              "VII",
+              "VIII",
+              "VIII",
+              "VIII",
+              "IX",
+              "IX",
+              "IX",
+              "X"
+            ],
+            [
+              "36-42",
+              "VIII",
+              "VIII",
+              "VIII",
+              "IX",
+              "IX",
+              "IX",
+              "X",
+              "X",
+              "X"
+            ],
+            [
+              "0-34",
+              "IX",
+              "X",
+              "XI",
+              "XI",
+              "XI",
+              "XI",
+              "XI",
+              "XI",
+              "XI"
+            ]
+          ],
+          "layout": "matrix"
+        },
+        {
+          "title": "Table VIa: Numeric designation of hearing impairment based only on puretone threshold average",
+          "rows": [
+            [
+              "Puretone Threshold Average",
+              "0-41",
+              "42-48",
+              "49-55",
+              "56-62",
+              "63-69",
+              "70-76",
+              "77-83",
+              "84-90",
+              "91-97",
+              "98-104",
+              "105+"
+            ],
+            [
+              "Numeric designation",
+              "I",
+              "II",
+              "III",
+              "IV",
+              "V",
+              "VI",
+              "VII",
+              "VIII",
+              "IX",
+              "X",
+              "XI"
+            ]
+          ],
+          "layout": "matrix"
+        },
+        {
+          "title": "Table VII: Percentage evaluation for hearing impairment (DC 6100)",
+          "rows": [
+            [
+              "Better Ear / Poorer Ear",
+              "XI",
+              "X",
+              "IX",
+              "VIII",
+              "VII",
+              "VI",
+              "V",
+              "IV",
+              "III",
+              "II",
+              "I"
+            ],
+            [
+              "XI",
+              "100*"
+            ],
+            [
+              "X",
+              "90",
+              "80"
+            ],
+            [
+              "IX",
+              "80",
+              "70",
+              "60"
+            ],
+            [
+              "VIII",
+              "70",
+              "60",
+              "50",
+              "50"
+            ],
+            [
+              "VII",
+              "60",
+              "60",
+              "50",
+              "40",
+              "40"
+            ],
+            [
+              "VI",
+              "50",
+              "50",
+              "40",
+              "40",
+              "30",
+              "30"
+            ],
+            [
+              "V",
+              "40",
+              "40",
+              "40",
+              "30",
+              "30",
+              "20",
+              "20"
+            ],
+            [
+              "IV",
+              "30",
+              "30",
+              "30",
+              "20",
+              "20",
+              "20",
+              "10",
+              "10"
+            ],
+            [
+              "III",
+              "20",
+              "20",
+              "20",
+              "20",
+              "20",
+              "10",
+              "10",
+              "10",
+              "0"
+            ],
+            [
+              "II",
+              "10",
+              "10",
+              "10",
+              "10",
+              "10",
+              "10",
+              "10",
+              "0",
+              "0",
+              "0"
+            ],
+            [
+              "I",
+              "10",
+              "10",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0",
+              "0"
+            ]
+          ],
+          "layout": "matrix"
+        }
+      ],
+      "options": [
+        {
+          "v": 0,
+          "text": "Use the evaluation from Table VII: 0%",
+          "dc": "6100"
+        },
+        {
+          "v": 10,
+          "text": "Use the evaluation from Table VII: 10%",
+          "dc": "6100"
+        },
+        {
+          "v": 20,
+          "text": "Use the evaluation from Table VII: 20%",
+          "dc": "6100"
+        },
+        {
+          "v": 30,
+          "text": "Use the evaluation from Table VII: 30%",
+          "dc": "6100"
+        },
+        {
+          "v": 40,
+          "text": "Use the evaluation from Table VII: 40%",
+          "dc": "6100"
+        },
+        {
+          "v": 50,
+          "text": "Use the evaluation from Table VII: 50%",
+          "dc": "6100"
+        },
+        {
+          "v": 60,
+          "text": "Use the evaluation from Table VII: 60%",
+          "dc": "6100"
+        },
+        {
+          "v": 70,
+          "text": "Use the evaluation from Table VII: 70%",
+          "dc": "6100"
+        },
+        {
+          "v": 80,
+          "text": "Use the evaluation from Table VII: 80%",
+          "dc": "6100"
+        },
+        {
+          "v": 90,
+          "text": "Use the evaluation from Table VII: 90%",
+          "dc": "6100"
+        },
+        {
+          "v": 100,
+          "text": "Use the evaluation from Table VII: 100%",
+          "dc": "6100"
+        }
+      ],
+      "limbAllowed": false,
+      "guidance": "Use the audiologist findings and the printed 4.85 and 4.86 instructions. For an exceptional pattern, compare VI and VIa as directed, including the next-higher numeral under 4.86(b). Combine the two ear numerals in Table VII into one hearing evaluation. The non-service-connected ear normally uses I, subject to 3.383. Special monthly compensation is separate from this basic pay estimate."
+    },
+    {
+      "id": "arm",
+      "name": "Limitation of motion of the arm",
+      "count": 1385549,
+      "abrPage": 99,
+      "section": "4.71a",
+      "dc": "5201",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.71a",
+      "rows": [
+        [
+          "5201 Arm, limitation of motion of:",
+          "",
+          ""
+        ],
+        [
+          "Flexion and/or abduction limited to 25° from side",
+          "40",
+          "30"
+        ],
+        [
+          "Midway between side and shoulder level (flexion and/or abduction limited to 45°)",
+          "30",
+          "20"
+        ],
+        [
+          "At shoulder level (flexion and/or abduction limited to 90°)",
+          "20",
+          "20"
+        ]
+      ],
+      "notes": [
+        "Joint measurements and functional loss need clinical findings. See 38 CFR 4.40, 4.45 and 4.59. Do not count the same manifestation twice (4.14).",
+        "The first rating column is Major; the second is Minor. Use the dominant arm rules in 38 CFR 4.69."
+      ],
+      "references": [],
+      "options": [
+        {
+          "v": 40,
+          "text": "Flexion and/or abduction limited to 25° from side (Major)",
+          "dc": "5201",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 30,
+          "text": "Flexion and/or abduction limited to 25° from side (Minor)",
+          "dc": "5201",
+          "row": 1,
+          "column": 2,
+          "bilateralTier": false
+        },
+        {
+          "v": 30,
+          "text": "Midway between side and shoulder level (flexion and/or abduction limited to 45°) (Major)",
+          "dc": "5201",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 20,
+          "text": "Midway between side and shoulder level (flexion and/or abduction limited to 45°) (Minor)",
+          "dc": "5201",
+          "row": 2,
+          "column": 2,
+          "bilateralTier": false
+        },
+        {
+          "v": 20,
+          "text": "At shoulder level (flexion and/or abduction limited to 90°) (Major)",
+          "dc": "5201",
+          "row": 3,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 20,
+          "text": "At shoulder level (flexion and/or abduction limited to 90°) (Minor)",
+          "dc": "5201",
+          "row": 3,
+          "column": 2,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": true,
+      "guidance": ""
+    },
+    {
+      "id": "burn-scar",
+      "name": "Scars, burns (2nd degree)",
+      "count": 1323340,
+      "abrPage": 99,
+      "section": "4.118",
+      "dc": "7802",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.118",
+      "rows": [
+        [
+          "7802 Burn scar(s) or scar(s) due to other causes, not of the head, face, or neck, that are not associated with underlying soft tissue damage:",
+          ""
+        ],
+        [
+          "Area or areas of 144 square inches (929 sq. cm.) or greater",
+          "10"
+        ],
+        [
+          "Note (1): For the purposes of DCs 7801 and 7802, the six (6) zones of the body are defined as each extremity, anterior trunk, and posterior trunk. The midaxillary line divides the anterior trunk from the posterior trunk",
+          ""
+        ],
+        [
+          "Note (2): A separate evaluation may be assigned for each affected zone of the body under this diagnostic code if there are multiple scars, or a single scar, affecting multiple zones of the body. Combine the separate evaluations under § 4.25. Alternatively, if a higher evaluation would result from adding the areas affected from multiple zones of the body, a single evaluation may also be assigned under this diagnostic code",
+          ""
+        ]
+      ],
+      "notes": [
+        "The ABR label does not establish the current scar code. Location, tissue damage, area, pain and instability determine the applicable code.",
+        "VA manual V.iii.10.1.h permits the bilateral factor for separate extremity evaluations under DC 7801 or 7802. Select the actual arm or leg for those tiers. DC 7800 and 7804 do not use that factor. Do not count overlapping manifestations twice.",
+        "(b) Two or more skin conditions may be combined in accordance with § 4.25 only if separate areas of skin are involved. If two or more skin conditions involve the same area of skin, then only the highest evaluation shall be used."
+      ],
+      "references": [],
+      "options": [
+        {
+          "v": 10,
+          "text": "Area or areas of 144 square inches (929 sq. cm.) or greater",
+          "dc": "7802",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": true,
+      "guidance": "Choose each affected body zone separately, or mark the included zones for one combined-area evaluation if higher. Compare the alternatives by clearing and rebuilding the estimate. Never include the same area in both alternatives. For another scar code or a distinct pain or instability evaluation, use Scars, general."
+    },
+    {
+      "id": "migraine",
+      "name": "Migraine",
+      "count": 1300172,
+      "abrPage": 99,
+      "section": "4.124a",
+      "dc": "8100",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.124a",
+      "rows": [
+        [
+          "8100 Migraine:",
+          ""
+        ],
+        [
+          "With very frequent completely prostrating and prolonged attacks productive of severe economic inadaptability",
+          "50"
+        ],
+        [
+          "With characteristic prostrating attacks occurring on an average once a month over last several months",
+          "30"
+        ],
+        [
+          "With characteristic prostrating attacks averaging one in 2 months over last several months",
+          "10"
+        ],
+        [
+          "With less frequent attacks",
+          "0"
+        ]
+      ],
+      "notes": [],
+      "references": [],
+      "options": [
+        {
+          "v": 50,
+          "text": "With very frequent completely prostrating and prolonged attacks productive of severe economic inadaptability",
+          "dc": "8100",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 30,
+          "text": "With characteristic prostrating attacks occurring on an average once a month over last several months",
+          "dc": "8100",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "With characteristic prostrating attacks averaging one in 2 months over last several months",
+          "dc": "8100",
+          "row": 3,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 0,
+          "text": "With less frequent attacks",
+          "dc": "8100",
+          "row": 4,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": false,
+      "guidance": ""
+    },
+    {
+      "id": "ankle",
+      "name": "Limitation of motion of the ankle",
+      "count": 1273110,
+      "abrPage": 99,
+      "section": "4.71a",
+      "dc": "5271",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.71a",
+      "rows": [
+        [
+          "5271 Ankle, limited motion of:",
+          ""
+        ],
+        [
+          "Marked (less than 5 degrees dorsiflexion or less than 10 degrees plantar flexion)",
+          "20"
+        ],
+        [
+          "Moderate (less than 15 degrees dorsiflexion or less than 30 degrees plantar flexion)",
+          "10"
+        ]
+      ],
+      "notes": [
+        "Joint measurements and functional loss need clinical findings. See 38 CFR 4.40, 4.45 and 4.59. Do not count the same manifestation twice (4.14)."
+      ],
+      "references": [],
+      "options": [
+        {
+          "v": 20,
+          "text": "Marked (less than 5 degrees dorsiflexion or less than 10 degrees plantar flexion)",
+          "dc": "5271",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "Moderate (less than 15 degrees dorsiflexion or less than 30 degrees plantar flexion)",
+          "dc": "5271",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": true,
+      "guidance": ""
+    },
+    {
+      "id": "scars",
+      "name": "Scars, general",
+      "count": 886572,
+      "abrPage": 103,
+      "section": "4.118",
+      "dc": "7805",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.118",
+      "rows": [
+        [
+          "7805 Scars, other; and other effects of scars evaluated under diagnostic codes 7800, 7801, 7802, or 7804:",
+          ""
+        ],
+        [
+          "Evaluate any disabling effect(s) not considered in a rating provided under diagnostic codes 7800-04 under an appropriate diagnostic code",
+          ""
+        ]
+      ],
+      "notes": [
+        "DC 7805 has no fixed percentage tiers. Choose the applicable scar code below. Other disabling effects require their own appropriate code and are not assigned a percentage here.",
+        "The ABR label does not establish the current scar code. Location, tissue damage, area, pain and instability determine the applicable code.",
+        "VA manual V.iii.10.1.h permits the bilateral factor for separate extremity evaluations under DC 7801 or 7802. Select the actual arm or leg for those tiers. DC 7800 and 7804 do not use that factor. Do not count overlapping manifestations twice.",
+        "(b) Two or more skin conditions may be combined in accordance with § 4.25 only if separate areas of skin are involved. If two or more skin conditions involve the same area of skin, then only the highest evaluation shall be used."
+      ],
+      "references": [
+        {
+          "title": "DC 7800",
+          "rows": [
+            [
+              "7800 Burn scar(s) of the head, face, or neck; scar(s) of the head, face, or neck due to other causes; or other disfigurement of the head, face, or neck:",
+              ""
+            ],
+            [
+              "With visible or palpable tissue loss and either gross distortion or asymmetry of three or more features or paired sets of features (nose, chin, forehead, eyes (including eyelids), ears (auricles), cheeks, lips), or; with six or more characteristics of disfigurement",
+              "80"
+            ],
+            [
+              "With visible or palpable tissue loss and either gross distortion or asymmetry of two features or paired sets of features (nose, chin, forehead, eyes (including eyelids), ears (auricles), cheeks, lips), or; with four or five characteristics of disfigurement",
+              "50"
+            ],
+            [
+              "With visible or palpable tissue loss and either gross distortion or asymmetry of one feature or paired set of features (nose, chin, forehead, eyes (including eyelids), ears (auricles), cheeks, lips), or; with two or three characteristics of disfigurement",
+              "30"
+            ],
+            [
+              "With one characteristic of disfigurement",
+              "10"
+            ],
+            [
+              "Note (1):The 8 characteristics of disfigurement, for purposes of evaluation under § 4.118, are:",
+              ""
+            ],
+            [
+              "Scar 5 or more inches (13 or more cm.) in length.",
+              ""
+            ],
+            [
+              "Scar at least one-quarter inch (0.6 cm.) wide at widest part.",
+              ""
+            ],
+            [
+              "Surface contour of scar elevated or depressed on palpation.",
+              ""
+            ],
+            [
+              "Scar adherent to underlying tissue.",
+              ""
+            ],
+            [
+              "Skin hypo-or hyper-pigmented in an area exceeding six square inches (39 sq. cm.).",
+              ""
+            ],
+            [
+              "Skin texture abnormal (irregular, atrophic, shiny, scaly, etc.) in an area exceeding six square inches (39 sq. cm.).",
+              ""
+            ],
+            [
+              "Underlying soft tissue missing in an area exceeding six square inches (39 sq. cm.).",
+              ""
+            ],
+            [
+              "Skin indurated and inflexible in an area exceeding six square inches (39 sq. cm.).",
+              ""
+            ],
+            [
+              "Note (2): Rate tissue loss of the auricle under DC 6207 (loss of auricle) and anatomical loss of the eye under DC 6061 (anatomical loss of both eyes) or DC 6063 (anatomical loss of one eye), as appropriate.",
+              ""
+            ],
+            [
+              "Note (3): Take into consideration unretouched color photographs when evaluating under these criteria.",
+              ""
+            ],
+            [
+              "Note (4): Separately evaluate disabling effects other than disfigurement that are associated with individual scar(s) of the head, face, or neck, such as pain, instability, and residuals of associated muscle or nerve injury, under the appropriate diagnostic code(s) and apply § 4.25 to combine the evaluation(s) with the evaluation assigned under this diagnostic code.",
+              ""
+            ],
+            [
+              "Note (5): The characteristic(s) of disfigurement may be caused by one scar or by multiple scars; the characteristic(s) required to assign a particular evaluation need not be caused by a single scar in order to assign that evaluation.",
+              ""
+            ]
+          ]
+        },
+        {
+          "title": "DC 7801",
+          "rows": [
+            [
+              "7801 Burn scar(s) or scar(s) due to other causes, not of the head, face, or neck, that are associated with underlying soft tissue damage:",
+              ""
+            ],
+            [
+              "Area or areas of 144 square inches (929 sq. cm.) or greater",
+              "40"
+            ],
+            [
+              "Area or areas of at least 72 square inches (465 sq. cm.) but less than 144 square inches (929 sq. cm.)",
+              "30"
+            ],
+            [
+              "Area or areas of at least 12 square inches (77 sq. cm.) but less than 72 square inches (465 sq. cm.)",
+              "20"
+            ],
+            [
+              "Area or areas of at least 6 square inches (39 sq. cm.) but less than 12 square inches (77 sq. cm.)",
+              "10"
+            ],
+            [
+              "Note (1): For the purposes of DCs 7801 and 7802, the six (6) zones of the body are defined as each extremity, anterior trunk, and posterior trunk. The midaxillary line divides the anterior trunk from the posterior trunk",
+              ""
+            ],
+            [
+              "Note (2): A separate evaluation may be assigned for each affected zone of the body under this diagnostic code if there are multiple scars, or a single scar, affecting multiple zones of the body. Combine the separate evaluations under § 4.25. Alternatively, if a higher evaluation would result from adding the areas affected from multiple zones of the body, a single evaluation may also be assigned under this diagnostic code",
+              ""
+            ]
+          ]
+        },
+        {
+          "title": "DC 7802",
+          "rows": [
+            [
+              "7802 Burn scar(s) or scar(s) due to other causes, not of the head, face, or neck, that are not associated with underlying soft tissue damage:",
+              ""
+            ],
+            [
+              "Area or areas of 144 square inches (929 sq. cm.) or greater",
+              "10"
+            ],
+            [
+              "Note (1): For the purposes of DCs 7801 and 7802, the six (6) zones of the body are defined as each extremity, anterior trunk, and posterior trunk. The midaxillary line divides the anterior trunk from the posterior trunk",
+              ""
+            ],
+            [
+              "Note (2): A separate evaluation may be assigned for each affected zone of the body under this diagnostic code if there are multiple scars, or a single scar, affecting multiple zones of the body. Combine the separate evaluations under § 4.25. Alternatively, if a higher evaluation would result from adding the areas affected from multiple zones of the body, a single evaluation may also be assigned under this diagnostic code",
+              ""
+            ]
+          ]
+        },
+        {
+          "title": "DC 7804",
+          "rows": [
+            [
+              "7804 Scar(s), unstable or painful:",
+              ""
+            ],
+            [
+              "Five or more scars that are unstable or painful",
+              "30"
+            ],
+            [
+              "Three or four scars that are unstable or painful",
+              "20"
+            ],
+            [
+              "One or two scars that are unstable or painful",
+              "10"
+            ],
+            [
+              "Note (1): An unstable scar is one where, for any reason, there is frequent loss of covering of skin over the scar.",
+              ""
+            ],
+            [
+              "Note (2): If one or more scars are both unstable and painful, add 10 percent to the evaluation that is based on the total number of unstable or painful scars",
+              ""
+            ],
+            [
+              "Note (3): Scars evaluated under diagnostic codes 7800, 7801, 7802, or 7805 may also receive an evaluation under this diagnostic code, when applicable",
+              ""
+            ]
+          ]
+        }
+      ],
+      "options": [
+        {
+          "v": 80,
+          "text": "With visible or palpable tissue loss and either gross distortion or asymmetry of three or more features or paired sets of features (nose, chin, forehead, eyes (including eyelids), ears (auricles), cheeks, lips), or; with six or more characteristics of disfigurement",
+          "dc": "7800",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 50,
+          "text": "With visible or palpable tissue loss and either gross distortion or asymmetry of two features or paired sets of features (nose, chin, forehead, eyes (including eyelids), ears (auricles), cheeks, lips), or; with four or five characteristics of disfigurement",
+          "dc": "7800",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 30,
+          "text": "With visible or palpable tissue loss and either gross distortion or asymmetry of one feature or paired set of features (nose, chin, forehead, eyes (including eyelids), ears (auricles), cheeks, lips), or; with two or three characteristics of disfigurement",
+          "dc": "7800",
+          "row": 3,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "With one characteristic of disfigurement",
+          "dc": "7800",
+          "row": 4,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 40,
+          "text": "Area or areas of 144 square inches (929 sq. cm.) or greater",
+          "dc": "7801",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 30,
+          "text": "Area or areas of at least 72 square inches (465 sq. cm.) but less than 144 square inches (929 sq. cm.)",
+          "dc": "7801",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 20,
+          "text": "Area or areas of at least 12 square inches (77 sq. cm.) but less than 72 square inches (465 sq. cm.)",
+          "dc": "7801",
+          "row": 3,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "Area or areas of at least 6 square inches (39 sq. cm.) but less than 12 square inches (77 sq. cm.)",
+          "dc": "7801",
+          "row": 4,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "Area or areas of 144 square inches (929 sq. cm.) or greater",
+          "dc": "7802",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 30,
+          "text": "Five or more scars that are unstable or painful",
+          "dc": "7804",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 20,
+          "text": "Three or four scars that are unstable or painful",
+          "dc": "7804",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "One or two scars that are unstable or painful",
+          "dc": "7804",
+          "row": 3,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": true,
+      "guidance": "DC 7800 uses one disfigurement evaluation across head, face and neck; characteristics can come from multiple scars. DC 7801 and 7802 allow separate body zones, or one evaluation using combined areas if higher. For a combined-area choice, mark every included zone and compare it with separate-zone choices by clearing and rebuilding the estimate. DC 7804 counts all unstable or painful scars once, with 10 percentage points added once if any are both. Its pain or instability evaluation may accompany a separate scar manifestation. Other disabling effects under DC 7805, auricle loss under DC 6207 and eye loss under DC 6061 or 6063 need their appropriate official criteria; they are not assigned an invented percentage here."
+    },
+    {
+      "id": "hypertension",
+      "name": "Hypertensive vascular disease",
+      "count": 845750,
+      "abrPage": 104,
+      "section": "4.104",
+      "dc": "7101",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.104",
+      "rows": [
+        [
+          "7101 Hypertensive vascular disease (hypertension and isolated systolic hypertension):",
+          ""
+        ],
+        [
+          "Diastolic pressure predominantly 130 or more",
+          "60"
+        ],
+        [
+          "Diastolic pressure predominantly 120 or more",
+          "40"
+        ],
+        [
+          "Diastolic pressure predominantly 110 or more, or; systolic pressure predominantly 200 or more",
+          "20"
+        ],
+        [
+          "Diastolic pressure predominantly 100 or more, or; systolic pressure predominantly 160 or more, or; minimum evaluation for an individual with a history of diastolic pressure predominantly 100 or more who requires continuous medication for control",
+          "10"
+        ],
+        [
+          "Note (1): Hypertension or isolated systolic hypertension must be confirmed by readings taken two or more times on at least three different days. For purposes of this section, the term hypertension means that the diastolic blood pressure is predominantly 90mm. or greater, and isolated systolic hypertension means that the systolic blood pressure is predominantly 160mm. or greater with a diastolic blood pressure of less than 90mm.",
+          ""
+        ],
+        [
+          "Note (2): Evaluate hypertension due to aortic insufficiency or hyperthyroidism, which is usually the isolated systolic type, as part of the condition causing it rather than by a separate evaluation.",
+          ""
+        ],
+        [
+          "Note (3): Evaluate hypertension separately from hypertensive heart disease and other types of heart disease.",
+          ""
+        ]
+      ],
+      "notes": [],
+      "references": [],
+      "options": [
+        {
+          "v": 60,
+          "text": "Diastolic pressure predominantly 130 or more",
+          "dc": "7101",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 40,
+          "text": "Diastolic pressure predominantly 120 or more",
+          "dc": "7101",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 20,
+          "text": "Diastolic pressure predominantly 110 or more, or; systolic pressure predominantly 200 or more",
+          "dc": "7101",
+          "row": 3,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "Diastolic pressure predominantly 100 or more, or; systolic pressure predominantly 160 or more, or; minimum evaluation for an individual with a history of diastolic pressure predominantly 100 or more who requires continuous medication for control",
+          "dc": "7101",
+          "row": 4,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": false,
+      "guidance": "Do not add a separate hypertension evaluation when it is due to aortic insufficiency or hyperthyroidism. Hypertensive heart disease and other heart disease may be evaluated separately under their own codes."
+    },
+    {
+      "id": "rhinitis",
+      "name": "Allergic rhinitis",
+      "count": 819645,
+      "abrPage": 104,
+      "section": "4.97",
+      "dc": "6522",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.97",
+      "rows": [
+        [
+          "6522 Allergic or vasomotor rhinitis:",
+          ""
+        ],
+        [
+          "With polyps",
+          "30"
+        ],
+        [
+          "Without polyps, but with greater than 50-percent obstruction of nasal passage on both sides or complete obstruction on one side",
+          "10"
+        ]
+      ],
+      "notes": [],
+      "references": [],
+      "options": [
+        {
+          "v": 30,
+          "text": "With polyps",
+          "dc": "6522",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "Without polyps, but with greater than 50-percent obstruction of nasal passage on both sides or complete obstruction on one side",
+          "dc": "6522",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": false,
+      "guidance": ""
+    },
+    {
+      "id": "arthritis-spine",
+      "name": "Degenerative arthritis of the spine",
+      "count": 789092,
+      "abrPage": 106,
+      "section": "4.71a",
+      "dc": "5242",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.71a",
+      "rows": [
+        [
+          "5242 Degenerative arthritis, degenerative disc disease other than intervertebral disc syndrome (also, see either DC 5003 or 5010)",
+          ""
+        ],
+        [
+          "General Rating Formula for Diseases and Injuries of the Spine",
+          ""
+        ],
+        [
+          "(For diagnostic codes 5235 to 5243 unless 5243 is evaluated under the Formula for Rating Intervertebral Disc Syndrome Based on Incapacitating Episodes):",
+          ""
+        ],
+        [
+          "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease",
+          ""
+        ],
+        [
+          "Unfavorable ankylosis of the entire spine",
+          "100"
+        ],
+        [
+          "Unfavorable ankylosis of the entire thoracolumbar spine",
+          "50"
+        ],
+        [
+          "Unfavorable ankylosis of the entire cervical spine; or, forward flexion of the thoracolumbar spine 30 degrees or less; or, favorable ankylosis of the entire thoracolumbar spine",
+          "40"
+        ],
+        [
+          "Forward flexion of the cervical spine 15 degrees or less; or, favorable ankylosis of the entire cervical spine",
+          "30"
+        ],
+        [
+          "Forward flexion of the thoracolumbar spine greater than 30 degrees but not greater than 60 degrees; or, forward flexion of the cervical spine greater than 15 degrees but not greater than 30 degrees; or, the combined range of motion of the thoracolumbar spine not greater than 120 degrees; or, the combined range of motion of the cervical spine not greater than 170 degrees; or, muscle spasm or guarding severe enough to result in an abnormal gait or abnormal spinal contour such as scoliosis, reversed lordosis, or abnormal kyphosis",
+          "20"
+        ],
+        [
+          "Forward flexion of the thoracolumbar spine greater than 60 degrees but not greater than 85 degrees; or, forward flexion of the cervical spine greater than 30 degrees but not greater than 40 degrees; or, combined range of motion of the thoracolumbar spine greater than 120 degrees but not greater than 235 degrees; or, combined range of motion of the cervical spine greater than 170 degrees but not greater than 335 degrees; or, muscle spasm, guarding, or localized tenderness not resulting in abnormal gait or abnormal spinal contour; or, vertebral body fracture with loss of 50 percent or more of the height",
+          "10"
+        ],
+        [
+          "Note (1): Evaluate any associated objective neurologic abnormalities, including, but not limited to, bowel or bladder impairment, separately, under an appropriate diagnostic code.",
+          ""
+        ],
+        [
+          "Note (2): (See also Plate V.) For VA compensation purposes, normal forward flexion of the cervical spine is zero to 45 degrees, extension is zero to 45 degrees, left and right lateral flexion are zero to 45 degrees, and left and right lateral rotation are zero to 80 degrees. Normal forward flexion of the thoracolumbar spine is zero to 90 degrees, extension is zero to 30 degrees, left and right lateral flexion are zero to 30 degrees, and left and right lateral rotation are zero to 30 degrees. The combined range of motion refers to the sum of the range of forward flexion, extension, left and right lateral flexion, and left and right rotation. The normal combined range of motion of the cervical spine is 340 degrees and of the thoracolumbar spine is 240 degrees. The normal ranges of motion for each component of spinal motion provided in this note are the maximum that can be used for calculation of the combined range of motion.",
+          ""
+        ],
+        [
+          "Note (3): In exceptional cases, an examiner may state that because of age, body habitus, neurologic disease, or other factors not the result of disease or injury of the spine, the range of motion of the spine in a particular individual should be considered normal for that individual, even though it does not conform to the normal range of motion stated in Note (2). Provided that the examiner supplies an explanation, the examiner's assessment that the range of motion is normal for that individual will be accepted.",
+          ""
+        ],
+        [
+          "Note (4): Round each range of motion measurement to the nearest five degrees.",
+          ""
+        ],
+        [
+          "Note (5): For VA compensation purposes, unfavorable ankylosis is a condition in which the entire cervical spine, the entire thoracolumbar spine, or the entire spine is fixed in flexion or extension, and the ankylosis results in one or more of the following: difficulty walking because of a limited line of vision; restricted opening of the mouth and chewing; breathing limited to diaphragmatic respiration; gastrointestinal symptoms due to pressure of the costal margin on the abdomen; dyspnea or dysphagia; atlantoaxial or cervical subluxation or dislocation; or neurologic symptoms due to nerve root stretching. Fixation of a spinal segment in neutral position (zero degrees) always represents favorable ankylosis.",
+          ""
+        ],
+        [
+          "Note (6): Separately evaluate disability of the thoracolumbar and cervical spine segments, except when there is unfavorable ankylosis of both segments, which will be rated as a single disability.",
+          ""
+        ]
+      ],
+      "notes": [
+        "Joint measurements and functional loss need clinical findings. See 38 CFR 4.40, 4.45 and 4.59. Do not count the same manifestation twice (4.14)."
+      ],
+      "references": [],
+      "options": [
+        {
+          "v": 100,
+          "text": "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease Unfavorable ankylosis of the entire spine",
+          "dc": "5242",
+          "row": 4,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 50,
+          "text": "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease Unfavorable ankylosis of the entire thoracolumbar spine",
+          "dc": "5242",
+          "row": 5,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 40,
+          "text": "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease Unfavorable ankylosis of the entire cervical spine; or, forward flexion of the thoracolumbar spine 30 degrees or less; or, favorable ankylosis of the entire thoracolumbar spine",
+          "dc": "5242",
+          "row": 6,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 30,
+          "text": "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease Forward flexion of the cervical spine 15 degrees or less; or, favorable ankylosis of the entire cervical spine",
+          "dc": "5242",
+          "row": 7,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 20,
+          "text": "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease Forward flexion of the thoracolumbar spine greater than 30 degrees but not greater than 60 degrees; or, forward flexion of the cervical spine greater than 15 degrees but not greater than 30 degrees; or, the combined range of motion of the thoracolumbar spine not greater than 120 degrees; or, the combined range of motion of the cervical spine not greater than 170 degrees; or, muscle spasm or guarding severe enough to result in an abnormal gait or abnormal spinal contour such as scoliosis, reversed lordosis, or abnormal kyphosis",
+          "dc": "5242",
+          "row": 8,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "With or without symptoms such as pain (whether or not it radiates), stiffness, or aching in the area of the spine affected by residuals of injury or disease Forward flexion of the thoracolumbar spine greater than 60 degrees but not greater than 85 degrees; or, forward flexion of the cervical spine greater than 30 degrees but not greater than 40 degrees; or, combined range of motion of the thoracolumbar spine greater than 120 degrees but not greater than 235 degrees; or, combined range of motion of the cervical spine greater than 170 degrees but not greater than 335 degrees; or, muscle spasm, guarding, or localized tenderness not resulting in abnormal gait or abnormal spinal contour; or, vertebral body fracture with loss of 50 percent or more of the height",
+          "dc": "5242",
+          "row": 9,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": false,
+      "guidance": "Choose the cervical or thoracolumbar segment for each row. Both segments with unfavorable ankylosis use one entire-spine evaluation. Strain and arthritis cannot duplicate the same segment. Objective neurologic abnormalities may be separate under the appropriate code."
+    },
+    {
+      "id": "apnea",
+      "name": "Sleep apnea syndromes (obstructive, central, mixed)",
+      "count": 763763,
+      "abrPage": 104,
+      "section": "4.97",
+      "dc": "6847",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.97",
+      "rows": [
+        [
+          "6847 Sleep Apnea Syndromes (Obstructive, Central, Mixed):",
+          ""
+        ],
+        [
+          "Chronic respiratory failure with carbon dioxide retention or cor pulmonale, or; requires tracheostomy",
+          "100"
+        ],
+        [
+          "Requires use of breathing assistance device such as continuous airway pressure (CPAP) machine",
+          "50"
+        ],
+        [
+          "Persistent day-time hypersomnolence",
+          "30"
+        ],
+        [
+          "Asymptomatic but with documented sleep disorder breathing",
+          "0"
+        ]
+      ],
+      "notes": [],
+      "references": [],
+      "options": [
+        {
+          "v": 100,
+          "text": "Chronic respiratory failure with carbon dioxide retention or cor pulmonale, or; requires tracheostomy",
+          "dc": "6847",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 50,
+          "text": "Requires use of breathing assistance device such as continuous airway pressure (CPAP) machine",
+          "dc": "6847",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 30,
+          "text": "Persistent day-time hypersomnolence",
+          "dc": "6847",
+          "row": 3,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 0,
+          "text": "Asymptomatic but with documented sleep disorder breathing",
+          "dc": "6847",
+          "row": 4,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": false,
+      "guidance": ""
+    },
+    {
+      "id": "thigh",
+      "name": "Thigh condition, general",
+      "count": 687754,
+      "abrPage": 106,
+      "section": "4.71a",
+      "dc": "5253",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.71a",
+      "rows": [
+        [
+          "5253 Thigh, impairment of:",
+          ""
+        ],
+        [
+          "Limitation of abduction of, motion lost beyond 10°",
+          "20"
+        ],
+        [
+          "Limitation of adduction of, cannot cross legs",
+          "10"
+        ],
+        [
+          "Limitation of rotation of, cannot toe-out more than 15°, affected leg",
+          "10"
+        ]
+      ],
+      "notes": [
+        "Joint measurements and functional loss need clinical findings. See 38 CFR 4.40, 4.45 and 4.59. Do not count the same manifestation twice (4.14)."
+      ],
+      "references": [],
+      "options": [
+        {
+          "v": 20,
+          "text": "Limitation of abduction of, motion lost beyond 10°",
+          "dc": "5253",
+          "row": 1,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "Limitation of adduction of, cannot cross legs",
+          "dc": "5253",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "Limitation of rotation of, cannot toe-out more than 15°, affected leg",
+          "dc": "5253",
+          "row": 3,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": true,
+      "guidance": ""
+    },
+    {
+      "id": "ed",
+      "name": "Penile deformity (loss of erectile power)",
+      "count": 675632,
+      "abrPage": 104,
+      "section": "4.115b",
+      "dc": "7522",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.115b",
+      "rows": [
+        [
+          "7522 Erectile dysfunction, with or without penile deformity",
+          "1 0"
+        ],
+        [
+          "Note: For the purpose of VA disability evaluation, a disease or traumatic injury of the penis resulting in scarring or deformity shall be rated under diagnostic code 7522.",
+          ""
+        ]
+      ],
+      "notes": [
+        "1 Review for entitlement to special monthly compensation under § 3.350 of this chapter.",
+        "The ABR uses a historical disability label. Current DC 7522 has a 0 percent schedular evaluation; special monthly compensation is separate."
+      ],
+      "references": [],
+      "options": [
+        {
+          "v": 0,
+          "text": "7522 Erectile dysfunction, with or without penile deformity",
+          "dc": "7522",
+          "row": 0,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": false,
+      "guidance": "Current DC 7522 uses one 0 percent schedular evaluation, including penile scarring or deformity. Review special monthly compensation separately with VA or a VSO; it is not included in basic monthly pay."
+    },
+    {
+      "id": "flatfoot",
+      "name": "Flatfoot, acquired",
+      "count": 600665,
+      "abrPage": 106,
+      "section": "4.71a",
+      "dc": "5276",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.71a",
+      "rows": [
+        [
+          "5276 Flatfoot, acquired:",
+          ""
+        ],
+        [
+          "Pronounced; marked pronation, extreme tenderness of plantar surfaces of the feet, marked inward displacement and severe spasm of the tendo achillis on manipulation, not improved by orthopedic shoes or appliances",
+          ""
+        ],
+        [
+          "Bilateral",
+          "50"
+        ],
+        [
+          "Unilateral",
+          "30"
+        ],
+        [
+          "Severe; objective evidence of marked deformity (pronation, abduction, etc.), pain on manipulation and use accentuated, indication of swelling on use, characteristic callosities:",
+          ""
+        ],
+        [
+          "Bilateral",
+          "30"
+        ],
+        [
+          "Unilateral",
+          "20"
+        ],
+        [
+          "Moderate; weight-bearing line over or medial to great toe, inward bowing of the tendo achillis, pain on manipulation and use of the feet, bilateral or unilateral",
+          "10"
+        ],
+        [
+          "Mild; symptoms relieved by built-up shoe or arch support",
+          "0"
+        ]
+      ],
+      "notes": [
+        "Joint measurements and functional loss need clinical findings. See 38 CFR 4.40, 4.45 and 4.59. Do not count the same manifestation twice (4.14).",
+        "Use one flatfoot evaluation. Choose Both feet for a bilateral tier, or when the 10 percent tier covers both feet. VA manual V.iv.1.C.4.b allows a single bilateral evaluation into the factor with an independent compensable condition in an involved leg, or independently compensable conditions in both arms. The estimate applies these rules to your entered locations; it never duplicates the foot evaluation."
+      ],
+      "references": [],
+      "options": [
+        {
+          "v": 50,
+          "text": "Pronounced; marked pronation, extreme tenderness of plantar surfaces of the feet, marked inward displacement and severe spasm of the tendo achillis on manipulation, not improved by orthopedic shoes or appliances Bilateral",
+          "dc": "5276",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": true
+        },
+        {
+          "v": 30,
+          "text": "Pronounced; marked pronation, extreme tenderness of plantar surfaces of the feet, marked inward displacement and severe spasm of the tendo achillis on manipulation, not improved by orthopedic shoes or appliances Unilateral",
+          "dc": "5276",
+          "row": 3,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 30,
+          "text": "Severe; objective evidence of marked deformity (pronation, abduction, etc.), pain on manipulation and use accentuated, indication of swelling on use, characteristic callosities: Bilateral",
+          "dc": "5276",
+          "row": 5,
+          "column": 1,
+          "bilateralTier": true
+        },
+        {
+          "v": 20,
+          "text": "Severe; objective evidence of marked deformity (pronation, abduction, etc.), pain on manipulation and use accentuated, indication of swelling on use, characteristic callosities: Unilateral",
+          "dc": "5276",
+          "row": 6,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "Severe; objective evidence of marked deformity (pronation, abduction, etc.), pain on manipulation and use accentuated, indication of swelling on use, characteristic callosities: Moderate; weight-bearing line over or medial to great toe, inward bowing of the tendo achillis, pain on manipulation and use of the feet, bilateral or unilateral",
+          "dc": "5276",
+          "row": 7,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 0,
+          "text": "Severe; objective evidence of marked deformity (pronation, abduction, etc.), pain on manipulation and use accentuated, indication of swelling on use, characteristic callosities: Mild; symptoms relieved by built-up shoe or arch support",
+          "dc": "5276",
+          "row": 8,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": true,
+      "guidance": ""
+    },
+    {
+      "id": "eczema",
+      "name": "Eczema",
+      "count": 596075,
+      "abrPage": 103,
+      "section": "4.118",
+      "dc": "7806",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.118",
+      "rows": [
+        [
+          "7806 Dermatitis or eczema.",
+          ""
+        ],
+        [
+          "Evaluate under the General Rating Formula for the Skin",
+          ""
+        ],
+        [
+          "General Rating Formula For The Skin For DCs 7806, 7809, 7813-7816, 7820-7822, and 7824:",
+          ""
+        ],
+        [
+          "At least one of the following",
+          "60"
+        ],
+        [
+          "Characteristic lesions involving more than 40 percent of the entire body or more than 40 percent of exposed areas affected; or",
+          ""
+        ],
+        [
+          "Constant or near-constant systemic therapy including, but not limited to, corticosteroids, phototherapy, retinoids, biologics, photochemotherapy, psoralen with long-wave ultraviolet-A light (PUVA), or other immunosuppressive drugs required over the past 12-month period",
+          "60"
+        ],
+        [
+          "At least one of the following",
+          "30"
+        ],
+        [
+          "Characteristic lesions involving 20 to 40 percent of the entire body or 20 to 40 percent of exposed areas affected; or Systemic therapy including, but not limited to, corticosteroids, phototherapy, retinoids, biologics, photochemotherapy, PUVA, or other immunosuppressive drugs required for a total duration of 6 weeks or more, but not constantly, over the past 12-month period",
+          ""
+        ],
+        [
+          "At least one of the following",
+          "10"
+        ],
+        [
+          "Characteristic lesions involving at least 5 percent, but less than 20 percent, of the entire body affected; or",
+          ""
+        ],
+        [
+          "At least 5 percent, but less than 20 percent, of exposed areas affected; or",
+          ""
+        ],
+        [
+          "Intermittent systemic therapy including, but not limited to, corticosteroids, phototherapy, retinoids, biologics, photochemotherapy, PUVA, or other immunosuppressive drugs required for a total duration of less than 6 weeks over the past 12-month period",
+          ""
+        ],
+        [
+          "No more than topical therapy required over the past 12-month period and at least one of the following",
+          "0"
+        ],
+        [
+          "Characteristic lesions involving less than 5 percent of the entire body affected; or",
+          ""
+        ],
+        [
+          "Characteristic lesions involving less than 5 percent of exposed areas affected",
+          ""
+        ],
+        [
+          "Or rate as disfigurement of the head, face, or neck (DC 7800) or scars (DCs 7801, 7802, 7804, or 7805), depending upon the predominant disability. This rating instruction does not apply to DC 7824",
+          ""
+        ]
+      ],
+      "notes": [
+        "(a) For the purposes of this section, systemic therapy is treatment that is administered through any route (orally, injection, suppository, intranasally) other than the skin, and topical therapy is treatment that is administered through the skin.",
+        "(b) Two or more skin conditions may be combined in accordance with § 4.25 only if separate areas of skin are involved. If two or more skin conditions involve the same area of skin, then only the highest evaluation shall be used."
+      ],
+      "references": [],
+      "options": [
+        {
+          "v": 60,
+          "text": "General Rating Formula For The Skin For DCs 7806, 7809, 7813-7816, 7820-7822, and 7824: At least one of the following",
+          "dc": "7806",
+          "row": 3,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 30,
+          "text": "Characteristic lesions involving more than 40 percent of the entire body or more than 40 percent of exposed areas affected; or At least one of the following",
+          "dc": "7806",
+          "row": 6,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "Characteristic lesions involving 20 to 40 percent of the entire body or 20 to 40 percent of exposed areas affected; or Systemic therapy including, but not limited to, corticosteroids, phototherapy, retinoids, biologics, photochemotherapy, PUVA, or other immunosuppressive drugs required for a total duration of 6 weeks or more, but not constantly, over the past 12-month period At least one of the following",
+          "dc": "7806",
+          "row": 8,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 0,
+          "text": "Intermittent systemic therapy including, but not limited to, corticosteroids, phototherapy, retinoids, biologics, photochemotherapy, PUVA, or other immunosuppressive drugs required for a total duration of less than 6 weeks over the past 12-month period No more than topical therapy required over the past 12-month period and at least one of the following",
+          "dc": "7806",
+          "row": 12,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": false,
+      "guidance": "Use the predominant disability: the skin formula or the applicable disfigurement or scar criteria in Scars, general. Do not add both for the same manifestation. Separate skin conditions may combine only for separate areas; for the same area use the highest evaluation. Systemic and topical therapy have the meanings printed above."
+    },
+    {
+      "id": "knee-instability",
+      "name": "Impairment of the knee, general",
+      "count": 556186,
+      "abrPage": 106,
+      "section": "4.71a",
+      "dc": "5257",
+      "url": "https://www.ecfr.gov/current/title-38/section-4.71a",
+      "rows": [
+        [
+          "5257 Knee, other impairment of:",
+          ""
+        ],
+        [
+          "Recurrent subluxation or instability:",
+          ""
+        ],
+        [
+          "Unrepaired or failed repair of complete ligament tear causing persistent instability, and a medical provider prescribes both an assistive device (e.g., cane(s), crutch(es), walker) and bracing for ambulation",
+          "30"
+        ],
+        [
+          "One of the following:",
+          ""
+        ],
+        [
+          "(a) Sprain, incomplete ligament tear, or repaired complete ligament tear causing persistent instability, and a medical provider prescribes a brace and/or assistive device (e.g., cane(s), crutch(es), walker) for ambulation.",
+          ""
+        ],
+        [
+          "(b) Unrepaired or failed repair of complete ligament tear causing persistent instability, and a medical provider prescribes either an assistive device (e.g., cane(s), crutch(es), walker) or bracing for ambulation",
+          "20"
+        ],
+        [
+          "Sprain, incomplete ligament tear, or complete ligament tear (repaired, unrepaired, or failed repair) causing persistent instability, without a prescription from a medical provider for an assistive device (e.g., cane(s), crutch(es), walker) or bracing for ambulation",
+          "10"
+        ],
+        [
+          "Patellar instability:",
+          ""
+        ],
+        [
+          "A diagnosed condition involving the patellofemoral complex with recurrent instability after surgical repair that requires a prescription by a medical provider for a brace and either a cane or a walker",
+          "30"
+        ],
+        [
+          "A diagnosed condition involving the patellofemoral complex with recurrent instability after surgical repair that requires a prescription by a medical provider for one of the following: A brace, cane, or walker",
+          "20"
+        ],
+        [
+          "A diagnosed condition involving the patellofemoral complex with recurrent instability (with or without history of surgical repair) that does not require a prescription from a medical provider for a brace, cane, or walker",
+          "10"
+        ],
+        [
+          "Note (1): For patellar instability, the patellofemoral complex consists of the quadriceps tendon, the patella, and the patellar tendon.",
+          ""
+        ],
+        [
+          "Note (2): A surgical procedure that does not involve repair of one or more patellofemoral components that contribute to the underlying instability shall not qualify as surgical repair for patellar instability (including, but not limited to, arthroscopy to remove loose bodies and joint aspiration).",
+          ""
+        ]
+      ],
+      "notes": [
+        "Joint measurements and functional loss need clinical findings. See 38 CFR 4.40, 4.45 and 4.59. Do not count the same manifestation twice (4.14)."
+      ],
+      "references": [],
+      "options": [
+        {
+          "v": 30,
+          "text": "Recurrent subluxation or instability: Unrepaired or failed repair of complete ligament tear causing persistent instability, and a medical provider prescribes both an assistive device (e.g., cane(s), crutch(es), walker) and bracing for ambulation",
+          "dc": "5257",
+          "row": 2,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 20,
+          "text": "(a) Sprain, incomplete ligament tear, or repaired complete ligament tear causing persistent instability, and a medical provider prescribes a brace and/or assistive device (e.g., cane(s), crutch(es), walker) for ambulation. (b) Unrepaired or failed repair of complete ligament tear causing persistent instability, and a medical provider prescribes either an assistive device (e.g., cane(s), crutch(es), walker) or bracing for ambulation",
+          "dc": "5257",
+          "row": 5,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "(a) Sprain, incomplete ligament tear, or repaired complete ligament tear causing persistent instability, and a medical provider prescribes a brace and/or assistive device (e.g., cane(s), crutch(es), walker) for ambulation. Sprain, incomplete ligament tear, or complete ligament tear (repaired, unrepaired, or failed repair) causing persistent instability, without a prescription from a medical provider for an assistive device (e.g., cane(s), crutch(es), walker) or bracing for ambulation",
+          "dc": "5257",
+          "row": 6,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 30,
+          "text": "Patellar instability: A diagnosed condition involving the patellofemoral complex with recurrent instability after surgical repair that requires a prescription by a medical provider for a brace and either a cane or a walker",
+          "dc": "5257",
+          "row": 8,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 20,
+          "text": "Patellar instability: A diagnosed condition involving the patellofemoral complex with recurrent instability after surgical repair that requires a prescription by a medical provider for one of the following: A brace, cane, or walker",
+          "dc": "5257",
+          "row": 9,
+          "column": 1,
+          "bilateralTier": false
+        },
+        {
+          "v": 10,
+          "text": "Patellar instability: A diagnosed condition involving the patellofemoral complex with recurrent instability (with or without history of surgical repair) that does not require a prescription from a medical provider for a brace, cane, or walker",
+          "dc": "5257",
+          "row": 10,
+          "column": 1,
+          "bilateralTier": false
+        }
+      ],
+      "limbAllowed": true,
+      "guidance": "Use one instability evaluation for the knee, not one for each instability description. Patellar surgical repair has the meaning in Notes (1) and (2). A separate flexion evaluation requires a distinct manifestation."
+    }
+  ],
+  "pay": {
+    "effective": "2025-12-01",
+    "label": "VA rates effective 1 DEC 2025",
+    "url": "https://www.va.gov/disability/compensation-rates/veteran-rates/",
+    "tables": [
+      [
+        [
+          "Disability rating",
+          "Monthly payment (in U.S. $)"
+        ],
+        [
+          "10%",
+          "180.42"
+        ],
+        [
+          "20%",
+          "356.66"
+        ]
+      ],
+      [
+        [
+          "Dependent status",
+          "30% disability rating (in U.S. $)",
+          "40% disability rating (in U.S. $)",
+          "50% disability rating (in U.S. $)",
+          "60% disability rating (in U.S. $)"
+        ],
+        [
+          "Veteran alone (no dependents)",
+          "552.47",
+          "795.84",
+          "1,132.90",
+          "1,435.02"
+        ],
+        [
+          "With spouse (no parents or children)",
+          "617.47",
+          "882.84",
+          "1,241.90",
+          "1,566.02"
+        ],
+        [
+          "With spouse and 1 parent (no children)",
+          "669.47",
+          "952.84",
+          "1,329.90",
+          "1,671.02"
+        ],
+        [
+          "With spouse and 2 parents (no children)",
+          "721.47",
+          "1,022.84",
+          "1,417.90",
+          "1,776.02"
+        ],
+        [
+          "With 1 parent (no spouse or children)",
+          "604.47",
+          "865.84",
+          "1,220.90",
+          "1,540.02"
+        ],
+        [
+          "With 2 parents (no spouse or children)",
+          "656.47",
+          "935.84",
+          "1,308.90",
+          "1,645.02"
+        ]
+      ],
+      [
+        [
+          "Dependent status",
+          "30% disability rating (in U.S. $)",
+          "40% disability rating (in U.S. $)",
+          "50% disability rating (in U.S. $)",
+          "60% disability rating (in U.S. $)"
+        ],
+        [
+          "Spouse receiving Aid and Attendance",
+          "61.00",
+          "81.00",
+          "101.00",
+          "121.00"
+        ]
+      ],
+      [
+        [
+          "Dependent status",
+          "70% disability rating (in U.S. $)",
+          "80% disability rating (in U.S. $)",
+          "90% disability rating (in U.S. $)",
+          "100% disability rating (in U.S. $)"
+        ],
+        [
+          "Veteran alone (no dependents)",
+          "1,808.45",
+          "2,102.15",
+          "2,362.30",
+          "3,938.58"
+        ],
+        [
+          "With spouse (no parents or children)",
+          "1,961.45",
+          "2,277.15",
+          "2,559.30",
+          "4,158.17"
+        ],
+        [
+          "With spouse and 1 parent (no children)",
+          "2,084.45",
+          "2,417.15",
+          "2,717.30",
+          "4,334.41"
+        ],
+        [
+          "With spouse and 2 parents (no children)",
+          "2,207.45",
+          "2,557.15",
+          "2,875.30",
+          "4,510.65"
+        ],
+        [
+          "With 1 parent (no spouse or children)",
+          "1,931.45",
+          "2,242.15",
+          "2,520.30",
+          "4,114.82"
+        ],
+        [
+          "With 2 parents (no spouse or children)",
+          "2,054.45",
+          "2,382.15",
+          "2,678.30",
+          "4,291.06"
+        ]
+      ],
+      [
+        [
+          "Dependent status",
+          "70% disability rating (in U.S. $)",
+          "80% disability rating (in U.S. $)",
+          "90% disability rating (in U.S. $)",
+          "100% disability rating (in U.S. $)"
+        ],
+        [
+          "Spouse receiving Aid and Attendance",
+          "141.00",
+          "161.00",
+          "181.00",
+          "201.41"
+        ]
+      ],
+      [
+        [
+          "Dependent status",
+          "30% disability rating (in U.S. $)",
+          "40% disability rating (in U.S. $)",
+          "50% disability rating (in U.S. $)",
+          "60% disability rating (in U.S. $)"
+        ],
+        [
+          "Veteran with 1 child only (no spouse or parents)",
+          "596.47",
+          "853.84",
+          "1,205.90",
+          "1,523.02"
+        ],
+        [
+          "With 1 child and spouse (no parents)",
+          "666.47",
+          "947.84",
+          "1,322.90",
+          "1,663.02"
+        ],
+        [
+          "With 1 child, spouse, and 1 parent",
+          "718.47",
+          "1,017.84",
+          "1,410.90",
+          "1,768.02"
+        ],
+        [
+          "With 1 child, spouse, and 2 parents",
+          "770.47",
+          "1,087.84",
+          "1,498.90",
+          "1,873.02"
+        ],
+        [
+          "With 1 child and 1 parent (no spouse)",
+          "648.47",
+          "923.84",
+          "1,293.90",
+          "1,628.02"
+        ],
+        [
+          "With 1 child and 2 parents (no spouse)",
+          "700.47",
+          "993.84",
+          "1,381.90",
+          "1,733.02"
+        ]
+      ],
+      [
+        [
+          "Dependent status",
+          "30% disability rating (in U.S. $)",
+          "40% disability rating (in U.S. $)",
+          "50% disability rating (in U.S. $)",
+          "60% disability rating (in U.S. $)"
+        ],
+        [
+          "Each additional child under age 18",
+          "32.00",
+          "43.00",
+          "54.00",
+          "65.00"
+        ],
+        [
+          "Each additional child over age 18 in a qualifying school program",
+          "105.00",
+          "140.00",
+          "176.00",
+          "211.00"
+        ],
+        [
+          "Spouse receving Aid and Attendance",
+          "61.00",
+          "81.00",
+          "101.00",
+          "121.00"
+        ]
+      ],
+      [
+        [
+          "Dependent status",
+          "70% disability rating (in U.S. $)",
+          "80% disability rating (in U.S. $)",
+          "90% disability rating (in U.S. $)",
+          "100% disability rating (in U.S. $)"
+        ],
+        [
+          "Veteran with child only (no spouse or parents)",
+          "1,910.45",
+          "2,219.15",
+          "2,494.30",
+          "4,085.43"
+        ],
+        [
+          "With 1 child and spouse (no parents)",
+          "2,074.45",
+          "2,406.15",
+          "2,704.30",
+          "4,318.99"
+        ],
+        [
+          "With 1 child, spouse and 1 parent",
+          "2,197.45",
+          "2,546.15",
+          "2,862.30",
+          "4,495.23"
+        ],
+        [
+          "With 1 child, spouse and 2 parents",
+          "2,320.45",
+          "2,686.15",
+          "3,020.30",
+          "4,671.47"
+        ],
+        [
+          "With 1 child and 1 parent",
+          "2,033.45",
+          "2,359.15",
+          "2,652.30",
+          "4,261.67"
+        ],
+        [
+          "With 1 child and 2 parents (no spouse)",
+          "2,156.45",
+          "2,499.15",
+          "2,810.30",
+          "4,437.91"
+        ]
+      ],
+      [
+        [
+          "Dependent status",
+          "70% disability rating (in U.S. $)",
+          "80% disability rating (in U.S. $)",
+          "90% disability rating (in U.S. $)",
+          "100% disability rating (in U.S. $)"
+        ],
+        [
+          "Each additional child under age 18",
+          "76.00",
+          "87.00",
+          "98.00",
+          "109.11"
+        ],
+        [
+          "Each additional child over age 18 in a qualifying school program",
+          "246.00",
+          "281.00",
+          "317.00",
+          "352.45"
+        ],
+        [
+          "Spouse receiving Aid and Attendance",
+          "141.00",
+          "161.00",
+          "181.00",
+          "201.41"
+        ]
+      ]
+    ],
+    "refresh": "Refresh when VA publishes the next compensation rate table, and after any correction to the current table."
+  },
+  "presumptions": {
+    "pact": [
+      "Brain cancer",
+      "Gastrointestinal cancer of any type",
+      "Glioblastoma",
+      "Head cancer of any type",
+      "Kidney cancer",
+      "Lymphoma of any type",
+      "Melanoma",
+      "Neck cancer of any type",
+      "Pancreatic cancer",
+      "Reproductive cancer of any type",
+      "Respiratory (breathing-related) cancer of any type",
+      "Asthma that was diagnosed after service",
+      "Chronic bronchitis",
+      "Chronic obstructive pulmonary disease (COPD)",
+      "Chronic rhinitis",
+      "Chronic sinusitis",
+      "Constrictive bronchiolitis or obliterative bronchiolitis",
+      "Emphysema",
+      "Granulomatous disease",
+      "Interstitial lung disease (ILD)",
+      "Pleuritis",
+      "Pulmonary fibrosis",
+      "Sarcoidosis",
+      "Urinary bladder cancer",
+      "Ureter cancer",
+      "Acute leukemias",
+      "Chronic leukemias",
+      "Multiple myelomas, including monoclonal gammopathy of undetermined significance (MGUS)",
+      "Myelodysplastic syndromes (MDS)",
+      "Myelofibrosis"
+    ],
+    "gulf": [
+      "Chronic fatigue syndrome",
+      "Fibromyalgia",
+      "Functional gastrointestinal disorders",
+      "Medically unexplained chronic multisymptom illness",
+      "Other undiagnosed illnesses, such as cardiovascular signs and symptoms, muscle and joint pain, and headaches"
+    ],
+    "infections": [
+      "Brucellosis",
+      "Campylobacter jejuni",
+      "Coxiella burnetii (Q fever)",
+      "Malaria (or sooner in some cases)",
+      "Nontyphoid salmonella",
+      "Shigella",
+      "West Nile virus",
+      "Visceral leishmaniasis",
+      "Mycobacterium tuberculosis"
+    ],
+    "orange": [
+      "Bladder cancer",
+      "Chronic B-cell leukemia",
+      "Hodgkin’s disease",
+      "Multiple myeloma",
+      "Non-Hodgkin’s lymphoma",
+      "Prostate cancer",
+      "Respiratory cancers (including lung cancer)",
+      "Some soft tissue sarcomas Note: We don’t include osteosarcoma, chondrosarcoma, Kaposi’s sarcoma, or mesothelioma on our list of presumptive conditions.",
+      "AL amyloidosis",
+      "Chloracne (or other types of acneiform disease like it) Note: Under our rating regulations, this condition must be at least 10% disabling within 1 year of herbicide exposure.",
+      "Diabetes mellitus type 2",
+      "High blood pressure (hypertension)",
+      "Hypothyroidism",
+      "Ischemic heart disease",
+      "Monoclonal gammopathy of undetermined significance (MGUS)",
+      "Parkinsonism",
+      "Parkinson’s disease",
+      "Peripheral neuropathy, early onset Note: Under our rating regulations, this condition must be at least 10% disabling within 1 year of herbicide exposure.",
+      "Porphyria cutanea tarda Note: Under our rating regulations, this condition must be at least 10% disabling within 1 year of herbicide exposure."
+    ],
+    "lejeune": [
+      "Adult leukemia",
+      "Aplastic anemia and other myelodysplastic syndromes",
+      "Bladder cancer",
+      "Kidney cancer",
+      "Liver cancer",
+      "Multiple myeloma",
+      "Non-Hodgkin’s lymphoma",
+      "Parkinson’s disease"
+    ],
+    "particulate": [
+      "Asthma",
+      "Rhinitis",
+      "Sinusitis, to include rhinosinusitis",
+      "Squamous cell carcinoma of the larynx",
+      "Squamous cell carcinoma of the trachea",
+      "Adenocarcinoma of the trachea",
+      "Salivary gland-type tumors of the trachea",
+      "Adenosquamous carcinoma of the lung",
+      "Large cell carcinoma of the lung",
+      "Salivary gland-type tumors of the lung",
+      "Sarcomatoid carcinoma of the lung",
+      "Typical and atypical carcinoid of the lung"
+    ]
+  }
+}

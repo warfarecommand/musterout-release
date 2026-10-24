@@ -2059,3 +2059,6 @@ COPY = {'sep-tell': {'label': 'Tell your commander your plan',
                   'why': 'The formal checkout.',
                   'verify': 'Installation Personnel Administration Center: the unit checkout sheet.',
                   'owner': 'You'}}
+
+# MTN-95: independent cited terminal-departure requirement.
+COPY['terminal-predeparture'] = {'label':'Complete separation processing before terminal leave','brief':'IPAC, medical and TRP offices must verify required processing before terminal departure.'}

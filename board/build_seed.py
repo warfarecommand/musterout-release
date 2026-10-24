@@ -15,6 +15,7 @@ texts when they are present, and checks every path combination). --no-verify ski
 import itertools, json, os, re, sys
 from pathlib import Path
 from seed_copy import COPY
+from va115_copy import apply_va115
 
 HERE = Path(__file__).resolve().parent
 DASHES = (chr(0x2014), chr(0x2013))
@@ -1267,6 +1268,35 @@ for rec in items:
         rec['cite'].extend([c(TRPA, 'Encl (2), Ch 3 para 16', 'Enforce Marine Corps SkillBridge Program requirements and procedures as outlined in reference (p).', UTRPA), c('NAVMC 1700.2B', 'Encl (2) para 7', 'Commanders are responsible for ensuring all Marines participating in S-PTAD have completed all pre-separation and transition requirements in accordance with reference (a).', UNAVMC)])
         rec['verify'] += ' Installation TRP office and UTC: verify completion before SkillBridge participation.'
 
+# MTN-95: retain cited service deadlines and constrain completion before participation.
+for rec in items:
+    if rec['id'] in ('sep-ic','sep-presep','sep-trs','sep-capstone','sep-cv'):
+        rec['due'] = {'min': [rec['due'], {'sb':'start','days':-1}]}
+        rec['how'].append('The earlier displayed date is the latest completion limit, not an appointment. Complete each prerequisite in order. A missing SkillBridge start leaves the service-end deadline in force; confirm before-participation scheduling when the start is known.')
+    leads = {'cmd-plan':-120,'cmd-award':-90,'ret-ceremony':-60,'cmd-binder':-45,'cmd-turnover':-45,'cmd-checkout':-7}
+    if rec['id'] in leads:
+        rec['due'] = {'unitDeparture':leads[rec['id']]}
+        rec['how'].append('This is a planning target before the earliest known SkillBridge or continuous terminal leave departure. Confirm the actual date with your unit. An entered fixed date stays fixed.')
+        rec['cite'].append(c('NAVMC 1700.2B','5.c','Final checkout requirements are coordinated with the servicing Personnel Administration Center prior to departing for SkillBridge.',UNAVMC))
+    if rec['id'] == 'cmd-turnover':
+        rec['window'] = {'from':{'unitDeparture':-45},'to':{'unitDeparture':-40}}
+        rec['attendance'] = 'interval'
+    if rec['id'] in ('cmd-checkout','ret-ceremony'): rec['presence'] = True
+    if rec['id'] == 'ret-day': rec['presence'] = False
+    if rec['id'] == 'va-service-end':
+        for ct in rec['cite']:
+            if ct['para'] == 'Definitions, 274': ct['para'] = '1002, definition Expiration of Active Service'
+    if rec['id'] == 'ret-counsel-e':
+        rec['cite'].append(c(MCO,'2004.5.a(3)','Sign the pre-application checklist (Appendix J) to certify that the Marine has been advised of the ramifications of the request to retire prior to the request being submitted to Headquarters Marine Corps (HQMC).',UMCO))
+    if rec['id'] in ('ret-counsel-e','sep-counsel'):
+        rec['how'].append('If your applicable action date is approved, this submission-stage task is covered by approval. Approval does not prove counseling occurred. Ask IPAC to verify the counseling record.')
+item('terminal-predeparture','sep','Complete required separation processing before terminal leave',
+     'Terminal departure requires approval and completed administrative and medical separation actions. A later medical recall may still be required.',
+     how=['Before terminal departure, ask IPAC, the medical office and TRP office to verify all required separation actions, including undated processing.','Keep unit handoff, ceremony and checkout planning targets separate. Confirm any authorized return or medical recall with the command.'],
+     owner='IPAC',due={'terminalStart':-1},critical=True,
+     cite=[c(MCO,'1010.2.d','Departure on terminal leave will not be authorized until the request has been approved by the CMC and all required administrative and medical actions incident to separation have been completed--e.g., completion of medical evaluation, transition classes, etc.',UMCO)],
+     verify='IPAC, medical office and TRP office: verify separation approval and all required processing before terminal departure.',basis='rule')
+
 contacts = [
     {"id": "c-co", "name": "", "role": "Commanding Officer (reporting senior)", "org": "Your unit", "phone": "", "email": "", "loe": "sep", "note": "Counseling, endorsements, billet cover.", "when": []},
     {"id": "c-ipac", "name": "", "role": "IPAC", "org": "", "phone": "", "email": "", "loe": "sep", "note": "Unit diary, orders, leave, DD-214.", "when": []},
@@ -1375,6 +1405,7 @@ for benefit in claim["benefits"]["rows"]:
             "permanently and totally disabled", "having a permanent and total service-connected disability"
         ).replace("The agency decides eligibility.", "The agency decides eligibility; anyone eligible for TRICARE is excluded.")
         benefit["verify"] = COPY["fam-champva"]["verify"]
+apply_va115(items, claim, contacts)
 ledger["note"] = "Use your latest Leave and Earnings Statement (LES) to enter your actual leave balance."
 seed = {"pack": PACK, "settings": settings, "ledger": ledger, "loes": loes, "items": items, "contacts": contacts, "blocks": blocks, "conditions": conditions, "claim": claim}
 
@@ -1388,7 +1419,11 @@ FLAGS = {"resign", "retire", "eas", "officer", "enlisted", "reserve", "noreserve
 def check_rule(r, where):
     if r is None: return
     keys = set(r) - {"biz"}
-    if keys not in ({"date"}, {"eas"}, {"easMonths"}, {"sb"}, {"serviceEnd"}, {"byPath"}, {"item", "days"}, {"item", "months"}): errs.append(f"{where}: bad rule {r}")
+    if keys not in ({"date"}, {"eas"}, {"easMonths"}, {"sb"}, {"serviceEnd"}, {"byPath"}, {"item", "days"}, {"item", "months"}, {"min"}, {"sb", "days"}, {"unitDeparture"}, {"terminalStart"}): errs.append(f"{where}: bad rule {r}")
+    if "min" in r:
+        if not isinstance(r["min"], list) or not r["min"]: errs.append(f"{where}: empty min rule")
+        else:
+            for child in r["min"]: check_rule(child, where+".min")
     if "byPath" in r:
         if set(r["byPath"]) != {"eas", "resign", "retire"}: errs.append(f"{where}: missing path")
         for path, rule in r["byPath"].items(): check_rule(rule, where+"."+path)
@@ -1428,9 +1463,17 @@ for flags in combos():
     counts[key] = len(inc)
     for i in inc:
         if i["loe"] not in inc_loes: errs.append(f"{key}: {i['id']} included but its line of effort is not")
-        for r in [i["due"]] + ([i["window"]["from"], i["window"]["to"]] if i["window"] else []):
-            if r and "item" in r and r["item"] not in inc_ids: errs.append(f"{key}: {i['id']} points at {r['item']} which is excluded")
-            if r and "sb" in r and "sb" not in flags: errs.append(f"{key}: {i['id']} uses a SkillBridge rule without SkillBridge")
+        def rule_leaves(rule, optional_sb=False):
+            if not rule: return
+            if 'min' in rule:
+                for child in rule['min']: yield from rule_leaves(child, True)
+            elif 'byPath' in rule:
+                yield from rule_leaves(rule['byPath'].get(next(p for p in ('eas','resign','retire') if p in flags)), optional_sb)
+            else: yield rule, optional_sb
+        for root in [i['due']] + ([i['window']['from'],i['window']['to']] if i['window'] else []):
+            for r, optional_sb in rule_leaves(root):
+                if 'item' in r and r['item'] not in inc_ids: errs.append(f"{key}: {i['id']} points at {r['item']} which is excluded")
+                if 'sb' in r and 'sb' not in flags and not optional_sb: errs.append(f"{key}: {i['id']} uses a SkillBridge rule without SkillBridge")
 
 def _leak_words():
     if os.environ.get("MUSTEROUT_PUBLIC_BUILD") == "1":

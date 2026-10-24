@@ -7,7 +7,11 @@
     "file": "regs/mco-1700.31a.txt",
     "line_start": 865,
     "line_end": 866,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1700.31A",
@@ -17,7 +21,11 @@
     "file": "regs/mco-1700.31a.txt",
     "line_start": 1119,
     "line_end": 1120,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1700.31A",
@@ -27,7 +35,11 @@
     "file": "regs/mco-1700.31a.txt",
     "line_start": 1129,
     "line_end": 1135,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "NAVMC 1700.2B",
@@ -37,7 +49,11 @@
     "file": "regs/navmc-1700.2b.txt",
     "line_start": 677,
     "line_end": 679,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1700.31A",
@@ -47,7 +63,11 @@
     "file": "regs/mco-1700.31a.txt",
     "line_start": 868,
     "line_end": 869,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1700.31A",
@@ -57,7 +77,11 @@
     "file": "regs/mco-1700.31a.txt",
     "line_start": 1195,
     "line_end": 1196,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1700.31A",
@@ -67,7 +91,11 @@
     "file": "regs/mco-1700.31a.txt",
     "line_start": 871,
     "line_end": 872,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1700.31A",
@@ -77,7 +105,11 @@
     "file": "regs/mco-1700.31a.txt",
     "line_start": 1231,
     "line_end": 1232,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1700.31A",
@@ -87,7 +119,11 @@
     "file": "regs/mco-1700.31a.txt",
     "line_start": 1817,
     "line_end": 1818,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1700.31A",
@@ -97,7 +133,11 @@
     "file": "regs/mco-1700.31a.txt",
     "line_start": 1139,
     "line_end": 1140,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MARADMIN 454/26",
@@ -107,7 +147,11 @@
     "file": "regs/maradmin-454-26.txt",
     "line_start": 119,
     "line_end": 120,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1700.31A",
@@ -117,7 +161,11 @@
     "file": "regs/mco-1700.31a.txt",
     "line_start": 874,
     "line_end": 875,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1700.31A",
@@ -127,7 +175,11 @@
     "file": "regs/mco-1700.31a.txt",
     "line_start": 1402,
     "line_end": 1403,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1700.31A",
@@ -137,7 +189,11 @@
     "file": "regs/mco-1700.31a.txt",
     "line_start": 877,
     "line_end": 878,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1050.3J",
@@ -177,7 +233,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 27955,
     "line_end": 27956,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "NAVMC 1700.2B",
@@ -187,7 +247,11 @@
     "file": "regs/navmc-1700.2b.txt",
     "line_start": 705,
     "line_end": 707,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "NAVMC 1700.2B",
@@ -197,7 +261,11 @@
     "file": "regs/navmc-1700.2b.txt",
     "line_start": 740,
     "line_end": 744,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -207,7 +275,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 2987,
     "line_end": 2990,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -217,7 +289,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 1291,
     "line_end": 1293,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -235,7 +311,11 @@
         "file": "regs/mco-1900.16-ch3.txt",
         "line_start": 21105,
         "line_end": 21106,
-        "verified": true
+        "verified": true,
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility."
       },
       {
         "quote": "The Marine requesting action is required to sign a copy of Appendix J from this Manual.",
@@ -243,7 +323,11 @@
         "file": "regs/mco-1900.16-ch3.txt",
         "line_start": 21103,
         "line_end": 21105,
-        "verified": true
+        "verified": true,
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility."
       },
       {
         "quote": "Reporting units must submit requests for retirement/transfer to the FMCR via the unit diary system per reference (cn) MCTFS PRIUM (Online).",
@@ -251,7 +335,11 @@
         "file": "regs/mco-1900.16-ch3.txt",
         "line_start": 21102,
         "line_end": 21103,
-        "verified": true
+        "verified": true,
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility."
       },
       {
         "quote": "Submit requests for retirement/transfer to the FMCR not more than 14 months and not less than four months before the requested date. Requests submitted outside this time frame are not accepted in MCTFS and must be submitted, with justification and endorsements, by separate correspondence or message to CMC (MMSR-2)",
@@ -259,9 +347,17 @@
         "file": "regs/mco-1900.16-ch3.txt",
         "line_start": 21109,
         "line_end": 21113,
-        "verified": true
+        "verified": true,
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility."
       }
-    ]
+    ],
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -271,7 +367,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 21346,
     "line_end": 21347,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -281,7 +381,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 21349,
     "line_end": 21351,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -301,7 +405,11 @@
     "file": "regs/maradmin-175-24.txt",
     "line_start": 11,
     "line_end": 11,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MARADMIN 045/25",
@@ -331,7 +439,33 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 3008,
     "line_end": 3012,
-    "verified": true
+    "verified": true,
+    "quotes": [
+      {
+        "quote": "If leave is desired in conjunction with a request for separation, the appropriate separation request should be submitted at least 120 days plus the amount of desired leave (to include PTAD) before the effective date of separation. When the request is submitted via unit diary, enter the planned detachment date (PDD) as part of the unit diary request for separation.",
+        "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+        "file": "regs/mco-1900.16-ch3.txt",
+        "line_start": 3008,
+        "line_end": 3012,
+        "verified": true,
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility."
+      },
+      {
+        "quote": "Departure on terminal leave will not be authorized until the request has been approved by the CMC and all required administrative and medical actions incident to separation have been completed--e.g., completion of medical evaluation, transition classes, etc.",
+        "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+        "file": "regs/mco-1900.16-ch3.txt",
+        "line_start": 3020,
+        "line_end": 3023,
+        "verified": true
+      }
+    ],
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -341,7 +475,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 3031,
     "line_end": 3033,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -359,7 +497,11 @@
         "file": "regs/mco-1900.16-ch3.txt",
         "line_start": 11027,
         "line_end": 11028,
-        "verified": true
+        "verified": true,
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility."
       },
       {
         "quote": "Submit requests for resignation via the unit diary per reference (cn) MCTFS PRIUM (Online) paragraph 5137... The unit must report the appropriate type transaction code (TTC) request in the unit diary to indicate whether the officer does or does not desire a Reserve commission.",
@@ -367,7 +509,11 @@
         "file": "regs/mco-1900.16-ch3.txt",
         "line_start": 11026,
         "line_end": 11033,
-        "verified": true
+        "verified": true,
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility."
       },
       {
         "quote": "MCTFS will not accept resignation requests made via unit diary outside the 4 to 14 month window.",
@@ -375,9 +521,17 @@
         "file": "regs/mco-1900.16-ch3.txt",
         "line_start": 11030,
         "line_end": 11031,
-        "verified": true
+        "verified": true,
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility."
       }
-    ]
+    ],
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -536,7 +690,11 @@
         "line_start": 43,
         "line_end": 43,
         "verified": true,
-        "source_url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/"
+        "source_url": "https://www.manpower.marines.mil/Divisions/Manpower-Management/Separation-and-Retirements-Branch/Active-Duty-Retirements-Separations/",
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility."
       }
     ]
   },
@@ -716,7 +874,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 6843,
     "line_end": 6848,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -726,7 +888,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 6854,
     "line_end": 6856,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -736,7 +902,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 21117,
     "line_end": 21119,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -904,7 +1074,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 5896,
     "line_end": 5898,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -914,7 +1088,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 5918,
     "line_end": 5919,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -924,7 +1102,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 5921,
     "line_end": 5923,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MARADMIN 280/24",
@@ -1148,7 +1330,14 @@
     "line_start": 4018,
     "line_end": 4018,
     "verified": true,
-    "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+    "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+    "version": "Version 6.1, July 2026",
+    "locator": "Original pack locator: Module 3, p. 80",
+    "limitation": "This topic page was not reverified against the July 2026 edition. Confirm current instructions through the official program route."
   },
   {
     "ref": "VA Benefits and Services Participant Guide v6.1",
@@ -1168,7 +1357,14 @@
         "line_start": 4104,
         "line_end": 4105,
         "verified": true,
-        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+        "version": "Version 6.1, July 2026",
+        "locator": "Original pack locator: Module 3",
+        "limitation": "This topic page was not reverified against the July 2026 edition. Confirm current instructions through the official program route."
       },
       {
         "quote": "If you complete your SHA exam and return it to DOD at least 30 days before separation, it will serve as your DOD discharge exam, and you will not need to complete a SHPE.",
@@ -1177,7 +1373,14 @@
         "line_start": 3762,
         "line_end": 3763,
         "verified": true,
-        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+        "version": "Version 6.1, July 2026",
+        "locator": "Original pack locator: Module 3",
+        "limitation": "This topic page was not reverified against the July 2026 edition. Confirm current instructions through the official program route."
       },
       {
         "quote": "Provide a copy of your scanned physical records, electronic medical records and outsourced civilian records (if applicable) for your entire service history.",
@@ -1186,7 +1389,13 @@
         "line_start": 3659,
         "line_end": 3660,
         "verified": true,
-        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+        "version": "Version 6.1, July 2026",
+        "locator": "Module 3, printed page 72 (PDF page 85)"
       },
       {
         "quote": "Submit your BDD claims between 180 and 90 days before the very last day of service on active duty. For BDD purposes, this separation date is not when you start Transitional or Terminal Leave or Permissive Temporary Duty for seeking a home.",
@@ -1195,7 +1404,13 @@
         "line_start": 3655,
         "line_end": 3657,
         "verified": true,
-        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+        "version": "Version 6.1, July 2026",
+        "locator": "Module 3, printed page 72 (PDF page 85)"
       },
       {
         "quote": "Provide a completed Separation Health Assessment (SHA)-Part A Self-Assessment.",
@@ -1204,7 +1419,13 @@
         "line_start": 3658,
         "line_end": 3658,
         "verified": true,
-        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+        "version": "Version 6.1, July 2026",
+        "locator": "Module 3, printed page 72 (PDF page 85)"
       },
       {
         "quote": "You'll need to have a known Separation Date and do the following:",
@@ -1213,7 +1434,13 @@
         "line_start": 3654,
         "line_end": 3654,
         "verified": true,
-        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+        "version": "Version 6.1, July 2026",
+        "locator": "Module 3, printed page 72 (PDF page 85)"
       },
       {
         "quote": "Be available 45 days after submitting your BDD claim to attend the required medical exam(s)",
@@ -1222,7 +1449,13 @@
         "line_start": 3661,
         "line_end": 3662,
         "verified": true,
-        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+        "version": "Version 6.1, July 2026",
+        "locator": "Module 3, printed page 72 (PDF page 85)"
       },
       {
         "quote": "Submit your BDD claims between 180 and 90 days before the very last day of service on active duty.",
@@ -1231,9 +1464,22 @@
         "line_start": 3655,
         "line_end": 3656,
         "verified": true,
-        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+        "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+        "version": "Version 6.1, July 2026",
+        "locator": "Module 3, printed page 72 (PDF page 85)"
       }
-    ]
+    ],
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+    "version": "Version 6.1, July 2026",
+    "locator": "Original pack locator: Module 3",
+    "limitation": "This topic page was not reverified against the July 2026 edition. Confirm current instructions through the official program route."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -1243,7 +1489,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 3126,
     "line_end": 3129,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -1253,7 +1503,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 3883,
     "line_end": 3889,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "VA intent to file guidance",
@@ -1263,7 +1517,11 @@
     "file": "regs/va-intent-to-file.txt",
     "line_start": 20,
     "line_end": 20,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "VA intent to file guidance",
@@ -1273,7 +1531,11 @@
     "file": "regs/va-intent-to-file.txt",
     "line_start": 35,
     "line_end": 35,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "VA Benefits and Services Participant Guide v6.1",
@@ -1284,7 +1546,14 @@
     "line_start": 2250,
     "line_end": 2251,
     "verified": true,
-    "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+    "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+    "version": "Version 6.1, July 2026",
+    "locator": "Original pack locator: Module 2, p. 41",
+    "limitation": "This topic page was not reverified against the July 2026 edition. Confirm current instructions through the official program route."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -1294,7 +1563,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 3676,
     "line_end": 3692,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "VA Benefits and Services Participant Guide v6.1",
@@ -1305,7 +1578,13 @@
     "line_start": 3712,
     "line_end": 3713,
     "verified": true,
-    "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+    "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+    "version": "Version 6.1, July 2026",
+    "locator": "Module 3, printed page 74 (PDF page 87); replaces the old page 73 reference"
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -1511,7 +1790,11 @@
         "file": "regs/maradmin-454-26.txt",
         "line_start": 58,
         "line_end": 62,
-        "verified": true
+        "verified": true,
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility."
       },
       {
         "quote": "Upon completion of TAMP, eligible Selected Reserve Marines may enroll in TRICARE Reserve Select.",
@@ -1519,9 +1802,17 @@
         "file": "regs/maradmin-454-26.txt",
         "line_start": 62,
         "line_end": 63,
-        "verified": true
+        "verified": true,
+        "reviewed": "2026-10-20",
+        "review_due": "2026-10-24",
+        "maintenance_owner": "Muster Out product maintainer",
+        "scope": "Bounded source review only; this does not confirm your event or eligibility."
       }
-    ]
+    ],
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -1531,7 +1822,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 5947,
     "line_end": 5962,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "VA Benefits and Services Participant Guide v6.1",
@@ -1542,7 +1837,14 @@
     "line_start": 4213,
     "line_end": 4213,
     "verified": true,
-    "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+    "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+    "version": "Version 6.1, July 2026",
+    "locator": "Original pack locator: Converting SGLI to VGLI",
+    "limitation": "This topic page was not reverified against the July 2026 edition. Confirm current instructions through the official program route."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -1552,7 +1854,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 3587,
     "line_end": 3590,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "VA Benefits and Services Participant Guide v6.1",
@@ -1563,7 +1869,14 @@
     "line_start": 4620,
     "line_end": 4621,
     "verified": true,
-    "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf"
+    "source_url": "https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf",
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility.",
+    "version": "Version 6.1, July 2026",
+    "locator": "Original pack locator: Module 4, p. 94",
+    "limitation": "This topic page was not reverified against the July 2026 edition. Confirm current instructions through the official program route."
   },
   {
     "ref": "Joint Travel Regulations (1 Oct 2026)",
@@ -1643,7 +1956,11 @@
     "file": "regs/va-dental-care.txt",
     "line_start": 29,
     "line_end": 40,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "VA CHAMPVA benefits",
@@ -1653,7 +1970,11 @@
     "file": "regs/va-champva.txt",
     "line_start": 24,
     "line_end": 30,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -1663,7 +1984,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 29224,
     "line_end": 29227,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -1673,7 +1998,11 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 29229,
     "line_end": 29231,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
@@ -1683,17 +2012,25 @@
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 29238,
     "line_end": 29240,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
-    "para": "Definitions, 274",
+    "para": "1002, definition Expiration of Active Service",
     "quote": "Expiration of Active Service (EAS). The day active service terminates,",
     "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
     "file": "regs/mco-1900.16-ch3.txt",
     "line_start": 1315,
     "line_end": 1315,
-    "verified": true
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
   },
   {
     "ref": "VA dental care eligibility",
@@ -1703,6 +2040,30 @@
     "file": "regs/va-dental-care.txt",
     "line_start": 43,
     "line_end": 53,
+    "verified": true,
+    "reviewed": "2026-10-20",
+    "review_due": "2026-10-24",
+    "maintenance_owner": "Muster Out product maintainer",
+    "scope": "Bounded source review only; this does not confirm your event or eligibility."
+  },
+  {
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "2004.5.a(3)",
+    "quote": "Sign the pre-application checklist (Appendix J) to certify that the Marine has been advised of the ramifications of the request to retire prior to the request being submitted to Headquarters Marine Corps (HQMC).",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 6892,
+    "line_end": 6894,
+    "verified": true
+  },
+  {
+    "ref": "NAVMC 1700.2B",
+    "para": "5.c",
+    "quote": "Final checkout requirements are coordinated with the servicing Personnel Administration Center prior to departing for SkillBridge.",
+    "url": "https://www.marines.mil/Portals/1/Publications/NAVMC%201700.2B%20%28SECURED%29.pdf",
+    "file": "regs/navmc-1700.2b.txt",
+    "line_start": 234,
+    "line_end": 236,
     "verified": true
   }
 ]

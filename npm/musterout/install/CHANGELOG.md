@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.0 (2026-10-24)
+- Prepare your own VA claim: records, conditions to raise with a VSO, a personal statement helper and rating estimates.
+- Your leave forecast always shows its chart and warns before you lose leave. Setup keeps your place.
+
 ## 0.2.23 (2026-10-19)
 - Setup now tells you exactly what to turn on when Claude can't download Muster Out.
 - The security page explains each Claude setting setup needs, and why.
