@@ -41,6 +41,40 @@ try{
   assert.throws(()=>verifyBundle(tmp,env),/duplicate/i,'REFV32 F02 duplicate projection accepted');
  }
  write('feed/v3/latest.json',canonical(modern));
+ // REFV32-F05: translated from evidence-r2/harness/large_publish_probe.py.
+ // The same 500-notice ALMAR/ALNAV construction must pass sync and both publisher entry points.
+ const largeLegacy=structuredClone(legacy),largeModern=structuredClone(modern),template=structuredClone(legacy.sources[0].notices[0]);
+ for(const feed of [largeLegacy,largeModern])for(const source of ['ALMAR','ALNAV']){
+  const block=feed.sources.find(b=>b.source===source);block.notices=[];
+  for(let i=1;i<=500;i++)block.notices.push({...structuredClone(template),
+   number:i+'/26',id:source+'-'+i+'-26',series:source,title:'A'.repeat(300),summary:'B'.repeat(1000),description:'D',
+   url:source==='ALMAR'?'https://www.marines.mil/News/Messages/Messages-Display/Article/1234567/example/':'https://www.mynavyhr.navy.mil/References/Messages/example/',
+   posted:block.window.to,body_available:false,applicability:{},applicability_evidence:{}});
+  block.checked_count=500;
+ }
+ largeModern.legacy_sha256=createHash('sha256').update(canonical(largeLegacy)).digest('hex');
+ const largeRoot=path.join(tmp,'large'),downloads=path.join(tmp,'large-download');
+ for(const name of ['validate_v1.py','validate_v2.py','validate_v3.py','watch_contract.py'])write('large/feed/'+name,fs.readFileSync(path.join(here,name)));
+ write('large/config.json',fs.readFileSync(path.join(tmp,'config.json')));
+ write('large/npm/musterout-feed/public_keys.json',JSON.stringify(roots));
+ const largePkg=JSON.parse(fs.readFileSync(path.join(tmp,'npm/musterout-feed/package.json')));largePkg.files=['feed.js','LICENSE','NOTICE.md'];
+ write('large/npm/musterout-feed/package.json',JSON.stringify(largePkg));
+ write('large-download/latest.json',fs.readFileSync(path.join(here,'fixtures/v1.json')));
+ for(const [profile,data] of [['v2',largeLegacy],['v3',largeModern]]){
+  write('large-download/'+profile+'/latest.json',canonical(data));write('large-download/'+profile+'/feed.js',transport(data));
+ }
+ const projectionBytes=fs.statSync(path.join(downloads,'v3/latest.json')).size,wrapperBytes=fs.statSync(path.join(downloads,'v3/feed.js')).size;
+ assert(projectionBytes>1024*1024&&projectionBytes<2000000,'F05 control must lie between 1 MiB and the projection wire cap');
+ assert(wrapperBytes>1024*1024&&wrapperBytes<2000000,'F05 wrapper must also remain under the wire cap');
+ execFileSync('python3',['-B',path.join(here,'sync.py'),'--downloads',downloads,'--target',path.join(largeRoot,'feed'),'--profile','v3'],
+  {env:{...process.env,...env},stdio:['ignore','ignore','pipe'],maxBuffer:65536});
+ assert.equal(verifyFeed(largeRoot,env,'v3').seq,largeModern.seq);
+ assert.equal(verifyBundle(largeRoot,env).seq,largeModern.seq);
+ // Duplicate rejection must precede parsing even for a large, otherwise valid projection.
+ write('large/feed/v3/latest.json','{"seq":0,'+canonical(largeModern).slice(1));
+ assert.throws(()=>verifyBundle(largeRoot,env),/duplicate/i,'F05 large duplicate projection accepted');
+ write('large/feed/v3/latest.json',canonical(largeModern));
+ console.log('PASS F05: '+projectionBytes+'-byte v3 projection, '+wrapperBytes+'-byte wrapper; sync, verifyFeed and verifyBundle accept; large duplicate rejects');
  const bad=structuredClone(modern);bad.legacy_sha256='0'.repeat(64);write('feed/v3/latest.json',canonical(bad));write('feed/v3/feed.js',transport(bad));assert.throws(()=>verifyBundle(tmp,env));
  console.log('PASS: legacy-only, dual bundle, exact packaged bytes, monotonic roots, retry and signed pair rejection');
 }finally{fs.rmSync(tmp,{recursive:true,force:true});}

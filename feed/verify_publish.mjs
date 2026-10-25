@@ -77,12 +77,12 @@ export function verifyFeed(root = '.', env = process.env, profile = 'v2', bundle
   assert.equal(createHash('sha256').update(data).digest('hex'),e.sha256);
   const projection = read('feed/' + profile + '/latest.json');
   assert(projection.length <= 2000000, 'Oversized feed projection');
-  // Python's object-pairs hook rejects ambiguity before JSON.parse sees the value.
-  const projectionData = profile === 'v3'
-    ? JSON.parse(execFileSync('python3',['-B','-c',
-        'import sys,json; from validate_v3 import strict_json_loads; print(json.dumps(strict_json_loads(sys.stdin.buffer.read()),ensure_ascii=False))'],
-        {cwd:path.join(root,'feed'),input:projection,encoding:'utf8'}))
-    : JSON.parse(projection);
+  // Reject duplicate keys before Node parses the original capped projection.
+  // Validation emits no document; only bounded failure diagnostics are buffered.
+  if (profile === 'v3') execFileSync('python3',['-B','-c',
+    'import sys; from validate_v3 import strict_json_loads; strict_json_loads(sys.stdin.buffer.read())'],
+    {cwd:path.join(root,'feed'),input:projection,stdio:['pipe','ignore','pipe'],maxBuffer:65536});
+  const projectionData = JSON.parse(projection);
   assert.equal(canonical(projectionData),data.toString(), 'Feed projection differs from signed data');
   // Strict source schemas run only after the signature and canonical hash pass.
   const validator = profile === 'v3' ? 'from validate_v3 import validate_feed' : 'from validate_v3 import validate_legacy as validate_feed';
