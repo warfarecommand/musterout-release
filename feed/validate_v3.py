@@ -23,6 +23,8 @@ ORDER_BLOCK_FIELDS = frozenset({'unresolved_count', 'unresolved_items'})
 
 
 def validate_source_block_fields(block, schema_version=3):
+    if not isinstance(block, dict):
+        raise ValueError('Invalid schema-3 source-block fields')
     required = SOURCE_BLOCK_FIELDS_BY_VERSION[schema_version]
     allowed = required | (ORDER_BLOCK_FIELDS if block.get('source') == 'ORDER' else frozenset())
     if not required <= block.keys() or not block.keys() <= allowed:
