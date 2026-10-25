@@ -23,19 +23,40 @@ jobs:
         env:
           MO_FEED_PUBLIC_KEY: ${{ vars.MO_FEED_PUBLIC_KEY }}
           MO_FEED_KEY_ID: ${{ vars.MO_FEED_KEY_ID }}
+          # Capability first. TRS changes both feed workflows to v3 only after Watch dual output is verified.
+          MO_FEED_PROFILE: v2
         shell: bash
         run: |
           set -euo pipefail
+          case "$MO_FEED_PROFILE" in v2|v3) ;; *) exit 1 ;; esac
           mkdir -p "$RUNNER_TEMP/feed-download/v2"
-          curl -q --fail --silent --show-error --max-time 60 --max-filesize 250000 --proto '=https' https://watch.warfarecommand.com/feed/latest.json -o "$RUNNER_TEMP/feed-download/latest.json"
-          curl -q --fail --silent --show-error --max-time 60 --max-filesize 2000000 --proto '=https' https://watch.warfarecommand.com/feed/v2/latest.json -o "$RUNNER_TEMP/feed-download/v2/latest.json"
-          curl -q --fail --silent --show-error --max-time 60 --max-filesize 2000000 --proto '=https' https://watch.warfarecommand.com/feed/v2/feed.js -o "$RUNNER_TEMP/feed-download/v2/feed.js"
-          python3 feed/sync.py --downloads "$RUNNER_TEMP/feed-download"
+          if [ "$MO_FEED_PROFILE" = v3 ]; then
+            curl -q --fail --silent --show-error --max-time 60 --max-filesize 2000000 --proto '=https' https://watch.warfarecommand.com/feed/v3/feed.js -o "$RUNNER_TEMP/latest-v3.js"
+            pair=$(python3 -B feed/sync.py --snapshot-script "$RUNNER_TEMP/latest-v3.js")
+            [[ "$pair" =~ ^[1-9][0-9]*-[1-9][0-9]*$ ]]
+            base="https://watch.warfarecommand.com/feed/snapshots/$pair"
+            mkdir -p "$RUNNER_TEMP/feed-download/v3"
+            names=(latest.json v2/latest.json v2/feed.js v3/latest.json v3/feed.js)
+          else
+            base=https://watch.warfarecommand.com/feed
+            names=(latest.json v2/latest.json v2/feed.js)
+          fi
+          for name in "${names[@]}"; do
+            limit=2000000
+            if [ "$name" = latest.json ]; then limit=250000; fi
+            curl -q --fail --silent --show-error --max-time 60 --max-filesize "$limit" --proto '=https' "$base/$name" -o "$RUNNER_TEMP/feed-download/$name"
+          done
+          if [ "$MO_FEED_PROFILE" = v3 ]; then
+            python3 -B feed/sync.py --downloads "$RUNNER_TEMP/feed-download" --profile v3 --expected-v3 "$RUNNER_TEMP/latest-v3.js"
+          else
+            python3 -B feed/sync.py --downloads "$RUNNER_TEMP/feed-download"
+          fi
       - name: Commit changed feeds
         shell: bash
         run: |
           set -euo pipefail
           git add feed/latest.json feed/v2/latest.json feed/v2/feed.js
+          if [ -f feed/v3/latest.json ]; then git add feed/v3/latest.json feed/v3/feed.js; fi
           if ! git diff --cached --quiet; then
             git config user.name 'github-actions[bot]'
             git config user.email '41898282+github-actions[bot]@users.noreply.github.com'

@@ -29,10 +29,11 @@ function signature(key, sig, message) {
   const publicKey = createPublicKey({key:Buffer.concat([Buffer.from('302a300506032b6570032100','hex'),raw64(key,32)]),format:'der',type:'spki'});
   assert(verify(null, Buffer.from(canonical(message)), publicKey, raw64(sig,64)), 'Invalid Ed25519 feed signature');
 }
-export function verifyFeed(root = '.', env = process.env) {
+export function verifyFeed(root = '.', env = process.env, profile = 'v2', bundle = false) {
+  assert(['v2','v3'].includes(profile), 'Unknown feed profile');
   const read = name => fs.readFileSync(path.join(root,name));
-  const source = read('feed/v2/feed.js');
-  assert(source.length <= 2000030, 'Oversized feed transport');
+  const source = read('feed/' + profile + '/feed.js');
+  assert(source.length <= 2000000, 'Oversized feed transport');
   const script = source.toString('utf8');
   assert(source.equals(Buffer.from(script)), 'Invalid UTF-8');
   assert(script.startsWith('self.postMessage(') && script.endsWith(');\n'), 'Invalid feed wrapper');
@@ -74,9 +75,11 @@ export function verifyFeed(root = '.', env = process.env) {
   const data = Buffer.from(canonical(payload.data));
   assert.equal(data.length,e.size);
   assert.equal(createHash('sha256').update(data).digest('hex'),e.sha256);
-  assert.equal(canonical(JSON.parse(read('feed/v2/latest.json'))),data.toString(), 'Feed projection differs from signed data');
+  assert.equal(canonical(JSON.parse(read('feed/' + profile + '/latest.json'))),data.toString(), 'Feed projection differs from signed data');
   // Strict source schemas run only after the signature and canonical hash pass.
-  execFileSync('python3',['-B','-c','import json,sys; from validate_v2 import validate_feed; validate_feed(json.load(sys.stdin))'],{cwd:path.join(root,'feed'),input:data,stdio:['pipe','pipe','pipe']});
+  const validator = profile === 'v3' ? 'from validate_v3 import validate_feed' : 'from validate_v3 import validate_legacy as validate_feed';
+  execFileSync('python3',['-B','-c','import json,sys; '+validator+'; validate_feed(json.load(sys.stdin))'],{cwd:path.join(root,'feed'),input:data,stdio:['pipe','pipe','pipe']});
+  if(profile === 'v3')execFileSync('python3',['-B','-c','import json,sys; from validate_v3 import bounded_json; bounded_json(json.load(sys.stdin))'],{cwd:path.join(root,'feed'),input:canonical(payload),stdio:['pipe','pipe','pipe']});
   assert.equal(payload.data.seq,e.seq); assert.equal(payload.data.generated_at,e.created); assert.equal(payload.data.expires_at,e.expires);
   assert.equal(payload.data.capture_replay,false,'Captured fixtures cannot publish');
   for (const stamp of [e.created,e.expires]) {
@@ -86,10 +89,16 @@ export function verifyFeed(root = '.', env = process.env) {
   }
   assert(Date.parse(e.created) <= Date.now() && Date.parse(e.expires) > Date.now(), 'Future or expired feed');
   const pkg = JSON.parse(read('npm/musterout-feed/package.json'));
-  assert.equal(pkg.name,'musterout-feed'); assert.equal(pkg.license,'SEE LICENSE IN LICENSE'); assert.deepEqual(pkg.files,['feed.js','LICENSE','NOTICE.md']);
+  assert.equal(pkg.name,'musterout-feed'); assert.equal(pkg.license,'SEE LICENSE IN LICENSE'); assert([JSON.stringify(['feed.js','LICENSE','NOTICE.md']), ...(bundle ? [JSON.stringify(['feed.js','v3/feed.js','LICENSE','NOTICE.md'])] : [])].includes(JSON.stringify(pkg.files)), 'Unexpected package files');
   assert.equal(pkg.repository.url,'https://github.com/warfarecommand/musterout-release.git');
   for (const field of ['scripts','dependencies','devDependencies','optionalDependencies','peerDependencies','bundledDependencies']) assert(!pkg[field],field);
-  return {seq:e.seq, source, pkg};
+  return {seq:e.seq, source, pkg, data:payload.data, profile};
+}
+export function verifyBundle(root = '.', env = process.env) {
+  const legacy = verifyFeed(root, env, 'v2', true), modern = verifyFeed(root, env, 'v3', true);
+  execFileSync('python3',['-B','-c','import json,sys; from validate_v3 import validate_pair; validate_pair(*json.load(sys.stdin))'],
+    {cwd:path.join(root,'feed'),input:JSON.stringify([legacy.data, modern.data]),stdio:['pipe','pipe','pipe']});
+  return {seq:modern.seq, legacySeq:legacy.seq, source:legacy.source, modernSource:modern.source, pkg:legacy.pkg, profile:'v3'};
 }
 export function preparePackage(root, verified, publishedVersion) {
   if (publishedVersion !== null) {
@@ -101,6 +110,12 @@ export function preparePackage(root, verified, publishedVersion) {
       return false;
     }
   }
+  if (verified.profile === 'v3') {
+    assert(publishedVersion === null || verified.legacySeq > Number(publishedVersion.slice(4)), 'Legacy stream must advance beyond published bundle high-water');
+    verified.pkg.files = ['feed.js','v3/feed.js','LICENSE','NOTICE.md'];
+    fs.mkdirSync(path.join(root,'npm/musterout-feed/v3'),{recursive:true});
+    fs.writeFileSync(path.join(root,'npm/musterout-feed/v3/feed.js'),verified.modernSource);
+  }
   verified.pkg.version = '1.0.' + verified.seq;
   fs.writeFileSync(path.join(root,'npm/musterout-feed/package.json'),JSON.stringify(verified.pkg,null,2)+'\n');
   fs.writeFileSync(path.join(root,'npm/musterout-feed/feed.js'),verified.source);
@@ -108,7 +123,9 @@ export function preparePackage(root, verified, publishedVersion) {
 }
 async function main() {
   const root = process.cwd();
-  const verified = verifyFeed(root);
+  const profile = process.env.MO_FEED_PROFILE || 'v2';
+  assert(['v2','v3'].includes(profile), 'Unknown feed profile');
+  const verified = profile === 'v3' ? verifyBundle(root) : verifyFeed(root);
   const response = await fetch('https://registry.npmjs.org/musterout-feed/latest',{redirect:'error',signal:AbortSignal.timeout(20000)});
   let publishedVersion = null;
   if (response.status !== 404) {
