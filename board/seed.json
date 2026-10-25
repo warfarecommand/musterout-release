@@ -294,7 +294,10 @@
    "when": [],
    "basis": "rule",
    "label": "Complete your separation counseling",
-   "brief": "For Marines required to complete TRP. This required counseling explains your transition benefits and responsibilities. The appointment and completion deadline are separate dates."
+   "brief": "For Marines required to complete TRP. This required counseling explains your transition benefits and responsibilities. The appointment and completion deadline are separate dates.",
+   "after": [
+    "sep-ic"
+   ]
   },
   {
    "id": "sep-presep-appt",
@@ -404,7 +407,10 @@
    "when": [],
    "basis": "rule",
    "label": "Complete Transition Readiness Seminar workshops",
-   "brief": "For Marines required to complete TRP. The workshops are required before Capstone review and command verification. Ask your transition counselor to confirm your required sessions."
+   "brief": "For Marines required to complete TRP. The workshops are required before Capstone review and command verification. Ask your transition counselor to confirm your required sessions.",
+   "after": [
+    "sep-presep"
+   ]
   },
   {
    "id": "sep-trs-appt",
@@ -663,7 +669,10 @@
    "when": [],
    "basis": "rule",
    "label": "Complete your final transition review",
-   "brief": "For Marines required to complete TRP. Capstone checks your transition readiness before command verification. Your counselor confirms what remains to complete."
+   "brief": "For Marines required to complete TRP. Capstone checks your transition readiness before command verification. Your counselor confirms what remains to complete.",
+   "after": [
+    "sep-trs"
+   ]
   },
   {
    "id": "sep-capstone-appt",
@@ -763,7 +772,10 @@
    "when": [],
    "basis": "rule",
    "label": "Get your command verification",
-   "brief": "For Marines required to complete TRP. Command verification closes the required transition sequence. Ask the transition office and your unit coordinator to confirm completion."
+   "brief": "For Marines required to complete TRP. Command verification closes the required transition sequence. Ask the transition office and your unit coordinator to confirm completion.",
+   "after": [
+    "sep-capstone"
+   ]
   },
   {
    "id": "sep-cv-appt",
@@ -1330,7 +1342,10 @@
    ],
    "basis": "target",
    "label": "Confirm your resignation request was entered",
-   "brief": "The current Total Force request window is 18 to 6 calendar months. Confirm the exact regular-commission resignation rule and exception with IPAC and MMSR-2 using your requested resignation date. Keep the legal window manual; the earlier office-check reminder is a planning target."
+   "brief": "The current Total Force request window is 18 to 6 calendar months. Confirm the exact regular-commission resignation rule and exception with IPAC and MMSR-2 using your requested resignation date. Keep the legal window manual; the earlier office-check reminder is a planning target.",
+   "after": [
+    "sep-counsel"
+   ]
   },
   {
    "id": "sep-letter",
@@ -2205,7 +2220,11 @@
    ],
    "basis": "target",
    "label": "Submit your enlisted retirement request",
-   "brief": "For applicable retirement or FMCR requests, current guidance uses 18 to 6 calendar months before the requested action date, superseding older 14-to-4-month text. The 9-month date is a planning target. A request is not approval."
+   "brief": "For applicable retirement or FMCR requests, current guidance uses 18 to 6 calendar months before the requested action date, superseding older 14-to-4-month text. The 9-month date is a planning target. A request is not approval.",
+   "after": [
+    "ret-eligibility-e",
+    "ret-counsel-e"
+   ]
   },
   {
    "id": "ret-receipt-e",
@@ -2251,7 +2270,10 @@
    ],
    "basis": "target",
    "label": "Confirm your retirement request was received",
-   "brief": "Check unit acceptance and headquarters receipt. Keep approval as a separate step until the decision posts."
+   "brief": "Check unit acceptance and headquarters receipt. Keep approval as a separate step until the decision posts.",
+   "after": [
+    "ret-request-e"
+   ]
   },
   {
    "id": "ret-pcs-e",
@@ -2606,7 +2628,16 @@
    "window": null,
    "critical": false,
    "presence": false,
-   "cite": [],
+   "cite": [
+    {
+     "ref": "38 CFR Part 3 (eCFR, 19 Oct 2026)",
+     "para": "3.750(b)(3)",
+     "quote": "Veterans who receive disability retired pay under 10 U.S.C. Chapter 61 with less than 20 years of creditable service are not eligible for concurrent receipt.",
+     "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3",
+     "accessed": "2026-10-21",
+     "source_requirement": "T3-R054"
+    }
+   ],
    "verify": "DFAS retired pay and VA: Does this retirement and service category qualify for CRDP, and how is the actual retired-pay/VA waiver calculated? Completion evidence: Record the actual retirement category, VA determination and DFAS treatment; threshold shorthand does not establish concurrent payment.",
    "status": "open",
    "doneOn": null,
@@ -2673,7 +2704,15 @@
    "window": null,
    "critical": false,
    "presence": false,
-   "cite": [],
+   "cite": [
+    {
+     "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+     "para": "1005.1",
+     "quote": "Commanders are authorized to discharge enlisted Marines upon expiration of enlistment, extension of enlistment, or period of induction.",
+     "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+     "accessed": "2026-10-21"
+    }
+   ],
    "verify": "Confirm with your installation personnel office when orders can be issued and what local checkout requires.",
    "status": "open",
    "doneOn": null,
@@ -3068,7 +3107,13 @@
    ],
    "basis": "target",
    "label": "Submit your SkillBridge packet",
-   "brief": "Review the application and supporting documents with your coordinator before sending them for command approval."
+   "brief": "Review the application and supporting documents with your coordinator before sending them for command approval.",
+   "after": [
+    "sb-provider",
+    "sb-ethics",
+    "sb-sequence",
+    "sb-account"
+   ]
   },
   {
    "id": "sb-approval",
@@ -3117,7 +3162,10 @@
    ],
    "basis": "target",
    "label": "Get written SkillBridge approval",
-   "brief": "Get written command approval and approved start and end dates before participating."
+   "brief": "Get written command approval and approved start and end dates before participating.",
+   "after": [
+    "sb-packet"
+   ]
   },
   {
    "id": "sb-sequence",
@@ -3350,7 +3398,11 @@
    ],
    "basis": "target",
    "label": "Confirm you can begin SkillBridge",
-   "brief": "Check written approval, final dates and completed transition requirements before you leave for the program."
+   "brief": "Check written approval, final dates and completed transition requirements before you leave for the program.",
+   "after": [
+    "sb-approval",
+    "sep-cv"
+   ]
   },
   {
    "id": "sb-start",
@@ -3800,7 +3852,7 @@
    "critical": true,
    "presence": false,
    "cite": [],
-   "verify": null,
+   "verify": "Accredited VSO representative: Review the issues and missing records you want to discuss for your own claim.",
    "status": "open",
    "doneOn": null,
    "notes": "",
@@ -3832,7 +3884,16 @@
    "window": null,
    "critical": true,
    "presence": false,
-   "cite": [],
+   "cite": [
+    {
+     "ref": "VA How to apply for VA health care",
+     "para": "Option 3: Apply in person",
+     "quote": "Go to your nearest VA medical center or clinic.",
+     "url": "https://www.va.gov/health-care/how-to-apply/",
+     "accessed": "2026-10-21",
+     "source_requirement": "T3-R022"
+    }
+   ],
    "verify": "VA medical center/clinic health-access staff for physical/hearing access; VA primary-care/mental-health or MST service for its corresponding inquiry: Physical/hearing: https://www.va.gov/health-care/how-to-apply/, Option 3 and its medical-center/clinic discovery link, provides general health access rather than a verified audiology booking endpoint. Ask which local clinical service can assess the physical or hearing concern and what access/referral step applies. Behavioral: https://www.va.gov/health-care/health-needs-conditions/mental-health/; ask the VA primary-care/mental-health service how to access the appropriate service given current enrollment, preserving its existing-user and new-user instructions. MST: https://www.va.gov/health-care/health-needs-conditions/military-sexual-trauma/; retain the specific clinical access and privacy inquiry without collecting a trauma narrative or requiring compensation filing. No diagnosis, appointment availability, enrollment or care entitlement is inferred. Current-service or eligibility exceptions remain for the clinical office. Completion evidence: If desired, record only the corresponding clinical inquiry or actual appointment event. A link click, compensation claim, diagnosis or local task completion is not required to discover care and does not prove enrollment or an appointment.",
    "status": "open",
    "doneOn": null,
@@ -3865,7 +3926,16 @@
    "window": null,
    "critical": false,
    "presence": false,
-   "cite": [],
+   "cite": [
+    {
+     "ref": "VA How to apply for VA health care",
+     "para": "Option 3: Apply in person",
+     "quote": "Go to your nearest VA medical center or clinic.",
+     "url": "https://www.va.gov/health-care/how-to-apply/",
+     "accessed": "2026-10-21",
+     "source_requirement": "T3-R022"
+    }
+   ],
    "verify": "VA medical center/clinic health-access staff for physical/hearing access; VA primary-care/mental-health or MST service for its corresponding inquiry: Physical/hearing: https://www.va.gov/health-care/how-to-apply/, Option 3 and its medical-center/clinic discovery link, provides general health access rather than a verified audiology booking endpoint. Ask which local clinical service can assess the physical or hearing concern and what access/referral step applies. Behavioral: https://www.va.gov/health-care/health-needs-conditions/mental-health/; ask the VA primary-care/mental-health service how to access the appropriate service given current enrollment, preserving its existing-user and new-user instructions. MST: https://www.va.gov/health-care/health-needs-conditions/military-sexual-trauma/; retain the specific clinical access and privacy inquiry without collecting a trauma narrative or requiring compensation filing. No diagnosis, appointment availability, enrollment or care entitlement is inferred. Current-service or eligibility exceptions remain for the clinical office. Completion evidence: If desired, record only the corresponding clinical inquiry or actual appointment event. A link click, compensation claim, diagnosis or local task completion is not required to discover care and does not prove enrollment or an appointment.",
    "status": "open",
    "doneOn": null,
@@ -3896,7 +3966,16 @@
    "window": null,
    "critical": false,
    "presence": false,
-   "cite": [],
+   "cite": [
+    {
+     "ref": "VA The PACT Act and your VA benefits",
+     "para": "What does it mean to have a presumptive condition for toxic exposure?",
+     "quote": "You only need to meet the service requirements for the presumption.",
+     "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/",
+     "accessed": "2026-10-21",
+     "source_requirement": "T3-R023"
+    }
+   ],
    "verify": "VA or an accredited representative: Which service, location, timing and condition facts matter for this exposure pathway, and which other service-connection routes remain available? Completion evidence: Record a request for official exposure/eligibility help, without declaring exposure, presumptive eligibility or a diagnosis.",
    "status": "open",
    "doneOn": null,
@@ -3929,7 +4008,16 @@
    "window": null,
    "critical": true,
    "presence": false,
-   "cite": [],
+   "cite": [
+    {
+     "ref": "VA Mental health care",
+     "para": "Get connected with mental health care",
+     "quote": "You can use some VA services even if you’re not enrolled in VA health care.",
+     "url": "https://www.va.gov/health-care/health-needs-conditions/mental-health/",
+     "accessed": "2026-10-21",
+     "source_requirement": "T3-R022"
+    }
+   ],
    "verify": "VA medical center/clinic health-access staff for physical/hearing access; VA primary-care/mental-health or MST service for its corresponding inquiry: Physical/hearing: https://www.va.gov/health-care/how-to-apply/, Option 3 and its medical-center/clinic discovery link, provides general health access rather than a verified audiology booking endpoint. Ask which local clinical service can assess the physical or hearing concern and what access/referral step applies. Behavioral: https://www.va.gov/health-care/health-needs-conditions/mental-health/; ask the VA primary-care/mental-health service how to access the appropriate service given current enrollment, preserving its existing-user and new-user instructions. MST: https://www.va.gov/health-care/health-needs-conditions/military-sexual-trauma/; retain the specific clinical access and privacy inquiry without collecting a trauma narrative or requiring compensation filing. No diagnosis, appointment availability, enrollment or care entitlement is inferred. Current-service or eligibility exceptions remain for the clinical office. Completion evidence: If desired, record only the corresponding clinical inquiry or actual appointment event. A link click, compensation claim, diagnosis or local task completion is not required to discover care and does not prove enrollment or an appointment.",
    "status": "open",
    "doneOn": null,
@@ -4332,7 +4420,10 @@
    "when": [],
    "basis": "rule",
    "label": "Complete your claim after filing intent",
-   "brief": "The ordinary ITF completion period is one year. It does not automatically extend HLR, Board or continuous-pursuit deadlines; disputed allocation and calendar edge cases require review."
+   "brief": "The ordinary ITF completion period is one year. It does not automatically extend HLR, Board or continuous-pursuit deadlines; disputed allocation and calendar edge cases require review.",
+   "after": [
+    "va-intent"
+   ]
   },
   {
    "id": "va-decision",
@@ -4354,7 +4445,16 @@
    "window": null,
    "critical": false,
    "presence": false,
-   "cite": [],
+   "cite": [
+    {
+     "ref": "38 CFR Part 3 (eCFR, 19 Oct 2026)",
+     "para": "3.103(f)(1)-(8)",
+     "quote": "Identification of the issues adjudicated;",
+     "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3",
+     "accessed": "2026-10-21",
+     "source_requirement": "T3-R014"
+    }
+   ],
    "verify": "VA or an accredited representative: Which issues were decided, what notice date controls and which review instructions apply? Completion evidence: the actual notice and decided issues, with deferred issues retained. No automatic review deadline.",
    "status": "waiting",
    "doneOn": null,
@@ -4432,7 +4532,16 @@
    "window": null,
    "critical": false,
    "presence": false,
-   "cite": [],
+   "cite": [
+    {
+     "ref": "38 USC 5304 (2024 edition)",
+     "para": "5304(c)",
+     "quote": "shall not be paid to such person for any period for which such person receives active service pay.",
+     "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title38/html/USCODE-2024-title38-partIV-chap53-sec5304.htm",
+     "accessed": "2026-10-21",
+     "source_requirement": "T3-R027"
+    }
+   ],
    "verify": "VA and Reserve unit pay administration: Which days and pay periods overlap, what election is required and how will the agencies reconcile them? Completion evidence: Record the fiscal period and verified duty-pay days, the actual VA form response and adjustment notice separately.",
    "status": "open",
    "doneOn": null,
@@ -4508,15 +4617,18 @@
     "Confirm timely claim receipt and possible effective-date treatment before the first service-end anniversary.",
     "Receipt within the first postservice year can preserve an earlier effective date under governing conditions. It is neither a universal presumption nor the last opportunity to claim; payment commencement is a separate fact.",
     "Keep intent receipt, a qualifying claim within the first post-service year and continuous pursuit separate. Do not automatically allocate duplicate intents or promise an effective date.",
-    "Use the calendar rule for the identified forum. Do not apply a universal weekend extension, turn a calendar year into 365 days, or clamp leap-day deadlines without authority.",
     "Official route: https://www.va.gov/get-help-from-accredited-representative/",
     "Ask VA or an accredited representative: Does this claim meet the applicable first-year effective-date conditions, and what exceptions or other dates control?",
     "Completion evidence: Record actual service end and actual claim receipt separately; do not mark a conditional effective-date rule as an award.",
     "Opening a link is not contact, receipt, eligibility, an election or an award. Record only the action that occurred. No upload or health narrative is required.",
-    "Timing: File within 1 year after your last day of active duty so VA can pay from the day after separation. No guarantee; confirm with your VSO. This period starts on your last day of active duty. The 11-month check is a planning target; earlier help is available. Filing later remains available."
+    "Record actual release through Copy actual-release record in Claim. The source is va-service-end.eventOn, a valid date on or before today associated with this plan by eventForDate. A planned date, status or doneOn does not establish release.",
+    "Planning target: 11 calendar months after actual release. Rule deadline: file by the one-year anniversary, moving forward to the next workday if it falls on a Saturday, Sunday or federal holiday under 38 CFR 3.110(a). A 29 FEB anniversary needs VA or accredited help to confirm the date. VA decides effective-date treatment; filing later remains available."
    ],
    "owner": "You",
-   "due": null,
+   "due": {
+    "actualServiceEnd": true,
+    "months": 11
+   },
    "window": null,
    "critical": true,
    "presence": false,
@@ -4532,6 +4644,20 @@
      "scope": "Bounded source review only; this does not confirm your event or eligibility.",
      "version": "Version 6.1, July 2026",
      "locator": "Module 3, printed page 74 (PDF page 87); replaces the old page 73 reference"
+    },
+    {
+     "ref": "38 CFR Part 3 (eCFR, 19 Oct 2026)",
+     "para": "3.400(b)(2)(i)",
+     "quote": "if claim is received within 1 year after separation from service",
+     "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3",
+     "accessed": "2026-10-21"
+    },
+    {
+     "ref": "38 CFR Part 3 (eCFR, 19 Oct 2026)",
+     "para": "3.110(a)",
+     "quote": "Where the time limit would expire on a Saturday, Sunday, or holiday, the next succeeding workday will be included in the computation.",
+     "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3",
+     "accessed": "2026-10-21"
     }
    ],
    "verify": "VA or an accredited representative: Does this claim meet the applicable first-year effective-date conditions, and what exceptions or other dates control? Completion evidence: Record actual service end and actual claim receipt separately; do not mark a conditional effective-date rule as an award.",
@@ -4539,7 +4665,7 @@
    "doneOn": null,
    "notes": "",
    "when": [],
-   "basis": "rule",
+   "basis": "target",
    "label": "Check your claim filing anniversary",
    "brief": "Receipt within the first postservice year can preserve an earlier effective date under governing conditions. It is neither a universal presumption nor the last opportunity to claim; payment commencement is a separate fact."
   },
@@ -4554,15 +4680,19 @@
     "Confirm timely claim receipt and possible effective-date treatment before the first service-end anniversary.",
     "Receipt within the first postservice year can preserve an earlier effective date under governing conditions. It is neither a universal presumption nor the last opportunity to claim; payment commencement is a separate fact.",
     "Keep intent receipt, a qualifying claim within the first post-service year and continuous pursuit separate. Do not automatically allocate duplicate intents or promise an effective date.",
-    "Use the calendar rule for the identified forum. Do not apply a universal weekend extension, turn a calendar year into 365 days, or clamp leap-day deadlines without authority.",
     "Official route: https://www.va.gov/get-help-from-accredited-representative/",
     "Ask VA or an accredited representative: Does this claim meet the applicable first-year effective-date conditions, and what exceptions or other dates control?",
     "Completion evidence: Record actual service end and actual claim receipt separately; do not mark a conditional effective-date rule as an award.",
     "Opening a link is not contact, receipt, eligibility, an election or an award. Record only the action that occurred. No upload or health narrative is required.",
-    "Timing: File within 1 year after your last day of active duty so VA can pay from the day after separation. No guarantee; confirm with your VSO. This period starts on your last day of active duty. The 11-month check is a planning target; earlier help is available. Filing later remains available."
+    "Record actual release through Copy actual-release record in Claim. The source is va-service-end.eventOn, a valid date on or before today associated with this plan by eventForDate. A planned date, status or doneOn does not establish release.",
+    "Planning target: 11 calendar months after actual release. Rule deadline: file by the one-year anniversary, moving forward to the next workday if it falls on a Saturday, Sunday or federal holiday under 38 CFR 3.110(a). A 29 FEB anniversary needs VA or accredited help to confirm the date. VA decides effective-date treatment; filing later remains available."
    ],
    "owner": "You",
-   "due": null,
+   "due": {
+    "actualServiceEnd": true,
+    "months": 12,
+    "roll": "nextWorkday"
+   },
    "window": null,
    "critical": true,
    "presence": false,
@@ -4578,6 +4708,20 @@
      "scope": "Bounded source review only; this does not confirm your event or eligibility.",
      "version": "Version 6.1, July 2026",
      "locator": "Module 3, printed page 74 (PDF page 87); replaces the old page 73 reference"
+    },
+    {
+     "ref": "38 CFR Part 3 (eCFR, 19 Oct 2026)",
+     "para": "3.400(b)(2)(i)",
+     "quote": "if claim is received within 1 year after separation from service",
+     "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3",
+     "accessed": "2026-10-21"
+    },
+    {
+     "ref": "38 CFR Part 3 (eCFR, 19 Oct 2026)",
+     "para": "3.110(a)",
+     "quote": "Where the time limit would expire on a Saturday, Sunday, or holiday, the next succeeding workday will be included in the computation.",
+     "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3",
+     "accessed": "2026-10-21"
     }
    ],
    "verify": "VA or an accredited representative: Does this claim meet the applicable first-year effective-date conditions, and what exceptions or other dates control? Completion evidence: Record actual service end and actual claim receipt separately; do not mark a conditional effective-date rule as an award.",
@@ -4585,7 +4729,7 @@
    "doneOn": null,
    "notes": "",
    "when": [],
-   "basis": "target",
+   "basis": "rule",
    "label": "Confirm your claim receipt deadline",
    "brief": "Receipt within the first postservice year can preserve an earlier effective date under governing conditions. It is neither a universal presumption nor the last opportunity to claim; payment commencement is a separate fact."
   },
@@ -4849,7 +4993,10 @@
    ],
    "basis": "target",
    "label": "Prepare your Reserve affiliation package",
-   "brief": "Get the document list from your career counselor, gather the package and review the correct submission window."
+   "brief": "Get the document list from your career counselor, gather the package and review the correct submission window.",
+   "after": [
+    "dap-billet"
+   ]
   },
   {
    "id": "dap-request-o",
@@ -4895,7 +5042,10 @@
    ],
    "basis": "target",
    "label": "Submit your officer Reserve affiliation request",
-   "brief": "Submit through your career counselor within the confirmed officer affiliation window."
+   "brief": "Submit through your career counselor within the confirmed officer affiliation window.",
+   "after": [
+    "dap-package"
+   ]
   },
   {
    "id": "dap-request-e",
@@ -4941,7 +5091,10 @@
    ],
    "basis": "target",
    "label": "Submit your enlisted Reserve affiliation request",
-   "brief": "Submit through your career counselor within the confirmed enlisted affiliation window."
+   "brief": "Submit through your career counselor within the confirmed enlisted affiliation window.",
+   "after": [
+    "dap-package"
+   ]
   },
   {
    "id": "dap-commission",
@@ -5025,7 +5178,10 @@
    ],
    "basis": "target",
    "label": "Get your Reserve commission record signed",
-   "brief": "Get the appointment record signed before separation, then confirm it was returned and filed."
+   "brief": "Get the appointment record signed before separation, then confirm it was returned and filed.",
+   "after": [
+    "dap-commission"
+   ]
   },
   {
    "id": "dap-checkin",
@@ -5084,8 +5240,16 @@
    "window": null,
    "critical": false,
    "presence": false,
-   "cite": [],
-   "verify": null,
+   "cite": [
+    {
+     "ref": "MCO 1050.3J",
+     "para": "Ch 2, 21",
+     "quote": "Leave information may be obtained through the Marine’s chain of command or using the MOL leave request or the individual Marine’s Leave and Earnings Statement (LES)",
+     "url": "https://www.marines.mil/portals/1/publications/mco%201050.3j.pdf",
+     "accessed": "2026-10-21"
+    }
+   ],
+   "verify": "Unit administration and disbursing office: Confirm your current LES leave balance and any unposted leave.",
    "status": "open",
    "doneOn": null,
    "notes": "",
@@ -5240,8 +5404,16 @@
    "window": null,
    "critical": false,
    "presence": false,
-   "cite": [],
-   "verify": null,
+   "cite": [
+    {
+     "ref": "MCO 1050.3J",
+     "para": "Ch 2, 4",
+     "quote": "Marines shall be granted leave at any time they request when their presence is not required to accomplish the command's mission.",
+     "url": "https://www.marines.mil/portals/1/publications/mco%201050.3j.pdf",
+     "accessed": "2026-10-21"
+    }
+   ],
+   "verify": "Commanding officer and unit administration: Confirm approval and proper reporting for each leave block.",
    "status": "open",
    "doneOn": null,
    "notes": "",
@@ -5287,7 +5459,10 @@
    ],
    "basis": "target",
    "label": "Recheck leave after resignation approval",
-   "brief": "Recalculate leave if the approved resignation date differs from your request."
+   "brief": "Recalculate leave if the approved resignation date differs from your request.",
+   "after": [
+    "sep-approval"
+   ]
   },
   {
    "id": "lv-risk-t",
@@ -5326,7 +5501,10 @@
    ],
    "basis": "target",
    "label": "Recheck leave after retirement approval",
-   "brief": "Your approved retirement action date may differ from your request. Check it before relying on leave projections."
+   "brief": "Your approved retirement action date may differ from your request. Check it before relying on leave projections.",
+   "after": [
+    "ret-approval"
+   ]
   },
   {
    "id": "lv-final",
@@ -5347,8 +5525,16 @@
    "window": null,
    "critical": false,
    "presence": false,
-   "cite": [],
-   "verify": null,
+   "cite": [
+    {
+     "ref": "37 USC 501 (2024 edition)",
+     "para": "501(b)(1)",
+     "quote": "who has accrued leave to the member's credit at the time of the member's discharge",
+     "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title37/html/USCODE-2024-title37-chap9-sec501.htm",
+     "accessed": "2026-10-21"
+    }
+   ],
+   "verify": "IPAC and disbursing office: Reconcile the final LES, leave record and any unused-leave payment; confirm applicable limits and exceptions.",
    "status": "open",
    "doneOn": null,
    "notes": "",
@@ -5377,7 +5563,7 @@
    "critical": false,
    "presence": false,
    "cite": [],
-   "verify": null,
+   "verify": "TSP support and unit pay office: Confirm account access and any Reserve contributions.",
    "status": "open",
    "doneOn": null,
    "notes": "",
@@ -5709,7 +5895,16 @@
    "window": null,
    "critical": false,
    "presence": false,
-   "cite": [],
+   "cite": [
+    {
+     "ref": "OPM FEDVIP Eligibility",
+     "para": "TRICARE Eligible Individuals",
+     "quote": "Retired members of the uniformed services and National Guard/Reserve components, including “gray-area” retirees under age 60 and their families are eligible for FEDVIP dental coverage.",
+     "url": "https://www.opm.gov/healthcare-insurance/dental-vision/eligibility/",
+     "accessed": "2026-10-21",
+     "source_requirement": "T3-R042"
+    }
+   ],
    "verify": "BENEFEDS and the responsible benefits office: Is this person eligible for FEDVIP now, and which enrollment period or qualifying event permits an election? Completion evidence: Record BENEFEDS eligibility and the actual permitted election window and confirmation.",
    "status": "open",
    "doneOn": null,
@@ -5743,7 +5938,16 @@
    "window": null,
    "critical": false,
    "presence": false,
-   "cite": [],
+   "cite": [
+    {
+     "ref": "VA Manage dependents",
+     "para": "Life changes you should tell us about",
+     "quote": "You may need to update a dependent’s status to continue to receive higher VA benefit payments.",
+     "url": "https://www.va.gov/manage-dependents/",
+     "accessed": "2026-10-21",
+     "source_requirement": "T3-R044"
+    }
+   ],
    "verify": "VA dependency benefits office and military benefits office: Which relationship change and actual VA rating facts trigger a dependency action, and what date and evidence rule apply? Completion evidence: Record the specific family event, the program-specific evidence request and VA receipt; unknown family status is not no dependents.",
    "status": "open",
    "doneOn": null,
@@ -6115,7 +6319,7 @@
    "critical": false,
    "presence": false,
    "cite": [],
-   "verify": null,
+   "verify": "Installation legal assistance office: Confirm the will and power of attorney documents and appointment.",
    "status": "open",
    "doneOn": null,
    "notes": "",
@@ -6306,7 +6510,10 @@
    "basis": "target",
    "attendance": "interval",
    "label": "Meet with your replacement",
-   "brief": "Arrange time with the person taking over your job to walk through duties, open actions and contacts."
+   "brief": "Arrange time with the person taking over your job to walk through duties, open actions and contacts.",
+   "after": [
+    "cmd-binder"
+   ]
   },
   {
    "id": "cmd-checkout",
@@ -6342,7 +6549,10 @@
    "when": [],
    "basis": "target",
    "label": "Complete your unit checkout sheet",
-   "brief": "Get the unit checklist and finish each required stop before final checkout."
+   "brief": "Get the unit checklist and finish each required stop before final checkout.",
+   "after": [
+    "sep-dd214"
+   ]
   },
   {
    "id": "terminal-predeparture",
@@ -6377,7 +6587,10 @@
    "when": [],
    "basis": "rule",
    "label": "Complete separation processing before terminal leave",
-   "brief": "IPAC, medical and TRP offices must verify required processing before terminal departure."
+   "brief": "IPAC, medical and TRP offices must verify required processing before terminal departure.",
+   "after": [
+    "sep-dd214"
+   ]
   },
   {
    "id": "va-standard",
@@ -6491,7 +6704,10 @@
    "when": [],
    "basis": "rule",
    "label": "Refer Higher-Level Review",
-   "brief": "Ordinary modernized HLR has a one-year notice period and no new evidence. Prior HLR, cure periods, legacy and contested cases require distinct handling."
+   "brief": "Ordinary modernized HLR has a one-year notice period and no new evidence. Prior HLR, cure periods, legacy and contested cases require distinct handling.",
+   "after": [
+    "va-decision"
+   ]
   },
   {
    "id": "va-supplemental-referral",
@@ -6523,7 +6739,10 @@
    "when": [],
    "basis": "rule",
    "label": "Refer Supplemental Claims",
-   "brief": "Supplemental Claims may remain available after one year, with effective-date consequences. An increase claim and a Supplemental Claim are distinct; ITF and continuous pursuit are not interchangeable."
+   "brief": "Supplemental Claims may remain available after one year, with effective-date consequences. An increase claim and a Supplemental Claim are distinct; ITF and continuous pursuit are not interchangeable.",
+   "after": [
+    "va-decision"
+   ]
   },
   {
    "id": "va-board-referral",
@@ -6556,7 +6775,10 @@
    "when": [],
    "basis": "rule",
    "label": "Refer Board docket and evidence choices",
-   "brief": "Ordinary Board requests use a one-year mailed-notice period. Docket-specific evidence windows have different anchors; hearing withdrawal and no-shows do not share one default."
+   "brief": "Ordinary Board requests use a one-year mailed-notice period. Docket-specific evidence windows have different anchors; hearing withdrawal and no-shows do not share one default.",
+   "after": [
+    "va-decision"
+   ]
   },
   {
    "id": "va-care-referral",
@@ -7118,6 +7340,1152 @@
    "basis": "rule",
    "label": "Refer connection and aggravation questions",
    "brief": "Connection theories, soundness, causation and overlapping manifestations require individual evidence. Spicer limits narrow secondary-causation exclusions; a purchased nexus letter or private DBQ is not a universal filing prerequisite."
+  },
+  {
+   "id": "ides-stage",
+   "loe": "va",
+   "order": 2150,
+   "kind": "task",
+   "title": "Confirm your IDES stage",
+   "label": "Confirm your IDES stage",
+   "brief": "Confirm your current stage with your PEBLO. Keep the outcome unconfirmed until the service decides.",
+   "why": "Confirm your current stage with your PEBLO. Keep the outcome unconfirmed until the service decides.",
+   "how": [
+    "Confirm referral and stage with the PEBLO; choose the proposed IDES board path without declaring a medical outcome."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "Assigned PEBLO",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": []
+  },
+  {
+   "id": "ides-referral",
+   "loe": "va",
+   "order": 2151,
+   "kind": "milestone",
+   "title": "Confirm your referral",
+   "label": "Confirm your referral",
+   "brief": "Continue your care. Ask your provider and PEBLO which referral or reevaluation applies.",
+   "why": "Continue your care. Ask your provider and PEBLO which referral or reevaluation applies.",
+   "how": [
+    "Continue treatment and attend confirmed appointments. Ask the provider whether referral or pre-DES TLD reevaluation scheduling applies; do not schedule a redundant DES reevaluation."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "Treating MTF provider and PEBLO",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-stage"
+   ]
+  },
+  {
+   "id": "ides-intake",
+   "loe": "va",
+   "order": 2152,
+   "kind": "task",
+   "title": "Confirm your PEBLO and MSC",
+   "label": "Confirm your PEBLO and MSC",
+   "brief": "Attend the intake briefing. Confirm your assigned offices and next contact.",
+   "why": "Attend the intake briefing. Confirm your assigned offices and next contact.",
+   "how": [
+    "Attend the intake briefing. Confirm your assigned offices and next contact. Ask which records are missing."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "MTF DES office and VA MSC",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-stage"
+   ]
+  },
+  {
+   "id": "ides-counsel",
+   "loe": "va",
+   "order": 2153,
+   "kind": "task",
+   "title": "Meet free disability counsel",
+   "label": "Meet free disability counsel",
+   "brief": "Meet free disability counsel before an election or signature.",
+   "why": "Meet free disability counsel before an election or signature.",
+   "how": [
+    "Use the DESCP regional directory and consult counsel before an election or signature."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "Navy Disability Evaluation System Counsel Program",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-stage"
+   ]
+  },
+  {
+   "id": "ides-wwr",
+   "loe": "va",
+   "order": 2154,
+   "kind": "task",
+   "title": "Ask for Wounded Warrior support",
+   "label": "Ask for Wounded Warrior support",
+   "brief": "Request a WWR support assessment for recovery, family, housing, money or transition needs.",
+   "why": "Request a WWR support assessment for recovery, family, housing, money or transition needs.",
+   "how": [
+    "Request a WWR support assessment for recovery, family, housing, money or transition needs."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "WWR contact center and Recovery Care Coordinator assessment team",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-stage"
+   ]
+  },
+  {
+   "id": "ides-va-claim",
+   "loe": "va",
+   "order": 2155,
+   "kind": "task",
+   "title": "Submit your IDES VA application",
+   "label": "Submit your IDES VA application",
+   "brief": "Review referred and additional conditions truthfully with the MSC; personally complete the official application and retain receipt.",
+   "why": "Review referred and additional conditions truthfully with the MSC; personally complete the official application and retain receipt.",
+   "how": [
+    "Review referred and additional conditions truthfully with the MSC; personally complete the official application and retain receipt."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "VA MSC",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-intake"
+   ]
+  },
+  {
+   "id": "ides-exams",
+   "loe": "va",
+   "order": 2156,
+   "kind": "task",
+   "title": "Attend your confirmed exams",
+   "label": "Attend your confirmed exams",
+   "brief": "Protect your confirmed appointments. Contact the scheduler and PEBLO about conflicts.",
+   "why": "Protect your confirmed appointments. Contact the scheduler and PEBLO about conflicts.",
+   "how": [
+    "Confirm actual appointments, accommodations and transportation; notify the scheduler and PEBLO promptly about conflicts."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "Exam scheduler, MSC and PEBLO",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-intake"
+   ]
+  },
+  {
+   "id": "ides-exam-error",
+   "loe": "va",
+   "order": 2157,
+   "kind": "task",
+   "title": "Report a specific exam error",
+   "label": "Report a specific exam error",
+   "brief": "Write factual notes privately and send specific discrepancies through MSC/PEBLO and counsel; confirm the corrective route.",
+   "why": "Write factual notes privately and send specific discrepancies through MSC/PEBLO and counsel; confirm the corrective route.",
+   "how": [
+    "Write factual notes privately and send specific discrepancies through MSC/PEBLO and counsel; confirm the corrective route."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "MSC, PEBLO and DES counsel",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-exams"
+   ]
+  },
+  {
+   "id": "ides-packet-review",
+   "loe": "va",
+   "order": 2158,
+   "kind": "task",
+   "title": "Review your NARSUM and command assessment",
+   "label": "Review your NARSUM and command assessment",
+   "brief": "Review diagnoses, history, duty restrictions, accommodations and NMA with counsel; submit factual corrections.",
+   "why": "Review diagnoses, history, duty restrictions, accommodations and NMA with counsel; submit factual corrections.",
+   "how": [
+    "Review diagnoses, history, duty restrictions, accommodations and NMA with counsel; submit factual corrections."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "PEBLO, MEB provider and DES counsel",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "va-records",
+    "ides-exams"
+   ]
+  },
+  {
+   "id": "ides-meb-election",
+   "loe": "va",
+   "order": 2159,
+   "kind": "task",
+   "title": "Choose your MEB review response",
+   "label": "Choose your MEB review response",
+   "brief": "Take the report and its receipt date to counsel. Confirm your response and its deadline.",
+   "why": "Take the report and its receipt date to counsel. Confirm your response and its deadline.",
+   "how": [
+    "Record report receipt and ask counsel about acceptance, impartial medical review and rebuttal; submit your choice through PEBLO."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": true,
+   "presence": false,
+   "cite": [],
+   "verify": "PEBLO, MEB convening authority and DES counsel",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-packet-review"
+   ]
+  },
+  {
+   "id": "ides-vre",
+   "loe": "va",
+   "order": 2160,
+   "kind": "task",
+   "title": "Meet your vocational rehabilitation counselor",
+   "label": "Meet your vocational rehabilitation counselor",
+   "brief": "On PEB referral, contact the VRC/MSC to schedule the mandatory meeting. Attend the separately confirmed appointment and discuss suitable work and training goals.",
+   "why": "On PEB referral, contact the VRC/MSC to schedule the mandatory meeting. Attend the separately confirmed appointment and discuss suitable work and training goals.",
+   "how": [
+    "On PEB referral, contact the VRC/MSC to schedule the mandatory meeting. Attend the separately confirmed appointment and discuss suitable work and training goals."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "VA Vocational Rehabilitation Counselor",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-intake"
+   ]
+  },
+  {
+   "id": "ides-ipeb-receipt",
+   "loe": "va",
+   "order": 2161,
+   "kind": "milestone",
+   "title": "Confirm receipt of informal findings",
+   "label": "Confirm receipt of informal findings",
+   "brief": "Obtain the complete IPEB findings and proposed VA rating documents; review each decision separately.",
+   "why": "Obtain the complete IPEB findings and proposed VA rating documents; review each decision separately.",
+   "how": [
+    "Obtain the complete IPEB findings and proposed VA rating documents; review each decision separately."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "PEBLO and DES counsel",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-meb-election"
+   ]
+  },
+  {
+   "id": "ides-ipeb-election",
+   "loe": "va",
+   "order": 2162,
+   "kind": "task",
+   "title": "Make your informal PEB election",
+   "label": "Make your informal PEB election",
+   "brief": "Review the issued findings with counsel. Submit your election and the materials required with it.",
+   "why": "Review the issued findings with counsel. Submit your election and the materials required with it.",
+   "how": [
+    "Consult counsel and submit your acceptance or formal-hearing election with required materials through PEBLO."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": true,
+   "presence": false,
+   "cite": [],
+   "verify": "PEBLO and DES counsel",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-ipeb-receipt"
+   ]
+  },
+  {
+   "id": "ides-fpeb",
+   "loe": "va",
+   "order": 2163,
+   "kind": "task",
+   "title": "Prepare for your formal PEB",
+   "label": "Prepare for your formal PEB",
+   "brief": "Work with your detailed counsel to prepare. Attend the confirmed hearing.",
+   "why": "Work with your detailed counsel to prepare. Attend the confirmed hearing.",
+   "how": [
+    "Work with detailed counsel on truthful testimony, records, witnesses and requested findings; attend the scheduled hearing."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "Detailed FPEB counsel and PEB scheduling",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-ipeb-receipt"
+   ]
+  },
+  {
+   "id": "ides-fpeb-appeal",
+   "loe": "va",
+   "order": 2164,
+   "kind": "task",
+   "title": "Review your formal appeal options",
+   "label": "Review your formal appeal options",
+   "brief": "Take written formal findings to counsel and submit any appeal election and supporting materials together.",
+   "why": "Take written formal findings to counsel and submit any appeal election and supporting materials together.",
+   "how": [
+    "Take written formal findings to counsel and submit any appeal election and supporting materials together."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": true,
+   "presence": false,
+   "cite": [],
+   "verify": "DES counsel and Director SECNAVCORB",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-fpeb"
+   ]
+  },
+  {
+   "id": "ides-varr",
+   "loe": "va",
+   "order": 2165,
+   "kind": "task",
+   "title": "Ask about VA rating reconsideration",
+   "label": "Ask about VA rating reconsideration",
+   "brief": "Take the actual findings to free disability counsel. Ask which rating-review option applies at this stage.",
+   "why": "Take the actual findings to free disability counsel. Ask which rating-review option applies at this stage.",
+   "how": [
+    "Review the current stage, unfitting-condition rating error or new evidence with counsel; personally submit the applicable EOO and VARR evidence. Ask about newly unfitting conditions even if a prior reconsideration occurred."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": true,
+   "presence": false,
+   "cite": [],
+   "verify": "DES counsel, PEBLO and VA D-RAS",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-ipeb-receipt"
+   ]
+  },
+  {
+   "id": "ides-ipeb-reconsideration-help",
+   "loe": "va",
+   "order": 2166,
+   "kind": "task",
+   "title": "Confirm the current reconsideration authority",
+   "label": "Confirm the current reconsideration authority",
+   "brief": "Ask counsel which current authority applies. The expired request procedure is withheld.",
+   "why": "Ask counsel which current authority applies. The expired request procedure is withheld.",
+   "how": [
+    "Ask DES counsel for the current authority and instructions while preserving your formal-hearing election."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "DES counsel and President PEB",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-ipeb-election"
+   ]
+  },
+  {
+   "id": "ides-retention-help",
+   "loe": "va",
+   "order": 2167,
+   "kind": "task",
+   "title": "Ask about continued service",
+   "label": "Ask about continued service",
+   "brief": "Discuss fit-return, PLD/EPLD, presumption of fitness or requested retention with counsel and MMSR-4 before final elections.",
+   "why": "Discuss fit-return, PLD/EPLD, presumption of fitness or requested retention with counsel and MMSR-4 before final elections.",
+   "how": [
+    "Discuss fit-return, PLD/EPLD, presumption of fitness or requested retention with counsel and MMSR-4 before final elections."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "MMSR-4 and DES counsel",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-ipeb-receipt"
+   ]
+  },
+  {
+   "id": "ides-extension",
+   "loe": "va",
+   "order": 2168,
+   "kind": "task",
+   "title": "Check your medical extension",
+   "label": "Check your medical extension",
+   "brief": "Confirm extension processing with S-1/IPAC and MMSR-4 while IDES is pending; keep old projected dates separate.",
+   "why": "Confirm extension processing with S-1/IPAC and MMSR-4 while IDES is pending; keep old projected dates separate.",
+   "how": [
+    "Confirm extension processing with S-1/IPAC and MMSR-4 while IDES is pending; keep old projected dates separate."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "Unit S-1, IPAC and MMSR-4",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-stage"
+   ]
+  },
+  {
+   "id": "ides-final-disposition",
+   "loe": "va",
+   "order": 2169,
+   "kind": "milestone",
+   "title": "Confirm final disposition and orders",
+   "label": "Confirm final disposition and orders",
+   "brief": "Confirm final findings and issued orders with MMSR-4 or IPAC. Record each authorized and actual date separately.",
+   "why": "Confirm final findings and issued orders with MMSR-4 or IPAC. Record each authorized and actual date separately.",
+   "how": [
+    "Obtain final findings and orders; confirm last active-duty day and separation or retirement effective date independently."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "MMSR-4 and IPAC",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-ipeb-election"
+   ]
+  },
+  {
+   "id": "ides-va-final-check",
+   "loe": "va",
+   "order": 2170,
+   "kind": "task",
+   "title": "Check your final VA decision",
+   "label": "Check your final VA decision",
+   "brief": "Complete the MSC exit handoff, confirm separation evidence and review the final decision and any deferred issues.",
+   "why": "Complete the MSC exit handoff, confirm separation evidence and review the final decision and any deferred issues.",
+   "how": [
+    "Complete the MSC exit handoff, confirm separation evidence and review the final decision and any deferred issues."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "VA MSC and VA compensation office",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-final-disposition"
+   ]
+  },
+  {
+   "id": "ides-va-letter-goal",
+   "loe": "va",
+   "order": 2171,
+   "kind": "marker",
+   "title": "Follow up on your VA letter",
+   "label": "Follow up on your VA letter",
+   "brief": "Complete the MSC exit handoff, confirm separation evidence and review the final decision and any deferred issues.",
+   "why": "Complete the MSC exit handoff, confirm separation evidence and review the final decision and any deferred issues.",
+   "how": [
+    "Complete the MSC exit handoff, confirm separation evidence and review the final decision and any deferred issues."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "VA MSC and VA compensation office",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": []
+  },
+  {
+   "id": "ides-va-review",
+   "loe": "va",
+   "order": 2172,
+   "kind": "task",
+   "title": "Review your final VA decision",
+   "label": "Review your final VA decision",
+   "brief": "Use the final VA notice to identify any disagreement and choose a review route with accredited help if desired.",
+   "why": "Use the final VA notice to identify any disagreement and choose a review route with accredited help if desired.",
+   "how": [
+    "Use the final VA notice to identify any disagreement and choose a review route with accredited help if desired."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "VA and accredited representative",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-va-final-check"
+   ]
+  },
+  {
+   "id": "ides-outcome",
+   "loe": "va",
+   "order": 2173,
+   "kind": "task",
+   "title": "Understand your issued disposition",
+   "label": "Understand your issued disposition",
+   "brief": "Read the outcome explainer alongside your issued DoD rating and service credit. Check the separate stability finding.",
+   "why": "Read the outcome explainer alongside your issued DoD rating and service credit. Check the separate stability finding.",
+   "how": [
+    "Read the outcome explainer alongside your issued DoD rating and service credit. Check the separate stability finding."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "DES counsel and MMSR-4",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-ipeb-receipt"
+   ]
+  },
+  {
+   "id": "ides-retired-pay-check",
+   "loe": "va",
+   "order": 2174,
+   "kind": "task",
+   "title": "Check your disability retired pay",
+   "label": "Check your disability retired pay",
+   "brief": "Ask the pay office to confirm pay base, credited service, retirement system and the applicable gross formula.",
+   "why": "Ask the pay office to confirm pay base, credited service, retirement system and the applicable gross formula.",
+   "how": [
+    "Ask the pay office to confirm pay base, credited service, retirement system and the applicable gross formula."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "DFAS retired pay and service pay office",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-outcome"
+   ]
+  },
+  {
+   "id": "ides-severance",
+   "loe": "va",
+   "order": 2175,
+   "kind": "task",
+   "title": "Check your disability severance",
+   "label": "Check your disability severance",
+   "brief": "Confirm monthly basic-pay basis, rounded years and the official severance computation before budgeting the lump sum.",
+   "why": "Confirm monthly basic-pay basis, rounded years and the official severance computation before budgeting the lump sum.",
+   "how": [
+    "Confirm monthly basic-pay basis, rounded years and the official severance computation before budgeting the lump sum."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "Service pay office, IPAC and DES counsel",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-outcome"
+   ]
+  },
+  {
+   "id": "ides-combat-findings",
+   "loe": "va",
+   "order": 2176,
+   "kind": "task",
+   "title": "Check your separate combat findings",
+   "label": "Check your separate combat findings",
+   "brief": "Review the written combat-related and combat-zone findings with counsel before electing findings.",
+   "why": "Review the written combat-related and combat-zone findings with counsel before electing findings.",
+   "how": [
+    "Review the written combat-related and combat-zone findings with counsel before electing findings."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "DES counsel and PEB; VA/DFAS for later payment treatment",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-ipeb-receipt"
+   ]
+  },
+  {
+   "id": "ides-concurrent-pay",
+   "loe": "va",
+   "order": 2177,
+   "kind": "task",
+   "title": "Check VA waiver and concurrent pay",
+   "label": "Check VA waiver and concurrent pay",
+   "brief": "Review the actual retired-pay statement and VA award with DFAS before treating both amounts as available income.",
+   "why": "Review the actual retired-pay statement and VA award with DFAS before treating both amounts as available income.",
+   "how": [
+    "Review the actual retired-pay statement and VA award with DFAS before treating both amounts as available income."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "DFAS retired pay and VA",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-va-final-check",
+    "ides-retired-pay-check"
+   ]
+  },
+  {
+   "id": "ides-crsc",
+   "loe": "va",
+   "order": 2178,
+   "kind": "task",
+   "title": "Ask about a CRSC application",
+   "label": "Ask about a CRSC application",
+   "brief": "Use the official DD2860 route with records linking each claimed condition to the qualifying combat event.",
+   "why": "Use the official DD2860 route with records linking each claimed condition to the qualifying combat event.",
+   "how": [
+    "Use the official DD2860 route with records linking each claimed condition to the qualifying combat event."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "Department of the Navy CORB CRSC Board and DFAS",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-va-final-check",
+    "ides-combat-findings",
+    "ides-concurrent-pay"
+   ]
+  },
+  {
+   "id": "ides-recoupment",
+   "loe": "va",
+   "order": 2179,
+   "kind": "task",
+   "title": "Check your VA severance withholding",
+   "label": "Check your VA severance withholding",
+   "brief": "Compare the actual severance payment and VA withholding notice with qualified help.",
+   "why": "Compare the actual severance payment and VA withholding notice with qualified help.",
+   "how": [
+    "Compare the actual severance payment and VA withholding notice with qualified help."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "VA compensation/accredited representative; service pay office for original payment",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-va-final-check",
+    "ides-severance"
+   ]
+  },
+  {
+   "id": "ides-tax-review",
+   "loe": "va",
+   "order": 2180,
+   "kind": "task",
+   "title": "Ask about your tax treatment",
+   "label": "Ask about your tax treatment",
+   "brief": "Retain actual pay and tax statements and ask qualified tax/pay help which exclusion or correction applies.",
+   "why": "Retain actual pay and tax statements and ask qualified tax/pay help which exclusion or correction applies.",
+   "how": [
+    "Retain actual pay and tax statements and ask qualified tax/pay help which exclusion or correction applies."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "DFAS/service pay office and qualified tax assistance",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-outcome"
+   ]
+  },
+  {
+   "id": "ides-education",
+   "loe": "va",
+   "order": 2181,
+   "kind": "task",
+   "title": "Confirm your education benefit",
+   "label": "Confirm your education benefit",
+   "brief": "Ask VA to verify the disability-discharge basis and qualifying service before choosing an education benefit.",
+   "why": "Ask VA to verify the disability-discharge basis and qualifying service before choosing an education benefit.",
+   "how": [
+    "Ask VA to verify the disability-discharge basis and qualifying service before choosing an education benefit."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "VA education benefits",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-final-disposition"
+   ]
+  },
+  {
+   "id": "ides-tdrl-followup",
+   "loe": "va",
+   "order": 2182,
+   "kind": "task",
+   "title": "Keep your TDRL follow-ups current",
+   "label": "Keep your TDRL follow-ups current",
+   "brief": "Keep your address current with the TDRL office. Attend each ordered exam and review new findings with counsel.",
+   "why": "Keep your address current with the TDRL office. Attend each ordered exam and review new findings with counsel.",
+   "how": [
+    "Confirm contact information with MMSR-4 and attend each ordered examination; review resulting findings with counsel."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "MMSR-4 TDRL administration and DES counsel",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-final-disposition"
+   ]
+  },
+  {
+   "id": "ides-tdrl-start",
+   "loe": "va",
+   "order": 2183,
+   "kind": "milestone",
+   "title": "Confirm your TDRL placement",
+   "label": "Confirm your TDRL placement",
+   "brief": "Keep your address current with the TDRL office. Attend each ordered exam and review new findings with counsel.",
+   "why": "Keep your address current with the TDRL office. Attend each ordered exam and review new findings with counsel.",
+   "how": [
+    "Confirm contact information with MMSR-4 and attend each ordered examination; review resulting findings with counsel."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "MMSR-4 TDRL administration and DES counsel",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": []
+  },
+  {
+   "id": "ides-reserve-counsel",
+   "loe": "va",
+   "order": 2184,
+   "kind": "task",
+   "title": "Review Reserve choices before severance",
+   "label": "Review Reserve choices before severance",
+   "brief": "Have counsel and Reserve personnel verify duty status, points, retirement credit and any deferred-retirement election before severance.",
+   "why": "Have counsel and Reserve personnel verify duty status, points, retirement credit and any deferred-retirement election before severance.",
+   "how": [
+    "Have counsel and Reserve personnel verify duty status, points, retirement credit and any deferred-retirement election before severance."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "Reserve personnel/MMSR-4 and DES counsel",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-ipeb-receipt"
+   ]
+  },
+  {
+   "id": "ides-exception-help",
+   "loe": "va",
+   "order": 2185,
+   "kind": "task",
+   "title": "Find help for your case",
+   "label": "Find help for your case",
+   "brief": "Get legal or accredited help for the decision in your notice. Ask WWR about care and support while eligibility is unresolved.",
+   "why": "Get legal or accredited help for the decision in your notice. Ask WWR about care and support while eligibility is unresolved.",
+   "how": [
+    "Get legal or accredited help for the decision in your notice. Ask WWR about care and support while eligibility is unresolved."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "DES counsel for military issues; VA/accredited help for VA matters; WWR for support",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-stage"
+   ]
+  },
+  {
+   "id": "ides-bcnr-help",
+   "loe": "va",
+   "order": 2186,
+   "kind": "task",
+   "title": "Ask about correcting military records",
+   "label": "Ask about correcting military records",
+   "brief": "After available administrative remedies, ask counsel about a BCNR application specifying error or injustice.",
+   "why": "After available administrative remedies, ask counsel about a BCNR application specifying error or injustice.",
+   "how": [
+    "After available administrative remedies, ask counsel about a BCNR application specifying error or injustice."
+   ],
+   "owner": "You",
+   "due": null,
+   "window": null,
+   "basis": "rule",
+   "critical": false,
+   "presence": false,
+   "cite": [],
+   "verify": "BCNR and qualified counsel",
+   "status": "open",
+   "doneOn": null,
+   "notes": "",
+   "user": false,
+   "when": [
+    "ides"
+   ],
+   "after": [
+    "ides-final-disposition"
+   ]
   }
  ],
  "contacts": [

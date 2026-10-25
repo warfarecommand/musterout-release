@@ -1,7 +1,7 @@
 <!-- Reader: Marines using Muster Out. Effect: understand counts, control, and deletion. -->
 # Privacy
 
-Updated 20 OCT 2026.
+Updated 25 OCT 2026.
 
 ## Registration and usage by board version
 
@@ -22,7 +22,7 @@ An update runs only after you confirm it. In chat, Claude checks each release fi
 
 ## Projects, uploads and connectors
 
-A Claude Project holds your pinned instructions and public pack. You add reviewed board snapshots and files as needed. A snapshot has a capture time and does not sync automatically. Upload only your own records needed for the question, such as a Transition Readiness Seminar (TRS) certificate, orders, LES, VA letter, resume or selected STR/OMPF extracts. Keep unrelated personal information and Social Security numbers out. The maintainer receives none of those uploads. Claude hosts and processes them under your account's terms. See the [Project guide](PROJECT.md) for setup and the upload checklist.
+A Claude Project holds your pinned instructions and public pack. You add reviewed board snapshots and files as needed. A snapshot has a capture time and does not sync automatically. Upload only your own records needed for the question, such as a Transition Readiness Seminar (TRS) certificate, orders, LES, VA letter, resume or selected STR/OMPF extracts. Your own records can stay as they are in your private Project, including files with SSNs, DoD IDs, VA claim numbers or similar identifiers. Your coach never repeats these identifiers in replies or writes them to the board or its notes. It strips them and other people's personal details from drafts for others, including call briefs, spouse briefs and advisor notes. The maintainer receives none of those uploads. Claude hosts and processes them under your account's terms. See the [Project guide](PROJECT.md) for setup and the upload checklist.
 
 Gmail, Google Calendar and Google Drive connectors are optional. Review their permissions in Claude; scopes can exceed a single search. The Project instructions request read only unless you ask for a change. Review and approve any proposed message or record change before it runs. Connector data may remain in chats or Project copies. [Claude Google connector guidance](https://support.claude.com/en/articles/10166901-use-google-workspace-connectors).
 
@@ -149,7 +149,7 @@ These tools are for adults in or leaving service. If a child submitted an email 
 Changes appear on this page with a new last-updated date. If a change affects what an email signup authorizes, the project asks for confirmation before starting the added stream. Review this page when you return to the tools.
 
 ## What never belongs here
-Keep these out of the board, the Muster Out folder, and your chats: other people's personal information, anything classified or controlled unclassified, a password, a CAC PIN, or a Social Security number. Do not paste them. The assistant is instructed not to ask for them; if it does, stop and report it.
+Keep these out of the board, the Muster Out folder, and your chats: other people's personal information, anything classified or controlled unclassified, a password, a CAC PIN, or a Social Security number. Do not paste them. The assistant is instructed not to ask for them; if it does, stop and report it. Your own records can stay as they are in your private Project, as described under Projects, uploads and connectors.
 
 ## TEL1 registration codes
 

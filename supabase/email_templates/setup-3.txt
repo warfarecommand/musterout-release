@@ -2,9 +2,9 @@ MUSTER OUT | Setup help 3 of 3
 
 What your coach can do now
 
-Redact sensitive identifiers, turn off model training, then add a file in the Project.
+Turn off model training, then add your own file as it is in your private Project.
 1. Before uploads, turn off Help improve Claude in Settings, Privacy. Use web settings if the phone labels differ.
-2. Redact SSNs and other sensitive identifiers. Add a resume or record to the Project, then ask a question. The coach should cite filename and page.
+2. Add your own records as they are to your private Project. The coach keeps identifiers out of board entries, notes and drafts for others. Add a resume or record to the Project, then ask a question. The coach should cite filename and page.
 
 Open What your coach knows on the board. Review, edit, or delete an approved saved fact.
 1. Ask the coach to save one short durable fact. Review the exact sentence before agreeing.

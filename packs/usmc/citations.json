@@ -2065,5 +2065,145 @@
     "line_start": 234,
     "line_end": 236,
     "verified": true
+  },
+  {
+    "quote": "Veterans who receive disability retired pay under 10 U.S.C. Chapter 61 with less than 20 years of creditable service are not eligible for concurrent receipt.",
+    "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3",
+    "file": "regs/w44-cfr3.txt",
+    "line_start": 4,
+    "line_end": 4,
+    "verified": true,
+    "ref": "38 CFR Part 3 (eCFR, 19 Oct 2026)",
+    "para": "3.750(b)(3)"
+  },
+  {
+    "quote": "Commanders are authorized to discharge enlisted Marines upon expiration of enlistment, extension of enlistment, or period of induction.",
+    "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+    "file": "regs/mco-1900.16-ch3.txt",
+    "line_start": 2234,
+    "line_end": 2235,
+    "verified": true,
+    "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+    "para": "1005.1"
+  },
+  {
+    "quote": "Go to your nearest VA medical center or clinic.",
+    "url": "https://www.va.gov/health-care/how-to-apply/",
+    "file": "regs/w44-care.txt",
+    "line_start": 2,
+    "line_end": 2,
+    "verified": true,
+    "ref": "VA How to apply for VA health care",
+    "para": "Option 3: Apply in person"
+  },
+  {
+    "quote": "You only need to meet the service requirements for the presumption.",
+    "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/",
+    "file": "regs/w44-pact.txt",
+    "line_start": 2,
+    "line_end": 2,
+    "verified": true,
+    "ref": "VA The PACT Act and your VA benefits",
+    "para": "What does it mean to have a presumptive condition for toxic exposure?"
+  },
+  {
+    "quote": "You can use some VA services even if you’re not enrolled in VA health care.",
+    "url": "https://www.va.gov/health-care/health-needs-conditions/mental-health/",
+    "file": "regs/w44-mental.txt",
+    "line_start": 2,
+    "line_end": 2,
+    "verified": true,
+    "ref": "VA Mental health care",
+    "para": "Get connected with mental health care"
+  },
+  {
+    "quote": "Identification of the issues adjudicated;",
+    "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3",
+    "file": "regs/w44-cfr3.txt",
+    "line_start": 3,
+    "line_end": 3,
+    "verified": true,
+    "ref": "38 CFR Part 3 (eCFR, 19 Oct 2026)",
+    "para": "3.103(f)(1)-(8)"
+  },
+  {
+    "quote": "shall not be paid to such person for any period for which such person receives active service pay.",
+    "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title38/html/USCODE-2024-title38-partIV-chap53-sec5304.htm",
+    "file": "regs/w44-drill.txt",
+    "line_start": 2,
+    "line_end": 2,
+    "verified": true,
+    "ref": "38 USC 5304 (2024 edition)",
+    "para": "5304(c)"
+  },
+  {
+    "quote": "Marines shall be granted leave at any time they request when their presence is not required to accomplish the command's mission.",
+    "url": "https://www.marines.mil/portals/1/publications/mco%201050.3j.pdf",
+    "file": "regs/mco-1050.3j.txt",
+    "line_start": 485,
+    "line_end": 486,
+    "verified": true,
+    "ref": "MCO 1050.3J",
+    "para": "Ch 2, 4"
+  },
+  {
+    "quote": "who has accrued leave to the member's credit at the time of the member's discharge",
+    "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title37/html/USCODE-2024-title37-chap9-sec501.htm",
+    "file": "regs/w44-leave501.txt",
+    "line_start": 2,
+    "line_end": 2,
+    "verified": true,
+    "ref": "37 USC 501 (2024 edition)",
+    "para": "501(b)(1)"
+  },
+  {
+    "quote": "Retired members of the uniformed services and National Guard/Reserve components, including “gray-area” retirees under age 60 and their families are eligible for FEDVIP dental coverage.",
+    "url": "https://www.opm.gov/healthcare-insurance/dental-vision/eligibility/",
+    "file": "regs/w44-fedvip.txt",
+    "line_start": 2,
+    "line_end": 2,
+    "verified": true,
+    "ref": "OPM FEDVIP Eligibility",
+    "para": "TRICARE Eligible Individuals"
+  },
+  {
+    "quote": "You may need to update a dependent’s status to continue to receive higher VA benefit payments.",
+    "url": "https://www.va.gov/manage-dependents/",
+    "file": "regs/w44-dependents.txt",
+    "line_start": 2,
+    "line_end": 2,
+    "verified": true,
+    "ref": "VA Manage dependents",
+    "para": "Life changes you should tell us about"
+  },
+  {
+    "quote": "if claim is received within 1 year after separation from service",
+    "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3",
+    "file": "regs/w44-cfr3.txt",
+    "line_start": 5,
+    "line_end": 5,
+    "verified": true,
+    "ref": "38 CFR Part 3 (eCFR, 19 Oct 2026)",
+    "para": "3.400(b)(2)(i)"
+  },
+  {
+    "quote": "Where the time limit would expire on a Saturday, Sunday, or holiday, the next succeeding workday will be included in the computation.",
+    "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3",
+    "file": "regs/w44-cfr3.txt",
+    "line_start": 6,
+    "line_end": 6,
+    "verified": true,
+    "ref": "38 CFR Part 3 (eCFR, 19 Oct 2026)",
+    "para": "3.110(a)"
+  },
+  {
+    "quote": "Leave information may be obtained through the Marine’s chain of command or using the MOL leave request or the individual Marine’s Leave and Earnings Statement (LES)",
+    "url": "https://www.marines.mil/portals/1/publications/mco%201050.3j.pdf",
+    "file": "regs/mco-1050.3j.txt",
+    "line_start": 1495,
+    "line_end": 1497,
+    "verified": true,
+    "ref": "MCO 1050.3J",
+    "para": "Ch 2, 21"
   }
 ]

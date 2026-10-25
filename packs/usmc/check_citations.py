@@ -78,6 +78,12 @@ SUPPLEMENTAL_SOURCES = {
         'regs/va-benefits-participant-guide.txt',
         'https://tapevents.mil/Assets/ResourceContent/TAP/VA-Benefits-Participant-Guide.pdf'),
 }
+# MTN-126 sources have live-access provenance in the bounded pack overlay.
+CITATION_UPDATES = json.loads((PACK / 'citation-updates.json').read_text())
+REG_FILES.update({ref: entry['file'] for ref, entry in CITATION_UPDATES['sources'].items()})
+DATED_SNAPSHOTS.update(entry['file'] for entry in CITATION_UPDATES['sources'].values()
+                       if '/w44-' in entry['file'])
+
 WEB_HOSTS = {'va.gov', 'benefits.va.gov', 'tricare.mil', 'dol.gov',
              'milconnect.dmdc.osd.mil'}
 

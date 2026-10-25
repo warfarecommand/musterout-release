@@ -234,3 +234,22 @@ def apply_va115(items, claim, contacts):
                 else:
                     citation['locator'] = 'Original pack locator: ' + citation['para']
                     citation['limitation'] = 'This topic page was not reverified against the July 2026 edition. Confirm current instructions through the official program route.'
+
+    # Reader: Marines and families. Effect: distinguish actual release, a planning target and a conditional rule deadline.
+    for id, months, basis in [('va-net', 11, 'target'), ('va-net-confirm', 12, 'rule')]:
+        rule = {'actualServiceEnd': True, 'months': months}
+        if months == 12:
+            rule['roll'] = 'nextWorkday'
+        i = by_id[id]
+        i.update(due=rule, window=None, basis=basis)
+        i['how'] = [step for step in i['how'] if not step.startswith('Timing: ') and not step.startswith('Use the calendar rule')]
+        i['how'].append('Record actual release through Copy actual-release record in Claim. The source is va-service-end.eventOn, a valid date on or before today associated with this plan by eventForDate. A planned date, status or doneOn does not establish release.')
+        i['how'].append('Planning target: 11 calendar months after actual release. Rule deadline: file by the one-year anniversary, moving forward to the next workday if it falls on a Saturday, Sunday or federal holiday under 38 CFR 3.110(a). A 29 FEB anniversary needs VA or accredited help to confirm the date. VA decides effective-date treatment; filing later remains available.')
+        i['cite'].extend([
+            {'ref': '38 CFR Part 3 (eCFR, 19 Oct 2026)', 'para': '3.400(b)(2)(i)',
+             'quote': 'if claim is received within 1 year after separation from service',
+             'url': 'https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3', 'accessed': '2026-10-21'},
+            {'ref': '38 CFR Part 3 (eCFR, 19 Oct 2026)', 'para': '3.110(a)',
+             'quote': 'Where the time limit would expire on a Saturday, Sunday, or holiday, the next succeeding workday will be included in the computation.',
+             'url': 'https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3', 'accessed': '2026-10-21'}
+        ])

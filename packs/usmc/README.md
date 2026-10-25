@@ -73,3 +73,21 @@ The official VA dental page supplies Class IV rating, individual unemployability
 Every path includes a DMO/TMO counseling target 90 days before the board separation or retirement date. The actual appointment and shipment entitlement/expiration are separate records. JTR paragraphs 052012 (A/C) and 052013 (A/B), with Table 5-52, distinguish separation, qualifying retirement/FMCR, shipment and storage. DMO/TMO must confirm the applicable paragraph, entitlement and exact dates from the orders. No universal final-move deadline is seeded.
 
 Retrieved 09 OCT 2026: the new order was downloaded from MCCS Okinawa and extracted in full with pdftotext. VA page text comes from the main content downloaded from va.gov. Firecrawl retrieved the JTR PDF after direct GET returned 403. Its cover letter is OCTOBER 1, 2026. Complete paragraphs 052012 and 052013 carry the source, edition and retrieval date. Markdown emphasis was removed and long dashes replaced with short hyphens. Source captures are maintained under _sources/w6. The citation checker verifies copied text and provenance; it does not approve individual entitlement.
+
+## Citation review, 21 OCT 2026
+
+`citation-updates.json` adds authority to 13 previously uncited tasks and names a confirming office for the remaining 7. Its source registry records the official URL and access date. The VA26 requirements supply the source mapping; each short quotation was checked against official text retrieved during this review. New reading copies have dated SOURCE headers. eCFR Part 3 was retrieved through its official versioned API, current through 19 OCT 2026. Direct MCO PDF requests returned 403; the existing pack text was cross-checked against an Exa extraction of each official URL on 21 OCT 2026. These citations explain the subject and do not create deadlines or establish personal eligibility.
+
+These planning tasks retain "No regulation cited" and a verify office:
+
+| Task | Why it remains a planning task | Confirm with |
+| --- | --- | --- |
+| va-conditions | A personal issue list and record inventory | Accredited VSO representative |
+| va-reserve | An inquiry about individual affiliation medical qualification | Military medical office and Career Planner |
+| sep-tell | An early command discussion without a universal filing date | Commanding officer |
+| sb-cert | A provider-specific funded exam and coverage period | SkillBridge provider |
+| lv-tsp | A personal account access check | TSP support and unit pay office |
+| fam-will | A personal appointment and family document review | Installation legal assistance |
+| fam-budget | A personal budget based on actual statements | DFAS, VA and qualified financial or tax help |
+
+Leave accounting and separation leave payment have authority, so lv-ledger and lv-final are cited. Their dates remain planning targets. `build_citations.py` regenerates citation locations after `board/build_seed.py`; `check_citations.py` independently checks the resulting metadata.

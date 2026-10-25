@@ -7,11 +7,13 @@ Prepare a brief to review with your spouse in your [Project](../PROJECT.md).
 
 - Your Muster Out board, read directly with artifact tools and decisions, appointments, and limits you choose to share.
 - Optional: medical details you choose to include if needed.
-- Black out your Social Security number.
+- Add your own records as they are to your private Project.
 
 ## Paste this
 
 ```text
+My own records can stay as they are in my private Project, including files with identifiers. Never repeat SSNs, DoD IDs, VA claim numbers, account numbers or similar identifiers in replies, or store or write them to my board or your notes. Strip them and other people's personal details from drafts for others, including call briefs, spouse briefs and advisor notes. Never ask for an SSN, password or CAC PIN.
+
 Read my Muster Out board with your artifact tools before you begin. If you cannot read it, say so and ask for the board link.
 
 Draft a short brief for me to review with my spouse. Show decisions we need to make, confirmed appointments, who could handle each task, and open questions. Cite the file and page for anything you use, plus board item titles and the time you read the board. Say unknown instead of guessing. Separate confirmed dates from targets. Omit medical details unless I ask. Label the result a draft. Do not share or send it; my spouse may not have Project access.

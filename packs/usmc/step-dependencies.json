@@ -1,0 +1,466 @@
+{
+  "schema": 1,
+  "rule": "Dependencies inform and never gate. Dependencies below are implementation order, never a reason for a user to delay filing or care.",
+  "edges": [
+    {
+      "dependent": "sep-presep",
+      "prerequisite": "sep-ic",
+      "reason": "Existing sep-presep.how says complete initial counseling first.",
+      "citation": "MCO 1700.31A; existing TRP phase sequence in sep-ic and sep-presep"
+    },
+    {
+      "dependent": "sep-trs",
+      "prerequisite": "sep-presep",
+      "reason": "Existing sep-trs.how requires initial and pre-separation counseling before workshops."
+    },
+    {
+      "dependent": "sep-capstone",
+      "prerequisite": "sep-trs",
+      "reason": "Existing sep-capstone.how says finish transition workshops before Capstone."
+    },
+    {
+      "dependent": "sep-cv",
+      "prerequisite": "sep-capstone",
+      "reason": "Existing sep-cv.how requires Capstone review before command verification."
+    },
+    {
+      "dependent": "sb-packet",
+      "prerequisite": "sb-provider",
+      "reason": "The existing packet instructions include the provider acceptance letter."
+    },
+    {
+      "dependent": "sb-packet",
+      "prerequisite": "sb-ethics",
+      "reason": "The existing packet instructions include the ethics certificate."
+    },
+    {
+      "dependent": "sb-packet",
+      "prerequisite": "sb-sequence",
+      "reason": "The existing packet includes the complete absence plan; confirm the sequence before submission."
+    },
+    {
+      "dependent": "sb-packet",
+      "prerequisite": "sb-account",
+      "reason": "The existing packet includes the unit contact plan."
+    },
+    {
+      "dependent": "sb-approval",
+      "prerequisite": "sb-packet",
+      "reason": "Written approval follows submission of the packet for command review. Submission never establishes approval."
+    },
+    {
+      "dependent": "sb-run",
+      "prerequisite": "sb-approval",
+      "reason": "Existing sb-run.how requires written approval before participation. Proposed sb-start remains usable while approval is pending."
+    },
+    {
+      "dependent": "sb-run",
+      "prerequisite": "sep-cv",
+      "reason": "Existing sb-run.how requires all TRP phases, ending in command verification, before participation. The office confirms exceptions."
+    },
+    {
+      "dependent": "va-itf-complete",
+      "prerequisite": "va-intent",
+      "reason": "This task specifically concerns completing a claim after an actual intent receipt. Intent is optional for other filing routes and never a prerequisite to standard filing.",
+      "citation": "VA26 T3-R012 depends on T3-R011; VA intent-to-file guidance already cited on both items"
+    },
+    {
+      "dependent": "va-hlr-referral",
+      "prerequisite": "va-decision",
+      "reason": "A review of a particular decision uses that decision notice and its instructions. Asking for qualified help stays available before notice details are recorded.",
+      "citation": "VA26 T3-R015 depends on T3-R014"
+    },
+    {
+      "dependent": "va-supplemental-referral",
+      "prerequisite": "va-decision",
+      "reason": "A review of a particular decision uses that decision notice and its instructions. Asking for qualified help stays available before notice details are recorded.",
+      "citation": "VA26 T3-R016 depends on T3-R014"
+    },
+    {
+      "dependent": "va-board-referral",
+      "prerequisite": "va-decision",
+      "reason": "A review of a particular decision uses that decision notice and its instructions. Asking for qualified help stays available before notice details are recorded.",
+      "citation": "VA26 T3-R017 depends on T3-R014"
+    },
+    {
+      "dependent": "ret-request-e",
+      "prerequisite": "ret-eligibility-e",
+      "reason": "The existing request instructions require eligibility review before the reporting unit submits the request."
+    },
+    {
+      "dependent": "ret-request-e",
+      "prerequisite": "ret-counsel-e",
+      "reason": "The existing enlisted request instructions require commander counseling before submission."
+    },
+    {
+      "dependent": "ret-receipt-e",
+      "prerequisite": "ret-request-e",
+      "reason": "Receipt confirmation refers to the submitted retirement request, not a draft."
+    },
+    {
+      "dependent": "sep-diary",
+      "prerequisite": "sep-counsel",
+      "reason": "The existing resignation route records commander counseling before diary submission."
+    },
+    {
+      "dependent": "lv-risk-r",
+      "prerequisite": "sep-approval",
+      "reason": "This task explicitly rechecks leave after actual resignation approval. It never supplies or changes a date."
+    },
+    {
+      "dependent": "lv-risk-t",
+      "prerequisite": "ret-approval",
+      "reason": "This task explicitly rechecks leave after actual retirement approval. It never supplies or changes a date."
+    },
+    {
+      "dependent": "dap-package",
+      "prerequisite": "dap-billet",
+      "reason": "The existing affiliation package uses the selected Reserve billet."
+    },
+    {
+      "dependent": "dap-request-o",
+      "prerequisite": "dap-package",
+      "reason": "Prepare the affiliation package before submitting the officer affiliation request."
+    },
+    {
+      "dependent": "dap-request-e",
+      "prerequisite": "dap-package",
+      "reason": "Prepare the affiliation package before submitting the enlisted affiliation request."
+    },
+    {
+      "dependent": "dap-763",
+      "prerequisite": "dap-commission",
+      "reason": "The existing Reserve commission sequence confirms appointment approval before signing the commission record."
+    },
+    {
+      "dependent": "cmd-turnover",
+      "prerequisite": "cmd-binder",
+      "reason": "The existing handoff meeting uses the prepared handoff notes."
+    },
+    {
+      "dependent": "terminal-predeparture",
+      "prerequisite": "sep-dd214",
+      "reason": "Review the service discharge record before final separation processing. TRS G1 clarification preserves the existing sep-dd214 meaning. No separate worksheet-review/final-DD214 task exists in this seed; a worksheet-specific split is unavailable."
+    },
+    {
+      "dependent": "cmd-checkout",
+      "prerequisite": "sep-dd214",
+      "reason": "Review the service discharge record before final separation processing. TRS G1 clarification preserves the existing sep-dd214 meaning. No separate worksheet-review/final-DD214 task exists in this seed; a worksheet-specific split is unavailable."
+    },
+    {
+      "dependent": "ides-referral",
+      "prerequisite": "ides-stage",
+      "reason": "IDS-R002 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-intake",
+      "prerequisite": "ides-stage",
+      "reason": "IDS-R003 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-counsel",
+      "prerequisite": "ides-stage",
+      "reason": "IDS-R004 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-wwr",
+      "prerequisite": "ides-stage",
+      "reason": "IDS-R005 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-va-claim",
+      "prerequisite": "ides-intake",
+      "reason": "IDS-R007 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-exams",
+      "prerequisite": "ides-intake",
+      "reason": "IDS-R009 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-exam-error",
+      "prerequisite": "ides-exams",
+      "reason": "IDS-R010 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-packet-review",
+      "prerequisite": "va-records",
+      "reason": "IDS-R011 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-packet-review",
+      "prerequisite": "ides-exams",
+      "reason": "IDS-R011 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-meb-election",
+      "prerequisite": "ides-packet-review",
+      "reason": "IDS-R012 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-vre",
+      "prerequisite": "ides-intake",
+      "reason": "IDS-R014 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-ipeb-receipt",
+      "prerequisite": "ides-meb-election",
+      "reason": "IDS-R015 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-ipeb-election",
+      "prerequisite": "ides-ipeb-receipt",
+      "reason": "IDS-R016 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-fpeb",
+      "prerequisite": "ides-ipeb-receipt",
+      "reason": "IDS-R017 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-fpeb-appeal",
+      "prerequisite": "ides-fpeb",
+      "reason": "IDS-R018 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-varr",
+      "prerequisite": "ides-ipeb-receipt",
+      "reason": "IDS-R019 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-ipeb-reconsideration-help",
+      "prerequisite": "ides-ipeb-election",
+      "reason": "IDS-R020 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-retention-help",
+      "prerequisite": "ides-ipeb-receipt",
+      "reason": "IDS-R021 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-extension",
+      "prerequisite": "ides-stage",
+      "reason": "IDS-R022 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-final-disposition",
+      "prerequisite": "ides-ipeb-election",
+      "reason": "IDS-R030 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-va-final-check",
+      "prerequisite": "ides-final-disposition",
+      "reason": "IDS-R033 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-va-review",
+      "prerequisite": "ides-va-final-check",
+      "reason": "IDS-R035 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-outcome",
+      "prerequisite": "ides-ipeb-receipt",
+      "reason": "IDS-R036 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-retired-pay-check",
+      "prerequisite": "ides-outcome",
+      "reason": "IDS-R037 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-severance",
+      "prerequisite": "ides-outcome",
+      "reason": "IDS-R038 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-combat-findings",
+      "prerequisite": "ides-ipeb-receipt",
+      "reason": "IDS-R039 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-concurrent-pay",
+      "prerequisite": "ides-va-final-check",
+      "reason": "IDS-R040 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-concurrent-pay",
+      "prerequisite": "ides-retired-pay-check",
+      "reason": "IDS-R040 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-crsc",
+      "prerequisite": "ides-va-final-check",
+      "reason": "IDS-R041 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-crsc",
+      "prerequisite": "ides-combat-findings",
+      "reason": "IDS-R041 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-crsc",
+      "prerequisite": "ides-concurrent-pay",
+      "reason": "IDS-R041 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-recoupment",
+      "prerequisite": "ides-va-final-check",
+      "reason": "IDS-R042 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-recoupment",
+      "prerequisite": "ides-severance",
+      "reason": "IDS-R042 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-tax-review",
+      "prerequisite": "ides-outcome",
+      "reason": "IDS-R043 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-education",
+      "prerequisite": "ides-final-disposition",
+      "reason": "IDS-R049 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-tdrl-followup",
+      "prerequisite": "ides-final-disposition",
+      "reason": "IDS-R051 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-reserve-counsel",
+      "prerequisite": "ides-ipeb-receipt",
+      "reason": "IDS-R052 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-exception-help",
+      "prerequisite": "ides-stage",
+      "reason": "IDS-R054 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    },
+    {
+      "dependent": "ides-bcnr-help",
+      "prerequisite": "ides-final-disposition",
+      "reason": "IDS-R055 information sequence from accepted BUILD_LIST section 3; navigation only, never an election, filing or care gate."
+    }
+  ],
+  "va26_review": [
+    {
+      "requirement": "T3-R002",
+      "dependencies": [
+        "T3-R001"
+      ],
+      "disposition": "Implementation order only. No task edge inferred: public filing, exam assistance, adding issues, intent questions and service-date/receipt confirmation stay reachable independently."
+    },
+    {
+      "requirement": "T3-R003",
+      "dependencies": [
+        "T3-R002"
+      ],
+      "disposition": "Implementation order only. No task edge inferred: public filing, exam assistance, adding issues, intent questions and service-date/receipt confirmation stay reachable independently."
+    },
+    {
+      "requirement": "T3-R004",
+      "dependencies": [
+        "T3-R002"
+      ],
+      "disposition": "Implementation order only. No task edge inferred: public filing, exam assistance, adding issues, intent questions and service-date/receipt confirmation stay reachable independently."
+    },
+    {
+      "requirement": "T3-R007",
+      "dependencies": [
+        "T3-R002"
+      ],
+      "disposition": "Implementation order only. No task edge inferred: public filing, exam assistance, adding issues, intent questions and service-date/receipt confirmation stay reachable independently."
+    },
+    {
+      "requirement": "T3-R008",
+      "dependencies": [
+        "T3-R002"
+      ],
+      "disposition": "Implementation order only. No task edge inferred: public filing, exam assistance, adding issues, intent questions and service-date/receipt confirmation stay reachable independently."
+    },
+    {
+      "requirement": "T3-R011",
+      "dependencies": [
+        "T3-R003"
+      ],
+      "disposition": "Implementation order only. No task edge inferred: public filing, exam assistance, adding issues, intent questions and service-date/receipt confirmation stay reachable independently."
+    },
+    {
+      "requirement": "T3-R012",
+      "dependencies": [
+        "T3-R011"
+      ],
+      "disposition": "Mapped bounded task sequence: va-itf-complete after va-intent. Help and filing stay available."
+    },
+    {
+      "requirement": "T3-R013",
+      "dependencies": [
+        "T3-R001"
+      ],
+      "disposition": "Implementation order only. No task edge inferred: public filing, exam assistance, adding issues, intent questions and service-date/receipt confirmation stay reachable independently."
+    },
+    {
+      "requirement": "T3-R014",
+      "dependencies": [
+        "T3-R003"
+      ],
+      "disposition": "Implementation order only. No task edge inferred: public filing, exam assistance, adding issues, intent questions and service-date/receipt confirmation stay reachable independently."
+    },
+    {
+      "requirement": "T3-R015",
+      "dependencies": [
+        "T3-R014"
+      ],
+      "disposition": "Mapped bounded task sequence: va-hlr-referral after va-decision. Help and filing stay available."
+    },
+    {
+      "requirement": "T3-R016",
+      "dependencies": [
+        "T3-R014"
+      ],
+      "disposition": "Mapped bounded task sequence: va-supplemental-referral after va-decision. Help and filing stay available."
+    },
+    {
+      "requirement": "T3-R017",
+      "dependencies": [
+        "T3-R014"
+      ],
+      "disposition": "Mapped bounded task sequence: va-board-referral after va-decision. Help and filing stay available."
+    },
+    {
+      "requirement": "T3-R018",
+      "dependencies": [
+        "T3-R014"
+      ],
+      "disposition": "An identified final Board decision differs from the generic recorded VA decision task. No false prerequisite to urgent court or qualified help."
+    },
+    {
+      "requirement": "T3-R060",
+      "dependencies": [
+        "T3-R001"
+      ],
+      "disposition": "Requirement dependency on service-date implementation is not a task prerequisite. Existing TRP instructions independently support sep-ic, sep-presep, sep-trs, sep-capstone, sep-cv sequence."
+    },
+    {
+      "requirement": "T3-R075",
+      "dependencies": [
+        "T3-R001",
+        "T3-R002",
+        "T3-R003",
+        "T3-R011",
+        "T3-R014"
+      ],
+      "disposition": "Implementation order only. No task edge inferred: public filing, exam assistance, adding issues, intent questions and service-date/receipt confirmation stay reachable independently."
+    }
+  ],
+  "source": "VA26 BRIEF/REQUIREMENTS.json va26.requirements.v2.1, 20 OCT 2026; existing 607e327 seed why/how/cite. Requirement order alone does not establish a Marine prerequisite.",
+  "limits": [
+    "va-records concerns personal copies and filing-channel or VA-receipt confirmation. va-str concerns delivery of the complete STR to IPAC. Personal-copy requests or unresolved VA receipt are not prerequisites to delivering an already available complete STR; neither task depends on the other. Filing and care stay available.",
+    "No worksheet-specific DD214 split exists; sep-dd214 keeps its accepted service-record review meaning and precedes final processing/checkout.",
+    "ret-approval is shared by officer and enlisted paths; branch-only retirement requests are not universal prerequisites and are not linked to the shared item.",
+    "sb-start records a proposal and remains usable before approval; sb-run is the participation check that follows written approval.",
+    "Optional intent is linked only to the dedicated ITF completion task, never to standard filing.",
+    "va-file checks the BDD filing route and has no Part A prerequisite. Part A accompanies an actual BDD submission; completing it is not required to check filing options. Filing and care stay available."
+  ]
+}

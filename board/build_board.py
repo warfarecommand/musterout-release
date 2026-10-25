@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Inject seed.json into template.html and write board.html, the page Claude Code publishes.
 Run from board/: python3 build_seed.py && python3 build_board.py"""
-import hashlib, json, os, re, subprocess, sys
+import base64, gzip, hashlib, json, os, re, subprocess, sys
 from pathlib import Path
 here = Path(__file__).resolve().parent
 
@@ -31,6 +31,15 @@ def embed_updates(fragment, root=here.parent):
         fragment += '\n<script>window.MusterOutUpdateConfig=' + config + ';\n' + engine + '</script>\n'
     return fragment
 
+def pack_ides_data(raw):
+    """Shared IDB codec: keep exact source bytes in a deterministic payload."""
+    packed = gzip.compress(raw, compresslevel=9, mtime=0)
+    payload = {'encoding': 'gzip-base64', 'data': base64.b64encode(packed).decode('ascii')}
+    if gzip.decompress(base64.b64decode(payload['data'])) != raw:
+        raise ValueError('Embedded gzip changed source bytes')
+    return payload
+
+
 def embed_trust(fragment, root=here.parent):
     """Inline the trust components; templates may opt into explicit markers."""
     for marker, filename, tag in (("/*TRUST_CSS*/", "trust.css", "style"),
@@ -42,6 +51,32 @@ def embed_trust(fragment, root=here.parent):
             fragment += "\n<" + tag + ">" + content + "</" + tag + ">\n"
     fragment = fragment.replace('/*VA_SELFHELP_JS*/', (root / 'board/va_selfhelp.js').read_text()).replace('/*VA_SELFHELP_DATA*/{}', canonical(json.loads((root / 'packs/usmc/va-selfhelp.json').read_text())).replace('</', '<\\/'))
     fragment = fragment.replace('/*VA115_DATA*/{}', canonical(json.loads((root / 'packs/usmc/va115.json').read_text())).replace('</', '<\\/'))
+    bootstrap = (root / 'board/embedded_data.js').read_text()
+    fragment = fragment.replace('/*IDES_JS*/', (root / 'board/ides.js').read_text() + '\n' + bootstrap)
+    anchor = '(function(){\n"use strict";\nfunction c1Appearance'
+    if anchor not in fragment:
+        raise ValueError('board bootstrap anchor missing')
+    fragment = fragment.replace(anchor, '(function startBoard(){\n"use strict";\n'
+                                'if(window.MusterOutBoardData.prepare(startBoard))return;\n'
+                                'function c1Appearance', 1)
+    fragment = fragment.replace('var SEED = JSON.parse(document.getElementById("seed").textContent);',
+                                'var SEED = window.MusterOutBoardData.value;', 1)
+    recovery_anchor = 'try { if (!(window.claude && window.claude.use))c1LoadLocalPlan(); } catch(e) {}'
+    if recovery_anchor not in fragment:
+        raise ValueError('board recovery anchor missing')
+    fragment = fragment.replace(recovery_anchor, 'if(window.MusterOutBoardData.recovery){\n'
+        'var recovered=window.MusterOutBoardData.recovery;\n'
+        'Object.assign(S,recovered.state,{readOnly:true,canWrite:false,live:true,dbState:"ready"});\n'
+        'S.settings=liveSettings(S.settings);\n'
+        'NEED.forEach(function(k){LOADED[k]=1;});\n'
+        'maybeAutoSeed=function(){};maybeMigrateSeed=function(){};\n'
+        'var savedRender=render;render=function(){savedRender();window.MusterOutBoardData.savedNotice();};\n'
+        '}else ' + recovery_anchor, 1)
+    fragment = fragment.replace('if(window.claude&&window.claude.use){\nwindow.claude.use("db")',
+        'if(!window.MusterOutBoardData.recovery&&window.claude&&window.claude.use){\nwindow.claude.use("db")', 1)
+    fragment = fragment.replace('/*IDES_UI*/', (root / 'board/ides_ui.js').read_text())
+    ides_data = canonical(json.loads((root / 'packs/usmc/ides.json').read_text())).encode('utf-8')
+    fragment = fragment.replace('/*IDES_DATA*/{}', json.dumps(pack_ides_data(ides_data), separators=(',', ':')))
     return fragment
 
 def canonical(value):
@@ -167,7 +202,8 @@ def seed_fingerprints(root=here.parent):
                         if digest not in variants:
                             variants.append(digest)
                 result["reissues"].setdefault(version, []).append(commit)
-    for repo in (root.parent / "musterout-release", root):
+    release_root = Path(os.environ.get("MUSTEROUT_RELEASE_ROOT", root.parent / "musterout-release")).expanduser().resolve()
+    for repo in (release_root, root):
         try:
             # Tags identify published bytes even when a later feed sync carries
             # the same config version. Untagged releases use publication commits.
@@ -290,7 +326,8 @@ def embed(template, seed, fingerprints, root=here.parent):
         raise SystemExit("template must start with its <title>")
     template = template[title.end():]
     # The gallery reads the name from the first 8 KB only, so the title leads.
-    return title[0].rstrip("\n") + "\n" + libraries + embed_trust(embed_updates(template.replace("/*SEED*/", escape(seed)).replace("/*SEED_FINGERPRINTS*/", escape(pack_fingerprints(fingerprints))), root), root)
+    packed_seed = json.dumps(pack_ides_data(escape(seed).encode('utf-8')), separators=(',', ':'))
+    return title[0].rstrip("\n") + "\n" + libraries + embed_trust(embed_updates(template.replace("/*SEED*/", packed_seed).replace("/*SEED_FINGERPRINTS*/", escape(pack_fingerprints(fingerprints))), root), root)
 
 def build_page():
     seed = json.loads((here / "seed.json").read_text())
@@ -307,12 +344,21 @@ def build_page():
     assert "/*SEED*/" in tpl and "MUSTEROUT_PATCHED" in tpl
     fingerprints = seed_fingerprints()
     out = embed(tpl, seed, fingerprints)
+    # Transport compression must not hide seed copy from the existing guards.
+    serialized_seed = canonical(seed).replace('</', '<\\/')
+    # Scan readable source in place of the opaque compressed transport. A clean
+    # base64 body may coincidentally contain a private token.
+    validation_out, seed_blocks = re.subn(
+        r'(<script type="application/json" id="seed">).*?(</script>)',
+        lambda m: m[1] + serialized_seed + m[2], out, count=1, flags=re.S)
+    if seed_blocks != 1:
+        raise ValueError('seed validation anchor missing')
     for d in (chr(0x2014), chr(0x2013)):
-        if d in out: sys.exit("dash found in page")
+        if d in validation_out: sys.exit("dash found in page")
     # The exact, source-verified enlisted counseling quote uses generic pronouns.
-    privacy_text = out.replace('Counsel the Marine concerning his or her potential for recall to active duty and/or mobilization.', '')
-    for bad in _leak_words():
-        if bad in privacy_text: sys.exit(f"personal string in page: {bad}")
+    privacy_text = validation_out.replace('Counsel the Marine concerning his or her potential for recall to active duty and/or mobilization.', '')
+    for index, bad in enumerate(_leak_words()):
+        if bad in privacy_text: sys.exit(f"personal string in page: private-list index {index}")
     document = complete_document(out)
     assert document.encode()[len(DOCUMENT_PREFIX.encode()):-len(DOCUMENT_SUFFIX.encode())] == out.encode()
     # syntax check the inline script
