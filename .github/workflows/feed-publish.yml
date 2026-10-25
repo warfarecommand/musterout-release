@@ -40,7 +40,7 @@ jobs:
           MO_FEED_PUBLIC_KEY: ${{ vars.MO_FEED_PUBLIC_KEY }}
           MO_FEED_KEY_ID: ${{ vars.MO_FEED_KEY_ID }}
           # Activate with sync-feed.yml after both public routes are ready.
-          MO_FEED_PROFILE: v2
+          MO_FEED_PROFILE: v3
         run: node feed/verify_publish.mjs
       - name: Install pinned npm
         if: steps.verify.outputs.publish == 'true'
