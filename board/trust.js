@@ -98,7 +98,7 @@ function definite(snap) { return !!snap && !!snap.metadata && snap.metadata.from
 function validDraftId(id) { return typeof id === 'string' && id.length <= 128 && /^[A-Za-z0-9][A-Za-z0-9._-]*(?::[A-Za-z0-9][A-Za-z0-9._-]*)*$/.test(id); }
 // One contract for flagged notices, plan applicability and source coverage.
 function policySummary(feed, options = {}) {
-const now = options.now ?? Date.now(), expected = ['MARADMIN','ALMAR','ALNAV','ORDER'];
+const now = options.now ?? Date.now(), expected = feed?.schema_version === 3 ? ['MARADMIN','ALMAR','ALNAV','ORDER','ECFR','FEDERAL_REGISTER','VA_GOV'] : ['MARADMIN','ALMAR','ALNAV','ORDER'];
 const raw = feed?.sources, blocks = Array.isArray(raw) ? raw : raw && typeof raw === 'object' ? Object.entries(raw).map(([source,b]) => ({...b,source:b.source || source})) : [];
 const groups = {matches:[],review:[],excluded:[]};
 const sources = blocks.map(block => {
@@ -122,6 +122,8 @@ const incomplete = !countsKnown || !!options.code || !!missing.length || !checke
 const flagged = countsKnown ? sum('flagged') : null, matches = sum('matches'), review = sum('review'), excluded = sum('excluded');
 const summary = !checked.length ? 'Policy messages have not been checked yet' : !countsKnown ? 'Flagged notices are unknown for this saved check' : flagged + ' flagged, ' + matches + ' match your plan';
 const details = [];
+if (feed && feed.schema_version !== 3) details.push('Saved four-source check. VA coverage is not recorded.');
+if (feed?.schema_version === 3) details.push('M21-1: VA blocks automated reads.');
 if (review) details.push(review + (review === 1 ? ' needs' : ' need') + ' applicability review.');
 if (excluded) details.push(excluded + ' excluded by your saved plan.');
 if (incomplete && feed) details.push('The latest check is incomplete.');
@@ -301,7 +303,7 @@ if (saveAttempt < 1 && save.status === 'failed' && !save.operation && (save.code
 }
 function mountSave(el) { if (el) { slots.save.push(el); renderSave(el); } }
 function currentPolicy() { return typeof o.noticeSummary === 'function' ? o.noticeSummary({feed,code:watchCode,now:o.now()}) : policySummary(feed,{code:watchCode,now:o.now()}); }
-function sourceLabel(source) { return source === 'ORDER' ? 'Cited orders' : source; }
+function sourceLabel(source) { return ({ORDER:'Cited orders',ECFR:'eCFR',FEDERAL_REGISTER:'Federal Register',VA_GOV:'VA.gov'}[source] || source); }
 function watchSummary(b) {
 if (!b.last_success) return sourceLabel(b.source) + ': No successful check yet.';
 const count = Number.isInteger(b.checked_count) && b.checked_count >= 0 ? b.checked_count + ' ' + (b.source === 'ORDER' ? 'orders' : b.source + 's') : 'Count not stated';
@@ -332,7 +334,7 @@ const copy = button('Copy check request',async () => { const bytes = o.weeklyMes
 s.body.append(copy); paragraph(s.body,'Paste into Claude to check policy. Your plan stays unchanged.','mot-policy-help');
 if (policy.flagged) paragraph(s.body,'Review flagged notices in Sources and documents.');
 const details = node('details'), summary = node('summary','Check details'); details.append(summary); s.body.append(details);
-paragraph(details,'These checks compare published policy messages and cited orders with your plan. Sources without a successful check still need review with the confirming office.');
+paragraph(details,'These checks compare official military and VA notices with your plan. Sources without a successful check still need review with the confirming office.');
 if (!blocks.length) paragraph(details,'No successful check is recorded.');
 blocks.forEach(b => {
 const section = node('section',undefined,'mot-coverage'); section.append(node('h3',sourceLabel(b.source)));

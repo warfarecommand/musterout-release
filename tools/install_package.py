@@ -18,6 +18,7 @@ spec.loader.exec_module(verify)
 # needs the prebuilt boards and guides, not authoring tools or deployed servers.
 INSTALL_BUILD_ONLY = frozenset({
     'board/template.html',
+    'board/watch_contract.js',
     'board/build_seed.py',
     'board/seed_copy.py',
     'board/va115_copy.py',

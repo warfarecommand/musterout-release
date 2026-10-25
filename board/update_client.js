@@ -213,8 +213,11 @@ finish(null, value);
 }
 async function loadVerified(options, validate) {
 var kind = options.kind;
+if (kind === 'feed' && options.feedProfile !== undefined && !['v2','v3'].includes(options.feedProfile)) fail('invalid_feed_profile');
 if (options.exactVersion && !/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(options.exactVersion)) fail('invalid_version');
-var path = kind === 'release' ? 'musterout@' + (options.exactVersion || 'latest') + '/release.js' : 'musterout-feed@latest/feed.js';
+var path = kind === 'release' ? 'musterout@' + (options.exactVersion || 'latest') + '/release.js' : 'musterout-feed@latest/' + (options.feedProfile === 'v3' ? 'v3/feed.js' : 'feed.js');
+// Schema 3 uses only release-gated package mirrors. importScripts returns an
+// object, not raw wrapper bytes; canonical payload signatures remain mandatory.
 // Each CDN has its own worker, first-message limit and 20 s deadline.
 // No board state or identifiers are sent to either worker.
 var results = await Promise.allSettled(['https://unpkg.com/', 'https://cdn.jsdelivr.net/npm/'].map(async function (host) {

@@ -104,7 +104,7 @@ Email signup is optional. Confirm the choices in the email we send before any st
 | --- | --- | --- |
 | Muster Out corrections | A fix to the regulation pack or a release that changes what your board tells you, with the update message | On for Muster Out welcome and registration signups; off otherwise |
 | Warfare Command Monthly | What shipped, what is next, one AI move worth trying, and one question. Release notes and new lessons can appear here. | On for update signups; off for coach-guide-only signups |
-| Weekly MARADMIN roundup | The week's possible separation and retirement matches from MARADMIN Watch | Off; one click to add |
+| Weekly MARADMIN roundup | The week's possible separation and retirement matches from Watch Officer | Off; one click to add |
 | New lessons | A single note when AI 102, 103, or 104 opens | On for AI 101 signups; off otherwise |
 
 Existing confirmed subscribers retain corrections only. Their monthly, weekly, and lesson choices start off, regardless of signup source. Older pending confirmation links retain their earlier consent. Any confirmed subscriber can turn each stream on or off using the private Email preferences link. Turning every stream off keeps your address and choices in the database; Unsubscribe from everything deletes the signup.

@@ -21,7 +21,7 @@ def update_config(root=here.parent):
 
 def embed_updates(fragment, root=here.parent):
     config = canonical(update_config(root)).replace('</', '<\\/')
-    engine = (root / 'board/update_client.js').read_text()
+    engine = (root / 'board/watch_contract.js').read_text() + "\nwindow.MusterOutWatchV3=createWatchV3Contract();\n" + (root / 'board/update_client.js').read_text()
     # The template can opt into markers without changing the fragment contract.
     has_engine = '/*UPDATE_ENGINE*/' in fragment
     fragment = fragment.replace('/*UPDATE_CONFIG*/', config)

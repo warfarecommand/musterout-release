@@ -1,6 +1,6 @@
 # Organizational and Government Licensing
 
-Warfare Command, offers paid written organizational licenses for Muster Out, Leader's Notebook, MARADMIN Watch, FITREP Desk, and covered warfarecommand.com site content.
+Warfare Command, offers paid written organizational licenses for Muster Out, Leader's Notebook, Watch Officer, FITREP Desk, and covered warfarecommand.com site content.
 
 ## Who Needs a License
 
