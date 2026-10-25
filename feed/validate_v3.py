@@ -3,6 +3,7 @@ from copy import deepcopy
 import hashlib
 import json
 import re
+from urllib.parse import unquote, urlsplit
 
 try:
     from .validate_v2 import validate_feed as validate_v2
@@ -28,7 +29,11 @@ def bounded_json(value):
         nodes += 1
         if nodes > 50_000 or depth > 32:
             raise ValueError('Feed traversal limit exceeded')
-        if item is None or type(item) in {str, bool}:
+        if type(item) is str:
+            try: item.encode('utf-8')
+            except UnicodeEncodeError as error: raise ValueError('Invalid Unicode scalar') from error
+            return
+        if item is None or type(item) is bool:
             return
         if type(item) is int and abs(item) <= 9_007_199_254_740_991:
             return
@@ -61,6 +66,8 @@ def strict_blocks(feed):
             raise ValueError('Failure reason exceeds the board contract')
         for notice in block['notices']:
             military = block['source'] in LEGACY
+            if military and block['source'] != 'ORDER' and not re.fullmatch(r'[0-9]{1,3}/[0-9]{2}', notice['number']):
+                raise ValueError('Non-ASCII military identity')
             if not bounded(notice['number'], 100 if military else 200):
                 raise ValueError('Notice number exceeds the board contract')
             if not bounded(notice['id'], 120 if military else len(block['source']) + 201):
@@ -93,6 +100,34 @@ def validate_feed(feed, now=None):
     value = deepcopy(feed)
     value['schema_version'] = 2
     validate_collector(value, now)
+    # The published profile uses the signer's UTC second/millisecond grammar.
+    # This avoids differing fractional/timezone parsing across browser and Python.
+    stamps = [feed['generated_at'], feed['expires_at']]
+    for block in feed['sources']:
+        stamps.append(block['last_attempt'])
+        if block['last_success'] is not None: stamps.append(block['last_success'])
+        if block['window']['to'] > feed['generated_at'][:10]:
+            raise ValueError('Source window extends beyond generation day')
+        for notice in block['notices']:
+            if (not bounded(notice['url'], 500) or not notice['url'].startswith('https://')
+                    or re.search(r'%(?![0-9A-Fa-f]{2})', notice['url'])):
+                raise ValueError('Noncanonical source URL')
+            try: unquote(notice['url'], errors='strict')
+            except UnicodeDecodeError as error: raise ValueError('Invalid URL encoding') from error
+            if block['source'] not in LEGACY:
+                stamps.append(notice['change']['observed_at'])
+                for identity in notice['identifiers']:
+                    if any(isinstance(v, str) and not v.isascii() for k,v in identity.items() if k != 'url'):
+                        raise ValueError('Non-ASCII native identity')
+                    if 'url' in identity and (not bounded(identity['url'], 500) or not identity['url'].startswith('https://')):
+                        raise ValueError('Noncanonical native URL')
+                    if 'url' in identity:
+                        path = urlsplit(identity['url']).path
+                        if re.search(r'%(?![0-9A-Fa-f]{2})', path): raise ValueError('Invalid native URL encoding')
+                        try: unquote(path, errors='strict')
+                        except UnicodeDecodeError as error: raise ValueError('Invalid native URL encoding') from error
+    if any(not isinstance(value, str) or not re.fullmatch(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z', value) for value in stamps):
+        raise ValueError('Noncanonical feed timestamp')
     if {block['source'] for block in feed['sources']} != set(ACTIVE) or len(feed['sources']) != len(ACTIVE):
         raise ValueError('Schema 3 requires exactly seven active sources')
     if feed['off_sources'] != [{'source': 'M21_1', 'reason': 'VA blocks automated reads'}]:
