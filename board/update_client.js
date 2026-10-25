@@ -391,18 +391,12 @@ if (journal && Object.prototype.hasOwnProperty.call(journal,'stage')) return fal
 var pending = journal && ['publishing','failed'].includes(journal.state);
 if (journal && journal.state !== 'complete' && !pending) return false;
 if (pending && (journal.state === 'failed' && !journal.target || compare(journal.to, config.version) > 0)) return false;
-if (!pending) {
-// Setup owns its own completion and install fields. Do not race it.
-if ((await db.doc('meta/setup').get()).exists) return false;
-var prior = await db.doc('meta/install').get();
-if (!prior.exists || !prior.data().version || compare(prior.data().version, config.version) >= 0) return false;
-}
+// MTN-133, TRS 21:10: only a pending page journal owns install bookkeeping.
+// Browser writes have no version precondition; quiet repair cannot be fenced.
+if (!pending) return false;
 try {
 if (pending && (journal.target || journal.trust_schema !== undefined)) { if (!await pinnedJournal()) fail('journal_changed'); }
 hooks();
-// Quiet metadata repair requires an already verified plan. Automatic
-// migration remains responsible for unfinished work without a page journal.
-if (!pending && await options.verifyMigration() !== true) return false;
 await requireWriter();
 if (pending) {
 report('applying', {phase:'migrating', version:config.version});
@@ -436,7 +430,8 @@ var freshJournal = await db.doc('meta/update').get();
 if (canonical(freshJournal.exists ? freshJournal.data() : null) !== canonical(journal)) fail('journal_changed');
 var installRef = db.doc('meta/install'), installed = await installRef.get();
 if (installed.exists && installed.data().version && compare(installed.data().version,config.version) > 0) fail('not_newer');
-await installRef.set(Object.assign({}, installed.exists ? installed.data() : {}, {version:config.version}));
+if (installed.exists) await installRef.update({version:config.version});
+else await installRef.set({version:config.version});
 installed = await installRef.get();
 if (!installed.exists || installed.data().version !== config.version) fail('install_unverified');
 if (!pending) return false;

@@ -10,7 +10,7 @@ export const COACH_GUIDE_COPY = {
     "1. In your own Claude account, open https://claude.ai/projects. Create a Project and name it Muster Out. If your phone app has no creation button, use the browser.",
     "2. Open https://musterout.warfarecommand.com/coach/ and tap Copy coach instructions. Paste the entire block into Project instructions and save. Copy the instructions from the guide so you get the current version.",
     "3. Start a chat inside that Project and send Start. Follow the guide; it walks you through the rest.",
-    "Before uploading records, turn off Help improve Claude in Settings, then Privacy. Use web settings if the phone labels differ. Redact SSNs and other sensitive identifiers. Ask the coach to cite the filename and page when it answers from a record.",
+    "Before uploading records, turn off Help improve Claude in Settings, then Privacy. Use web settings if the phone labels differ. Add your own records as they are to your private Project. The coach keeps identifiers out of board entries, notes and drafts for others. Ask the coach to cite the filename and page when it answers from a record.",
     "Connect Gmail and Google Calendar when you choose. Review the permissions in Claude. Approve any proposed send or calendar change separately. Use a computer if the phone path is missing.",
     "Return to this Project for your next question or say Check in. Your board holds the current plan; ask the coach to read it at each chat. Saving a fact or check-in to your board needs your separate approval."
   ],

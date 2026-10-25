@@ -16,6 +16,7 @@ import itertools, json, os, re, sys
 from pathlib import Path
 from seed_copy import COPY
 from va115_copy import apply_va115
+from step_dependencies import apply_dependencies
 
 HERE = Path(__file__).resolve().parent
 DASHES = (chr(0x2014), chr(0x2013))
@@ -1406,6 +1407,19 @@ for benefit in claim["benefits"]["rows"]:
         ).replace("The agency decides eligibility.", "The agency decides eligibility; anyone eligible for TRICARE is excluded.")
         benefit["verify"] = COPY["fam-champva"]["verify"]
 apply_va115(items, claim, contacts)
+from ides_seed import append_ides_items
+append_ides_items(items)
+try:
+    apply_dependencies(items, json.loads((HERE.parent / "packs/usmc/step-dependencies.json").read_text()))
+except ValueError as error:
+    print("SEED CHECK FAILED\n" + str(error)); sys.exit(1)
+
+# Reader: Marines and families. Effect: show authority and the office that confirms each subject.
+# MTN-126 changes citation metadata and office verification only.
+citation_updates = json.loads((HERE.parent / 'packs/usmc/citation-updates.json').read_text())
+from citation_updates import apply_citation_updates
+apply_citation_updates(items, citation_updates)
+
 ledger["note"] = "Use your latest Leave and Earnings Statement (LES) to enter your actual leave balance."
 seed = {"pack": PACK, "settings": settings, "ledger": ledger, "loes": loes, "items": items, "contacts": contacts, "blocks": blocks, "conditions": conditions, "claim": claim}
 
@@ -1415,10 +1429,18 @@ ids = [i["id"] for i in items]
 if len(ids) != len(set(ids)): errs.append("duplicate item ids")
 if len({x["id"] for x in contacts}) != len(contacts): errs.append("duplicate contact ids")
 loe_ids = {l["id"] for l in loes}
-FLAGS = {"resign", "retire", "eas", "officer", "enlisted", "reserve", "noreserve", "sb", "nosb", "cat1", "cat2", "cat3", "notretire"}
+FLAGS = {"resign", "retire", "eas", "ides", "officer", "enlisted", "reserve", "noreserve", "sb", "nosb", "cat1", "cat2", "cat3", "notretire"}
 def check_rule(r, where):
     if r is None: return
     keys = set(r) - {"biz"}
+    if 'actualServiceEnd' in r:
+        if (r.get('actualServiceEnd') is not True or
+                keys not in ({'actualServiceEnd', 'months'}, {'actualServiceEnd', 'days'},
+                             {'actualServiceEnd', 'months', 'roll'}) or
+                type(r.get('months', r.get('days'))) is not int or
+                ('roll' in r and r['roll'] != 'nextWorkday')):
+            errs.append(f"{where}: bad actual-release rule {r}")
+        return
     if keys not in ({"date"}, {"eas"}, {"easMonths"}, {"sb"}, {"serviceEnd"}, {"byPath"}, {"item", "days"}, {"item", "months"}, {"min"}, {"sb", "days"}, {"unitDeparture"}, {"terminalStart"}): errs.append(f"{where}: bad rule {r}")
     if "min" in r:
         if not isinstance(r["min"], list) or not r["min"]: errs.append(f"{where}: empty min rule")
@@ -1462,6 +1484,8 @@ for flags in combos():
     key = " ".join(sorted(flags))
     counts[key] = len(inc)
     for i in inc:
+        for prerequisite in i.get("after", []):
+            if prerequisite not in inc_ids: errs.append(f"{key}: {i['id']} prerequisite {prerequisite} is excluded")
         if i["loe"] not in inc_loes: errs.append(f"{key}: {i['id']} included but its line of effort is not")
         def rule_leaves(rule, optional_sb=False):
             if not rule: return

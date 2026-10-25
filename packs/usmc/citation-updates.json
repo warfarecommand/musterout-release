@@ -1,0 +1,264 @@
+{
+  "accessed": "2026-10-21",
+  "sources": {
+    "38 CFR Part 3 (eCFR, 19 Oct 2026)": {
+      "file": "regs/w44-cfr3.txt",
+      "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3",
+      "accessed": "2026-10-21",
+      "retrieval": "Official GET 200; source capture in W44 SML evidence.",
+      "sha256": "dd11a798e9a2bab67dce55637d983e6c464ed89e01c1334efe1428b1e958adef"
+    },
+    "VA How to apply for VA health care": {
+      "file": "regs/w44-care.txt",
+      "url": "https://www.va.gov/health-care/how-to-apply/",
+      "accessed": "2026-10-21",
+      "retrieval": "Official GET 200; source capture in W44 SML evidence.",
+      "sha256": "7a892973d00bb9cab11c87254222d3990f9b16f16936d93adcdbfd7dd7c2b6e9"
+    },
+    "VA Mental health care": {
+      "file": "regs/w44-mental.txt",
+      "url": "https://www.va.gov/health-care/health-needs-conditions/mental-health/",
+      "accessed": "2026-10-21",
+      "retrieval": "Official GET 200; source capture in W44 SML evidence.",
+      "sha256": "dd05ea3153e3c7a6e5b23e872ca61bd07ede5ca354315df0ca40e48d5c0345eb"
+    },
+    "VA The PACT Act and your VA benefits": {
+      "file": "regs/w44-pact.txt",
+      "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/",
+      "accessed": "2026-10-21",
+      "retrieval": "Official GET 200; source capture in W44 SML evidence.",
+      "sha256": "6be81ea6db0de3bbe94915e8d6f2f808c8b88d8deb0be0de87365396157b9c7a"
+    },
+    "38 USC 5304 (2024 edition)": {
+      "file": "regs/w44-drill.txt",
+      "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title38/html/USCODE-2024-title38-partIV-chap53-sec5304.htm",
+      "accessed": "2026-10-21",
+      "retrieval": "Official GET 200; source capture in W44 SML evidence.",
+      "sha256": "086b098bbbacbade77dcf6c2b1c7c68d3ef661e96785e3077954381a07cb9d60"
+    },
+    "OPM FEDVIP Eligibility": {
+      "file": "regs/w44-fedvip.txt",
+      "url": "https://www.opm.gov/healthcare-insurance/dental-vision/eligibility/",
+      "accessed": "2026-10-21",
+      "retrieval": "Official GET 200; source capture in W44 SML evidence.",
+      "sha256": "bd39eaddda6fb0fdabc450c3006d66093e6e794f9177564df958b2f7ce6be36f"
+    },
+    "VA Manage dependents": {
+      "file": "regs/w44-dependents.txt",
+      "url": "https://www.va.gov/manage-dependents/",
+      "accessed": "2026-10-21",
+      "retrieval": "Official GET 200; source capture in W44 SML evidence.",
+      "sha256": "11d6ba1eb1b00bd6bb06b08f64f07bb394f62bf29dc6924b875c85ee1ee2c5de"
+    },
+    "37 USC 501 (2024 edition)": {
+      "file": "regs/w44-leave501.txt",
+      "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title37/html/USCODE-2024-title37-chap9-sec501.htm",
+      "accessed": "2026-10-21",
+      "retrieval": "Official GET 200; source capture in W44 SML evidence.",
+      "sha256": "ba175f08b6a0e0abd2158a89c45691f3f6e4aefa303cb0596abb47d8f70d2ce9"
+    },
+    "MCO 1050.3J": {
+      "file": "regs/mco-1050.3j.txt",
+      "url": "https://www.marines.mil/portals/1/publications/mco%201050.3j.pdf",
+      "accessed": "2026-10-21",
+      "retrieval": "Direct 403; pack text cross-checked against Exa extraction of official URL this session.",
+      "sha256": "102a6ac5b58db9262d987b666c6286bfd3b9a8218a3d3a74af35d27fcbf35010"
+    },
+    "MCO 1900.16 CH-3 (MARCORSEPMAN)": {
+      "file": "regs/mco-1900.16-ch3.txt",
+      "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+      "accessed": "2026-10-21",
+      "retrieval": "Direct 403; pack text cross-checked against Exa extraction of official URL this session.",
+      "sha256": "102a6ac5b58db9262d987b666c6286bfd3b9a8218a3d3a74af35d27fcbf35010"
+    }
+  },
+  "items": {
+    "va-decision": {
+      "cite": [
+        {
+          "ref": "38 CFR Part 3 (eCFR, 19 Oct 2026)",
+          "para": "3.103(f)(1)-(8)",
+          "quote": "Identification of the issues adjudicated;",
+          "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3",
+          "accessed": "2026-10-21",
+          "source_requirement": "T3-R014"
+        }
+      ]
+    },
+    "ret-pay": {
+      "cite": [
+        {
+          "ref": "38 CFR Part 3 (eCFR, 19 Oct 2026)",
+          "para": "3.750(b)(3)",
+          "quote": "Veterans who receive disability retired pay under 10 U.S.C. Chapter 61 with less than 20 years of creditable service are not eligible for concurrent receipt.",
+          "url": "https://www.ecfr.gov/api/versioner/v1/full/2026-10-19/title-38.xml?part=3",
+          "accessed": "2026-10-21",
+          "source_requirement": "T3-R054"
+        }
+      ]
+    },
+    "va-sickcall": {
+      "cite": [
+        {
+          "ref": "VA How to apply for VA health care",
+          "para": "Option 3: Apply in person",
+          "quote": "Go to your nearest VA medical center or clinic.",
+          "url": "https://www.va.gov/health-care/how-to-apply/",
+          "accessed": "2026-10-21",
+          "source_requirement": "T3-R022"
+        }
+      ]
+    },
+    "va-hearing": {
+      "cite": [
+        {
+          "ref": "VA How to apply for VA health care",
+          "para": "Option 3: Apply in person",
+          "quote": "Go to your nearest VA medical center or clinic.",
+          "url": "https://www.va.gov/health-care/how-to-apply/",
+          "accessed": "2026-10-21",
+          "source_requirement": "T3-R022"
+        }
+      ]
+    },
+    "va-bh": {
+      "cite": [
+        {
+          "ref": "VA Mental health care",
+          "para": "Get connected with mental health care",
+          "quote": "You can use some VA services even if you’re not enrolled in VA health care.",
+          "url": "https://www.va.gov/health-care/health-needs-conditions/mental-health/",
+          "accessed": "2026-10-21",
+          "source_requirement": "T3-R022"
+        }
+      ]
+    },
+    "va-exposure": {
+      "cite": [
+        {
+          "ref": "VA The PACT Act and your VA benefits",
+          "para": "What does it mean to have a presumptive condition for toxic exposure?",
+          "quote": "You only need to meet the service requirements for the presumption.",
+          "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/",
+          "accessed": "2026-10-21",
+          "source_requirement": "T3-R023"
+        }
+      ]
+    },
+    "va-drill": {
+      "cite": [
+        {
+          "ref": "38 USC 5304 (2024 edition)",
+          "para": "5304(c)",
+          "quote": "shall not be paid to such person for any period for which such person receives active service pay.",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title38/html/USCODE-2024-title38-partIV-chap53-sec5304.htm",
+          "accessed": "2026-10-21",
+          "source_requirement": "T3-R027"
+        }
+      ]
+    },
+    "fam-dental-civ": {
+      "cite": [
+        {
+          "ref": "OPM FEDVIP Eligibility",
+          "para": "TRICARE Eligible Individuals",
+          "quote": "Retired members of the uniformed services and National Guard/Reserve components, including “gray-area” retirees under age 60 and their families are eligible for FEDVIP dental coverage.",
+          "url": "https://www.opm.gov/healthcare-insurance/dental-vision/eligibility/",
+          "accessed": "2026-10-21",
+          "source_requirement": "T3-R042"
+        }
+      ]
+    },
+    "fam-id": {
+      "cite": [
+        {
+          "ref": "VA Manage dependents",
+          "para": "Life changes you should tell us about",
+          "quote": "You may need to update a dependent’s status to continue to receive higher VA benefit payments.",
+          "url": "https://www.va.gov/manage-dependents/",
+          "accessed": "2026-10-21",
+          "source_requirement": "T3-R044"
+        }
+      ]
+    },
+    "lv-final": {
+      "cite": [
+        {
+          "ref": "37 USC 501 (2024 edition)",
+          "para": "501(b)(1)",
+          "quote": "who has accrued leave to the member's credit at the time of the member's discharge",
+          "url": "https://www.govinfo.gov/content/pkg/USCODE-2024-title37/html/USCODE-2024-title37-chap9-sec501.htm",
+          "accessed": "2026-10-21"
+        }
+      ],
+      "verify": "IPAC and disbursing office: Reconcile the final LES, leave record and any unused-leave payment; confirm applicable limits and exceptions."
+    },
+    "lv-requests": {
+      "cite": [
+        {
+          "ref": "MCO 1050.3J",
+          "para": "Ch 2, 4",
+          "quote": "Marines shall be granted leave at any time they request when their presence is not required to accomplish the command's mission.",
+          "url": "https://www.marines.mil/portals/1/publications/mco%201050.3j.pdf",
+          "accessed": "2026-10-21"
+        }
+      ],
+      "verify": "Commanding officer and unit administration: Confirm approval and proper reporting for each leave block."
+    },
+    "lv-ledger": {
+      "cite": [
+        {
+          "ref": "MCO 1050.3J",
+          "para": "Ch 2, 21",
+          "quote": "Leave information may be obtained through the Marine’s chain of command or using the MOL leave request or the individual Marine’s Leave and Earnings Statement (LES)",
+          "url": "https://www.marines.mil/portals/1/publications/mco%201050.3j.pdf",
+          "accessed": "2026-10-21"
+        }
+      ],
+      "verify": "Unit administration and disbursing office: Confirm your current LES leave balance and any unposted leave."
+    },
+    "eas-orders": {
+      "cite": [
+        {
+          "ref": "MCO 1900.16 CH-3 (MARCORSEPMAN)",
+          "para": "1005.1",
+          "quote": "Commanders are authorized to discharge enlisted Marines upon expiration of enlistment, extension of enlistment, or period of induction.",
+          "url": "https://www.marines.mil/Portals/1/Publications/MCO%201900.16%20ADMIN%20CH-3%20%28SECURED%29.pdf",
+          "accessed": "2026-10-21"
+        }
+      ]
+    }
+  },
+  "planning_only": {
+    "va-conditions": {
+      "verify": "Accredited VSO representative: Review the issues and missing records you want to discuss for your own claim."
+    },
+    "va-reserve": {
+      "verify": "Military medical office and Career Planner: Does this Marine qualify for the intended affiliation route and what service action and obligations are confirmed? Completion evidence: Record Career Planner guidance and any actual affiliation approval separately from VA eligibility."
+    },
+    "sep-tell": {
+      "verify": "Confirm with your commanding officer who handles the request and how it should be routed."
+    },
+    "sb-cert": {
+      "verify": "Provider: the exam date and what the program funds."
+    },
+    "lv-tsp": {
+      "verify": "TSP support and unit pay office: Confirm account access and any Reserve contributions."
+    },
+    "fam-will": {
+      "verify": "Installation legal assistance office: Confirm the will and power of attorney documents and appointment."
+    },
+    "fam-budget": {
+      "verify": "DFAS, VA and qualified tax/financial help: Which payments are actually available after waiver, offsets, recoupment and elections, without predicting a future award? Completion evidence: Use actual deposits and official payment statements for cash planning; pending awards remain unknown rather than zero."
+    }
+  },
+  "planning_reasons": {
+    "va-conditions": "Personal issue list and record inventory; no universal required list or due date.",
+    "va-reserve": "Individual affiliation medical inquiry; fitness and VA eligibility are distinct determinations.",
+    "sep-tell": "Early command discussion is a planning choice, not a sourced filing deadline.",
+    "sb-cert": "Exam funding and timing depend on the individual provider agreement.",
+    "lv-tsp": "Account login and access check; no regulatory event.",
+    "fam-will": "Family document review and legal appointment without a universal separation-based deadline.",
+    "fam-budget": "Household cash planning from actual statements without a universal budget deadline."
+  }
+}

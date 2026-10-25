@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.1 (2026-10-25)
+- Medical separation has its own IDES path. Each step shows what comes before and after it.
+- Deadlines follow your actual release date. VA and family tasks cite their sources, and setup links to VA help.
+
 ## 0.3.0 (2026-10-24)
 - Prepare your own VA claim: records, conditions to raise with a VSO, a personal statement helper and rating estimates.
 - Your leave forecast always shows its chart and warns before you lose leave. Setup keeps your place.

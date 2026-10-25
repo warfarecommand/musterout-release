@@ -32,7 +32,7 @@ export const SETUP_DELAYS = [0, 20, 44] as const;
 export const SETUP_CONTENT_HASHES: Record<string, string> = {
   "setup-1": "a3ca8083810a4b158fb10957018268a60676731833b7aa584a02c0dbb0eb00e6",
   "setup-2": "7a305cbee762eacf61935b6ed301fda90624116dfb530bfa1c59899744d24211",
-  "setup-3": "b805bed74f51bd9fa8fb3b19d032b1d8ae0cc546033b21204769c9d688d08387"
+  "setup-3": "204a1c247c213a716e23156f359df152373f4f472c33ad3450932f341a809226"
 };
 export const STREAM_CONSENT = "consent:campaign-streams:v2";
 export function streamDefaults(source: unknown) {

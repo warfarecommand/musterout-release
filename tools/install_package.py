@@ -21,6 +21,8 @@ INSTALL_BUILD_ONLY = frozenset({
     'board/build_seed.py',
     'board/seed_copy.py',
     'board/va115_copy.py',
+    'board/step_dependencies.py',
+    'board/ides_seed.py',
     'board/build_board.py',
     'tools/install_package.py',
     'packs/usmc/check_w6.py',
