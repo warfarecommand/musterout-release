@@ -36,7 +36,7 @@ try{
  assert.throws(()=>verifyFeed(tmp,env),/Unexpected package files/);
  // REFV32 duplicate_projection_key: preserve intentionally pretty JSON, reject ambiguity.
  write('feed/v3/latest.json',' \n'+JSON.stringify(modern,null,2)+'\n');verifyBundle(tmp,env);
- for(const duplicate of ['{"seq":0,'+canonical(modern).slice(1),canonical(modern).replace('"source":"VA_GOV"','"unexpected":0,"unexpected":1,"source":"VA_GOV"')]){
+ for(const duplicate of ['{"seq":0,'+canonical(modern).slice(1),canonical(modern).replace('"source":"VA_GOV"','"source":"FAKE","source":"VA_GOV"')]){
   write('feed/v3/latest.json',duplicate);
   assert.throws(()=>verifyBundle(tmp,env),/duplicate/i,'REFV32 F02 duplicate projection accepted');
  }

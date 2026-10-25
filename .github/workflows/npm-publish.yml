@@ -90,8 +90,8 @@ jobs:
           const prefix = '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>' + reset + '</style></head><body>';
           assert(payload.html.startsWith(prefix) && payload.html.endsWith('</body></html>'));
           assert(html.subarray(Buffer.byteLength(prefix), -14).equals(fs.readFileSync('board/board.html')), 'Fragment differs');
-          assert.equal(createHash('sha256').update(fs.readFileSync('npm/musterout/verify.cjs')).digest('hex'), 'cf72efe21ea79f3bdb8308e6246b83f8c4f5f439633cf7a4590c96ed8bdeccd2', 'Frozen verifier differs');
-          assert.equal(createHash('sha256').update(fs.readFileSync('npm/musterout/verify.py')).digest('hex'), 'd8876f9a7a6b6c6ba7f38971ea152ea4cfc39331a96e199d2b9fce83b8b70835', 'Frozen verifier differs');
+          assert.equal(createHash('sha256').update(fs.readFileSync('npm/musterout/verify.cjs')).digest('hex'), 'a0ce88ce54756452fcdb8cb9c2890b9ac324ccd52d3d8c78ac348fbcf5cf3cc9', 'Frozen verifier differs');
+          assert.equal(createHash('sha256').update(fs.readFileSync('npm/musterout/verify.py')).digest('hex'), 'deb85fd141b867932f76fcb695ecba23906c27d98976b17426cee836e6e180d8', 'Frozen verifier differs');
           const {createRequire} = await import('node:module');
           const protocol = createRequire(import.meta.url)(process.cwd() + '/npm/musterout/verify.cjs');
           protocol.preflight();
