@@ -4,8 +4,12 @@ import hashlib
 import json
 import re
 
-from validate_v2 import validate_feed as validate_v2
-from watch_contract import validate_feed as validate_collector
+try:
+    from .validate_v2 import validate_feed as validate_v2
+    from .watch_contract import validate_feed as validate_collector
+except ImportError:  # Direct release CLI execution.
+    from validate_v2 import validate_feed as validate_v2
+    from watch_contract import validate_feed as validate_collector
 
 ACTIVE = ('MARADMIN', 'ALMAR', 'ALNAV', 'ORDER', 'ECFR', 'FEDERAL_REGISTER', 'VA_GOV')
 LEGACY = ACTIVE[:4]
