@@ -9,7 +9,7 @@ import subprocess
 import tempfile
 import shutil
 
-from validate_v3 import validate_feed as validate_v3, validate_legacy, validate_pair, bounded_json
+from validate_v3 import validate_feed as validate_v3, validate_legacy, validate_pair, bounded_json, strict_json_loads
 
 from validate_v1 import validate_feed as validate_v1
 from validate_v2 import validate_feed as validate_v2
@@ -143,14 +143,14 @@ def sync(downloads, target, public_key, key_id, profile='v2', expected_v3=None):
     validate_legacy(legacy)
     if profile == 'v3':
         modern = verified_v3(payloads['v3/feed.js'], public_key, key_id)
-        if canonical(json.loads(payloads['v3/latest.json'])) != canonical(modern):
+        if canonical(strict_json_loads(payloads['v3/latest.json'])) != canonical(modern):
             raise ValueError('V3 projection differs from signed data')
         validate_pair(legacy, modern)
         if expected_v3 is not None and payloads['v3/feed.js'] != expected_v3:
             raise ValueError('Snapshot differs from authenticated latest transport')
         previous = target / 'v3/latest.json'
         if previous.exists():
-            old = json.loads(previous.read_bytes())
+            old = strict_json_loads(previous.read_bytes())
             if modern['seq'] < old['seq'] or (modern['seq'] == old['seq'] and canonical(modern) != canonical(old)):
                 raise ValueError('V3 replay or same-sequence replacement')
     # Run the actual legacy consumer into an isolated target first. It checks

@@ -1,5 +1,5 @@
-# VA source rules copied from musterout-watch de82f7274fcd8288963fbf17ee1ddcd7d0f1e0b3.
-# Original protocol.py SHA-256: a82e86bb853cf7366d06f43861d8fd701319663e7f9f089b7856d5e3cd476bb5
+# VA source rules copied from musterout-watch 9d8dfd7fb4ce30237ff378e74266c7092485dc2a.
+# Original protocol.py SHA-256: 393d4082b986e92095430784f40998214d6d20d8a5a25e0e0e1dfb7515eede4f
 """Feed v2 data validation. Safe to copy into the release feed directory."""
 from datetime import date, datetime, timedelta, timezone
 import re
@@ -17,6 +17,18 @@ APPLICABILITY = {
     'service_types': {'officer', 'enlisted'},
     'reserve': {True, False}, 'skillbridge': {True, False},
 }
+
+
+SOURCE_BLOCK_FIELDS_BY_VERSION = {3: frozenset({'source', 'coverage', 'status', 'reason', 'last_attempt', 'last_success', 'window', 'checked_count', 'unclassified_count', 'truncated', 'body_available', 'notices'})}
+ORDER_BLOCK_FIELDS = frozenset({'unresolved_count', 'unresolved_items'})
+
+
+def validate_source_block_fields(block, schema_version=3):
+    required = SOURCE_BLOCK_FIELDS_BY_VERSION[schema_version]
+    allowed = required | (ORDER_BLOCK_FIELDS if block.get('source') == 'ORDER' else frozenset())
+    if not required <= block.keys() or not block.keys() <= allowed:
+        raise ValueError('Invalid schema-3 source-block fields')
+    return block
 
 
 def failure_reason(value):

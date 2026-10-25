@@ -18,6 +18,20 @@ TOP = {'schema_version', 'seq', 'generated_at', 'expires_at', 'capture_replay',
        'sources', 'off_sources', 'legacy_seq', 'legacy_sha256'}
 
 
+SOURCE_BLOCK_FIELDS_BY_VERSION = {3: frozenset({'source', 'coverage', 'status', 'reason', 'last_attempt', 'last_success', 'window', 'checked_count', 'unclassified_count', 'truncated', 'body_available', 'notices'})}
+ORDER_BLOCK_FIELDS = frozenset({'unresolved_count', 'unresolved_items'})
+
+
+def validate_source_block_fields(block, schema_version=3):
+    required = SOURCE_BLOCK_FIELDS_BY_VERSION[schema_version]
+    allowed = required | (ORDER_BLOCK_FIELDS if block.get('source') == 'ORDER' else frozenset())
+    if not required <= block.keys() or not block.keys() <= allowed:
+        raise ValueError('Invalid schema-3 source-block fields')
+    return block
+
+
+
+
 def canonical(value):
     return json.dumps(value, sort_keys=True, ensure_ascii=False, separators=(',', ':'), allow_nan=False).encode('utf-8')
 
@@ -60,6 +74,8 @@ def bounded(value, limit):
 
 def strict_blocks(feed):
     for block in feed['sources']:
+        if feed['schema_version'] == 3:
+            validate_source_block_fields(block, 3)
         if not bounded(block['coverage'], 500):
             raise ValueError('Coverage exceeds the board contract')
         if block['status'] == 'failed' and not bounded(block['reason'], 500):
@@ -144,3 +160,17 @@ def validate_pair(legacy, feed, now=None):
             or canonical([block for block in feed['sources'] if block['source'] in LEGACY]) != canonical(legacy['sources'])):
         raise ValueError('Schema-3 legacy projection binding mismatch')
     return feed
+
+
+def strict_json_loads(raw):
+    """Reject duplicate object keys at every nesting level, including escaped keys."""
+    def pairs(items):
+        value = {}
+        for key, child in items:
+            if key in value:
+                raise ValueError('Duplicate projection key')
+            value[key] = child
+        return value
+    value = json.loads(raw, object_pairs_hook=pairs,
+                       parse_constant=lambda _: (_ for _ in ()).throw(ValueError('Invalid JSON constant')))
+    return bounded_json(value)

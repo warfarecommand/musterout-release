@@ -34,6 +34,13 @@ try{
  for(const [name,expected] of [['feed.js',transport(legacy)],['v3/feed.js',transport(modern)]])assert.equal(execFileSync('tar',['-xOf',path.join(tmp,'npm/musterout-feed',packed.filename),'package/'+name],{encoding:'utf8'}),expected);
  assert.equal(preparePackage(tmp,verifyBundle(tmp,env),'1.0.'+modern.seq),false);
  assert.throws(()=>verifyFeed(tmp,env),/Unexpected package files/);
+ // REFV32 duplicate_projection_key: preserve intentionally pretty JSON, reject ambiguity.
+ write('feed/v3/latest.json',' \n'+JSON.stringify(modern,null,2)+'\n');verifyBundle(tmp,env);
+ for(const duplicate of ['{"seq":0,'+canonical(modern).slice(1),canonical(modern).replace('"source":"VA_GOV"','"unexpected":0,"unexpected":1,"source":"VA_GOV"')]){
+  write('feed/v3/latest.json',duplicate);
+  assert.throws(()=>verifyBundle(tmp,env),/duplicate/i,'REFV32 F02 duplicate projection accepted');
+ }
+ write('feed/v3/latest.json',canonical(modern));
  const bad=structuredClone(modern);bad.legacy_sha256='0'.repeat(64);write('feed/v3/latest.json',canonical(bad));write('feed/v3/feed.js',transport(bad));assert.throws(()=>verifyBundle(tmp,env));
  console.log('PASS: legacy-only, dual bundle, exact packaged bytes, monotonic roots, retry and signed pair rejection');
 }finally{fs.rmSync(tmp,{recursive:true,force:true});}

@@ -75,7 +75,15 @@ export function verifyFeed(root = '.', env = process.env, profile = 'v2', bundle
   const data = Buffer.from(canonical(payload.data));
   assert.equal(data.length,e.size);
   assert.equal(createHash('sha256').update(data).digest('hex'),e.sha256);
-  assert.equal(canonical(JSON.parse(read('feed/' + profile + '/latest.json'))),data.toString(), 'Feed projection differs from signed data');
+  const projection = read('feed/' + profile + '/latest.json');
+  assert(projection.length <= 2000000, 'Oversized feed projection');
+  // Python's object-pairs hook rejects ambiguity before JSON.parse sees the value.
+  const projectionData = profile === 'v3'
+    ? JSON.parse(execFileSync('python3',['-B','-c',
+        'import sys,json; from validate_v3 import strict_json_loads; print(json.dumps(strict_json_loads(sys.stdin.buffer.read()),ensure_ascii=False))'],
+        {cwd:path.join(root,'feed'),input:projection,encoding:'utf8'}))
+    : JSON.parse(projection);
+  assert.equal(canonical(projectionData),data.toString(), 'Feed projection differs from signed data');
   // Strict source schemas run only after the signature and canonical hash pass.
   const validator = profile === 'v3' ? 'from validate_v3 import validate_feed' : 'from validate_v3 import validate_legacy as validate_feed';
   execFileSync('python3',['-B','-c','import json,sys; '+validator+'; validate_feed(json.load(sys.stdin))'],{cwd:path.join(root,'feed'),input:data,stdio:['pipe','pipe','pipe']});
