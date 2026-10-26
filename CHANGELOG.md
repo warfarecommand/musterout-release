@@ -1,5 +1,9 @@
 # Release notes
 
+## 0.3.3 (2026-10-25)
+- Buttons are clearer, and the Claim tab starts with your next step.
+- The registration card is shorter. The full details are one tap away.
+
 ## 0.3.2 (2026-10-25)
 - Watch Officer brings signed VA notices to your board and chat /watch. Weekly email keeps its four-source coverage.
 - Ask includes saved step relationships and confirmed IDES context.

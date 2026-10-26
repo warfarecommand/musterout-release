@@ -75,7 +75,7 @@ return MESSAGES[component + '.upstream_error'] || MESSAGES['db.unavailable'];
 }
 const KNOWN_CODES = new Set(Object.keys(MESSAGES).flatMap(k => [k,k.split('.').pop()]).concat(ABSENT,['UPDATE_TIMEOUT','UPDATE_OVERSIZE','UPDATE_FLOOD','REPORT_SEND_FAILED','permissions.manage.upstream_error','empty_completion','prompt_too_large','queue_overflow','cancelled','NotAllowedError']));
 function node(tag, text, cls) { const e = document.createElement(tag); if (text !== undefined) e.textContent = String(text); if (cls) e.className = cls; return e; }
-function button(text, fn, primary) { const e = node('button', text, 'mot-button' + (primary ? ' mot-primary' : '') + (['View diagnostic','Report a problem'].includes(text) ? ' mot-tertiary' : '')); e.type = 'button'; e.addEventListener('click', fn); return e; }
+function button(text, fn, primary) { const labels = {'Something looks wrong':'Looks wrong','Policy check failed':'Policy check issue','Allow weekly counts':'Allow counts','Copy check request':'Copy request','Copy setup message':'Copy setup','Copy update message':'Copy update','Delete sent reports and counts':'Delete sent data','I copied the report':'Report copied','Open your board in Claude':'Open in Claude','Rewrite details with Claude':'Review with Claude','Save a backup to this device':'Save a backup','View approved schema':'View schema','View diagnostic':'Diagnostic'}; const e = node('button', labels[text] || text, 'mot-button' + (primary ? ' mot-primary' : '') + (['View diagnostic','Report a problem'].includes(text) ? ' mot-tertiary' : '')); e.type = 'button'; if(labels[text] && text.toLowerCase().includes(labels[text].toLowerCase())) e.setAttribute('aria-label',text); e.addEventListener('click', fn); return e; }
 function icon(kind) {
 const disc = node('span',undefined,'c6-icon-disc'), ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns,'svg');
 svg.setAttribute('viewBox','0 0 24 24'); svg.setAttribute('aria-hidden','true');
@@ -320,7 +320,7 @@ const row = node('section',undefined,'mot-watch-line');
 // Reader: Marines reviewing Today. Effect: distinguish absent, completed and failed checks.
 const failed = !!watchCode && (watchCode !== 'WATCH_NOT_CHECKED' || policy.checked > 0);
 const summary = failed ? 'last check failed.' + (policy.at ? ' Showing results from ' + milDate(policy.at.slice(0,10)) + '.' : '') : !policy.checked ? 'not checked yet.' : (policy.flagged === 0 ? 'none flagged yet.' : policy.summary + '.') + (policy.incomplete ? ' Check incomplete.' : '');
-const action = button('Policy checks: '+summary,openCoverage); action.classList.add('mot-policy-row'); const chevron=node('span','›'); chevron.setAttribute('aria-hidden','true'); action.append(chevron); row.append(action); el.append(row);
+paragraph(row,'Policy checks: '+summary,'mot-policy-summary');const action = button('Review',openCoverage);action.classList.add('mot-policy-row');row.append(action);el.append(row);
 }
 function mountToday(el) { if (el) { slots.today.push(el); renderToday(el); } }
 function setWatch(value) {
@@ -533,7 +533,7 @@ const read = await ref.get(); if (!definite(read) || !read.exists || read.data()
 const encoded = btoa(String.fromCharCode(...new TextEncoder().encode(bytes))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
 const url = 'https://musterout.warfarecommand.com/report/#r=' + encoded;
 reportDrafts.clear(); emit('report-queued');
-const link = node('a','Open report page and paste','mot-button'); link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+const link = node('a','Open report page','mot-button'); link.href = url; link.target = '_blank'; link.rel = 'noopener noreferrer'; link.setAttribute('aria-label','Open report page and paste');
 link.addEventListener('click',() => { status.textContent = 'If you sent it, you are done. You can close this.'; });
 s.actions.querySelector('.mot-report-link')?.remove(); link.classList.add('mot-report-link'); copy.after(link);
 manualCopy.hidden = true;

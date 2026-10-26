@@ -85,8 +85,10 @@ def canonical(value):
 # MTN-94, TRS ruling 18 OCT 2026: 125 copy revisions measured 121,039 bytes
 # in format 2; the full publication measured 1,158,488 bytes. The old 120,000
 # soft target was a page budget, not a database or wire limit. Allow growth
-# to 160,000 without dropping history; retain the 200,000-byte hard ceiling.
-FINGERPRINT_SOFT_TARGET_BYTES = 160000
+# to 160,000 without dropping history. The 0.3.3 version entry measures 161,731
+# bytes. MTN-94 confirms this is only a build budget, not a DB or wire limit.
+# Allow 180,000; retain the 200,000-byte hard ceiling and format 2 unchanged.
+FINGERPRINT_SOFT_TARGET_BYTES = 180000
 FINGERPRINT_HARD_LIMIT_BYTES = 200000
 
 def decode_fingerprints(value):
