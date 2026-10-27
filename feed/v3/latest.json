@@ -1,8 +1,8 @@
 {
   "schema_version": 3,
-  "generated_at": "2026-10-26T16:34:36.553Z",
-  "expires_at": "2026-11-03T16:34:36.553Z",
-  "seq": 50000002,
+  "generated_at": "2026-10-27T15:46:22.725Z",
+  "expires_at": "2026-11-04T15:46:22.725Z",
+  "seq": 51000002,
   "capture_replay": false,
   "classification_mode": "keyword-baseline",
   "sources": [
@@ -11,11 +11,11 @@
       "coverage": "MARADMIN messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-26T16:33:48.742Z",
-      "last_success": "2026-10-26T16:33:48.742Z",
+      "last_attempt": "2026-10-27T15:45:34.742Z",
+      "last_success": "2026-10-27T15:45:34.742Z",
       "window": {
-        "from": "2026-09-27",
-        "to": "2026-10-26"
+        "from": "2026-09-28",
+        "to": "2026-10-27"
       },
       "checked_count": 77,
       "unclassified_count": 0,
@@ -104,11 +104,11 @@
       "coverage": "ALMAR messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-26T16:33:48.742Z",
-      "last_success": "2026-10-26T16:33:48.742Z",
+      "last_attempt": "2026-10-27T15:45:34.742Z",
+      "last_success": "2026-10-27T15:45:34.742Z",
       "window": {
-        "from": "2026-09-27",
-        "to": "2026-10-26"
+        "from": "2026-09-28",
+        "to": "2026-10-27"
       },
       "checked_count": 2,
       "unclassified_count": 0,
@@ -121,11 +121,11 @@
       "coverage": "Official ALNAV listings; full text for new titles with possible separation relevance",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-26T16:33:48.742Z",
-      "last_success": "2026-10-26T16:33:48.742Z",
+      "last_attempt": "2026-10-27T15:45:34.742Z",
+      "last_success": "2026-10-27T15:45:34.742Z",
       "window": {
-        "from": "2026-09-27",
-        "to": "2026-10-26"
+        "from": "2026-09-28",
+        "to": "2026-10-27"
       },
       "checked_count": 8,
       "unclassified_count": 0,
@@ -138,11 +138,11 @@
       "coverage": "6 orders: metadata checked daily; PDF hashes checked on detail changes; NAVMC 763 unresolved",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-26T16:33:48.742Z",
-      "last_success": "2026-10-26T16:33:48.742Z",
+      "last_attempt": "2026-10-27T15:45:34.742Z",
+      "last_success": "2026-10-27T15:45:34.742Z",
       "window": {
-        "from": "2026-09-27",
-        "to": "2026-10-26"
+        "from": "2026-09-28",
+        "to": "2026-10-27"
       },
       "checked_count": 6,
       "unclassified_count": 0,
@@ -162,11 +162,11 @@
       "coverage": "eCFR versioner section metadata for Title 38 Parts 3 and 4; daily version comparison since first baseline; current section snapshots only where public reads succeed; full-text API excluded by robots; 2 section bodies unavailable, CFR scope only",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-26T16:33:48.742Z",
-      "last_success": "2026-10-26T16:33:48.742Z",
+      "last_attempt": "2026-10-27T15:45:34.742Z",
+      "last_success": "2026-10-27T15:45:34.742Z",
       "window": {
-        "from": "2026-09-27",
-        "to": "2026-10-26"
+        "from": "2026-09-28",
+        "to": "2026-10-27"
       },
       "checked_count": 421,
       "unclassified_count": 0,
@@ -179,11 +179,11 @@
       "coverage": "Federal Register public API; VA proposed and final rules by publication date; structured comment and effective dates; abstracts only, not full rule text; at most 500 results",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-26T16:33:48.742Z",
-      "last_success": "2026-10-26T16:33:48.742Z",
+      "last_attempt": "2026-10-27T15:45:34.742Z",
+      "last_success": "2026-10-27T15:45:34.742Z",
       "window": {
-        "from": "2026-09-27",
-        "to": "2026-10-26"
+        "from": "2026-09-28",
+        "to": "2026-10-27"
       },
       "checked_count": 0,
       "unclassified_count": 0,
@@ -196,13 +196,13 @@
       "coverage": "Official VA news-release RSS title/header candidates for PACT, presumptive and benefit/program changes; bounded RSS history; content diffs of VA.gov PACT and BDD pages since first baseline; editorial changes may be candidates; no inferred publication or effective dates",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-26T16:33:48.742Z",
-      "last_success": "2026-10-26T16:33:48.742Z",
+      "last_attempt": "2026-10-27T15:45:34.742Z",
+      "last_success": "2026-10-27T15:45:34.742Z",
       "window": {
-        "from": "2026-09-27",
-        "to": "2026-10-26"
+        "from": "2026-09-28",
+        "to": "2026-10-27"
       },
-      "checked_count": 11,
+      "checked_count": 12,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
@@ -298,6 +298,6 @@
       "reason": "VA blocks automated reads"
     }
   ],
-  "legacy_seq": 50000001,
-  "legacy_sha256": "3d9f5f961d45c0817c27d7fa6bd41df78a89ad5a350868188c52731d4f3b9973"
+  "legacy_seq": 51000001,
+  "legacy_sha256": "4c6a2a3e34d893d05b0eb6e15b3e98fa393194ceb85132cb3b96c1125df5dc7e"
 }
