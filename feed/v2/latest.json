@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-10-29T16:41:29.263Z",
-  "expires_at": "2026-11-06T16:41:29.263Z",
-  "seq": 53000001,
+  "generated_at": "2026-10-30T16:34:33.055Z",
+  "expires_at": "2026-11-07T16:34:33.055Z",
+  "seq": 54000001,
   "capture_replay": false,
   "classification_mode": "keyword-baseline",
   "sources": [
@@ -11,17 +11,39 @@
       "coverage": "MARADMIN messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-29T16:40:04.589Z",
-      "last_success": "2026-10-29T16:40:04.589Z",
+      "last_attempt": "2026-10-30T16:33:38.974Z",
+      "last_success": "2026-10-30T16:33:38.974Z",
       "window": {
-        "from": "2026-09-30",
-        "to": "2026-10-29"
+        "from": "2026-10-01",
+        "to": "2026-10-30"
       },
-      "checked_count": 87,
+      "checked_count": 90,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
       "notices": [
+        {
+          "number": "539/26",
+          "title": "ADMINISTRATIVE UPDATE TO MARADMIN 189/26 POLICY ON SERVICE EXTENSIONS DURING INVOLUNTARY SEPARATION PROCESSING",
+          "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4636349/administrative-update-to-maradmin-18926-policy-on-service-extensions-during-inv/",
+          "posted": "2026-10-30",
+          "description": "R 282011Z OCT 26MARADMIN 539/26MSGID/GENADMIN/CMC WASHINGTON DC MRA MP//SUBJ/ADMINISTRATIVE UPDATE",
+          "series": "MARADMIN",
+          "body_available": true,
+          "relevant": true,
+          "lines": [
+            "separation"
+          ],
+          "paths": [
+            "all"
+          ],
+          "action": "informational",
+          "summary": "The keyword baseline found language that may concern leaving active duty. Review the official message for applicability and any required action.",
+          "deadline": null,
+          "confidence": "medium",
+          "id": "MARADMIN-539-26",
+          "card_detail": null
+        },
         {
           "number": "473/26",
           "title": "FISCAL YEAR 2027 ACTIVE RESERVE OFFICER ACCESSION AND CAREER DESIGNATION PLAN",
@@ -62,11 +84,11 @@
       "coverage": "ALMAR messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-29T16:40:04.589Z",
-      "last_success": "2026-10-29T16:40:04.589Z",
+      "last_attempt": "2026-10-30T16:33:38.974Z",
+      "last_success": "2026-10-30T16:33:38.974Z",
       "window": {
-        "from": "2026-09-30",
-        "to": "2026-10-29"
+        "from": "2026-10-01",
+        "to": "2026-10-30"
       },
       "checked_count": 1,
       "unclassified_count": 0,
@@ -79,11 +101,11 @@
       "coverage": "Official ALNAV listings; full text for new titles with possible separation relevance",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-29T16:40:04.589Z",
-      "last_success": "2026-10-29T16:40:04.589Z",
+      "last_attempt": "2026-10-30T16:33:38.974Z",
+      "last_success": "2026-10-30T16:33:38.974Z",
       "window": {
-        "from": "2026-09-30",
-        "to": "2026-10-29"
+        "from": "2026-10-01",
+        "to": "2026-10-30"
       },
       "checked_count": 8,
       "unclassified_count": 0,
@@ -96,11 +118,11 @@
       "coverage": "6 orders: metadata checked daily; PDF hashes checked on detail changes; NAVMC 763 unresolved",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-29T16:40:04.589Z",
-      "last_success": "2026-10-29T16:40:04.589Z",
+      "last_attempt": "2026-10-30T16:33:38.974Z",
+      "last_success": "2026-10-30T16:33:38.974Z",
       "window": {
-        "from": "2026-09-30",
-        "to": "2026-10-29"
+        "from": "2026-10-01",
+        "to": "2026-10-30"
       },
       "checked_count": 6,
       "unclassified_count": 0,

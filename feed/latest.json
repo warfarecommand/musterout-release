@@ -1,15 +1,36 @@
 {
   "checked_from": "2026-10-26",
-  "checked_to": "2026-10-29",
-  "generated_at": "2026-10-29T16:41:29.263Z",
+  "checked_to": "2026-10-30",
+  "generated_at": "2026-10-30T16:34:33.055Z",
   "source": "MARADMIN",
   "coverage": "MARADMIN messages posted on marines.mil between checked_from and checked_to",
   "schema_version": 1,
-  "checked_count": 17,
+  "checked_count": 20,
   "unclassified_count": 0,
   "classification_mode": "keyword-baseline",
   "capture_replay": false,
   "collection_source": "maradmin-rss",
   "truncated": false,
-  "notices": []
+  "notices": [
+    {
+      "number": "539/26",
+      "title": "ADMINISTRATIVE UPDATE TO MARADMIN 189/26 POLICY ON SERVICE EXTENSIONS DURING INVOLUNTARY SEPARATION PROCESSING",
+      "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4636349/administrative-update-to-maradmin-18926-policy-on-service-extensions-during-inv/",
+      "posted": "2026-10-30",
+      "description": "R 282011Z OCT 26MARADMIN 539/26MSGID/GENADMIN/CMC WASHINGTON DC MRA MP//SUBJ/ADMINISTRATIVE UPDATE",
+      "body_available": true,
+      "relevant": true,
+      "lines": [
+        "separation"
+      ],
+      "paths": [
+        "all"
+      ],
+      "action": "informational",
+      "summary": "The keyword baseline found language that may concern leaving active duty. Review the official message for applicability and any required action.",
+      "deadline": null,
+      "confidence": "medium",
+      "card_detail": null
+    }
+  ]
 }

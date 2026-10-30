@@ -1,8 +1,8 @@
 {
   "schema_version": 3,
-  "generated_at": "2026-10-29T16:41:29.263Z",
-  "expires_at": "2026-11-06T16:41:29.263Z",
-  "seq": 53000002,
+  "generated_at": "2026-10-30T16:34:33.055Z",
+  "expires_at": "2026-11-07T16:34:33.055Z",
+  "seq": 54000002,
   "capture_replay": false,
   "classification_mode": "keyword-baseline",
   "sources": [
@@ -11,17 +11,39 @@
       "coverage": "MARADMIN messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-29T16:40:04.589Z",
-      "last_success": "2026-10-29T16:40:04.589Z",
+      "last_attempt": "2026-10-30T16:33:38.974Z",
+      "last_success": "2026-10-30T16:33:38.974Z",
       "window": {
-        "from": "2026-09-30",
-        "to": "2026-10-29"
+        "from": "2026-10-01",
+        "to": "2026-10-30"
       },
-      "checked_count": 87,
+      "checked_count": 90,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
       "notices": [
+        {
+          "number": "539/26",
+          "title": "ADMINISTRATIVE UPDATE TO MARADMIN 189/26 POLICY ON SERVICE EXTENSIONS DURING INVOLUNTARY SEPARATION PROCESSING",
+          "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4636349/administrative-update-to-maradmin-18926-policy-on-service-extensions-during-inv/",
+          "posted": "2026-10-30",
+          "description": "R 282011Z OCT 26MARADMIN 539/26MSGID/GENADMIN/CMC WASHINGTON DC MRA MP//SUBJ/ADMINISTRATIVE UPDATE",
+          "series": "MARADMIN",
+          "body_available": true,
+          "relevant": true,
+          "lines": [
+            "separation"
+          ],
+          "paths": [
+            "all"
+          ],
+          "action": "informational",
+          "summary": "The keyword baseline found language that may concern leaving active duty. Review the official message for applicability and any required action.",
+          "deadline": null,
+          "confidence": "medium",
+          "id": "MARADMIN-539-26",
+          "card_detail": null
+        },
         {
           "number": "473/26",
           "title": "FISCAL YEAR 2027 ACTIVE RESERVE OFFICER ACCESSION AND CAREER DESIGNATION PLAN",
@@ -62,11 +84,11 @@
       "coverage": "ALMAR messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-29T16:40:04.589Z",
-      "last_success": "2026-10-29T16:40:04.589Z",
+      "last_attempt": "2026-10-30T16:33:38.974Z",
+      "last_success": "2026-10-30T16:33:38.974Z",
       "window": {
-        "from": "2026-09-30",
-        "to": "2026-10-29"
+        "from": "2026-10-01",
+        "to": "2026-10-30"
       },
       "checked_count": 1,
       "unclassified_count": 0,
@@ -79,11 +101,11 @@
       "coverage": "Official ALNAV listings; full text for new titles with possible separation relevance",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-29T16:40:04.589Z",
-      "last_success": "2026-10-29T16:40:04.589Z",
+      "last_attempt": "2026-10-30T16:33:38.974Z",
+      "last_success": "2026-10-30T16:33:38.974Z",
       "window": {
-        "from": "2026-09-30",
-        "to": "2026-10-29"
+        "from": "2026-10-01",
+        "to": "2026-10-30"
       },
       "checked_count": 8,
       "unclassified_count": 0,
@@ -96,11 +118,11 @@
       "coverage": "6 orders: metadata checked daily; PDF hashes checked on detail changes; NAVMC 763 unresolved",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-29T16:40:04.589Z",
-      "last_success": "2026-10-29T16:40:04.589Z",
+      "last_attempt": "2026-10-30T16:33:38.974Z",
+      "last_success": "2026-10-30T16:33:38.974Z",
       "window": {
-        "from": "2026-09-30",
-        "to": "2026-10-29"
+        "from": "2026-10-01",
+        "to": "2026-10-30"
       },
       "checked_count": 6,
       "unclassified_count": 0,
@@ -120,11 +142,11 @@
       "coverage": "eCFR versioner section metadata for Title 38 Parts 3 and 4; daily version comparison since first baseline; current section snapshots only where public reads succeed; full-text API excluded by robots; 2 section bodies unavailable, CFR scope only",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-29T16:40:04.589Z",
-      "last_success": "2026-10-29T16:40:04.589Z",
+      "last_attempt": "2026-10-30T16:33:38.974Z",
+      "last_success": "2026-10-30T16:33:38.974Z",
       "window": {
-        "from": "2026-09-30",
-        "to": "2026-10-29"
+        "from": "2026-10-01",
+        "to": "2026-10-30"
       },
       "checked_count": 421,
       "unclassified_count": 0,
@@ -137,11 +159,11 @@
       "coverage": "Federal Register public API; VA proposed and final rules by publication date; structured comment and effective dates; abstracts only, not full rule text; at most 500 results",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-29T16:40:04.589Z",
-      "last_success": "2026-10-29T16:40:04.589Z",
+      "last_attempt": "2026-10-30T16:33:38.974Z",
+      "last_success": "2026-10-30T16:33:38.974Z",
       "window": {
-        "from": "2026-09-30",
-        "to": "2026-10-29"
+        "from": "2026-10-01",
+        "to": "2026-10-30"
       },
       "checked_count": 0,
       "unclassified_count": 0,
@@ -154,13 +176,13 @@
       "coverage": "Official VA news-release RSS title/header candidates for PACT, presumptive and benefit/program changes; bounded RSS history; content diffs of VA.gov PACT and BDD pages since first baseline; editorial changes may be candidates; no inferred publication or effective dates",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-10-29T16:40:04.589Z",
-      "last_success": "2026-10-29T16:40:04.589Z",
+      "last_attempt": "2026-10-30T16:33:38.974Z",
+      "last_success": "2026-10-30T16:33:38.974Z",
       "window": {
-        "from": "2026-09-30",
-        "to": "2026-10-29"
+        "from": "2026-10-01",
+        "to": "2026-10-30"
       },
-      "checked_count": 11,
+      "checked_count": 10,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
@@ -256,6 +278,6 @@
       "reason": "VA blocks automated reads"
     }
   ],
-  "legacy_seq": 53000001,
-  "legacy_sha256": "f03f205dd03b69a5b5b064571b2aeb76a29a6044478c53e9c357d5e03c8ba7d5"
+  "legacy_seq": 54000001,
+  "legacy_sha256": "a6a00b3e4454d39c81361ce325252a84cb18138f83cf2a28a880121449b12825"
 }
