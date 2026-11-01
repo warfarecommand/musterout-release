@@ -1,7 +1,7 @@
 {
   "checked_from": "2026-10-26",
-  "checked_to": "2026-10-31",
-  "generated_at": "2026-10-31T15:37:54.030Z",
+  "checked_to": "2026-11-01",
+  "generated_at": "2026-11-01T16:37:07.019Z",
   "source": "MARADMIN",
   "coverage": "MARADMIN messages posted on marines.mil between checked_from and checked_to",
   "schema_version": 1,
