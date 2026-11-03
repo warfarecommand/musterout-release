@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-02T20:00:40.446Z",
-  "expires_at": "2026-11-10T20:00:40.446Z",
-  "seq": 58000001,
+  "generated_at": "2026-11-03T17:36:39.078Z",
+  "expires_at": "2026-11-11T17:36:39.078Z",
+  "seq": 59000001,
   "capture_replay": false,
   "classification_mode": "keyword-baseline",
   "sources": [
@@ -11,13 +11,13 @@
       "coverage": "MARADMIN messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-02T19:59:51.116Z",
-      "last_success": "2026-11-02T19:59:51.116Z",
+      "last_attempt": "2026-11-03T17:35:47.886Z",
+      "last_success": "2026-11-03T17:35:47.886Z",
       "window": {
-        "from": "2026-10-04",
-        "to": "2026-11-02"
+        "from": "2026-10-05",
+        "to": "2026-11-03"
       },
-      "checked_count": 75,
+      "checked_count": 77,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
@@ -106,11 +106,11 @@
       "coverage": "ALMAR messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-02T19:59:51.116Z",
-      "last_success": "2026-11-02T19:59:51.116Z",
+      "last_attempt": "2026-11-03T17:35:47.886Z",
+      "last_success": "2026-11-03T17:35:47.886Z",
       "window": {
-        "from": "2026-10-04",
-        "to": "2026-11-02"
+        "from": "2026-10-05",
+        "to": "2026-11-03"
       },
       "checked_count": 1,
       "unclassified_count": 0,
@@ -123,11 +123,11 @@
       "coverage": "Official ALNAV listings; full text for new titles with possible separation relevance",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-02T19:59:51.116Z",
-      "last_success": "2026-11-02T19:59:51.116Z",
+      "last_attempt": "2026-11-03T17:35:47.886Z",
+      "last_success": "2026-11-03T17:35:47.886Z",
       "window": {
-        "from": "2026-10-04",
-        "to": "2026-11-02"
+        "from": "2026-10-05",
+        "to": "2026-11-03"
       },
       "checked_count": 8,
       "unclassified_count": 0,
@@ -140,11 +140,11 @@
       "coverage": "6 orders: metadata checked daily; PDF hashes checked on detail changes; NAVMC 763 unresolved",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-02T19:59:51.116Z",
-      "last_success": "2026-11-02T19:59:51.116Z",
+      "last_attempt": "2026-11-03T17:35:47.886Z",
+      "last_success": "2026-11-03T17:35:47.886Z",
       "window": {
-        "from": "2026-10-04",
-        "to": "2026-11-02"
+        "from": "2026-10-05",
+        "to": "2026-11-03"
       },
       "checked_count": 6,
       "unclassified_count": 0,
