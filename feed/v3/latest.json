@@ -1,8 +1,8 @@
 {
   "schema_version": 3,
-  "generated_at": "2026-11-03T17:36:39.078Z",
-  "expires_at": "2026-11-11T17:36:39.078Z",
-  "seq": 59000002,
+  "generated_at": "2026-11-04T17:49:45.119Z",
+  "expires_at": "2026-11-12T17:49:45.119Z",
+  "seq": 60000002,
   "capture_replay": false,
   "classification_mode": "keyword-baseline",
   "sources": [
@@ -11,13 +11,13 @@
       "coverage": "MARADMIN messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-03T17:35:47.886Z",
-      "last_success": "2026-11-03T17:35:47.886Z",
+      "last_attempt": "2026-11-04T17:48:47.870Z",
+      "last_success": "2026-11-04T17:48:47.870Z",
       "window": {
-        "from": "2026-10-05",
-        "to": "2026-11-03"
+        "from": "2026-10-06",
+        "to": "2026-11-04"
       },
-      "checked_count": 77,
+      "checked_count": 75,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
@@ -65,39 +65,6 @@
           "confidence": "medium",
           "card_detail": null,
           "id": "MARADMIN-539-26"
-        },
-        {
-          "number": "473/26",
-          "title": "FISCAL YEAR 2027 ACTIVE RESERVE OFFICER ACCESSION AND CAREER DESIGNATION PLAN",
-          "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4618001/fiscal-year-2027-active-reserve-officer-accession-and-career-designation-plan/",
-          "posted": "2026-10-05",
-          "description": "R 021430Z OCT 26MARADMIN 473/26MSGID/GENADMIN/CMC WASHINGTON DC MRA RA//SUBJ/FISCAL YEAR 2027 ACTIVE",
-          "series": "MARADMIN",
-          "body_available": true,
-          "relevant": true,
-          "lines": [
-            "reserve"
-          ],
-          "paths": [
-            "all"
-          ],
-          "action": "informational",
-          "summary": "The keyword baseline found language that may concern leaving active duty. Review the official message for applicability and any required action.",
-          "deadline": null,
-          "confidence": "medium",
-          "card_detail": null,
-          "id": "MARADMIN-473-26",
-          "applicability": {
-            "service_types": [
-              "officer"
-            ]
-          },
-          "applicability_evidence": {
-            "service_types": [
-              "This MARADMIN announces the Reserve Affairs Active Reserve (AR) Officer Accession and Career Designation (CD)Plan for Fiscal Year 2027 (FY27)."
-            ]
-          },
-          "applicability_version": 1
         }
       ]
     },
@@ -106,11 +73,11 @@
       "coverage": "ALMAR messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-03T17:35:47.886Z",
-      "last_success": "2026-11-03T17:35:47.886Z",
+      "last_attempt": "2026-11-04T17:48:47.870Z",
+      "last_success": "2026-11-04T17:48:47.870Z",
       "window": {
-        "from": "2026-10-05",
-        "to": "2026-11-03"
+        "from": "2026-10-06",
+        "to": "2026-11-04"
       },
       "checked_count": 1,
       "unclassified_count": 0,
@@ -123,11 +90,11 @@
       "coverage": "Official ALNAV listings; full text for new titles with possible separation relevance",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-03T17:35:47.886Z",
-      "last_success": "2026-11-03T17:35:47.886Z",
+      "last_attempt": "2026-11-04T17:48:47.870Z",
+      "last_success": "2026-11-04T17:48:47.870Z",
       "window": {
-        "from": "2026-10-05",
-        "to": "2026-11-03"
+        "from": "2026-10-06",
+        "to": "2026-11-04"
       },
       "checked_count": 8,
       "unclassified_count": 0,
@@ -140,11 +107,11 @@
       "coverage": "6 orders: metadata checked daily; PDF hashes checked on detail changes; NAVMC 763 unresolved",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-03T17:35:47.886Z",
-      "last_success": "2026-11-03T17:35:47.886Z",
+      "last_attempt": "2026-11-04T17:48:47.870Z",
+      "last_success": "2026-11-04T17:48:47.870Z",
       "window": {
-        "from": "2026-10-05",
-        "to": "2026-11-03"
+        "from": "2026-10-06",
+        "to": "2026-11-04"
       },
       "checked_count": 6,
       "unclassified_count": 0,
@@ -164,11 +131,11 @@
       "coverage": "eCFR versioner section metadata for Title 38 Parts 3 and 4; daily version comparison since first baseline; current section snapshots only where public reads succeed; full-text API excluded by robots; 2 section bodies unavailable, CFR scope only",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-03T17:35:47.886Z",
-      "last_success": "2026-11-03T17:35:47.886Z",
+      "last_attempt": "2026-11-04T17:48:47.870Z",
+      "last_success": "2026-11-04T17:48:47.870Z",
       "window": {
-        "from": "2026-10-05",
-        "to": "2026-11-03"
+        "from": "2026-10-06",
+        "to": "2026-11-04"
       },
       "checked_count": 421,
       "unclassified_count": 0,
@@ -181,11 +148,11 @@
       "coverage": "Federal Register public API; VA proposed and final rules by publication date; structured comment and effective dates; abstracts only, not full rule text; at most 500 results",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-03T17:35:47.886Z",
-      "last_success": "2026-11-03T17:35:47.886Z",
+      "last_attempt": "2026-11-04T17:48:47.870Z",
+      "last_success": "2026-11-04T17:48:47.870Z",
       "window": {
-        "from": "2026-10-05",
-        "to": "2026-11-03"
+        "from": "2026-10-06",
+        "to": "2026-11-04"
       },
       "checked_count": 0,
       "unclassified_count": 0,
@@ -198,17 +165,58 @@
       "coverage": "Official VA news-release RSS title/header candidates for PACT, presumptive and benefit/program changes; bounded RSS history; content diffs of VA.gov PACT and BDD pages since first baseline; editorial changes may be candidates; no inferred publication or effective dates",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-03T17:35:47.886Z",
-      "last_success": "2026-11-03T17:35:47.886Z",
+      "last_attempt": "2026-11-04T17:48:47.870Z",
+      "last_success": "2026-11-04T17:48:47.870Z",
       "window": {
-        "from": "2026-10-05",
-        "to": "2026-11-03"
+        "from": "2026-10-06",
+        "to": "2026-11-04"
       },
       "checked_count": 10,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
       "notices": [
+        {
+          "series": "VA_GOV",
+          "number": "page:ce134d55a7cc283957dd:54ce8af54b36937f7fce",
+          "id": "VA_GOV-page:ce134d55a7cc283957dd:54ce8af54b36937f7fce",
+          "title": "VA benefit page content changed",
+          "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/",
+          "posted": "2026-11-04",
+          "relevant": true,
+          "lines": [
+            "va"
+          ],
+          "paths": [
+            "all"
+          ],
+          "action": "informational",
+          "confidence": "low",
+          "deadline": null,
+          "body_available": true,
+          "identifiers": [
+            {
+              "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/"
+            }
+          ],
+          "change": {
+            "kind": "updated",
+            "scope": "document",
+            "before_hash": "67f0704d61fccb6760ba870ef0aad790ac4e151e1e2cf0b84bc02435f4c42ef7",
+            "after_hash": "54ce8af54b36937f7fce38b63f2495d2a1ed98b6f5f831a8a0f381f98d796377",
+            "observed_at": "2026-11-04T17:48:47.870Z",
+            "published_at": null,
+            "effective_from": null,
+            "effective_to": null,
+            "effective_unknown": true
+          },
+          "source_evidence": {
+            "basis": "snapshot_diff",
+            "quote": "English | Espa\u00f1ol | Tagalog The PACT Act and your VA benefits The PACT Act is a law that expands VA health care and benefits for Veterans exposed to burn pits, Agent Orange, and other toxic substances. This law helps us provide generations of Veterans",
+            "source_sha256": "54ce8af54b36937f7fce38b63f2495d2a1ed98b6f5f831a8a0f381f98d796377"
+          },
+          "summary": "VA.gov records a benefit-page content update. Read the official text."
+        },
         {
           "series": "VA_GOV",
           "number": "news:3df52910b0f0a1052d07:29ed2f64acb1def34101",
@@ -300,6 +308,6 @@
       "reason": "VA blocks automated reads"
     }
   ],
-  "legacy_seq": 59000001,
-  "legacy_sha256": "3642baae2bf8f62f4b43acecc4cc2ffd0864e1ed0e7e46dbde3bd8bb5bc558f2"
+  "legacy_seq": 60000001,
+  "legacy_sha256": "927bd58c235d739ed29bf86e3205b0e12e6b4414fb7ae08ab9b36dde25ab655b"
 }
