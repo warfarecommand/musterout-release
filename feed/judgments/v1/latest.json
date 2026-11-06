@@ -1,0 +1,73 @@
+{
+  "seq": 64000002,
+  "generated_at": "2026-11-06T13:24:25.136Z",
+  "expires_at": "2026-11-14T13:24:25.136Z",
+  "schema_version": 1,
+  "base_seq": 64000002,
+  "base_sha256": "8af92044c98b73116f1bbe5446011e98b12881d86455ac7959790103d1614645",
+  "notices": [
+    {
+      "id": "MARADMIN-541-26",
+      "title": "IDENTITY, CREDENTIAL, AND ACCESS MANAGEMENT (ICAM) TRANSITION GUIDANCE: RETIREMENT OF THE LEGACY DD FORM 2875 AND NAVAL IDENTITY SERVICES (NIS) IMPLEMENTATION",
+      "body_sha256": "e20c5a90c5f4ec9dd2ca832e4ddf39242584381fa682ca9425ecf085ef979025",
+      "judgment": {
+        "v": 1,
+        "kind": "policy",
+        "summary": "This message directs system managers to move from the manual DD Form 2875 access request to the automated NIS workflow by 30 September 2027.",
+        "audience": "Marine Corps FAMs, PMs, and System Owners for NIPRNET systems",
+        "depends_on": null,
+        "action": null,
+        "evidence": "This message directs the mandatory transition from legacy manual DD Form 2875 SAAR to the NIS automated SAAR workflow service that aligns with DON mandates in references (a) through (c).",
+        "fit": {
+          "deciding": "no",
+          "eas": "no",
+          "resign": "no",
+          "retire": "no"
+        },
+        "judged": "2026-11-06"
+      }
+    },
+    {
+      "id": "MARADMIN-539-26",
+      "title": "ADMINISTRATIVE UPDATE TO MARADMIN 189/26 POLICY ON SERVICE EXTENSIONS DURING INVOLUNTARY SEPARATION PROCESSING",
+      "body_sha256": "1a3a75ecb7178b8f19a3645aedd482cc019da9aa70e4c4df3e4da763ebf4123a",
+      "judgment": {
+        "v": 1,
+        "kind": "policy",
+        "summary": "Service extensions are no longer authorized for Marines in involuntary administrative separation processing, and those reaching EAS before processing ends will separate on their scheduled EAS.",
+        "audience": "Marines undergoing involuntary administrative separation processing",
+        "fit": {
+          "eas": "no",
+          "resign": "no",
+          "retire": "no",
+          "deciding": "depends"
+        },
+        "depends_on": "Only if you are undergoing involuntary administrative separation processing",
+        "action": null,
+        "evidence": "The authority to grant service extensions to Marines undergoing involuntary administrative separation processing under the purview of reference (a) is rescinded.",
+        "judged": "2026-11-06"
+      }
+    },
+    {
+      "id": "VA_GOV-news:3df52910b0f0a1052d07:29ed2f64acb1def34101",
+      "title": "Following major reforms, over 300K new Veterans enroll in VA healthcare in 2026",
+      "body_sha256": "d0d98910741c03bc51f18c3570662d8608f83a01183665a6f8a216e51c1afa02",
+      "judgment": {
+        "action": null,
+        "audience": "Veterans",
+        "depends_on": null,
+        "evidence": "That includes more than 420,000 mental health appointments and more than 16,000 emergency care visits.",
+        "fit": {
+          "deciding": "no",
+          "eas": "no",
+          "resign": "no",
+          "retire": "no"
+        },
+        "judged": "2026-11-06",
+        "kind": "news",
+        "summary": "VA reports more than 300,000 new Veterans enrolled in VA healthcare in 2026, along with appointment totals and other service statistics, with no new action required.",
+        "v": 1
+      }
+    }
+  ]
+}

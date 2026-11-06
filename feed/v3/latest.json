@@ -1,23 +1,23 @@
 {
   "schema_version": 3,
-  "generated_at": "2026-11-05T17:53:45.609Z",
-  "expires_at": "2026-11-13T17:53:45.609Z",
-  "seq": 61000002,
+  "generated_at": "2026-11-06T13:24:25.136Z",
+  "expires_at": "2026-11-14T13:24:25.136Z",
+  "seq": 64000002,
   "capture_replay": false,
-  "classification_mode": "keyword-baseline",
+  "classification_mode": "claude-sonnet-5-5",
   "sources": [
     {
       "source": "MARADMIN",
       "coverage": "MARADMIN messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-05T17:52:44.943Z",
-      "last_success": "2026-11-05T17:52:44.943Z",
+      "last_attempt": "2026-11-06T13:23:06.054Z",
+      "last_success": "2026-11-06T13:23:06.054Z",
       "window": {
-        "from": "2026-10-07",
-        "to": "2026-11-05"
+        "from": "2026-10-08",
+        "to": "2026-11-06"
       },
-      "checked_count": 76,
+      "checked_count": 69,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
@@ -38,9 +38,9 @@
             "all"
           ],
           "action": "informational",
-          "summary": "The keyword baseline found language that may concern leaving active duty. Review the official message for applicability and any required action.",
+          "summary": "Title indicates a possible connection to leaving active duty. Read the official message before acting.",
           "deadline": null,
-          "confidence": "medium",
+          "confidence": "low",
           "card_detail": null,
           "id": "MARADMIN-541-26"
         },
@@ -57,12 +57,12 @@
             "separation"
           ],
           "paths": [
-            "all"
+            "eas"
           ],
-          "action": "informational",
-          "summary": "The keyword baseline found language that may concern leaving active duty. Review the official message for applicability and any required action.",
+          "action": "required",
+          "summary": "The message rescinds authority to grant service extensions to Marines in involuntary administrative separation processing, effective immediately. Commands may not submit, endorse, or approve such extensions, and Marines who reach their expiration of active service before proceedings finish will be separated on that date.",
           "deadline": null,
-          "confidence": "medium",
+          "confidence": "high",
           "card_detail": null,
           "id": "MARADMIN-539-26"
         }
@@ -73,11 +73,11 @@
       "coverage": "ALMAR messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-05T17:52:44.943Z",
-      "last_success": "2026-11-05T17:52:44.943Z",
+      "last_attempt": "2026-11-06T13:23:06.054Z",
+      "last_success": "2026-11-06T13:23:06.054Z",
       "window": {
-        "from": "2026-10-07",
-        "to": "2026-11-05"
+        "from": "2026-10-08",
+        "to": "2026-11-06"
       },
       "checked_count": 1,
       "unclassified_count": 0,
@@ -90,11 +90,11 @@
       "coverage": "Official ALNAV listings; full text for new titles with possible separation relevance",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-05T17:52:44.943Z",
-      "last_success": "2026-11-05T17:52:44.943Z",
+      "last_attempt": "2026-11-06T13:23:06.054Z",
+      "last_success": "2026-11-06T13:23:06.054Z",
       "window": {
-        "from": "2026-10-07",
-        "to": "2026-11-05"
+        "from": "2026-10-08",
+        "to": "2026-11-06"
       },
       "checked_count": 6,
       "unclassified_count": 0,
@@ -107,11 +107,11 @@
       "coverage": "6 orders: metadata checked daily; PDF hashes checked on detail changes; NAVMC 763 unresolved",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-05T17:52:44.943Z",
-      "last_success": "2026-11-05T17:52:44.943Z",
+      "last_attempt": "2026-11-06T13:23:06.054Z",
+      "last_success": "2026-11-06T13:23:06.054Z",
       "window": {
-        "from": "2026-10-07",
-        "to": "2026-11-05"
+        "from": "2026-10-08",
+        "to": "2026-11-06"
       },
       "checked_count": 6,
       "unclassified_count": 0,
@@ -131,11 +131,11 @@
       "coverage": "eCFR versioner section metadata for Title 38 Parts 3 and 4; daily version comparison since first baseline; current section snapshots only where public reads succeed; full-text API excluded by robots; 2 section bodies unavailable, CFR scope only",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-05T17:52:44.943Z",
-      "last_success": "2026-11-05T17:52:44.943Z",
+      "last_attempt": "2026-11-06T13:23:06.054Z",
+      "last_success": "2026-11-06T13:23:06.054Z",
       "window": {
-        "from": "2026-10-07",
-        "to": "2026-11-05"
+        "from": "2026-10-08",
+        "to": "2026-11-06"
       },
       "checked_count": 421,
       "unclassified_count": 0,
@@ -148,11 +148,11 @@
       "coverage": "Federal Register public API; VA proposed and final rules by publication date; structured comment and effective dates; abstracts only, not full rule text; at most 500 results",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-05T17:52:44.943Z",
-      "last_success": "2026-11-05T17:52:44.943Z",
+      "last_attempt": "2026-11-06T13:23:06.054Z",
+      "last_success": "2026-11-06T13:23:06.054Z",
       "window": {
-        "from": "2026-10-07",
-        "to": "2026-11-05"
+        "from": "2026-10-08",
+        "to": "2026-11-06"
       },
       "checked_count": 0,
       "unclassified_count": 0,
@@ -165,13 +165,13 @@
       "coverage": "Official VA news-release RSS title/header candidates for PACT, presumptive and benefit/program changes; bounded RSS history; content diffs of VA.gov PACT and BDD pages since first baseline; editorial changes may be candidates; no inferred publication or effective dates",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-05T17:52:44.943Z",
-      "last_success": "2026-11-05T17:52:44.943Z",
+      "last_attempt": "2026-11-06T13:23:06.054Z",
+      "last_success": "2026-11-06T13:23:06.054Z",
       "window": {
-        "from": "2026-10-07",
-        "to": "2026-11-05"
+        "from": "2026-10-08",
+        "to": "2026-11-06"
       },
-      "checked_count": 9,
+      "checked_count": 8,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
@@ -180,7 +180,7 @@
           "series": "VA_GOV",
           "number": "page:ce134d55a7cc283957dd:54ce8af54b36937f7fce",
           "id": "VA_GOV-page:ce134d55a7cc283957dd:54ce8af54b36937f7fce",
-          "title": "VA benefit page content changed",
+          "title": "VA.gov: PACT Act benefits page updated",
           "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/",
           "posted": "2026-11-04",
           "relevant": true,
@@ -257,47 +257,6 @@
             "source_sha256": "29ed2f64acb1def34101b698b8153ed53abc877d273e57ade971420ddb0f239b"
           },
           "summary": "VA.gov published a benefit or program update, published 21 OCT 2026. Read the official text."
-        },
-        {
-          "series": "VA_GOV",
-          "number": "news:5b5a350fa258724a5fef:521a9f11a656ba658cb6",
-          "id": "VA_GOV-news:5b5a350fa258724a5fef:521a9f11a656ba658cb6",
-          "title": "VA launches pilot program to speed Veterans\u2019 access to services, care, benefits",
-          "url": "https://news.va.gov/press-room/va-launches-pilot-program-to-speed-veterans-access-to-services-care-benefits/",
-          "posted": "2026-10-07",
-          "relevant": true,
-          "lines": [
-            "va"
-          ],
-          "paths": [
-            "all"
-          ],
-          "action": "informational",
-          "confidence": "low",
-          "deadline": null,
-          "body_available": false,
-          "identifiers": [
-            {
-              "url": "https://news.va.gov/press-room/va-launches-pilot-program-to-speed-veterans-access-to-services-care-benefits/"
-            }
-          ],
-          "change": {
-            "kind": "published",
-            "scope": "document",
-            "before_hash": null,
-            "after_hash": "521a9f11a656ba658cb6a781e95d5715749fc33c3c430dc405db5e1790dca2b7",
-            "observed_at": "2026-10-24T04:11:49.785Z",
-            "published_at": "2026-10-07",
-            "effective_from": null,
-            "effective_to": null,
-            "effective_unknown": true
-          },
-          "source_evidence": {
-            "basis": "official_metadata",
-            "quote": "VA launches new pilot program at six VA facilities to help Veterans establish VA.gov accounts faster than ever before, which means speedier access to VA services, care and benefits.",
-            "source_sha256": "521a9f11a656ba658cb6a781e95d5715749fc33c3c430dc405db5e1790dca2b7"
-          },
-          "summary": "VA.gov published a benefit or program update, published 07 OCT 2026. Read the official text."
         }
       ]
     }
@@ -308,6 +267,6 @@
       "reason": "VA blocks automated reads"
     }
   ],
-  "legacy_seq": 61000001,
-  "legacy_sha256": "5438075f0d9c36c520e6e50c32844219592dc2ad01c79cf1a388fca88c568026"
+  "legacy_seq": 64000001,
+  "legacy_sha256": "fd151ac7725521d7c1f1e58de4cca451f62d7b1449d28bd89e8fd8e8d6e92f61"
 }

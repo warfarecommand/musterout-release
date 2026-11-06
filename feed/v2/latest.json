@@ -1,23 +1,23 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-05T17:53:45.609Z",
-  "expires_at": "2026-11-13T17:53:45.609Z",
-  "seq": 61000001,
+  "generated_at": "2026-11-06T13:24:25.136Z",
+  "expires_at": "2026-11-14T13:24:25.136Z",
+  "seq": 64000001,
   "capture_replay": false,
-  "classification_mode": "keyword-baseline",
+  "classification_mode": "claude-sonnet-5-5",
   "sources": [
     {
       "source": "MARADMIN",
       "coverage": "MARADMIN messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-05T17:52:44.943Z",
-      "last_success": "2026-11-05T17:52:44.943Z",
+      "last_attempt": "2026-11-06T13:23:06.054Z",
+      "last_success": "2026-11-06T13:23:06.054Z",
       "window": {
-        "from": "2026-10-07",
-        "to": "2026-11-05"
+        "from": "2026-10-08",
+        "to": "2026-11-06"
       },
-      "checked_count": 76,
+      "checked_count": 69,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
@@ -38,9 +38,9 @@
             "all"
           ],
           "action": "informational",
-          "summary": "The keyword baseline found language that may concern leaving active duty. Review the official message for applicability and any required action.",
+          "summary": "Title indicates a possible connection to leaving active duty. Read the official message before acting.",
           "deadline": null,
-          "confidence": "medium",
+          "confidence": "low",
           "card_detail": null,
           "id": "MARADMIN-541-26"
         },
@@ -57,12 +57,12 @@
             "separation"
           ],
           "paths": [
-            "all"
+            "eas"
           ],
-          "action": "informational",
-          "summary": "The keyword baseline found language that may concern leaving active duty. Review the official message for applicability and any required action.",
+          "action": "required",
+          "summary": "The message rescinds authority to grant service extensions to Marines in involuntary administrative separation processing, effective immediately. Commands may not submit, endorse, or approve such extensions, and Marines who reach their expiration of active service before proceedings finish will be separated on that date.",
           "deadline": null,
-          "confidence": "medium",
+          "confidence": "high",
           "card_detail": null,
           "id": "MARADMIN-539-26"
         }
@@ -73,11 +73,11 @@
       "coverage": "ALMAR messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-05T17:52:44.943Z",
-      "last_success": "2026-11-05T17:52:44.943Z",
+      "last_attempt": "2026-11-06T13:23:06.054Z",
+      "last_success": "2026-11-06T13:23:06.054Z",
       "window": {
-        "from": "2026-10-07",
-        "to": "2026-11-05"
+        "from": "2026-10-08",
+        "to": "2026-11-06"
       },
       "checked_count": 1,
       "unclassified_count": 0,
@@ -90,11 +90,11 @@
       "coverage": "Official ALNAV listings; full text for new titles with possible separation relevance",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-05T17:52:44.943Z",
-      "last_success": "2026-11-05T17:52:44.943Z",
+      "last_attempt": "2026-11-06T13:23:06.054Z",
+      "last_success": "2026-11-06T13:23:06.054Z",
       "window": {
-        "from": "2026-10-07",
-        "to": "2026-11-05"
+        "from": "2026-10-08",
+        "to": "2026-11-06"
       },
       "checked_count": 6,
       "unclassified_count": 0,
@@ -107,11 +107,11 @@
       "coverage": "6 orders: metadata checked daily; PDF hashes checked on detail changes; NAVMC 763 unresolved",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-05T17:52:44.943Z",
-      "last_success": "2026-11-05T17:52:44.943Z",
+      "last_attempt": "2026-11-06T13:23:06.054Z",
+      "last_success": "2026-11-06T13:23:06.054Z",
       "window": {
-        "from": "2026-10-07",
-        "to": "2026-11-05"
+        "from": "2026-10-08",
+        "to": "2026-11-06"
       },
       "checked_count": 6,
       "unclassified_count": 0,
