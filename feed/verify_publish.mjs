@@ -6,6 +6,10 @@ import {createPublicKey, verify, createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import assert from 'node:assert/strict';
 
+const LEGACY_FILES = ['feed.js','LICENSE','NOTICE.md'];
+const V3_FILES = ['feed.js','v3/feed.js','LICENSE','NOTICE.md'];
+const JUDGMENT_FILES = ['feed.js','v3/feed.js','judgments/v1/feed.js','judgments/v1/latest.json','LICENSE','NOTICE.md'];
+
 function canonical(v) {
   if (v === null || typeof v === 'string' || typeof v === 'boolean' || Number.isSafeInteger(v)) return JSON.stringify(v);
   if (Array.isArray(v)) return '[' + v.map(canonical).join(',') + ']';
@@ -97,7 +101,7 @@ export function verifyFeed(root = '.', env = process.env, profile = 'v2', bundle
   }
   assert(Date.parse(e.created) <= Date.now() && Date.parse(e.expires) > Date.now(), 'Future or expired feed');
   const pkg = JSON.parse(read('npm/musterout-feed/package.json'));
-  assert.equal(pkg.name,'musterout-feed'); assert.equal(pkg.license,'SEE LICENSE IN LICENSE'); assert([JSON.stringify(['feed.js','LICENSE','NOTICE.md']), ...(bundle ? [JSON.stringify(['feed.js','v3/feed.js','LICENSE','NOTICE.md'])] : [])].includes(JSON.stringify(pkg.files)), 'Unexpected package files');
+  assert.equal(pkg.name,'musterout-feed'); assert.equal(pkg.license,'SEE LICENSE IN LICENSE'); assert([JSON.stringify(LEGACY_FILES), ...(bundle ? [JSON.stringify(V3_FILES), JSON.stringify(JUDGMENT_FILES)] : [])].includes(JSON.stringify(pkg.files)), 'Unexpected package files');
   assert.equal(pkg.repository.url,'https://github.com/warfarecommand/musterout-release.git');
   for (const field of ['scripts','dependencies','devDependencies','optionalDependencies','peerDependencies','bundledDependencies']) assert(!pkg[field],field);
   return {seq:e.seq, source, pkg, data:payload.data, profile};
@@ -106,7 +110,20 @@ export function verifyBundle(root = '.', env = process.env) {
   const legacy = verifyFeed(root, env, 'v2', true), modern = verifyFeed(root, env, 'v3', true);
   execFileSync('python3',['-B','-c','import json,sys; from validate_v3 import validate_pair; validate_pair(*json.load(sys.stdin))'],
     {cwd:path.join(root,'feed'),input:JSON.stringify([legacy.data, modern.data]),stdio:['pipe','pipe','pipe']});
-  return {seq:modern.seq, legacySeq:legacy.seq, source:legacy.source, modernSource:modern.source, pkg:legacy.pkg, profile:'v3'};
+  let judgments = null;
+  try {
+    // Recheck optional bytes at publication time, even if sync omitted them or
+    // a previous checkout still contains an older judgment pair.
+    const roots = JSON.parse(fs.readFileSync(path.join(root,'npm/musterout-feed/public_keys.json'))).feed_keys;
+    const keyID = env.MO_FEED_KEY_ID || Object.keys(roots).find(id => roots[id] === env.MO_FEED_PUBLIC_KEY);
+    const encoded = execFileSync('python3',['-B','-c',
+      'import base64,json,sys; from pathlib import Path; from sync import judgment_payloads; request=json.load(sys.stdin); payloads=judgment_payloads(Path(request["downloads"]),request["base"],base64.b64decode(request["key"],validate=True),request["key_id"]); print(json.dumps({k:base64.b64encode(v).decode("ascii") for k,v in payloads.items()}))'],
+      {cwd:path.join(root,'feed'), input:JSON.stringify({downloads:path.resolve(root,'feed'),base:modern.data,key:env.MO_FEED_PUBLIC_KEY,key_id:keyID}),stdio:['pipe','pipe','pipe'],maxBuffer:6000000});
+    judgments = Object.fromEntries(Object.entries(JSON.parse(encoded)).map(([name, raw]) => [name,Buffer.from(raw,'base64')]));
+  } catch {
+    console.log('Optional judgments omitted: missing or rejected pair');
+  }
+  return {seq:modern.seq, legacySeq:legacy.seq, source:legacy.source, modernSource:modern.source, judgments, pkg:legacy.pkg, profile:'v3'};
 }
 export function preparePackage(root, verified, publishedVersion) {
   if (publishedVersion !== null) {
@@ -120,9 +137,17 @@ export function preparePackage(root, verified, publishedVersion) {
   }
   if (verified.profile === 'v3') {
     assert(publishedVersion === null || verified.legacySeq > Number(publishedVersion.slice(4)), 'Legacy stream must advance beyond published bundle high-water');
-    verified.pkg.files = ['feed.js','v3/feed.js','LICENSE','NOTICE.md'];
+    verified.pkg.files = [...JUDGMENT_FILES];
     fs.mkdirSync(path.join(root,'npm/musterout-feed/v3'),{recursive:true});
     fs.writeFileSync(path.join(root,'npm/musterout-feed/v3/feed.js'),verified.modernSource);
+  }
+  fs.rmSync(path.join(root,'npm/musterout-feed/judgments'),{recursive:true,force:true});
+  if (verified.profile === 'v3' && verified.judgments) {
+    for (const [name, raw] of Object.entries(verified.judgments)) {
+      const destination = path.join(root,'npm/musterout-feed',name);
+      fs.mkdirSync(path.dirname(destination),{recursive:true});
+      fs.writeFileSync(destination,raw);
+    }
   }
   verified.pkg.version = '1.0.' + verified.seq;
   fs.writeFileSync(path.join(root,'npm/musterout-feed/package.json'),JSON.stringify(verified.pkg,null,2)+'\n');

@@ -8,6 +8,9 @@ from pathlib import Path
 import subprocess
 import tempfile
 import shutil
+import sys
+
+from validate_judgments import validate_feed as validate_judgments
 
 from validate_v3 import validate_feed as validate_v3, validate_legacy, validate_pair, bounded_json, strict_json_loads
 
@@ -132,6 +135,51 @@ def snapshot_id(script, public_key, key_id):
     return str(feed['legacy_seq']) + '-' + str(feed['seq'])
 
 
+JUDGMENT_PATHS = ('judgments/v1/latest.json', 'judgments/v1/feed.js')
+
+
+def judgment_payloads(downloads, base, public_key, key_id):
+    """Authenticate an optional pair without changing any signed bytes."""
+    payloads = {name: read_wire(downloads / name, 2_000_000) for name in JUDGMENT_PATHS}
+    feed = strict_json_loads(payloads[JUDGMENT_PATHS[0]])
+    script = payloads[JUDGMENT_PATHS[1]].decode('utf-8')
+    if not script.startswith('self.postMessage(') or not script.endswith(');\n'):
+        raise ValueError('Invalid judgment wrapper')
+    transport = strict_json_loads(script[17:-3])
+    expected = canonical(transport).decode('utf-8').replace('\u2028', '\\u2028').replace('\u2029', '\\u2029')
+    if script[17:-3] != expected:
+        raise ValueError('Noncanonical judgment transport')
+    validate_judgments(feed, base=base)
+    verify_signed(script, feed, public_key, key_id)
+    if transport['envelope']['pack'] != 'usmc-2026.10':
+        raise ValueError('Wrong judgment pack')
+    return payloads
+
+
+def sync_judgments(downloads, target, base, public_key, key_id):
+    # This optional lane runs after the required bundle is installed. Any
+    # rejected pair also removes a previous overlay, including at the same seq.
+    try:
+        payloads = judgment_payloads(downloads, base, public_key, key_id)
+        for name, raw in payloads.items():
+            path = target / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            pending = path.with_suffix(path.suffix + '.tmp')
+            pending.write_bytes(raw)
+            pending.replace(path)
+        return True
+    except Exception:
+        for name in JUDGMENT_PATHS:
+            path = target / name
+            for candidate in (path, path.with_suffix(path.suffix + '.tmp')):
+                try:
+                    candidate.unlink(missing_ok=True)
+                except OSError:
+                    pass
+        print('Optional judgments omitted: missing or rejected pair', file=sys.stderr)
+        return False
+
+
 def sync(downloads, target, public_key, key_id, profile='v2', expected_v3=None):
     if profile not in {'v2', 'v3'}:
         raise ValueError('Unknown feed profile')
@@ -177,6 +225,8 @@ def sync(downloads, target, public_key, key_id, profile='v2', expected_v3=None):
     finally:
         for pending, _ in staged:
             pending.unlink(missing_ok=True)
+    if profile == 'v3':
+        sync_judgments(downloads, target, modern, public_key, key_id)
 
 
 if __name__ == '__main__':

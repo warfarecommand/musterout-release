@@ -58,3 +58,7 @@ jobs:
           if [ -f npm/musterout-feed/v3/feed.js ]; then
             curl -q --fail --silent --show-error --max-time 60 --proto '=https' https://purge.jsdelivr.net/npm/musterout-feed@latest/v3/feed.js
           fi
+          if [ -f npm/musterout-feed/judgments/v1/feed.js ]; then
+            curl -q --fail --silent --show-error --max-time 60 --proto '=https' https://purge.jsdelivr.net/npm/musterout-feed@latest/judgments/v1/feed.js
+            curl -q --fail --silent --show-error --max-time 60 --proto '=https' https://purge.jsdelivr.net/npm/musterout-feed@latest/judgments/v1/latest.json
+          fi

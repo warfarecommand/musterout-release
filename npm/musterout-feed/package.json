@@ -4,6 +4,9 @@
   "description": "Signed Muster Out regulation feed data",
   "files": [
     "feed.js",
+    "v3/feed.js",
+    "judgments/v1/feed.js",
+    "judgments/v1/latest.json",
     "LICENSE",
     "NOTICE.md"
   ],
