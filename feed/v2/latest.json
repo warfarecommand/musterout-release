@@ -1,8 +1,8 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-06T13:24:25.136Z",
-  "expires_at": "2026-11-14T13:24:25.136Z",
-  "seq": 64000001,
+  "generated_at": "2026-11-06T17:14:22.329Z",
+  "expires_at": "2026-11-14T17:14:22.329Z",
+  "seq": 65000001,
   "capture_replay": false,
   "classification_mode": "claude-sonnet-5-5",
   "sources": [
@@ -11,8 +11,8 @@
       "coverage": "MARADMIN messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-06T13:23:06.054Z",
-      "last_success": "2026-11-06T13:23:06.054Z",
+      "last_attempt": "2026-11-06T17:13:59.972Z",
+      "last_success": "2026-11-06T17:13:59.972Z",
       "window": {
         "from": "2026-10-08",
         "to": "2026-11-06"
@@ -73,8 +73,8 @@
       "coverage": "ALMAR messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-06T13:23:06.054Z",
-      "last_success": "2026-11-06T13:23:06.054Z",
+      "last_attempt": "2026-11-06T17:13:59.972Z",
+      "last_success": "2026-11-06T17:13:59.972Z",
       "window": {
         "from": "2026-10-08",
         "to": "2026-11-06"
@@ -90,8 +90,8 @@
       "coverage": "Official ALNAV listings; full text for new titles with possible separation relevance",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-06T13:23:06.054Z",
-      "last_success": "2026-11-06T13:23:06.054Z",
+      "last_attempt": "2026-11-06T17:13:59.972Z",
+      "last_success": "2026-11-06T17:13:59.972Z",
       "window": {
         "from": "2026-10-08",
         "to": "2026-11-06"
@@ -107,8 +107,8 @@
       "coverage": "6 orders: metadata checked daily; PDF hashes checked on detail changes; NAVMC 763 unresolved",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-06T13:23:06.054Z",
-      "last_success": "2026-11-06T13:23:06.054Z",
+      "last_attempt": "2026-11-06T17:13:59.972Z",
+      "last_success": "2026-11-06T17:13:59.972Z",
       "window": {
         "from": "2026-10-08",
         "to": "2026-11-06"
