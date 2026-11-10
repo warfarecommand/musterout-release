@@ -1,10 +1,10 @@
 {
-  "seq": 68000002,
-  "generated_at": "2026-11-09T20:29:08.974Z",
-  "expires_at": "2026-11-17T20:29:08.974Z",
+  "seq": 69000002,
+  "generated_at": "2026-11-10T17:31:51.174Z",
+  "expires_at": "2026-11-18T17:31:51.174Z",
   "schema_version": 1,
-  "base_seq": 68000002,
-  "base_sha256": "aef16979acf5990396eb74fd0d08b901f8236af3a8f92b7df194b3527a17910b",
+  "base_seq": 69000002,
+  "base_sha256": "19179079924b02d35c708dc37d0597648322df2640548bd3844b6d4c48904c92",
   "notices": [
     {
       "id": "MARADMIN-541-26",
