@@ -1,10 +1,10 @@
 {
-  "seq": 69000002,
-  "generated_at": "2026-11-10T17:31:51.174Z",
-  "expires_at": "2026-11-18T17:31:51.174Z",
+  "seq": 70000002,
+  "generated_at": "2026-11-11T17:45:11.399Z",
+  "expires_at": "2026-11-19T17:45:11.399Z",
   "schema_version": 1,
-  "base_seq": 69000002,
-  "base_sha256": "19179079924b02d35c708dc37d0597648322df2640548bd3844b6d4c48904c92",
+  "base_seq": 70000002,
+  "base_sha256": "2baa2aa32dede4f4b452363c8f6282f446395991cbd07d4cd981f3fcdbbdb30c",
   "notices": [
     {
       "id": "MARADMIN-541-26",
@@ -46,6 +46,27 @@
         "action": null,
         "evidence": "The authority to grant service extensions to Marines undergoing involuntary administrative separation processing under the purview of reference (a) is rescinded.",
         "judged": "2026-11-06"
+      }
+    },
+    {
+      "id": "VA_GOV-news:b4589feb7b25be497442:bd350e6ce039ba0f2e80",
+      "title": "VA opens 47th new healthcare facility under President Trump",
+      "body_sha256": "49e39dce116d5a7bb86468969180056670c86ccbcc73b8a49a39d1a4b6565980",
+      "judgment": {
+        "v": 1,
+        "kind": "news",
+        "summary": "VA announced the opening of a new outpatient clinic in West Burlington, Iowa, with expanded services and capacity, and cited appointment and enrollment totals.",
+        "audience": "Veterans",
+        "depends_on": null,
+        "action": null,
+        "evidence": "At nearly 18,000 square feet, the new clinic is more than five times the size of the old facility.",
+        "fit": {
+          "eas": "no",
+          "resign": "no",
+          "retire": "no",
+          "deciding": "no"
+        },
+        "judged": "2026-11-11"
       }
     },
     {
