@@ -1,8 +1,8 @@
 {
   "schema_version": 3,
-  "generated_at": "2026-11-12T17:57:29.872Z",
-  "expires_at": "2026-11-20T17:57:29.872Z",
-  "seq": 71000002,
+  "generated_at": "2026-11-13T17:33:11.899Z",
+  "expires_at": "2026-11-21T17:33:11.899Z",
+  "seq": 72000002,
   "capture_replay": false,
   "classification_mode": "claude-sonnet-5-5",
   "sources": [
@@ -11,13 +11,13 @@
       "coverage": "MARADMIN messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-12T17:56:38.063Z",
-      "last_success": "2026-11-12T17:56:38.063Z",
+      "last_attempt": "2026-11-13T17:32:09.853Z",
+      "last_success": "2026-11-13T17:32:09.853Z",
       "window": {
-        "from": "2026-10-14",
-        "to": "2026-11-12"
+        "from": "2026-10-15",
+        "to": "2026-11-13"
       },
-      "checked_count": 63,
+      "checked_count": 55,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
@@ -73,11 +73,11 @@
       "coverage": "ALMAR messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-12T17:56:38.063Z",
-      "last_success": "2026-11-12T17:56:38.063Z",
+      "last_attempt": "2026-11-13T17:32:09.853Z",
+      "last_success": "2026-11-13T17:32:09.853Z",
       "window": {
-        "from": "2026-10-14",
-        "to": "2026-11-12"
+        "from": "2026-10-15",
+        "to": "2026-11-13"
       },
       "checked_count": 1,
       "unclassified_count": 0,
@@ -90,13 +90,13 @@
       "coverage": "Official ALNAV listings; full text for new titles with possible separation relevance",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-12T17:56:38.063Z",
-      "last_success": "2026-11-12T17:56:38.063Z",
+      "last_attempt": "2026-11-13T17:32:09.853Z",
+      "last_success": "2026-11-13T17:32:09.853Z",
       "window": {
-        "from": "2026-10-14",
-        "to": "2026-11-12"
+        "from": "2026-10-15",
+        "to": "2026-11-13"
       },
-      "checked_count": 7,
+      "checked_count": 6,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
@@ -107,11 +107,11 @@
       "coverage": "6 orders: metadata checked daily; PDF hashes checked on detail changes; NAVMC 763 unresolved",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-12T17:56:38.063Z",
-      "last_success": "2026-11-12T17:56:38.063Z",
+      "last_attempt": "2026-11-13T17:32:09.853Z",
+      "last_success": "2026-11-13T17:32:09.853Z",
       "window": {
-        "from": "2026-10-14",
-        "to": "2026-11-12"
+        "from": "2026-10-15",
+        "to": "2026-11-13"
       },
       "checked_count": 6,
       "unclassified_count": 0,
@@ -131,11 +131,11 @@
       "coverage": "eCFR versioner section metadata for Title 38 Parts 3 and 4; daily version comparison since first baseline; current section snapshots only where public reads succeed; full-text API excluded by robots; 2 section bodies unavailable, CFR scope only",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-12T17:56:38.063Z",
-      "last_success": "2026-11-12T17:56:38.063Z",
+      "last_attempt": "2026-11-13T17:32:09.853Z",
+      "last_success": "2026-11-13T17:32:09.853Z",
       "window": {
-        "from": "2026-10-14",
-        "to": "2026-11-12"
+        "from": "2026-10-15",
+        "to": "2026-11-13"
       },
       "checked_count": 421,
       "unclassified_count": 0,
@@ -148,11 +148,11 @@
       "coverage": "Federal Register public API; VA proposed and final rules by publication date; structured comment and effective dates; abstracts only, not full rule text; at most 500 results",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-12T17:56:38.063Z",
-      "last_success": "2026-11-12T17:56:38.063Z",
+      "last_attempt": "2026-11-13T17:32:09.853Z",
+      "last_success": "2026-11-13T17:32:09.853Z",
       "window": {
-        "from": "2026-10-14",
-        "to": "2026-11-12"
+        "from": "2026-10-15",
+        "to": "2026-11-13"
       },
       "checked_count": 0,
       "unclassified_count": 0,
@@ -165,17 +165,58 @@
       "coverage": "Official VA news-release RSS title/header candidates for PACT, presumptive and benefit/program changes; bounded RSS history; content diffs of VA.gov PACT and BDD pages since first baseline; editorial changes may be candidates; no inferred publication or effective dates",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-12T17:56:38.063Z",
-      "last_success": "2026-11-12T17:56:38.063Z",
+      "last_attempt": "2026-11-13T17:32:09.853Z",
+      "last_success": "2026-11-13T17:32:09.853Z",
       "window": {
-        "from": "2026-10-14",
-        "to": "2026-11-12"
+        "from": "2026-10-15",
+        "to": "2026-11-13"
       },
       "checked_count": 10,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
       "notices": [
+        {
+          "series": "VA_GOV",
+          "number": "page:ce134d55a7cc283957dd:e61557d65f7e17c0c587",
+          "id": "VA_GOV-page:ce134d55a7cc283957dd:e61557d65f7e17c0c587",
+          "title": "VA.gov: PACT Act benefits page updated",
+          "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/",
+          "posted": "2026-11-13",
+          "relevant": true,
+          "lines": [
+            "va"
+          ],
+          "paths": [
+            "all"
+          ],
+          "action": "informational",
+          "confidence": "low",
+          "deadline": null,
+          "body_available": true,
+          "identifiers": [
+            {
+              "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/"
+            }
+          ],
+          "change": {
+            "kind": "updated",
+            "scope": "document",
+            "before_hash": "54ce8af54b36937f7fce38b63f2495d2a1ed98b6f5f831a8a0f381f98d796377",
+            "after_hash": "e61557d65f7e17c0c58762991cd0599de3d4e7bbb12ad49ce057532a051f9189",
+            "observed_at": "2026-11-13T17:32:09.853Z",
+            "published_at": null,
+            "effective_from": null,
+            "effective_to": null,
+            "effective_unknown": true
+          },
+          "source_evidence": {
+            "basis": "snapshot_diff",
+            "quote": "English | Espa\u00f1ol | Tagalog The PACT Act and your VA benefits The PACT Act is a law that expands VA health care and benefits for Veterans exposed to burn pits, Agent Orange, and other toxic substances. This law helps us provide generations of Veterans",
+            "source_sha256": "e61557d65f7e17c0c58762991cd0599de3d4e7bbb12ad49ce057532a051f9189"
+          },
+          "summary": "VA.gov records a benefit-page content update. Read the official text."
+        },
         {
           "series": "VA_GOV",
           "number": "news:b4589feb7b25be497442:bd350e6ce039ba0f2e80",
@@ -349,6 +390,6 @@
       "reason": "VA blocks automated reads"
     }
   ],
-  "legacy_seq": 71000001,
-  "legacy_sha256": "83356dec3bba4994112b4190def7c9966ddb3d07be531882b17096b5aa146cd3"
+  "legacy_seq": 72000001,
+  "legacy_sha256": "11d714cc87054af5858ed471a66bd8843172c6b0bd0e28572eddb9b9bcf04c7f"
 }
