@@ -1,93 +1,30 @@
 {
-  "seq": 74000002,
-  "generated_at": "2026-11-15T16:51:04.423Z",
-  "expires_at": "2026-11-23T16:51:04.423Z",
+  "seq": 77000002,
+  "generated_at": "2026-11-16T20:02:39.780Z",
+  "expires_at": "2026-11-24T20:02:39.780Z",
   "schema_version": 1,
-  "base_seq": 74000002,
-  "base_sha256": "90042daddcc810804eaa470c0de353f575db8db474e2299ebe542512a94e80ac",
+  "base_seq": 77000002,
+  "base_sha256": "bd2d13c28307c1520291dfd9cd1da399ce196007c53934c2f19866c22062fdfa",
   "notices": [
     {
-      "id": "MARADMIN-541-26",
-      "title": "IDENTITY, CREDENTIAL, AND ACCESS MANAGEMENT (ICAM) TRANSITION GUIDANCE: RETIREMENT OF THE LEGACY DD FORM 2875 AND NAVAL IDENTITY SERVICES (NIS) IMPLEMENTATION",
-      "body_sha256": "e20c5a90c5f4ec9dd2ca832e4ddf39242584381fa682ca9425ecf085ef979025",
+      "id": "MARADMIN-552-26",
+      "title": "FISCAL YEAR 27 VOLUNTARY ENLISTED EARLY RELEASE PROGRAM",
+      "body_sha256": "c29f4fd1e6a165363f98a5b8c2edb2198851cb062f0f20ec96bbdca6ac9fb004",
       "judgment": {
         "v": 1,
-        "kind": "policy",
-        "summary": "This message directs system managers to move from the manual DD Form 2875 access request to the automated NIS workflow by 30 September 2027.",
-        "audience": "Marine Corps FAMs, PMs, and System Owners for NIPRNET systems",
-        "depends_on": null,
-        "action": null,
-        "evidence": "This message directs the mandatory transition from legacy manual DD Form 2875 SAAR to the NIS automated SAAR workflow service that aligns with DON mandates in references (a) through (c).",
+        "kind": "action",
+        "summary": "Eligible enlisted Marines may request release up to 180 days before EAS, limited to 90 days for listed PMOS, with approval at the first GCMCA and not automatic.",
+        "audience": "Active component FTAP enlisted Marines, EAS 1 Jan to 30 Sep 2027",
         "fit": {
-          "deciding": "no",
-          "eas": "no",
-          "resign": "no",
-          "retire": "no"
-        },
-        "judged": "2026-11-06"
-      }
-    },
-    {
-      "id": "MARADMIN-539-26",
-      "title": "ADMINISTRATIVE UPDATE TO MARADMIN 189/26 POLICY ON SERVICE EXTENSIONS DURING INVOLUNTARY SEPARATION PROCESSING",
-      "body_sha256": "1a3a75ecb7178b8f19a3645aedd482cc019da9aa70e4c4df3e4da763ebf4123a",
-      "judgment": {
-        "v": 1,
-        "kind": "policy",
-        "summary": "Service extensions are no longer authorized for Marines in involuntary administrative separation processing, and those reaching EAS before processing ends will separate on their scheduled EAS.",
-        "audience": "Marines undergoing involuntary administrative separation processing",
-        "fit": {
-          "eas": "no",
+          "eas": "yes",
           "resign": "no",
           "retire": "no",
           "deciding": "depends"
         },
-        "depends_on": "Only if you are undergoing involuntary administrative separation processing",
-        "action": null,
-        "evidence": "The authority to grant service extensions to Marines undergoing involuntary administrative separation processing under the purview of reference (a) is rescinded.",
-        "judged": "2026-11-06"
-      }
-    },
-    {
-      "id": "VA_GOV-news:b4589feb7b25be497442:bd350e6ce039ba0f2e80",
-      "title": "VA opens 47th new healthcare facility under President Trump",
-      "body_sha256": "49e39dce116d5a7bb86468969180056670c86ccbcc73b8a49a39d1a4b6565980",
-      "judgment": {
-        "v": 1,
-        "kind": "news",
-        "summary": "VA announced the opening of a new outpatient clinic in West Burlington, Iowa, with expanded services and capacity, and cited appointment and enrollment totals.",
-        "audience": "Veterans",
-        "depends_on": null,
-        "action": null,
-        "evidence": "At nearly 18,000 square feet, the new clinic is more than five times the size of the old facility.",
-        "fit": {
-          "eas": "no",
-          "resign": "no",
-          "retire": "no",
-          "deciding": "no"
-        },
-        "judged": "2026-11-11"
-      }
-    },
-    {
-      "id": "VA_GOV-news:3df52910b0f0a1052d07:29ed2f64acb1def34101",
-      "title": "Following major reforms, over 300K new Veterans enroll in VA healthcare in 2026",
-      "body_sha256": "d0d98910741c03bc51f18c3570662d8608f83a01183665a6f8a216e51c1afa02",
-      "judgment": {
-        "action": null,
-        "audience": "Veterans",
-        "depends_on": null,
-        "evidence": "That includes more than 420,000 mental health appointments and more than 16,000 emergency care visits.",
-        "fit": {
-          "deciding": "no",
-          "eas": "no",
-          "resign": "no",
-          "retire": "no"
-        },
-        "judged": "2026-11-06",
-        "kind": "news",
-        "summary": "VA reports more than 300,000 new Veterans enrolled in VA healthcare in 2026, along with appointment totals and other service statistics, with no new action required.",
-        "v": 1
+        "depends_on": "Only if active component FTAP enlisted with EAS 1 January to 30 September 2027",
+        "action": "Submit a VEERP package with checklist and EAS calculator through the chain of command to the first GCMCA.",
+        "evidence": "This message applies only to Active Component FTAP enlisted Marines with an EAS date between 1 January 2027 and 30 September 2027.",
+        "judged": "2026-11-16"
       }
     }
   ]

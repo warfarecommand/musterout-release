@@ -1,8 +1,8 @@
 {
   "schema_version": 3,
-  "generated_at": "2026-11-15T16:51:04.423Z",
-  "expires_at": "2026-11-23T16:51:04.423Z",
-  "seq": 74000002,
+  "generated_at": "2026-11-16T20:02:39.780Z",
+  "expires_at": "2026-11-24T20:02:39.780Z",
+  "seq": 77000002,
   "capture_replay": false,
   "classification_mode": "claude-sonnet-5-5",
   "sources": [
@@ -11,47 +11,24 @@
       "coverage": "MARADMIN messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-15T16:50:13.600Z",
-      "last_success": "2026-11-15T16:50:13.600Z",
+      "last_attempt": "2026-11-16T20:02:00.183Z",
+      "last_success": "2026-11-16T20:02:00.183Z",
       "window": {
-        "from": "2026-10-17",
-        "to": "2026-11-15"
+        "from": "2026-10-18",
+        "to": "2026-11-16"
       },
-      "checked_count": 52,
-      "unclassified_count": 0,
+      "checked_count": 54,
+      "unclassified_count": 1,
       "truncated": false,
       "body_available": false,
       "notices": [
         {
-          "number": "541/26",
-          "title": "IDENTITY, CREDENTIAL, AND ACCESS MANAGEMENT (ICAM) TRANSITION GUIDANCE: RETIREMENT OF THE LEGACY DD FORM 2875 AND NAVAL IDENTITY SERVICES (NIS) IMPLEMENTATION",
-          "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4638060/identity-credential-and-access-management-icam-transition-guidance-retirement-o/",
-          "posted": "2026-10-30",
-          "description": "R 301616Z OCT 26MARADMIN 541/26MSGID/GENADMIN/CMC WASHINGTON DC DCI IC4//SUBJ/IDENTITY, CREDENTIAL,",
+          "number": "552/26",
+          "title": "FISCAL YEAR 27 VOLUNTARY ENLISTED EARLY RELEASE PROGRAM",
+          "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4645719/fiscal-year-27-voluntary-enlisted-early-release-program/",
+          "posted": "2026-11-12",
+          "description": "R 101303Z NOV 26MARADMIN 552/26MSGID/GENADMIN/CMC WASHINGTON DC MRA MP//SUBJ/FISCAL YEAR 27",
           "series": "MARADMIN",
-          "body_available": true,
-          "relevant": true,
-          "lines": [
-            "retirement"
-          ],
-          "paths": [
-            "all"
-          ],
-          "action": "informational",
-          "summary": "Title indicates a possible connection to leaving active duty. Read the official message before acting.",
-          "deadline": null,
-          "confidence": "low",
-          "card_detail": null,
-          "id": "MARADMIN-541-26"
-        },
-        {
-          "number": "539/26",
-          "title": "ADMINISTRATIVE UPDATE TO MARADMIN 189/26 POLICY ON SERVICE EXTENSIONS DURING INVOLUNTARY SEPARATION PROCESSING",
-          "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4636349/administrative-update-to-maradmin-18926-policy-on-service-extensions-during-inv/",
-          "posted": "2026-10-30",
-          "description": "R 282011Z OCT 26MARADMIN 539/26MSGID/GENADMIN/CMC WASHINGTON DC MRA MP//SUBJ/ADMINISTRATIVE UPDATE",
-          "series": "MARADMIN",
-          "body_available": true,
           "relevant": true,
           "lines": [
             "separation"
@@ -59,12 +36,14 @@
           "paths": [
             "eas"
           ],
-          "action": "required",
-          "summary": "The message rescinds authority to grant service extensions to Marines in involuntary administrative separation processing, effective immediately. Commands may not submit, endorse, or approve such extensions, and Marines who reach their expiration of active service before proceedings finish will be separated on that date.",
+          "action": "informational",
+          "summary": "Eligible active component FTAP enlisted Marines with an EAS in FY27 may request release up to 180 days early, or 90 days for listed specialties. Approval by the first GCMCA is not automatic.",
           "deadline": null,
           "confidence": "high",
-          "card_detail": null,
-          "id": "MARADMIN-539-26"
+          "evidence": "This message applies only to Active Component FTAP enlisted Marines with an EAS date between 1 January 2027 and 30 September 2027.",
+          "body_available": true,
+          "id": "MARADMIN-552-26",
+          "card_detail": null
         }
       ]
     },
@@ -73,28 +52,28 @@
       "coverage": "ALMAR messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-15T16:50:13.600Z",
-      "last_success": "2026-11-15T16:50:13.600Z",
+      "last_attempt": "2026-11-16T20:02:00.183Z",
+      "last_success": "2026-11-16T20:02:00.183Z",
       "window": {
-        "from": "2026-10-17",
-        "to": "2026-11-15"
+        "from": "2026-10-18",
+        "to": "2026-11-16"
       },
-      "checked_count": 1,
-      "unclassified_count": 0,
+      "checked_count": 2,
+      "unclassified_count": 1,
       "truncated": false,
       "body_available": false,
       "notices": []
     },
     {
       "source": "ALNAV",
-      "coverage": "Official ALNAV listings; full text for new titles with possible separation relevance",
+      "coverage": "Official ALNAV listings; title and full text when retrievable for every message in the window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-15T16:50:13.600Z",
-      "last_success": "2026-11-15T16:50:13.600Z",
+      "last_attempt": "2026-11-16T20:02:00.183Z",
+      "last_success": "2026-11-16T20:02:00.183Z",
       "window": {
-        "from": "2026-10-17",
-        "to": "2026-11-15"
+        "from": "2026-10-18",
+        "to": "2026-11-16"
       },
       "checked_count": 4,
       "unclassified_count": 0,
@@ -105,9 +84,9 @@
     {
       "source": "ORDER",
       "coverage": "6 orders: metadata checked daily; PDF hashes checked on detail changes; NAVMC 763 unresolved",
-      "status": "ok",
-      "reason": null,
-      "last_attempt": "2026-11-15T16:50:13.600Z",
+      "status": "failed",
+      "reason": "Order collection failed: 6 orders failed verification (MCO 1050.3J, MCO 1300.8, and 4 more)",
+      "last_attempt": "2026-11-16T20:02:00.183Z",
       "last_success": "2026-11-15T16:50:13.600Z",
       "window": {
         "from": "2026-10-17",
@@ -131,11 +110,11 @@
       "coverage": "eCFR versioner section metadata for Title 38 Parts 3 and 4; daily version comparison since first baseline; current section snapshots only where public reads succeed; full-text API excluded by robots; 2 section bodies unavailable, CFR scope only",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-15T16:50:13.600Z",
-      "last_success": "2026-11-15T16:50:13.600Z",
+      "last_attempt": "2026-11-16T20:02:00.183Z",
+      "last_success": "2026-11-16T20:02:00.183Z",
       "window": {
-        "from": "2026-10-17",
-        "to": "2026-11-15"
+        "from": "2026-10-18",
+        "to": "2026-11-16"
       },
       "checked_count": 421,
       "unclassified_count": 0,
@@ -148,41 +127,24 @@
       "coverage": "Federal Register public API; VA proposed and final rules by publication date; structured comment and effective dates; abstracts only, not full rule text; at most 500 results",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-15T16:50:13.600Z",
-      "last_success": "2026-11-15T16:50:13.600Z",
+      "last_attempt": "2026-11-16T20:02:00.183Z",
+      "last_success": "2026-11-16T20:02:00.183Z",
       "window": {
-        "from": "2026-10-17",
-        "to": "2026-11-15"
+        "from": "2026-10-18",
+        "to": "2026-11-16"
       },
-      "checked_count": 0,
-      "unclassified_count": 0,
-      "truncated": false,
-      "body_available": true,
-      "notices": []
-    },
-    {
-      "source": "VA_GOV",
-      "coverage": "Official VA news-release RSS title/header candidates for PACT, presumptive and benefit/program changes; bounded RSS history; content diffs of VA.gov PACT and BDD pages since first baseline; editorial changes may be candidates; no inferred publication or effective dates",
-      "status": "ok",
-      "reason": null,
-      "last_attempt": "2026-11-15T16:50:13.600Z",
-      "last_success": "2026-11-15T16:50:13.600Z",
-      "window": {
-        "from": "2026-10-17",
-        "to": "2026-11-15"
-      },
-      "checked_count": 9,
+      "checked_count": 1,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
       "notices": [
         {
-          "series": "VA_GOV",
-          "number": "page:ce134d55a7cc283957dd:e61557d65f7e17c0c587",
-          "id": "VA_GOV-page:ce134d55a7cc283957dd:e61557d65f7e17c0c587",
-          "title": "VA.gov: PACT Act benefits page updated",
-          "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/",
-          "posted": "2026-11-13",
+          "series": "FEDERAL_REGISTER",
+          "number": "2026-23220",
+          "id": "FEDERAL_REGISTER-2026-23220",
+          "title": "Dole State and Tribal Outreach Grant Program",
+          "url": "https://www.federalregister.gov/documents/2026/11/16/2026-23220/dole-state-and-tribal-outreach-grant-program",
+          "posted": "2026-11-16",
           "relevant": true,
           "lines": [
             "va"
@@ -192,196 +154,57 @@
           ],
           "action": "informational",
           "confidence": "low",
-          "deadline": null,
-          "body_available": true,
-          "identifiers": [
-            {
-              "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/"
-            }
-          ],
-          "change": {
-            "kind": "updated",
-            "scope": "document",
-            "before_hash": "54ce8af54b36937f7fce38b63f2495d2a1ed98b6f5f831a8a0f381f98d796377",
-            "after_hash": "e61557d65f7e17c0c58762991cd0599de3d4e7bbb12ad49ce057532a051f9189",
-            "observed_at": "2026-11-13T17:32:09.853Z",
-            "published_at": null,
-            "effective_from": null,
-            "effective_to": null,
-            "effective_unknown": true
-          },
-          "source_evidence": {
-            "basis": "snapshot_diff",
-            "quote": "English | Espa\u00f1ol | Tagalog The PACT Act and your VA benefits The PACT Act is a law that expands VA health care and benefits for Veterans exposed to burn pits, Agent Orange, and other toxic substances. This law helps us provide generations of Veterans",
-            "source_sha256": "e61557d65f7e17c0c58762991cd0599de3d4e7bbb12ad49ce057532a051f9189"
-          },
-          "summary": "VA.gov records a benefit-page content update. Read the official text."
-        },
-        {
-          "series": "VA_GOV",
-          "number": "news:b4589feb7b25be497442:bd350e6ce039ba0f2e80",
-          "id": "VA_GOV-news:b4589feb7b25be497442:bd350e6ce039ba0f2e80",
-          "title": "VA opens 47th new healthcare facility under President Trump",
-          "url": "https://news.va.gov/press-room/va-opens-47th-new-healthcare-facility-under-president-trump/",
-          "posted": "2026-11-09",
-          "relevant": true,
-          "lines": [
-            "va"
-          ],
-          "paths": [
-            "all"
-          ],
-          "action": "informational",
-          "confidence": "low",
-          "deadline": null,
+          "deadline": "2026-12-16",
           "body_available": false,
           "identifiers": [
             {
-              "url": "https://news.va.gov/press-room/va-opens-47th-new-healthcare-facility-under-president-trump/"
+              "document_number": "2026-23220"
             }
           ],
           "change": {
             "kind": "published",
             "scope": "document",
             "before_hash": null,
-            "after_hash": "bd350e6ce039ba0f2e80e772a0569625ef274850ef32196851910e1696613938",
-            "observed_at": "2026-11-11T17:43:46.706Z",
-            "published_at": "2026-11-09",
+            "after_hash": "d6b7c0de2d61458af5060c879157362ce7563086694a7f5ec9715a62fa80c13b",
+            "observed_at": "2026-11-16T03:47:08.263Z",
+            "published_at": "2026-11-16",
             "effective_from": null,
             "effective_to": null,
             "effective_unknown": true
           },
           "source_evidence": {
             "basis": "official_metadata",
-            "quote": "VA held a ribbon-cutting ceremony today to mark the opening of the new outpatient clinic in West Burlington, Iowa.",
-            "source_sha256": "bd350e6ce039ba0f2e80e772a0569625ef274850ef32196851910e1696613938"
+            "quote": "The Department of Veterans Affairs (VA) is proposing regulations to implement the Dole State and Tribal Outreach Grant Program (DSTOGP), as authorized under the Senator Elizabeth Dole 21st Century Veterans Healthcare and Benefits Improvement Act. This program aids veterans and their families by awarding funding to eligible organizations to carry out programs to improve covered outreach and assistance to ensure that veterans and their families are fully informed about, and ass",
+            "source_sha256": "d6b7c0de2d61458af5060c879157362ce7563086694a7f5ec9715a62fa80c13b"
           },
-          "summary": "VA.gov published a benefit or program update, published 09 NOV 2026. Read the official text."
-        },
-        {
-          "series": "VA_GOV",
-          "number": "news:b4589feb7b25be497442:460373b1eb915e099370",
-          "id": "VA_GOV-news:b4589feb7b25be497442:460373b1eb915e099370",
-          "title": "VA opens 47th new healthcare facility under President Trump",
-          "url": "https://news.va.gov/press-room/va-opens-47th-new-healthcare-facility-under-president-trump/",
-          "posted": "2026-11-09",
-          "relevant": true,
-          "lines": [
-            "va"
-          ],
-          "paths": [
-            "all"
-          ],
-          "action": "informational",
-          "confidence": "low",
-          "deadline": null,
-          "body_available": false,
-          "identifiers": [
+          "rule_type": "proposed",
+          "comments_close_on": "2026-12-16",
+          "cfr_parts": [
             {
-              "url": "https://news.va.gov/press-room/va-opens-47th-new-healthcare-facility-under-president-trump/"
+              "title": 38,
+              "part": 85
             }
           ],
-          "change": {
-            "kind": "published",
-            "scope": "document",
-            "before_hash": null,
-            "after_hash": "460373b1eb915e09937016462e40d5f0d93ab4b39c2c722271d2ee932fb6fe5d",
-            "observed_at": "2026-11-09T20:28:00.654Z",
-            "published_at": "2026-11-09",
-            "effective_from": null,
-            "effective_to": null,
-            "effective_unknown": true
-          },
-          "source_evidence": {
-            "basis": "official_metadata",
-            "quote": "WASHINGTON",
-            "source_sha256": "460373b1eb915e09937016462e40d5f0d93ab4b39c2c722271d2ee932fb6fe5d"
-          },
-          "summary": "VA.gov published a benefit or program update, published 09 NOV 2026. Read the official text."
-        },
-        {
-          "series": "VA_GOV",
-          "number": "page:ce134d55a7cc283957dd:54ce8af54b36937f7fce",
-          "id": "VA_GOV-page:ce134d55a7cc283957dd:54ce8af54b36937f7fce",
-          "title": "VA.gov: PACT Act benefits page updated",
-          "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/",
-          "posted": "2026-11-04",
-          "relevant": true,
-          "lines": [
-            "va"
-          ],
-          "paths": [
-            "all"
-          ],
-          "action": "informational",
-          "confidence": "low",
-          "deadline": null,
-          "body_available": true,
-          "identifiers": [
-            {
-              "url": "https://www.va.gov/resources/the-pact-act-and-your-va-benefits/"
-            }
-          ],
-          "change": {
-            "kind": "updated",
-            "scope": "document",
-            "before_hash": "67f0704d61fccb6760ba870ef0aad790ac4e151e1e2cf0b84bc02435f4c42ef7",
-            "after_hash": "54ce8af54b36937f7fce38b63f2495d2a1ed98b6f5f831a8a0f381f98d796377",
-            "observed_at": "2026-11-04T17:48:47.870Z",
-            "published_at": null,
-            "effective_from": null,
-            "effective_to": null,
-            "effective_unknown": true
-          },
-          "source_evidence": {
-            "basis": "snapshot_diff",
-            "quote": "English | Espa\u00f1ol | Tagalog The PACT Act and your VA benefits The PACT Act is a law that expands VA health care and benefits for Veterans exposed to burn pits, Agent Orange, and other toxic substances. This law helps us provide generations of Veterans",
-            "source_sha256": "54ce8af54b36937f7fce38b63f2495d2a1ed98b6f5f831a8a0f381f98d796377"
-          },
-          "summary": "VA.gov records a benefit-page content update. Read the official text."
-        },
-        {
-          "series": "VA_GOV",
-          "number": "news:3df52910b0f0a1052d07:29ed2f64acb1def34101",
-          "id": "VA_GOV-news:3df52910b0f0a1052d07:29ed2f64acb1def34101",
-          "title": "Following major reforms, over 300K new Veterans enroll in VA healthcare in 2026",
-          "url": "https://news.va.gov/press-room/following-major-reforms-over-300k-new-veterans-enroll-in-va-healthcare-in-2026/",
-          "posted": "2026-10-21",
-          "relevant": true,
-          "lines": [
-            "va"
-          ],
-          "paths": [
-            "all"
-          ],
-          "action": "informational",
-          "confidence": "low",
-          "deadline": null,
-          "body_available": false,
-          "identifiers": [
-            {
-              "url": "https://news.va.gov/press-room/following-major-reforms-over-300k-new-veterans-enroll-in-va-healthcare-in-2026/"
-            }
-          ],
-          "change": {
-            "kind": "published",
-            "scope": "document",
-            "before_hash": null,
-            "after_hash": "29ed2f64acb1def34101b698b8153ed53abc877d273e57ade971420ddb0f239b",
-            "observed_at": "2026-10-24T04:11:49.785Z",
-            "published_at": "2026-10-21",
-            "effective_from": null,
-            "effective_to": null,
-            "effective_unknown": true
-          },
-          "source_evidence": {
-            "basis": "official_metadata",
-            "quote": "More than 300,000 new Veterans have enrolled in VA healthcare in 2026.",
-            "source_sha256": "29ed2f64acb1def34101b698b8153ed53abc877d273e57ade971420ddb0f239b"
-          },
-          "summary": "VA.gov published a benefit or program update, published 21 OCT 2026. Read the official text."
+          "summary": "VA published a proposed rule about Federal Register document 2026-23220, published 16 NOV 2026; comments close 16 DEC 2026. Read the official text."
         }
       ]
+    },
+    {
+      "source": "VA_GOV",
+      "coverage": "Official VA news-release RSS candidates for PACT, presumptive and benefit/program changes; one notice per URL and publication; bounded RSS history; substantive PACT and BDD page diffs since the prior text snapshot; no inferred publication or effective dates",
+      "status": "ok",
+      "reason": null,
+      "last_attempt": "2026-11-16T20:02:00.183Z",
+      "last_success": "2026-11-16T20:02:00.183Z",
+      "window": {
+        "from": "2026-10-18",
+        "to": "2026-11-16"
+      },
+      "checked_count": 10,
+      "unclassified_count": 0,
+      "truncated": false,
+      "body_available": false,
+      "notices": []
     }
   ],
   "off_sources": [
@@ -390,6 +213,6 @@
       "reason": "VA blocks automated reads"
     }
   ],
-  "legacy_seq": 74000001,
-  "legacy_sha256": "517e20e48caa25101f173b8500e67e53e0b9d061f49da4af13c7cf02de076244"
+  "legacy_seq": 77000001,
+  "legacy_sha256": "43c41f73ff7f00a2be4bddf5b142bc2f5310f8a28620210d64b2716845e029cd"
 }

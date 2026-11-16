@@ -1,15 +1,37 @@
 {
   "checked_from": "2026-11-09",
-  "checked_to": "2026-11-15",
-  "generated_at": "2026-11-15T16:51:04.423Z",
+  "checked_to": "2026-11-16",
+  "generated_at": "2026-11-16T20:02:39.780Z",
   "source": "MARADMIN",
   "coverage": "MARADMIN messages posted on marines.mil between checked_from and checked_to",
   "schema_version": 1,
-  "checked_count": 2,
+  "checked_count": 4,
   "unclassified_count": 0,
   "classification_mode": "claude-sonnet-5-5",
   "capture_replay": false,
   "collection_source": "maradmin-rss",
   "truncated": false,
-  "notices": []
+  "notices": [
+    {
+      "number": "552/26",
+      "title": "FISCAL YEAR 27 VOLUNTARY ENLISTED EARLY RELEASE PROGRAM",
+      "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4645719/fiscal-year-27-voluntary-enlisted-early-release-program/",
+      "posted": "2026-11-12",
+      "description": "R 101303Z NOV 26MARADMIN 552/26MSGID/GENADMIN/CMC WASHINGTON DC MRA MP//SUBJ/FISCAL YEAR 27",
+      "relevant": true,
+      "lines": [
+        "separation"
+      ],
+      "paths": [
+        "eas"
+      ],
+      "action": "informational",
+      "summary": "Eligible active component FTAP enlisted Marines with an EAS in FY27 may request release up to 180 days early, or 90 days for listed specialties. Approval by the first GCMCA is not automatic.",
+      "deadline": null,
+      "confidence": "high",
+      "evidence": "This message applies only to Active Component FTAP enlisted Marines with an EAS date between 1 January 2027 and 30 September 2027.",
+      "body_available": true,
+      "card_detail": null
+    }
+  ]
 }
