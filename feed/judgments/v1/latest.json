@@ -1,11 +1,32 @@
 {
-  "seq": 77000002,
-  "generated_at": "2026-11-16T20:02:39.780Z",
-  "expires_at": "2026-11-24T20:02:39.780Z",
+  "seq": 80000002,
+  "generated_at": "2026-11-17T18:58:36.519Z",
+  "expires_at": "2026-11-25T18:58:36.519Z",
   "schema_version": 1,
-  "base_seq": 77000002,
-  "base_sha256": "bd2d13c28307c1520291dfd9cd1da399ce196007c53934c2f19866c22062fdfa",
+  "base_seq": 80000002,
+  "base_sha256": "d127320e3b70cac47c853518856e145522b2bf2b9aea004b785b046d9dc0f703",
   "notices": [
+    {
+      "id": "MARADMIN-539-26",
+      "title": "ADMINISTRATIVE UPDATE TO MARADMIN 189/26 POLICY ON SERVICE EXTENSIONS DURING INVOLUNTARY SEPARATION PROCESSING",
+      "body_sha256": "1a3a75ecb7178b8f19a3645aedd482cc019da9aa70e4c4df3e4da763ebf4123a",
+      "judgment": {
+        "v": 1,
+        "kind": "policy",
+        "summary": "Extensions of service can no longer delay involuntary administrative separation, so Marines reaching EAS first separate on schedule.",
+        "audience": "Marines in involuntary administrative separation processing",
+        "fit": {
+          "eas": "depends",
+          "resign": "no",
+          "retire": "no",
+          "deciding": "no"
+        },
+        "depends_on": "If being processed for involuntary administrative separation and EAS arrives first",
+        "action": "Expect separation on the scheduled EAS because extension requests are no longer accepted during processing.",
+        "evidence": "Marines currently being processed for involuntary administrative separation under reference (a) who reach their Expiration of Active Service (EAS) prior to the completion of separation proceedings will be separated on their scheduled EAS.",
+        "judged": "2026-11-16"
+      }
+    },
     {
       "id": "MARADMIN-552-26",
       "title": "FISCAL YEAR 27 VOLUNTARY ENLISTED EARLY RELEASE PROGRAM",

@@ -1,8 +1,8 @@
 {
   "schema_version": 3,
-  "generated_at": "2026-11-16T20:02:39.780Z",
-  "expires_at": "2026-11-24T20:02:39.780Z",
-  "seq": 77000002,
+  "generated_at": "2026-11-17T18:58:36.519Z",
+  "expires_at": "2026-11-25T18:58:36.519Z",
+  "seq": 80000002,
   "capture_replay": false,
   "classification_mode": "claude-sonnet-5-5",
   "sources": [
@@ -11,17 +11,40 @@
       "coverage": "MARADMIN messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-16T20:02:00.183Z",
-      "last_success": "2026-11-16T20:02:00.183Z",
+      "last_attempt": "2026-11-17T18:58:02.026Z",
+      "last_success": "2026-11-17T18:58:02.026Z",
       "window": {
-        "from": "2026-10-18",
-        "to": "2026-11-16"
+        "from": "2026-10-19",
+        "to": "2026-11-17"
       },
       "checked_count": 54,
-      "unclassified_count": 1,
+      "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
       "notices": [
+        {
+          "number": "539/26",
+          "title": "ADMINISTRATIVE UPDATE TO MARADMIN 189/26 POLICY ON SERVICE EXTENSIONS DURING INVOLUNTARY SEPARATION PROCESSING",
+          "url": "https://www.marines.mil/News/Messages/Messages-Display/Article/4636349/administrative-update-to-maradmin-18926-policy-on-service-extensions-during-inv/",
+          "posted": "2026-10-30",
+          "description": "R 282011Z OCT 26MARADMIN 539/26MSGID/GENADMIN/CMC WASHINGTON DC MRA MP//SUBJ/ADMINISTRATIVE UPDATE",
+          "series": "MARADMIN",
+          "relevant": true,
+          "lines": [
+            "separation"
+          ],
+          "paths": [
+            "eas"
+          ],
+          "action": "informational",
+          "summary": "Service extensions are no longer allowed for Marines in involuntary administrative separation processing. A Marine who reaches EAS before proceedings finish will separate on the scheduled EAS.",
+          "deadline": null,
+          "confidence": "high",
+          "evidence": "Marines currently being processed for involuntary administrative separation under reference (a) who reach their Expiration of Active Service (EAS) prior to the completion of separation proceedings will be separated on their scheduled EAS.",
+          "body_available": true,
+          "id": "MARADMIN-539-26",
+          "card_detail": null
+        },
         {
           "number": "552/26",
           "title": "FISCAL YEAR 27 VOLUNTARY ENLISTED EARLY RELEASE PROGRAM",
@@ -52,14 +75,14 @@
       "coverage": "ALMAR messages in the official marines.mil RSS, at most 100 combined Marine messages; posted in the stated window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-16T20:02:00.183Z",
-      "last_success": "2026-11-16T20:02:00.183Z",
+      "last_attempt": "2026-11-17T18:58:02.026Z",
+      "last_success": "2026-11-17T18:58:02.026Z",
       "window": {
-        "from": "2026-10-18",
-        "to": "2026-11-16"
+        "from": "2026-10-19",
+        "to": "2026-11-17"
       },
       "checked_count": 2,
-      "unclassified_count": 1,
+      "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
       "notices": []
@@ -69,11 +92,11 @@
       "coverage": "Official ALNAV listings; title and full text when retrievable for every message in the window",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-16T20:02:00.183Z",
-      "last_success": "2026-11-16T20:02:00.183Z",
+      "last_attempt": "2026-11-17T18:58:02.026Z",
+      "last_success": "2026-11-17T18:58:02.026Z",
       "window": {
-        "from": "2026-10-18",
-        "to": "2026-11-16"
+        "from": "2026-10-19",
+        "to": "2026-11-17"
       },
       "checked_count": 4,
       "unclassified_count": 0,
@@ -83,14 +106,14 @@
     },
     {
       "source": "ORDER",
-      "coverage": "6 orders: metadata checked daily; PDF hashes checked on detail changes; NAVMC 763 unresolved",
-      "status": "failed",
-      "reason": "Order collection failed: 6 orders failed verification (MCO 1050.3J, MCO 1300.8, and 4 more)",
-      "last_attempt": "2026-11-16T20:02:00.183Z",
+      "coverage": "6 orders: metadata checked Mondays; PDF hashes checked on detail changes; NAVMC 763 unresolved; last checked 2026-11-15",
+      "status": "ok",
+      "reason": null,
+      "last_attempt": "2026-11-17T18:58:02.026Z",
       "last_success": "2026-11-15T16:50:13.600Z",
       "window": {
-        "from": "2026-10-17",
-        "to": "2026-11-15"
+        "from": "2026-10-19",
+        "to": "2026-11-17"
       },
       "checked_count": 6,
       "unclassified_count": 0,
@@ -110,11 +133,11 @@
       "coverage": "eCFR versioner section metadata for Title 38 Parts 3 and 4; daily version comparison since first baseline; current section snapshots only where public reads succeed; full-text API excluded by robots; 2 section bodies unavailable, CFR scope only",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-16T20:02:00.183Z",
-      "last_success": "2026-11-16T20:02:00.183Z",
+      "last_attempt": "2026-11-17T18:58:02.026Z",
+      "last_success": "2026-11-17T18:58:02.026Z",
       "window": {
-        "from": "2026-10-18",
-        "to": "2026-11-16"
+        "from": "2026-10-19",
+        "to": "2026-11-17"
       },
       "checked_count": 421,
       "unclassified_count": 0,
@@ -127,80 +150,30 @@
       "coverage": "Federal Register public API; VA proposed and final rules by publication date; structured comment and effective dates; abstracts only, not full rule text; at most 500 results",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-16T20:02:00.183Z",
-      "last_success": "2026-11-16T20:02:00.183Z",
+      "last_attempt": "2026-11-17T18:58:02.026Z",
+      "last_success": "2026-11-17T18:58:02.026Z",
       "window": {
-        "from": "2026-10-18",
-        "to": "2026-11-16"
+        "from": "2026-10-19",
+        "to": "2026-11-17"
       },
-      "checked_count": 1,
+      "checked_count": 2,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
-      "notices": [
-        {
-          "series": "FEDERAL_REGISTER",
-          "number": "2026-23220",
-          "id": "FEDERAL_REGISTER-2026-23220",
-          "title": "Dole State and Tribal Outreach Grant Program",
-          "url": "https://www.federalregister.gov/documents/2026/11/16/2026-23220/dole-state-and-tribal-outreach-grant-program",
-          "posted": "2026-11-16",
-          "relevant": true,
-          "lines": [
-            "va"
-          ],
-          "paths": [
-            "all"
-          ],
-          "action": "informational",
-          "confidence": "low",
-          "deadline": "2026-12-16",
-          "body_available": false,
-          "identifiers": [
-            {
-              "document_number": "2026-23220"
-            }
-          ],
-          "change": {
-            "kind": "published",
-            "scope": "document",
-            "before_hash": null,
-            "after_hash": "d6b7c0de2d61458af5060c879157362ce7563086694a7f5ec9715a62fa80c13b",
-            "observed_at": "2026-11-16T03:47:08.263Z",
-            "published_at": "2026-11-16",
-            "effective_from": null,
-            "effective_to": null,
-            "effective_unknown": true
-          },
-          "source_evidence": {
-            "basis": "official_metadata",
-            "quote": "The Department of Veterans Affairs (VA) is proposing regulations to implement the Dole State and Tribal Outreach Grant Program (DSTOGP), as authorized under the Senator Elizabeth Dole 21st Century Veterans Healthcare and Benefits Improvement Act. This program aids veterans and their families by awarding funding to eligible organizations to carry out programs to improve covered outreach and assistance to ensure that veterans and their families are fully informed about, and ass",
-            "source_sha256": "d6b7c0de2d61458af5060c879157362ce7563086694a7f5ec9715a62fa80c13b"
-          },
-          "rule_type": "proposed",
-          "comments_close_on": "2026-12-16",
-          "cfr_parts": [
-            {
-              "title": 38,
-              "part": 85
-            }
-          ],
-          "summary": "VA published a proposed rule about Federal Register document 2026-23220, published 16 NOV 2026; comments close 16 DEC 2026. Read the official text."
-        }
-      ]
+      "notices": []
     },
     {
       "source": "VA_GOV",
       "coverage": "Official VA news-release RSS candidates for PACT, presumptive and benefit/program changes; one notice per URL and publication; bounded RSS history; substantive PACT and BDD page diffs since the prior text snapshot; no inferred publication or effective dates",
       "status": "ok",
       "reason": null,
-      "last_attempt": "2026-11-16T20:02:00.183Z",
-      "last_success": "2026-11-16T20:02:00.183Z",
+      "last_attempt": "2026-11-17T18:58:02.026Z",
+      "last_success": "2026-11-17T18:58:02.026Z",
       "window": {
-        "from": "2026-10-18",
-        "to": "2026-11-16"
+        "from": "2026-10-19",
+        "to": "2026-11-17"
       },
-      "checked_count": 10,
+      "checked_count": 11,
       "unclassified_count": 0,
       "truncated": false,
       "body_available": false,
@@ -213,6 +186,6 @@
       "reason": "VA blocks automated reads"
     }
   ],
-  "legacy_seq": 77000001,
-  "legacy_sha256": "43c41f73ff7f00a2be4bddf5b142bc2f5310f8a28620210d64b2716845e029cd"
+  "legacy_seq": 80000001,
+  "legacy_sha256": "a2f47bca78afd04526feaea305786fc73bbeaa22293c39c3dd68c862611d88ad"
 }
